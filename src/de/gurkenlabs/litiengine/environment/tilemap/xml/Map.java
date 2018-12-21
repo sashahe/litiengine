@@ -42,6 +42,10 @@ import de.gurkenlabs.litiengine.util.ArrayUtilities;
 import de.gurkenlabs.litiengine.util.geom.GeometricUtilities;
 import de.gurkenlabs.litiengine.util.io.FileUtilities;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+
 @XmlRootElement(name = "map")
 @XmlAccessorType(XmlAccessType.FIELD)
 public final class Map extends CustomPropertyProvider implements IMap, Serializable, Comparable<Map> {
@@ -54,33 +58,42 @@ public final class Map extends CustomPropertyProvider implements IMap, Serializa
   @XmlAttribute
   private double version;
 
+  @Expose
   @XmlAttribute
   private String tiledversion;
 
+  @Expose
   @XmlAttribute
   private String orientation;
 
   @XmlTransient
   private MapOrientation mapOrientation = MapOrientation.UNDEFINED;
 
+  @Expose
   @XmlAttribute
   private String renderorder;
 
+  @Expose
   @XmlAttribute
   private int width;
 
+  @Expose
   @XmlAttribute
   private int height;
 
+  @Expose
   @XmlAttribute
   private int tilewidth;
 
+  @Expose
   @XmlAttribute
   private int tileheight;
 
+  @Expose
   @XmlAttribute
   private int infinite;
 
+  @Expose
   @XmlAttribute
   private int hexsidelength;
 
@@ -90,22 +103,30 @@ public final class Map extends CustomPropertyProvider implements IMap, Serializa
   @XmlTransient
   private StaggerIndex staggerIndexEnum = StaggerIndex.UNDEFINED;
 
+  @Expose
   @XmlAttribute
   private String staggeraxis;
 
+  @Expose
   @XmlAttribute
   private String staggerindex;
 
+  @Expose
+  @JsonAdapter(JsonSolidColorAdapter.class)
   @XmlJavaTypeAdapter(XmlSolidColorAdapter.class)
   @XmlAttribute
   private Color backgroundcolor;
 
+  @Expose
+  @SerializedName("nextobjectid")
   @XmlAttribute(name = "nextobjectid")
   private int nextObjectId;
 
   @XmlAttribute(required = false)
   private String name;
 
+  @Expose
+  @SerializedName("tilesets")
   @XmlElement(name = "tileset")
   private List<Tileset> rawTilesets;
 
@@ -125,7 +146,8 @@ public final class Map extends CustomPropertyProvider implements IMap, Serializa
   private transient List<ITileLayer> tileLayers;
   private transient List<IMapObjectLayer> mapObjectLayers;
   private transient List<IImageLayer> imageLayers;
-  private transient List<ILayer> allRenderLayers;
+  @Expose
+  private transient List<ILayer> layers;
 
   @XmlTransient
   private int chunkOffsetX;
@@ -559,7 +581,7 @@ public final class Map extends CustomPropertyProvider implements IMap, Serializa
 
   @Override
   public List<ILayer> getRenderLayers() {
-    return this.allRenderLayers;
+    return this.layers;
   }
 
   public List<Tileset> getExternalTilesets() {
@@ -654,7 +676,7 @@ public final class Map extends CustomPropertyProvider implements IMap, Serializa
     this.tileLayers = Collections.unmodifiableList(tmpTileLayers);
     this.mapObjectLayers = Collections.unmodifiableList(tmpMapObjectLayers);
     this.imageLayers = Collections.unmodifiableList(tmpImageLayers);
-    this.allRenderLayers = Collections.unmodifiableList(tmprenderLayers);
+    this.layers = Collections.unmodifiableList(tmprenderLayers);
 
     if (this.isInfinite()) {
       this.updateDimensionsByTileLayers();
