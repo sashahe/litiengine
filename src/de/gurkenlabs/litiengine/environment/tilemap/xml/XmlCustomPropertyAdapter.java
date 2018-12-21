@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import de.gurkenlabs.litiengine.environment.tilemap.ICustomProperty;
 
-public class CustomPropertyAdapter extends XmlAdapter<CustomPropertyAdapter.PropertyList, Map<String, ICustomProperty>> {
+public class XmlCustomPropertyAdapter extends XmlAdapter<XmlCustomPropertyAdapter.PropertyList, Map<String, ICustomProperty>> {
   @XmlAccessorType(XmlAccessType.FIELD)
   static class Property {
     @XmlAttribute

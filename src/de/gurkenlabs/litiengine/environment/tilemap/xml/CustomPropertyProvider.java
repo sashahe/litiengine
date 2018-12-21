@@ -19,7 +19,7 @@ public class CustomPropertyProvider implements ICustomPropertyProvider, Serializ
   private static final long serialVersionUID = 5564165255132042594L;
 
   @XmlElement
-  @XmlJavaTypeAdapter(CustomPropertyAdapter.class)
+  @XmlJavaTypeAdapter(XmlCustomPropertyAdapter.class)
   private Map<String, ICustomProperty> properties;
 
   public CustomPropertyProvider() {
