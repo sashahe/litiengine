@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import de.gurkenlabs.litiengine.util.ColorHelper;
 
-public class SolidColorAdapter extends XmlAdapter<String, Color> {
+public class XmlSolidColorAdapter extends XmlAdapter<String, Color> {
 
   @Override
   public Color unmarshal(String v) {

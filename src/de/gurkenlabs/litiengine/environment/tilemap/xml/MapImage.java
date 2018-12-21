@@ -26,7 +26,7 @@ public class MapImage extends CustomPropertyProvider implements IMapImage {
 
   /** The transparentcolor. */
   @XmlAttribute(name = "trans")
-  @XmlJavaTypeAdapter(ColorAdapter.class)
+  @XmlJavaTypeAdapter(XmlColorAdapter.class)
   private Color transparentcolor;
 
   /** The width. */

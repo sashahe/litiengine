@@ -96,7 +96,7 @@ public final class Map extends CustomPropertyProvider implements IMap, Serializa
   @XmlAttribute
   private String staggerindex;
 
-  @XmlJavaTypeAdapter(SolidColorAdapter.class)
+  @XmlJavaTypeAdapter(XmlSolidColorAdapter.class)
   @XmlAttribute
   private Color backgroundcolor;
 

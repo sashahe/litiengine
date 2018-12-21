@@ -15,7 +15,7 @@ public class ImageLayer extends Layer implements IImageLayer {
   @XmlElement(name = "image")
   private MapImage image;
 
-  @XmlJavaTypeAdapter(ColorAdapter.class)
+  @XmlJavaTypeAdapter(XmlColorAdapter.class)
   @XmlAttribute(name = "trans")
   private Color transparentcolor;
 
