@@ -1,7 +1,7 @@
 package de.gurkenlabs.litiengine.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
 import java.util.logging.Logger;
@@ -16,10 +16,14 @@ public class ColorHelperTests {
 
     String red = "~#ff0000";
     String red2 = "#ff0000000";
-    Color redDecoded = ColorHelper.decode(red);
-    Color redDecoded2 = ColorHelper.decode(red2);
-    assertNull(redDecoded);
-    assertNull(redDecoded2);
+    try {
+      ColorHelper.decode(red);
+      assertTrue(false); // fail the unit test
+    } catch (IllegalArgumentException e) {}
+    try {
+      ColorHelper.decode(red2);
+      assertTrue(false); // fail the unit test
+    } catch (IllegalArgumentException e) {}
   }
 
   @Test

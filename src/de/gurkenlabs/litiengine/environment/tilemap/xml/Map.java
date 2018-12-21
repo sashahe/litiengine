@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import de.gurkenlabs.litiengine.environment.tilemap.IImageLayer;
 import de.gurkenlabs.litiengine.environment.tilemap.ILayer;
@@ -38,7 +39,6 @@ import de.gurkenlabs.litiengine.environment.tilemap.MapUtilities;
 import de.gurkenlabs.litiengine.environment.tilemap.StaggerAxis;
 import de.gurkenlabs.litiengine.environment.tilemap.StaggerIndex;
 import de.gurkenlabs.litiengine.util.ArrayUtilities;
-import de.gurkenlabs.litiengine.util.ColorHelper;
 import de.gurkenlabs.litiengine.util.geom.GeometricUtilities;
 import de.gurkenlabs.litiengine.util.io.FileUtilities;
 
@@ -96,8 +96,9 @@ public final class Map extends CustomPropertyProvider implements IMap, Serializa
   @XmlAttribute
   private String staggerindex;
 
+  @XmlJavaTypeAdapter(SolidColorAdapter.class)
   @XmlAttribute
-  private String backgroundcolor;
+  private Color backgroundcolor;
 
   @XmlAttribute(name = "nextobjectid")
   private int nextObjectId;
@@ -125,8 +126,6 @@ public final class Map extends CustomPropertyProvider implements IMap, Serializa
   private transient List<IMapObjectLayer> mapObjectLayers;
   private transient List<IImageLayer> imageLayers;
   private transient List<ILayer> allRenderLayers;
-
-  private transient Color decodedBackgroundColor;
 
   @XmlTransient
   private int chunkOffsetX;
@@ -584,16 +583,7 @@ public final class Map extends CustomPropertyProvider implements IMap, Serializa
 
   @Override
   public Color getBackgroundColor() {
-    if (this.backgroundcolor == null || this.backgroundcolor.isEmpty()) {
-      return null;
-    }
-
-    if (this.decodedBackgroundColor != null) {
-      return this.decodedBackgroundColor;
-    }
-
-    this.decodedBackgroundColor = ColorHelper.decode(this.backgroundcolor, true);
-    return this.decodedBackgroundColor;
+    return this.backgroundcolor;
   }
 
   public List<TileLayer> getRawTileLayers() {

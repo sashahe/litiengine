@@ -1,15 +1,8 @@
 package de.gurkenlabs.litiengine.util;
 
 import java.awt.Color;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public final class ColorHelper {
-  private static final Logger log = Logger.getLogger(ColorHelper.class.getName());
-  private static final int HEX_STRING_LENGTH = 7;
-  private static final int HEX_STRING_LENGTH_ALPHA = 9;
-  private static final int MAX_RGB_VALUE = 255;
-
   private ColorHelper() {
     throw new UnsupportedOperationException();
   }
@@ -40,7 +33,7 @@ public final class ColorHelper {
     }
 
     String colorString = String.format("%08x", color.getRGB());
-    if (color.getAlpha() == MAX_RGB_VALUE) {
+    if (color.getAlpha() == 255) {
       return "#" + colorString.substring(2);
     } else {
       return "#" + colorString;
@@ -76,25 +69,22 @@ public final class ColorHelper {
       return null;
     }
 
-    if (!colorHexString.startsWith("#")) {
-      if (colorHexString.length() == HEX_STRING_LENGTH - 1 || colorHexString.length() == HEX_STRING_LENGTH_ALPHA - 1) {
-        colorHexString = "#" + colorHexString;
-      } else {
-        log.log(Level.SEVERE, "Could not parse color string \"{0}\". A color string needs to start with a \"#\" character.", colorHexString);
-        return null;
-      }
+    if (colorHexString.charAt(0) != '#') {
+      colorHexString = '#' + colorHexString;
     }
 
-    switch (colorHexString.length()) {
-    case HEX_STRING_LENGTH:
-      return decodeWellformedHexString(colorHexString);
-    case HEX_STRING_LENGTH_ALPHA:
-      return decodeHexStringWithAlpha(colorHexString, solid);
-    default:
-      log.log(Level.SEVERE, "Could not parse color string \"{0}\". Invalid string length \"{1}\"!\nAccepted lengths:\n\t{2} for Colors without Alpha (#ff0000)\n\t{3} for Colors with Alpha (#c8ff0000)",
-          new Object[] { colorHexString, colorHexString.length(), HEX_STRING_LENGTH, HEX_STRING_LENGTH_ALPHA });
-      return null;
+    if (colorHexString.length() != 7 && colorHexString.length() != 9) {
+      throw new IllegalArgumentException("invalid color string");
     }
+
+    Color cl = new Color(Integer.parseUnsignedInt(colorHexString.substring(1), 16), colorHexString.length() == 9);
+    if (solid) {
+      float alphaRatio = cl.getAlpha() / (float) 255f;
+      cl = new Color(Math.round(alphaRatio * cl.getRed()),
+          Math.round(alphaRatio * cl.getGreen()),
+          Math.round(alphaRatio * cl.getBlue()));
+    }
+    return cl;
   }
 
   /**
@@ -118,45 +108,6 @@ public final class ColorHelper {
    * @return An integer value that fits the color value restrictions.
    */
   public static int ensureColorValueRange(int value) {
-    return Math.min(Math.max(value, 0), MAX_RGB_VALUE);
-  }
-
-  private static Color decodeWellformedHexString(String hexString) {
-    try {
-      return Color.decode(hexString);
-    } catch (NumberFormatException e) {
-      log.log(Level.SEVERE, e.getMessage(), e);
-    }
-    return null;
-  }
-
-  private static Color decodeHexStringWithAlpha(String hexString, boolean solid) {
-    String alpha = hexString.substring(1, 3);
-
-    int alphaValue;
-    try {
-      alphaValue = ensureColorValueRange(Integer.parseInt(alpha, 16));
-    } catch (NumberFormatException e) {
-      log.log(Level.SEVERE, e.getMessage(), e);
-      return null;
-    }
-
-    StringBuilder sb = new StringBuilder(hexString);
-    sb.replace(1, 3, "");
-    String baseColorString = sb.toString();
-    Color baseColor = decodeWellformedHexString(baseColorString);
-    if (baseColor == null) {
-      return null;
-    }
-    // solid means that color alpha will basically create a darker version of the base color
-    if (solid) {
-      float alphaRatio = alphaValue / (float) MAX_RGB_VALUE;
-      int red = ensureColorValueRange(alphaRatio * baseColor.getRed());
-      int green = ensureColorValueRange(alphaRatio * baseColor.getGreen());
-      int blue = ensureColorValueRange(alphaRatio * baseColor.getBlue());
-      return new Color(red, green, blue);
-    } else {
-      return new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), alphaValue);
-    }
+    return Math.min(Math.max(value, 0), 255);
   }
 }
