@@ -4,41 +4,23 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.InflaterInputStream;
 
 import javax.xml.bind.DatatypeConverter;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElementRef;
-import javax.xml.bind.annotation.XmlMixed;
 import javax.xml.bind.annotation.XmlTransient;
 
 import de.gurkenlabs.litiengine.util.ArrayUtilities;
 
-public class TileData {
-  protected static final String ENCODING_BASE64 = "base64";
-  protected static final String ENCODING_CSV = "csv";
-  protected static final String COMPRESSION_GZIP = "gzip";
-  protected static final String COMPRESSION_ZLIB = "zlib";
+public abstract class TileData {
 
   @XmlAttribute
   private String encoding;
 
   @XmlAttribute
   private String compression;
-
-  @XmlMixed
-  @XmlElementRef(type = TileChunk.class, name = "chunk")
-  private List<Object> rawValue;
-
-  @XmlTransient
-  private String value;
-
-  @XmlTransient
-  private List<TileChunk> chunks;
 
   @XmlTransient
   private List<Tile> parsedTiles;
@@ -71,11 +53,6 @@ public class TileData {
     return compression;
   }
 
-  @XmlTransient
-  public String getValue() {
-    return value;
-  }
-
   public void setEncoding(String encoding) {
     this.encoding = encoding;
   }
@@ -84,18 +61,12 @@ public class TileData {
     this.compression = compression;
   }
 
-  public void setValue(String value) {
-    this.value = value;
-  }
-
   protected void setMinChunkOffsets(int x, int y) {
     this.minChunkOffsetXMap = x;
     this.minChunkOffsetYMap = y;
   }
 
-  protected boolean isInfinite() {
-    return this.chunks != null && !this.chunks.isEmpty();
-  }
+  protected abstract boolean isInfinite();
 
   protected int getWidth() {
     if (this.isInfinite() && this.minChunkOffsetXMap != 0) {
@@ -154,9 +125,9 @@ public class TileData {
 
       if (compression == null || compression.isEmpty()) {
         is = bais;
-      } else if (compression.equals(COMPRESSION_GZIP)) {
+      } else if (compression.equals("gzip")) {
         is = new GZIPInputStream(bais, dec.length);
-      } else if (compression.equals(COMPRESSION_ZLIB)) {
+      } else if (compression.equals("zlib")) {
         is = new InflaterInputStream(bais);
       } else {
         throw new IllegalArgumentException("Unsupported tile layer compression method " + compression);
@@ -222,54 +193,12 @@ public class TileData {
     return parsed;
   }
 
-  void afterUnmarshal(Unmarshaller u, Object parent) {
-    this.processMixedData();
-
-    if (this.isInfinite()) {
-      // make sure that the chunks are organized top-left to bottom right
-      // this is important for their data to be parsed in the right order
-      Collections.sort(this.chunks);
-
-      this.updateDimensionsByTileData();
-    }
-  }
-
-  /**
-   * This method processes the {@link XmlMixed} contents that were unmarshalled and extract either the string value containing the information
-   * about the layer of a set of {@link TileChunk}s if the map is infinite.
-   */
-  private void processMixedData() {
-    if (this.rawValue == null || this.rawValue.isEmpty()) {
-      return;
-    }
-
-    List<TileChunk> rawChunks = new ArrayList<>();
-    String v = null;
-    for (Object val : this.rawValue) {
-      if (val instanceof String) {
-        String trimmedValue = ((String) val).trim();
-        if (!trimmedValue.isEmpty()) {
-          v = trimmedValue;
-        }
-      }
-
-      if (val instanceof TileChunk) {
-        rawChunks.add((TileChunk) val);
-      }
-    }
-
-    if (rawChunks.isEmpty()) {
-      this.value = v;
-      return;
-    }
-
-    this.chunks = rawChunks;
-  }
+  protected abstract List<? extends TileChunk> getChunks();
 
   /**
    * For infinite maps, the size of a tile layer depends on the <code>TileChunks</code> it contains.
    */
-  private void updateDimensionsByTileData() {
+  protected void updateDimensionsByTileData() {
     int minX = 0;
     int maxX = 0;
     int minY = 0;
@@ -277,7 +206,7 @@ public class TileData {
     int maxChunkWidth = 0;
     int maxChunkHeight = 0;
 
-    for (TileChunk chunk : this.chunks) {
+    for (TileChunk chunk : this.getChunks()) {
       if (chunk.getX() < minX) {
         minX = chunk.getX();
       }
@@ -308,18 +237,9 @@ public class TileData {
     // first fill a two-dimensional array with all the information of the chunks
     Tile[][] tileArr = new Tile[this.getHeight()][this.getWidth()];
 
-    if (this.getEncoding().equals(ENCODING_BASE64)) {
-      for (TileChunk chunk : this.chunks) {
-        List<Tile> chunkTiles = parseBase64Data(chunk.getValue(), this.compression);
-        this.addTiles(tileArr, chunk, chunkTiles);
-      }
-    } else if (this.getEncoding().equals(ENCODING_CSV)) {
-      for (TileChunk chunk : this.chunks) {
-        List<Tile> chunkTiles = parseCsvData(chunk.getValue());
-        this.addTiles(tileArr, chunk, chunkTiles);
-      }
-    } else {
-      throw new IllegalArgumentException("Unsupported tile layer encoding " + this.getEncoding());
+    for (TileChunk chunk : this.getChunks()) {
+      List<Tile> chunkTiles = this.parseTiles(chunk.getValue());//parseBase64Data(chunk.getValue(), this.compression);
+      this.addTiles(tileArr, chunk, chunkTiles);
     }
 
     // fill up the rest of the map with Tile.EMPTY
@@ -348,16 +268,6 @@ public class TileData {
     }
   }
 
-  private List<Tile> parseData() throws InvalidTileLayerException {
-    List<Tile> tiles;
-    if (this.getEncoding().equals(ENCODING_BASE64)) {
-      tiles = parseBase64Data(this.value, this.compression);
-    } else if (this.getEncoding().equals(ENCODING_CSV)) {
-      tiles = parseCsvData(this.value);
-    } else {
-      throw new IllegalArgumentException("Unsupported tile layer encoding " + this.getEncoding());
-    }
-
-    return tiles;
-  }
+  protected abstract List<Tile> parseData() throws InvalidTileLayerException;
+  protected abstract List<Tile> parseTiles(String tiles) throws InvalidTileLayerException; // for chunks
 }

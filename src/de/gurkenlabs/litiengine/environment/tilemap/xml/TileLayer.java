@@ -16,7 +16,7 @@ public class TileLayer extends Layer implements ITileLayer {
   private static final long serialVersionUID = -6588787132358068892L;
 
   @XmlElement
-  private TileData data = null;
+  private XmlTileData data;
 
   private transient List<ITile> tileList;
 
