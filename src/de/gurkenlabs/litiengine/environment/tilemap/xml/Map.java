@@ -147,6 +147,7 @@ public final class Map extends CustomPropertyProvider implements IMap, Serializa
   private transient List<IMapObjectLayer> mapObjectLayers;
   private transient List<IImageLayer> imageLayers;
   @Expose
+  @JsonAdapter(LayerListAdapter.class)
   private transient List<ILayer> layers;
 
   @XmlTransient
