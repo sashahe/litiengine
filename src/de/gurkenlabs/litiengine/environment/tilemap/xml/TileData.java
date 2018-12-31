@@ -193,7 +193,7 @@ public abstract class TileData {
     return parsed;
   }
 
-  protected abstract List<? extends TileChunk> getChunks();
+  protected abstract List<TileChunk> getChunks();
 
   /**
    * For infinite maps, the size of a tile layer depends on the <code>TileChunks</code> it contains.
@@ -238,7 +238,7 @@ public abstract class TileData {
     Tile[][] tileArr = new Tile[this.getHeight()][this.getWidth()];
 
     for (TileChunk chunk : this.getChunks()) {
-      List<Tile> chunkTiles = this.parseTiles(chunk.getValue());//parseBase64Data(chunk.getValue(), this.compression);
+      List<Tile> chunkTiles = this.parseChunk(chunk);
       this.addTiles(tileArr, chunk, chunkTiles);
     }
 
@@ -269,5 +269,5 @@ public abstract class TileData {
   }
 
   protected abstract List<Tile> parseData() throws InvalidTileLayerException;
-  protected abstract List<Tile> parseTiles(String tiles) throws InvalidTileLayerException; // for chunks
+  protected abstract List<Tile> parseChunk(TileChunk tiles) throws InvalidTileLayerException; // for chunks
 }

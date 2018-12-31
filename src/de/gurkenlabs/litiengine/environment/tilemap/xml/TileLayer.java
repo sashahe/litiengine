@@ -51,7 +51,7 @@ public class TileLayer extends Layer implements ITileLayer {
 
     try {
       this.tileList = new CopyOnWriteArrayList<>(this.getData());
-      if (this.data == null) {
+      if (this.getRawTileData() == null) {
         return this.tileList;
       }
 
@@ -74,8 +74,8 @@ public class TileLayer extends Layer implements ITileLayer {
 
   @Override
   public int getWidth() {
-    if (this.data != null && this.data.isInfinite()) {
-      return this.data.getWidth();
+    if (this.getRawTileData() != null && this.getRawTileData().isInfinite()) {
+      return this.getRawTileData().getWidth();
     }
 
     return super.getWidth();
@@ -83,15 +83,15 @@ public class TileLayer extends Layer implements ITileLayer {
 
   @Override
   public int getHeight() {
-    if (this.data != null && this.data.isInfinite()) {
-      return this.data.getHeight();
+    if (this.getRawTileData() != null && this.getRawTileData().isInfinite()) {
+      return this.getRawTileData().getHeight();
     }
 
     return super.getHeight();
   }
 
   protected List<Tile> getData() throws InvalidTileLayerException {
-    return this.data.parseTiles();
+    return this.getRawTileData().parseTiles();
   }
 
   protected TileData getRawTileData() {

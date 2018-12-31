@@ -28,7 +28,7 @@ public class XmlTileData extends TileData {
 
   @XmlTransient
   public String getValue() {
-    return value;
+    return this.value;
   }
 
   public void setValue(String value) {
@@ -36,21 +36,25 @@ public class XmlTileData extends TileData {
   }
 
   @Override
-  protected List<? extends TileChunk> getChunks() {
+  protected List<TileChunk> getChunks() {
     return this.chunks;
   }
 
   @Override
   protected List<Tile> parseData() throws InvalidTileLayerException {
-    return parseTiles(this.value);
+    return this.parseData(this.value);
   }
 
   @Override
-  protected List<Tile> parseTiles(String tiles) throws InvalidTileLayerException {
+  protected List<Tile> parseChunk(TileChunk tiles) throws InvalidTileLayerException {
+    return parseData(tiles.getValue());
+  }
+
+  private List<Tile> parseData(String data) throws InvalidTileLayerException {
     if (this.getEncoding().equals("base64")) {
-      return parseBase64Data(tiles, this.getCompression());
+      return parseBase64Data(data, this.getCompression());
     } else if (this.getEncoding().equals("csv")) {
-      return parseCsvData(tiles);
+      return parseCsvData(data);
     } else {
       throw new InvalidTileLayerException("unsupported tile layer encoding \"" + this.getEncoding() + '"');
     }
