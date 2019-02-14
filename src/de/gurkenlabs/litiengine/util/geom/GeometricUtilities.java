@@ -326,7 +326,7 @@ public class GeometricUtilities {
       } else {
         pw.print(1);
       }
-      for (int i = 0; i < numberOfBranches; i++) {
+      for (int i = 1; i < numberOfBranches; i++) {
         pw.print(",");
         if (i == branch) {
           pw.print(1);
