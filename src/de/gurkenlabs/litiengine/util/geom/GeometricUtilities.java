@@ -253,8 +253,9 @@ public class GeometricUtilities {
    * @return the intersection points
    */
   public static List<Point2D> getIntersectionPoints(final Line2D line, final Rectangle2D rectangle) {
-    int numberOfBranches = 6;
-    int branches[] = new int[numberOfBranches];
+    int numberOfPaths = 4;
+    int numberOfBranches = 16;
+    int paths[] = new int[numberOfPaths];
     final ArrayList<Point2D> intersectionPoints = new ArrayList<>();
     final Line2D[] lines = getLines(rectangle);
     final Line2D topLine = lines[0];
@@ -265,42 +266,73 @@ public class GeometricUtilities {
     // Top line
     final Point2D p1 = getIntersectionPoint(line, topLine);
     if (p1 != null && contains(rectangle, p1)) {
-      branches[1] = 1;
+      paths[0] = 1;
       intersectionPoints.add(p1);
+    } else {
+      paths[0] = 0;
     }
 
     // Bottom line
     final Point2D p2 = getIntersectionPoint(line, bottomLine);
     if (p2 != null && contains(rectangle, p2) && !intersectionPoints.contains(p2)) {
-      branches[2] = 1;
+      paths[1] = 1;
       intersectionPoints.add(p2);
+    } else {
+      paths[1] = 0;
     }
 
     // Left side...
     final Point2D p3 = getIntersectionPoint(line, leftLine);
     if (p3 != null && !p3.equals(p1) && !p3.equals(p2) && contains(rectangle, p3) && !intersectionPoints.contains(p3)) {
-      branches[3] = 1;
+      paths[2] = 1;
       intersectionPoints.add(p3);
+    } else {
+      paths[2] = 0;
     }
 
     // Right side
     final Point2D p4 = getIntersectionPoint(line, rightLine);
     if (p4 != null && !p4.equals(p1) && !p4.equals(p2) && contains(rectangle, p4) && !intersectionPoints.contains(p4)) {
-      branches[4] = 1;
+      paths[3] = 1;
       intersectionPoints.add(p4);
+    } else {
+      paths[3] = 0;
     }
 
     intersectionPoints.removeAll(Collections.singleton(null));
-    branches[5] = 1;
+    
+    // Find what branch this is
+    int branch = 0;
+    if (paths[0]==1) {
+      branch = 8;
+    }
+    if (paths[1]==1) {
+      branch+=4;
+    }
+    if (paths[2]==1) {
+      branch+=2;
+    }
+    if (paths[3]==1) {
+      branch+=1;
+    }
 
     try {
       FileWriter fw = new FileWriter("branchtest/test_10.csv", true);
       BufferedWriter bw = new BufferedWriter(fw);
       PrintWriter pw = new PrintWriter(bw);
-      pw.print(branches[0]);
-      for (int i = 1; i < numberOfBranches; i++) {
+
+      if (branch != 0) {
+        pw.print(0);
+      } else {
+        pw.print(1);
+      }
+      for (int i = 0; i < numberOfBranches; i++) {
         pw.print(",");
-        pw.print(branches[i]);
+        if (i == branch) {
+          pw.print(1);
+        } else {
+          pw.print(0);
+        }
       }
       pw.println();
       pw.flush();
