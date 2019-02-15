@@ -12,11 +12,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.io.BufferedWriter; 
 import java.io.FileWriter;
 import java.io.PrintWriter;
-
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.util.MathUtilities;
 import de.gurkenlabs.litiengine.util.geom.GeometricUtilities;
-
 import de.gurkenlabs.litiengine.util.io.CSV;
 
 public final class MapUtilities {
@@ -125,37 +123,35 @@ public final class MapUtilities {
   }
 
   public static Point getTile(final IMap map, final double x, final double y) {
-    int numberOfPaths = 2;
-    int numberOfBranches = 4;
-    int paths[] = new int[numberOfPaths];
+    int numberOfBranches = 27;
+    int branches[] = new int[numberOfBranches];
     //standard behaviour for rectangular Tiles: search on a grid with the tile dimensions
     int jumpWidth = map.getTileWidth();
     int jumpHeight = map.getTileHeight();
+    branches[0] = 1;
     //if we're less than 1 tile left or up the map, get -1 instead of 0 as tile coordinate.
     int xCoord = x < 0 && -x < jumpWidth ? -1 : (int) (x / jumpWidth);
+    if (xCoord == -1) {
+      branches[1] = 1;
+    } else {
+      branches[2] = 1;
+    }
     int yCoord = y < 0 && -y < jumpHeight ? -1 : (int) (y / jumpHeight);
-
+    if (yCoord == -1) {
+      branches[3] = 1;
+    } else {
+      branches[4] = 1;
+    }
     if (map.getOrientation() != MapOrientation.HEXAGONAL) {
-      paths[0] = 1;
+      branches[5] = 1;
       try {
-        FileWriter fw = new FileWriter("branchtest/test_05.csv", true);
-        BufferedWriter bw = new BufferedWriter(fw);
-        PrintWriter pw = new PrintWriter(bw);
-        pw.print(1);
-        for (int i = 1; i < numberOfBranches; i++) {
-          pw.print(",");
-          pw.print(0);
-        }
-        pw.println();
-        pw.flush();
-        bw.close();
-        fw.close();
+        CSV.write(branches, 5);
       } catch (Exception e) {
-        System.exit(1);
+        System.err.println("Error: " + e);
       }
       return new Point(xCoord, yCoord);
     } else {
-      paths[0] = 0;
+      branches[7] = 1;
     }
     //for hex maps, we must adjust our jump size for cropping the subImages since tiles are not aligned orthogonally.
 
@@ -164,46 +160,76 @@ public final class MapUtilities {
     //the t parameter describes the distance between one end of the flat hex side to the bounding box.
     int s = map.getHexSideLength();
     int t = staggerAxis == StaggerAxis.X ? (map.getTileWidth() - s) / 2 : (map.getTileHeight() - s) / 2;
+    if(t == (map.getTileWidth() - s) / 2) {
+      branches[8] = 1;
+    } else {
+      branches[9] = 1;
+    }
+
     int r = staggerAxis == StaggerAxis.X ? map.getTileHeight() / 2 : map.getTileWidth() / 2;
+    if (r == map.getTileHeight() / 2) {
+      branches[10] = 1;
+    } else {
+      branches[11] = 1;
+    }
+
     //Since we require to get Tiles outside of the map as well, we need to construct an infinite hex grid on which we can determine
     //tile indices. This follows the hex grid click detection from http://www.quarkphysics.ca/scripsi/hexgrid/ 
 
     jumpWidth = staggerAxis == StaggerAxis.X ? t + s : map.getTileWidth();
-    jumpHeight = staggerAxis == StaggerAxis.X ? map.getTileHeight() : t + s;
-    xCoord = x < 0 ? (int) (x / jumpWidth) - 1 : (int) (x / jumpWidth);
-    yCoord = y < 0 ? (int) (y / jumpHeight) - 1 : (int) (y / jumpHeight);
-    if (staggerAxis == StaggerAxis.X && isStaggeredRowOrColumn(staggerIndex, xCoord)) {
-      paths[1] = 2;
-      yCoord = (int) ((y - jumpHeight / 2.0) / jumpHeight);
-      yCoord = y < jumpHeight / 2 ? yCoord - 1 : yCoord;
-    } else if (staggerAxis == StaggerAxis.Y && isStaggeredRowOrColumn(staggerIndex, yCoord)) {
-      paths[1] = 1;
-      xCoord = (int) ((x - jumpWidth / 2.0) / jumpWidth);
-      xCoord = x < jumpWidth / 2 ? xCoord - 1 : xCoord;
+    if (jumpWidth == t + s ) {
+      branches[12] = 1;
     } else {
-      paths[1] = 0;
+      branches[13] = 1;
+    }
+    jumpHeight = staggerAxis == StaggerAxis.X ? map.getTileHeight() : t + s;
+    if (jumpHeight == t + s ) {
+      branches[14] = 1;
+    } else {
+      branches[15] = 1;
     }
 
-    try {
-      FileWriter fw = new FileWriter("branchtest/test_05.csv", true);
-      BufferedWriter bw = new BufferedWriter(fw);
-      PrintWriter pw = new PrintWriter(bw);
-      int branch = paths[1]++;
-      pw.print(0);
-      for (int i = 1; i < numberOfBranches; i++) {
-        pw.print(",");
-        if (i == branch) {
-          pw.print(1);
-        } else {
-          pw.print(0);
-        }
+    xCoord = x < 0 ? (int) (x / jumpWidth) - 1 : (int) (x / jumpWidth);
+    if (xCoord ==  (int) (x / jumpWidth)) {
+      branches[16] = 1;
+    } else {
+      branches[17] = 1;
+    }
+
+    yCoord = y < 0 ? (int) (y / jumpHeight) - 1 : (int) (y / jumpHeight);
+    if (yCoord ==  (int) (y / jumpWidth)) {
+      branches[18] = 1;
+    } else {
+      branches[19] = 1;
+    }
+   
+
+    if (staggerAxis == StaggerAxis.X && isStaggeredRowOrColumn(staggerIndex, xCoord)) {
+      branches[20] = 1;
+      yCoord = (int) ((y - jumpHeight / 2.0) / jumpHeight);
+      yCoord = y < jumpHeight / 2 ? yCoord - 1 : yCoord;
+      if (yCoord == jumpHeight / 2 ) {
+        branches[21] = 1;
+      } else {
+        branches[22] = 1;
       }
-      pw.println();
-      pw.flush();
-      bw.close();
-      fw.close();
+    } else if (staggerAxis == StaggerAxis.Y && isStaggeredRowOrColumn(staggerIndex, yCoord)) {
+      branches[23] = 1;
+      xCoord = (int) ((x - jumpWidth / 2.0) / jumpWidth);
+      xCoord = x < jumpWidth / 2 ? xCoord - 1 : xCoord;
+      if (xCoord == jumpWidth / 2) {
+        branches[24] = 1;
+      } else {
+        branches[25] =1;
+      }
+    } else {
+      branches[26] = 1;
+    }
+    
+    try {
+      CSV.write(branches, 5);
     } catch (Exception e) {
-      System.exit(1);
+      System.err.println("Error: " + e);
     }
 
     return assessHexStaggering(staggerAxis, staggerIndex, new Point(xCoord, yCoord), s, t, r, jumpWidth, jumpHeight, x, y);
