@@ -15,11 +15,8 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.io.BufferedWriter; 
-import java.io.FileWriter;
-import java.io.PrintWriter;
-
 import de.gurkenlabs.litiengine.environment.tilemap.StaggerAxis;
+import de.gurkenlabs.litiengine.util.io.CSV;
 
 public class GeometricUtilities {
   private static final double RAYCAST_EPSILON = 0.01;
@@ -253,7 +250,7 @@ public class GeometricUtilities {
    * @return the intersection points
    */
   public static List<Point2D> getIntersectionPoints(final Line2D line, final Rectangle2D rectangle) {
-    int numberOfBranches = 6;
+    int numberOfBranches = 9;
     int branches[] = new int[numberOfBranches];
     final ArrayList<Point2D> intersectionPoints = new ArrayList<>();
     final Line2D[] lines = getLines(rectangle);
@@ -262,52 +259,49 @@ public class GeometricUtilities {
     final Line2D leftLine = lines[2];
     final Line2D rightLine = lines[3];
 
+    branches[0] = 1;
+
     // Top line
     final Point2D p1 = getIntersectionPoint(line, topLine);
     if (p1 != null && contains(rectangle, p1)) {
       branches[1] = 1;
       intersectionPoints.add(p1);
+    } else {
+      branches[2] = 1;
     }
 
     // Bottom line
     final Point2D p2 = getIntersectionPoint(line, bottomLine);
     if (p2 != null && contains(rectangle, p2) && !intersectionPoints.contains(p2)) {
-      branches[2] = 1;
+      branches[3] = 1;
       intersectionPoints.add(p2);
+    } else {
+      branches[4] = 1;
     }
 
     // Left side...
     final Point2D p3 = getIntersectionPoint(line, leftLine);
     if (p3 != null && !p3.equals(p1) && !p3.equals(p2) && contains(rectangle, p3) && !intersectionPoints.contains(p3)) {
-      branches[3] = 1;
+      branches[5] = 1;
       intersectionPoints.add(p3);
+    } else {
+      branches[6] = 1;
     }
 
     // Right side
     final Point2D p4 = getIntersectionPoint(line, rightLine);
     if (p4 != null && !p4.equals(p1) && !p4.equals(p2) && contains(rectangle, p4) && !intersectionPoints.contains(p4)) {
-      branches[4] = 1;
+      branches[7] = 1;
       intersectionPoints.add(p4);
+    } else {
+      branches[8] = 1;
     }
 
     intersectionPoints.removeAll(Collections.singleton(null));
-    branches[5] = 1;
-
     try {
-      FileWriter fw = new FileWriter("branchtest/test_10.csv", true);
-      BufferedWriter bw = new BufferedWriter(fw);
-      PrintWriter pw = new PrintWriter(bw);
-      pw.print(branches[0]);
-      for (int i = 1; i < numberOfBranches; i++) {
-        pw.print(",");
-        pw.print(branches[i]);
-      }
-      pw.println();
-      pw.flush();
-      bw.close();
-      fw.close();
+      CSV.write(branches, 10);
     } catch (Exception e) {
-      System.exit(1);
+      System.err.println("Error: " + e);
     }
     return intersectionPoints;
   }
