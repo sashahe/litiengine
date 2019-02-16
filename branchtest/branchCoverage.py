@@ -19,7 +19,8 @@ if __name__ == '__main__':
             continue
 
         # Sum over columns to see what branches are untested
-        data = np.sum(data, axis=0)
+        if (len(data.shape) == 2):
+            data = np.sum(data, axis=0)
         data[np.where(data > 0)] = 1
 
         # If a branch has a sum > 0 it means it's tested somewhere
