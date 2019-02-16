@@ -96,6 +96,10 @@ public abstract class Layer extends CustomPropertyProvider implements ILayer, Se
     return this.height;
   }
 
+  public Integer getHeightRaw() {
+    return this.height;
+  }
+
   @Override
   public int getId() {
     return this.id;
@@ -114,6 +118,10 @@ public abstract class Layer extends CustomPropertyProvider implements ILayer, Se
     return this.opacity;
   }
 
+  public Float getOpacityRaw() {
+    return this.opacity;
+  }
+
   @Override
   public Point getOffset() {
     return new Point(this.getOffsetX(), this.getOffsetY());
@@ -128,6 +136,14 @@ public abstract class Layer extends CustomPropertyProvider implements ILayer, Se
     return this.offsetx;
   }
 
+  public Integer getOffsetXRaw() {
+    return this.offsetx;
+  }
+
+  public void setOffsetX(Integer offsetx) {
+    this.offsetx = offsetx;
+  }
+
   @Override
   public int getOffsetY() {
     if (this.offsety == null) {
@@ -135,6 +151,18 @@ public abstract class Layer extends CustomPropertyProvider implements ILayer, Se
     }
 
     return offsety;
+  }
+
+  public Integer getOffsetYRaw() {
+    return this.offsety;
+  }
+
+  public void setOffsetY(Integer offsety) {
+    this.offsety = offsety;
+  }
+
+  public Map getParentMap() {
+    return this.parentMap;
   }
 
   @Override
@@ -177,6 +205,10 @@ public abstract class Layer extends CustomPropertyProvider implements ILayer, Se
     return this.width;
   }
 
+  public Integer getWidthRaw() {
+    return this.width;
+  }
+
   @Override
   public int getOrder() {
     return this.getIntValue(LayerProperty.LAYER_ORDER, -1);
@@ -194,6 +226,10 @@ public abstract class Layer extends CustomPropertyProvider implements ILayer, Se
     }
 
     return this.visible > 0;
+  }
+
+  public Integer getIsVisibleRaw() {
+    return this.visible;
   }
 
   @Override
@@ -231,6 +267,10 @@ public abstract class Layer extends CustomPropertyProvider implements ILayer, Se
 
   private void setOrder(int order) {
     this.setValue(LayerProperty.LAYER_ORDER, order);
+  }
+
+  public void callAfterUnmarshal(Unmarshaller u, Object parent) {
+    this.afterUnmarshal(u, parent);
   }
 
   @SuppressWarnings("unused")
