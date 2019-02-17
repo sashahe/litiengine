@@ -250,8 +250,11 @@ public class GeometricUtilities {
    * @return the intersection points
    */
   public static List<Point2D> getIntersectionPoints(final Line2D line, final Rectangle2D rectangle) {
-    int numberOfBranches = 9;
+    int numberOfPaths = 4;
+    int paths[] = new int[numberOfPaths];
+    int numberOfBranches = 16;
     int branches[] = new int[numberOfBranches];
+
     final ArrayList<Point2D> intersectionPoints = new ArrayList<>();
     final Line2D[] lines = getLines(rectangle);
     final Line2D topLine = lines[0];
@@ -259,45 +262,60 @@ public class GeometricUtilities {
     final Line2D leftLine = lines[2];
     final Line2D rightLine = lines[3];
 
-    branches[0] = 1;
-
     // Top line
     final Point2D p1 = getIntersectionPoint(line, topLine);
     if (p1 != null && contains(rectangle, p1)) {
-      branches[1] = 1;
+      paths[0] = 1;
       intersectionPoints.add(p1);
     } else {
-      branches[2] = 1;
+      paths[0] = 0;
     }
 
     // Bottom line
     final Point2D p2 = getIntersectionPoint(line, bottomLine);
     if (p2 != null && contains(rectangle, p2) && !intersectionPoints.contains(p2)) {
-      branches[3] = 1;
+      paths[1] = 1;
       intersectionPoints.add(p2);
     } else {
-      branches[4] = 1;
+      paths[1] = 0;
     }
 
     // Left side...
     final Point2D p3 = getIntersectionPoint(line, leftLine);
     if (p3 != null && !p3.equals(p1) && !p3.equals(p2) && contains(rectangle, p3) && !intersectionPoints.contains(p3)) {
-      branches[5] = 1;
+      paths[2] = 1;
       intersectionPoints.add(p3);
     } else {
-      branches[6] = 1;
+      paths[2] = 0;
     }
 
     // Right side
     final Point2D p4 = getIntersectionPoint(line, rightLine);
     if (p4 != null && !p4.equals(p1) && !p4.equals(p2) && contains(rectangle, p4) && !intersectionPoints.contains(p4)) {
-      branches[7] = 1;
+      paths[3] = 1;
       intersectionPoints.add(p4);
     } else {
-      branches[8] = 1;
+      paths[3] = 0;
     }
 
     intersectionPoints.removeAll(Collections.singleton(null));
+    
+    // Find what branch this is
+    int branch = 0;
+    if (paths[0]==1) {
+      branch = 8;
+    }
+    if (paths[1]==1) {
+      branch+=4;
+    }
+    if (paths[2]==1) {
+      branch+=2;
+    }
+    if (paths[3]==1) {
+      branch+=1;
+    }
+
+    branches[branch] =1;
     try {
       CSV.write(branches, 10);
     } catch (Exception e) {
