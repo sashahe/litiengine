@@ -120,11 +120,10 @@ public final class MapUtilities {
   }
 
   /*
-    Tested:
-      Valid coordinates (Decimal)
+    Unit tested: Nothing
     Untested: 
       Invalid coordinates (Decimal, Hexadecimal)
-      Valid coordinates(Hexadecimal)
+      Valid coordinates(Decimal. Hexadecimal)
   */
   public static Point getTile(final IMap map, final double x, final double y) {
     int numberOfBranches = 27;
