@@ -119,6 +119,13 @@ public final class MapUtilities {
     return getTile(map, mapLocation.getX(), mapLocation.getY());
   }
 
+  /*
+    Tested:
+      Valid coordinates (Decimal)
+    Untested: 
+      Invalid coordinates (Decimal, Hexadecimal)
+      Valid coordinates(Hexadecimal)
+  */
   public static Point getTile(final IMap map, final double x, final double y) {
     int numberOfBranches = 27;
     int branches[] = new int[numberOfBranches];
