@@ -252,7 +252,7 @@ public class GeometricUtilities {
   public static List<Point2D> getIntersectionPoints(final Line2D line, final Rectangle2D rectangle) {
     int numberOfPaths = 4;
     int paths[] = new int[numberOfPaths];
-    int numberOfBranches = 16;
+    int numberOfBranches = 17;
     int branches[] = new int[numberOfBranches];
 
     final ArrayList<Point2D> intersectionPoints = new ArrayList<>();
@@ -261,6 +261,8 @@ public class GeometricUtilities {
     final Line2D bottomLine = lines[1];
     final Line2D leftLine = lines[2];
     final Line2D rightLine = lines[3];
+
+    branches[0] = 1;
 
     // Top line
     final Point2D p1 = getIntersectionPoint(line, topLine);
@@ -301,9 +303,9 @@ public class GeometricUtilities {
     intersectionPoints.removeAll(Collections.singleton(null));
     
     // Find what branch this is
-    int branch = 0;
+    int branch = 1;
     if (paths[0]==1) {
-      branch = 8;
+      branch +=8;
     }
     if (paths[1]==1) {
       branch+=4;
@@ -323,6 +325,7 @@ public class GeometricUtilities {
     }
     return intersectionPoints;
   }
+
 
   /**
    * Gets the lines.
