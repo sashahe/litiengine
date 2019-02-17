@@ -193,6 +193,10 @@ public class GeometricUtilities {
    * @param lineB
    *          the line b
    * @return the intersection point
+   *
+   * Unit tested: Nothing
+   * Requested: All possible intersections between a line and rectangle
+   * 
    */
   public static Point2D getIntersectionPoint(final Line2D lineA, final Line2D lineB) {
 
