@@ -244,6 +244,8 @@ public class MapObjectLoaderTests {
   @Test
   public void testCustomMapObjectLoader() {
     Environment.registerCustomEntityType(CustomEntity.class);
+    Environment.registerCustomEntityType(CustomEntityPrio4.class);
+    Environment.registerCustomEntityType(CustomEntityPrio3.class);
 
     IMapObject mapObject = mock(IMapObject.class);
     when(mapObject.getType()).thenReturn("customEntity");
@@ -278,6 +280,25 @@ public class MapObjectLoaderTests {
     CustomEntity customEntity = (CustomEntity) ent;
     assertEquals("foovalue", customEntity.getFoo());
     assertEquals(111, customEntity.getBar());
+    
+    IMapObject mapObjectP3 = mock(IMapObject.class);
+    when(mapObjectP3.getType()).thenReturn("customEntityPrio3");
+    Collection<IEntity> loadedP3 = env.load(mapObjectP3);
+    assertEquals(1, loadedP3.size());
+    IEntity entP3 = loadedP3.iterator().next();
+    assertTrue(entP3 instanceof CustomEntityPrio3);
+    CustomEntityPrio3 customEntityPrio3 = (CustomEntityPrio3) entP3;
+    assertEquals(3, customEntityPrio3.getPrio());
+
+    IMapObject mapObject4 = mock(IMapObject.class);
+    when(mapObject4.getType()).thenReturn("customEntityPrio4");
+    Collection<IEntity> loaded4 = env.load(mapObject4);
+    assertEquals(1, loaded4.size());
+    IEntity ent4 = loaded4.iterator().next();
+    assertTrue(ent4 instanceof CustomEntityPrio4);
+    CustomEntityPrio4 customEntityPrio4 = (CustomEntityPrio4) ent4;
+    assertEquals(4, customEntityPrio4.getPrio());
+
   }
 
   @EntityInfo(customMapObjectType = "customEntity")
@@ -297,6 +318,56 @@ public class MapObjectLoaderTests {
 
     public int getBar() {
       return this.bar;
+    }
+  }
+
+  @EntityInfo(customMapObjectType = "customEntityPrio3")
+  static class CustomEntityPrio3 extends Entity {
+    @TmxProperty(name = "prio")
+    protected int prio;
+
+    //nullary
+    public CustomEntityPrio3() {
+      prio = 0;
+    }
+
+    //mo
+    public CustomEntityPrio3(IMapObject mo) {
+      prio = 2;
+    }
+
+    //mo+env
+    public CustomEntityPrio3(IMapObject mo, Environment e) {
+      prio = 3;
+    }
+
+    public int getPrio() {
+      return this.prio;
+    }
+  }
+
+  @EntityInfo(customMapObjectType = "customEntityPrio4")
+  static class CustomEntityPrio4 extends Entity {
+    @TmxProperty(name = "prio")
+    protected int prio;
+
+    //mo
+    public CustomEntityPrio4(IMapObject mo) {
+      prio = 2;
+    }
+
+    //mo+env
+    public CustomEntityPrio4(IMapObject mo, Environment e) {
+      prio = 3;
+    }
+
+    //env+mo
+    public CustomEntityPrio4(Environment e, IMapObject mo) {
+      prio = 4;
+    }
+
+    public int getPrio() {
+      return this.prio;
     }
   }
 }
