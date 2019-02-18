@@ -43,6 +43,9 @@ import de.gurkenlabs.litiengine.graphics.StaticShadowType;
 import de.gurkenlabs.litiengine.graphics.emitters.Emitter;
 import de.gurkenlabs.litiengine.graphics.emitters.particles.Particle;
 
+//DD2480: import package that were needed for the new tests.
+import de.gurkenlabs.litiengine.entities.Creature;
+
 public class EnvironmentTests {
   private Environment testEnvironment;
 
@@ -78,8 +81,78 @@ public class EnvironmentTests {
     this.testEnvironment.init();
   }
 
+  /* 
+   * DD2480: checks if function 2's branch #12 is reached as well as function 3's branch #18 is reached.
+   * Add entity of type Creature -> entity should be added to getEntities and getByType.
+   * Remove entity of type Creature -> entity should be removed from getEntities and getByType.
+   *
+   */
+  @Test
+  public void testCreature() {
+    Creature testCreature = new Creature();
+    testCreature.setName("test");
+    testCreature.setMapId(1);
+
+    //DD2480: Test if creature has been added to environment
+    this.testEnvironment.add(testCreature);
+
+    assertNotNull(this.testEnvironment.getCreature("test"));
+    assertNotNull(this.testEnvironment.getCreature(1));
+    assertEquals(1, this.testEnvironment.getByType(Creature.class).size());
+    assertEquals(1, this.testEnvironment.getEntities().size());
+
+    //DD2480: Test if creature has been removed from environment
+    this.testEnvironment.remove(testCreature);
+
+    assertNull(this.testEnvironment.getCreature("test"));
+    assertNull(this.testEnvironment.getCreature(1));
+    assertEquals(0, this.testEnvironment.getByType(Creature.class).size());
+    assertEquals(0, this.testEnvironment.getEntities().size());
+  }
+
+  /* 
+   * DD2480: checks if function 2's branch #27 is reached.
+   * Test tag is null -> getEntitiesByTag should be empty.
+   *
+   */
+  @Test
+  public void testNullTag() {
+    IMobileEntity entityWithNullTag = mock(IMobileEntity.class);
+    when(entityWithNullTag.getMapId()).thenReturn(123);
+    when(entityWithNullTag.getRenderType()).thenReturn(RenderType.NORMAL);
+
+    ArrayList<String> tags = new ArrayList<>();
+    tags.add(null);
+
+    when(entityWithNullTag.getTags()).thenReturn(tags);
+
+    this.testEnvironment.add(entityWithNullTag);
+
+    assertEquals(0, this.testEnvironment.getEntitiesByTag().size());
+  }
+
+  /* 
+   * DD2480: checks if function 2's branch #29 is reached.
+   * Test tag is empty string -> getEntitiesByTag should be empty.
+   *
+   */
+  @Test
+  public void testEmptyTag() {
+    IMobileEntity entityWithEmptyTag = mock(IMobileEntity.class);
+    when(entityWithEmptyTag.getMapId()).thenReturn(123);
+    when(entityWithEmptyTag.getRenderType()).thenReturn(RenderType.NORMAL);
+
+    ArrayList<String> tags = new ArrayList<>();
+    tags.add("");
+
+    when(entityWithEmptyTag.getTags()).thenReturn(tags);
+
+    this.testEnvironment.add(entityWithEmptyTag);
+
+    assertEquals(0, this.testEnvironment.getEntitiesByTag().size());
+
   /*
-   * DD2480: checks if branch #4 is reached.
+   * DD2480: checks if function 3's branch #4 is reached.
    * Test RenderType is null -> getEntities should not have anything removed.
    *
    */
@@ -106,7 +179,7 @@ public class EnvironmentTests {
   }
 
   /*
-   * DD2480: checks if branch #9 is reached.
+   * DD2480: checks if function 3's branch #9 is reached.
    * Test getEntitiesByTag does not contain specific tag key -> return false when called by
    * containsKey function and the getEntitiesByTag should not remove anything.
    *

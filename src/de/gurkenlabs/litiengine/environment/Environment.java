@@ -164,127 +164,132 @@ public final class Environment implements IRenderable {
    *
    * @param entity
    *          The entity to add to the environment.
+   *
+   * DD2480:
+   * Unit Tested: Branch #12, 27 and 29 do not have unit tests.
+   * Requested: Add entity (of different types) to environment.
+   *
    */
-  //QuickFind2
   public void add(final IEntity entity) {
-    int numberOfBranches = 33;
+    int numberOfBranches = 34;
     int branches[] = new int [numberOfBranches];
+    branches[0] = 1;
     if (entity == null) {
-      branches[0] = 1;
+      branches[1] = 1;
       return;
     } else {
-      branches[1] = 1;
+      branches[2] = 1;
     }
 
     // set local map id if none is set for the entity
     if (entity.getMapId() == 0) {
-      branches[2] = 1;
+      branches[3] = 1;
       entity.setMapId(this.getLocalMapId());
     } else {
-      branches[3] = 1;
+      branches[4] = 1;
     }
 
     if (entity instanceof Emitter) {
-      branches[4] = 1;
+      branches[5] = 1;
       Emitter emitter = (Emitter) entity;
       this.addEmitter(emitter);
     } else {
-      branches[5] = 1;
+      branches[6] = 1;
     }
 
     if (entity instanceof ICombatEntity) {
-      branches[6] = 1;
+      branches[7] = 1;
       this.combatEntities.put(entity.getMapId(), (ICombatEntity) entity);
     } else {
-      branches[7] = 1;
+      branches[8] = 1;
     }
 
     if (entity instanceof IMobileEntity) {
-      branches[8] = 1;
+      branches[9] = 1;
       this.mobileEntities.put(entity.getMapId(), (IMobileEntity) entity);
     } else {
-      branches[9] = 1;
+      branches[10] = 1;
     }
 
     if (entity instanceof Prop) {
-      branches[10] = 1;
+      branches[11] = 1;
       this.props.add((Prop) entity);
     } else {
-      branches[11] = 1;
+      branches[12] = 1;
     }
 
     if (entity instanceof Creature) {
-      branches[12] = 1;
+      branches[13] = 1;
       this.creatures.add((Creature) entity);
     } else {
-      branches[13] = 1;
+      branches[14] = 1;
     }
 
     if (entity instanceof CollisionBox) {
-      branches[14] = 1;
+      branches[15] = 1;
       this.colliders.add((CollisionBox) entity);
     } else {
-      branches[15] = 1;
+      branches[16] = 1;
     }
 
     if (entity instanceof LightSource) {
-      branches[16] = 1;
+      branches[17] = 1;
       this.lightSources.add((LightSource) entity);
     } else {
-      branches[17] = 1;
+      branches[18] = 1;
     }
 
     if (entity instanceof Trigger) {
-      branches[18] = 1;
+      branches[19] = 1;
       this.triggers.add((Trigger) entity);
     } else {
-      branches[19] = 1;
+      branches[20] = 1;
     }
 
     if (entity instanceof Spawnpoint) {
-      branches[20] = 1;
+      branches[21] = 1;
       this.spawnPoints.add((Spawnpoint) entity);
     } else {
-      branches[21] = 1;
+      branches[22] = 1;
     }
 
     if (entity instanceof StaticShadow) {
-      branches[22] = 1;
+      branches[23] = 1;
       this.staticShadows.add((StaticShadow) entity);
     } else if (entity instanceof MapArea) {
-      branches[23] = 1;
+      branches[24] = 1;
       this.mapAreas.add((MapArea) entity);
     } else {
-      branches[24] = 1;
+      branches[25] = 1;
     }
 
     for (String rawTag : entity.getTags()) {
-      branches[25] = 1;
+      branches[26] = 1;
       if (rawTag == null) {
-        branches[26] = 1;
+        branches[27] = 1;
         continue;
       } else {
-        branches[27] = 1;
+        branches[28] = 1;
       }
 
       final String tag = rawTag.trim().toLowerCase();
       if (tag.isEmpty()) {
-        branches[28] = 1;
+        branches[29] = 1;
         continue;
       } else {
-        branches[29] = 1;
+        branches[30] = 1;
       }
 
       this.getEntitiesByTag().computeIfAbsent(tag, t -> new CopyOnWriteArrayList<>()).add(entity);
     }
-    branches[30] = 1;
+    branches[31] = 1;
     // if the environment has already been loaded,
     // we need to load the new entity manually
     if (this.loaded) {
-      branches[31] = 1;
+      branches[32] = 1;
       this.load(entity);
     } else {
-      branches[32] = 1;
+      branches[33] = 1;
     }
 
     this.entities.get(entity.getRenderType()).put(entity.getMapId(), entity);
