@@ -78,6 +78,64 @@ public class EnvironmentTests {
     this.testEnvironment.init();
   }
 
+  /*
+   * DD2480: checks if branch #4 is reached.
+   * Test RenderType is null -> getEntities should not have anything removed.
+   *
+   */
+  @Test
+  public void testRenderTypeNull() {
+    IMobileEntity arbitraryEntity = mock(IMobileEntity.class);
+    when(arbitraryEntity.getMapId()).thenReturn(123);
+    when(arbitraryEntity.getRenderType()).thenReturn(RenderType.NORMAL);
+
+    ArrayList<String> tags = new ArrayList<>();
+    tags.add("arbitraryTag");
+
+    when(arbitraryEntity.getTags()).thenReturn(tags);
+    this.testEnvironment.add(arbitraryEntity);
+
+    ICombatEntity nullRenderTypeEntity = mock(ICombatEntity.class);
+    when(nullRenderTypeEntity.getRenderType()).thenReturn(null);
+
+    this.testEnvironment.remove(nullRenderTypeEntity);
+    assertEquals(1, this.testEnvironment.getEntities().size());
+
+    this.testEnvironment.remove(arbitraryEntity);
+    assertEquals(0, this.testEnvironment.getEntities().size());
+  }
+
+  /*
+   * DD2480: checks if branch #9 is reached.
+   * Test getEntitiesByTag does not contain specific tag key -> return false when called by
+   * containsKey function and the getEntitiesByTag should not remove anything.
+   *
+   */
+  @Test
+  public void testEntitiesByTagDoesNotContainKey() {
+    IMobileEntity arbitraryEntity = mock(IMobileEntity.class);
+    when(arbitraryEntity.getMapId()).thenReturn(123);
+    when(arbitraryEntity.getRenderType()).thenReturn(RenderType.NORMAL);
+
+    ArrayList<String> arbitraryTags = new ArrayList<>();
+    arbitraryTags.add("arbitraryTag");
+
+    when(arbitraryEntity.getTags()).thenReturn(arbitraryTags);
+    this.testEnvironment.add(arbitraryEntity);
+
+    IMobileEntity entityWithTag = mock(IMobileEntity.class);
+
+    ArrayList<String> tags = new ArrayList<>();
+    tags.add("tag1");
+
+    when(entityWithTag.getTags()).thenReturn(tags);
+    this.testEnvironment.remove(entityWithTag);
+
+    assertFalse(this.testEnvironment.getEntitiesByTag().containsKey("tag2"));
+    assertNull(this.testEnvironment.getEntitiesByTag().get("tag2"));
+    assertEquals(1, this.testEnvironment.getEntitiesByTag().size());
+  }
+
   @Test
   public void testCombatEntity() {
     ICombatEntity combatEntity = mock(ICombatEntity.class);
