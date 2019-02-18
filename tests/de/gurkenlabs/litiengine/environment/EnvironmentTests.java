@@ -77,6 +77,34 @@ public class EnvironmentTests {
     this.testEnvironment = new Environment(map);
     this.testEnvironment.init();
   }
+  //DD2480: check if we reach branch #3.
+  //in the case that the render type is NULL, nothing should be added to the getEntities list.
+  @Test
+  public void testRenderTypeNull() {
+    ICombatEntity testEntity = mock(ICombatEntity.class);
+    when(testEntity.getRenderType()).thenReturn(null);
+
+    this.testEnvironment.remove(testEntity);
+
+    assertEquals(0, this.testEnvironment.getEntities().size());
+  }
+
+  //DD2480: check if we reach branch #8.
+  //In this case a key that is not contained in getEntitiesByTag list should return false when called by containsKey function.
+  @Test
+  public void testEntitiesByTagDoesNotContainKey() {
+    IMobileEntity entityWithTag = mock(IMobileEntity.class);
+
+    ArrayList<String> tags = new ArrayList<>();
+    tags.add("tag1");
+
+    when(entityWithTag.getTags()).thenReturn(tags);
+
+    this.testEnvironment.remove(entityWithTag);
+
+    assertFalse(this.testEnvironment.getEntitiesByTag().containsKey("tag2"));
+    assertNull(this.testEnvironment.getEntitiesByTag().get("tag2"));
+  }
 
   @Test
   public void testCombatEntity() {
