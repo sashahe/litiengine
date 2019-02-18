@@ -870,119 +870,120 @@ public final class Environment implements IRenderable {
   }
   //QuickFind3
   public void remove(final IEntity entity) {
-    int numberOfBranches = 32;
+    int numberOfBranches = 33;
     int branches[] = new int [numberOfBranches];
+    branches[0] = 1;
     if (entity == null) {
-      branches[0] = 1;
+      branches[1] = 1;
       return;
     } else {
-      branches[1] = 1;
+      branches[2] = 1;
     }
 
     if (this.entities.get(entity.getRenderType()) != null) {
-      branches[2] = 1;
+      branches[3] = 1;
       this.entities.get(entity.getRenderType()).entrySet().removeIf(e -> e.getValue().getMapId() == entity.getMapId());
     } else {
-      branches[3] = 1;
+      branches[4] = 1;
     }
 
     for (String tag : entity.getTags()) {
-      branches[4] = 1;
+      branches[5] = 1;
       if (this.getEntitiesByTag().containsKey(tag)) {
-        branches[5] = 1;
+        branches[6] = 1;
         this.getEntitiesByTag().get(tag).remove(entity);
 
         if (this.getEntitiesByTag().get(tag).isEmpty()) {
-          branches[6] = 1;
+          branches[7] = 1;
           this.getEntitiesByTag().remove(tag);
         } else {
-          branches[7] = 1;
+          branches[8] = 1;
         }
       } else {
-        branches[8] = 1;
+        branches[9] = 1;
       }
     }
-    branches[9] = 1;
+    branches[10] = 1;
 
     if (entity instanceof Emitter) {
-      branches[10] = 1;
+      branches[11] = 1;
       Emitter emitter = (Emitter) entity;
       this.removeEmitter(emitter);
     } else {
-      branches[11] = 1;
+      branches[12] = 1;
     }
 
     if (entity instanceof MapArea) {
-      branches[12] = 1;
+      branches[13] = 1;
       this.mapAreas.remove(entity);
     } else {
-      branches[13] = 1;
+      branches[14] = 1;
     }
 
     if (entity instanceof Prop) {
-      branches[14] = 1;
+      branches[15] = 1;
       this.props.remove(entity);
     } else {
-      branches[15] = 1;
+      branches[16] = 1;
     }
 
     if (entity instanceof Creature) {
-      branches[16] = 1;
+      branches[17] = 1;
       this.creatures.remove(entity);
     } else {
-      branches[17] = 1;
+      branches[18] = 1;
     }
 
     if (entity instanceof CollisionBox) {
-      branches[18] = 1;
+      branches[19] = 1;
       this.colliders.remove(entity);
       this.staticShadows.removeIf(x -> x.getOrigin() != null && x.getOrigin().equals(entity));
     } else {
-      branches[19] = 1;
+      branches[20] = 1;
     }
 
     if (entity instanceof LightSource) {
-      branches[20] = 1;
+      branches[21] = 1;
       this.lightSources.remove(entity);
       this.updateColorLayers(entity);
     } else {
-      branches[21] = 1;
+      branches[22] = 1;
     }
 
     if (entity instanceof Trigger) {
-      branches[22] = 1;
+      branches[23] = 1;
       this.triggers.remove(entity);
     } else {
-      branches[23] = 1;
+      branches[24] = 1;
     }
 
     if (entity instanceof Spawnpoint) {
-      branches[24] = 1;
+      branches[25] = 1;
       this.spawnPoints.remove(entity);
     } else {
-      branches[25] = 1;
+      branches[26] = 1;
     }
 
     if (entity instanceof StaticShadow) {
-      branches[26] = 1;
+      branches[27] = 1;
       this.staticShadows.remove(entity);
       this.updateColorLayers(entity);
     } else {
-      branches[27] = 1;
+      branches[28] = 1;
     }
 
     if (entity instanceof IMobileEntity) {
-      branches[28] = 1;
+      branches[29] = 1;
       this.mobileEntities.values().remove(entity);
     } else {
-      branches[29] = 1;
+      branches[30] = 1;
     }
 
     if (entity instanceof ICombatEntity) {
-      branches[30] = 1;
+      branches[31] = 1;
       this.combatEntities.values().remove(entity);
     } else {
-      branches[31] = 1;
+      branches[32] = 1;
     }
     this.unload(entity);
 
