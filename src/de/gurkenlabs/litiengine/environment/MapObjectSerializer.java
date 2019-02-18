@@ -74,7 +74,7 @@ public final class MapObjectSerializer {
 
     branches[0] = 1;
 
-    if (field.getType().equals(Float.class) || field.getType().equals(Double.class)) {
+    if (field.getType().equals(float.class) || field.getType().equals(double.class)) {
       branches[1] = 1;
       try {
         branches[2] = 1;
@@ -85,7 +85,7 @@ public final class MapObjectSerializer {
         writeBranchesToCSV(branches);
         log.log(Level.SEVERE, e.getMessage(), e);
       }
-    } else if (field.getType().equals(Integer.class)) {
+    } else if (field.getType().equals(int.class)) {
       branches[4] = 1;
       writeBranchesToCSV(branches);
       return Integer.toString((int) value);
