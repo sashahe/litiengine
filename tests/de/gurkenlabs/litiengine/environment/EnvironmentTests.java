@@ -81,8 +81,10 @@ public class EnvironmentTests {
     this.testEnvironment.init();
   }
 
-  //DD2480: check if branch #12 and function 3's branch #17 is reached.
-  //Test if we can add and remove a Creature from the environment.
+  /* DD2480: checks if branch #12 is reached.
+   * Add entity of type Creature -> entity should be added to getEntities and getByType.
+   * Remove entity of type Creature -> entity should be removed from getEntities and getByType.
+   */
   @Test
   public void testCreature() {
     Creature testCreature = new Creature();
@@ -106,8 +108,9 @@ public class EnvironmentTests {
     assertEquals(0, this.testEnvironment.getEntities().size());
   }
 
-  //DD2480: checks if branch #27 is reached.
-  //In the case that we send a tag that is null then the ArrayList for getEntitiesByTag should be empty.
+  /* DD2480: checks if branch #27 is reached.
+   * Test tag is null -> getEntitiesByTag should be empty.
+   */
   @Test
   public void testNullTag() {
     IMobileEntity entityWithNullTag = mock(IMobileEntity.class);
@@ -124,8 +127,9 @@ public class EnvironmentTests {
     assertEquals(0, this.testEnvironment.getEntitiesByTag().size());
   }
 
-  //DD2480: check if branch #29 is reached.
-  //In the case that we send an empty tag then the ArrayList for getEntitiesByTag should be empty.
+  /* DD2480: checks if branch #29 is reached.
+   * Test tag is empty string -> getEntitiesByTag should be empty.
+   */
   @Test
   public void testEmptyTag() {
     IMobileEntity entityWithEmptyTag = mock(IMobileEntity.class);

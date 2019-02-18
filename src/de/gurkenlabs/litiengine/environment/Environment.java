@@ -164,8 +164,12 @@ public final class Environment implements IRenderable {
    *
    * @param entity
    *          The entity to add to the environment.
+   *
+   * DD2480:
+   * Unit Tested: Branch #12, 27 and 29 do not have unit tests.
+   * Requested: Add entity (of different types) to environment.
+   *
    */
-  //QuickFind2
   public void add(final IEntity entity) {
     int numberOfBranches = 34;
     int branches[] = new int [numberOfBranches];
