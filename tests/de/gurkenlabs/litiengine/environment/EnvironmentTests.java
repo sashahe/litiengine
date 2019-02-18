@@ -43,9 +43,8 @@ import de.gurkenlabs.litiengine.graphics.StaticShadowType;
 import de.gurkenlabs.litiengine.graphics.emitters.Emitter;
 import de.gurkenlabs.litiengine.graphics.emitters.particles.Particle;
 
-//DD2480: packages that were needed for the new tests.
+//DD2480: import package that were needed for the new tests.
 import de.gurkenlabs.litiengine.entities.Creature;
-import java.awt.geom.Point2D;
 
 public class EnvironmentTests {
   private Environment testEnvironment;
@@ -82,7 +81,8 @@ public class EnvironmentTests {
     this.testEnvironment.init();
   }
 
-  //DD2480: Test to add and remove creature from environment
+  //DD2480: check if branch #12 and function 3's branch #17 is reached.
+  //Test if we can add and remove a Creature from the environment.
   @Test
   public void testCreature() {
     Creature testCreature = new Creature();
@@ -104,6 +104,42 @@ public class EnvironmentTests {
     assertNull(this.testEnvironment.getCreature(1));
     assertEquals(0, this.testEnvironment.getByType(Creature.class).size());
     assertEquals(0, this.testEnvironment.getEntities().size());
+  }
+
+  //DD2480: checks if branch #27 is reached.
+  //In the case that we send a tag that is null then the ArrayList for getEntitiesByTag should be empty.
+  @Test
+  public void testNullTag() {
+    IMobileEntity entityWithNullTag = mock(IMobileEntity.class);
+    when(entityWithNullTag.getMapId()).thenReturn(123);
+    when(entityWithNullTag.getRenderType()).thenReturn(RenderType.NORMAL);
+
+    ArrayList<String> tags = new ArrayList<>();
+    tags.add(null);
+
+    when(entityWithNullTag.getTags()).thenReturn(tags);
+
+    this.testEnvironment.add(entityWithNullTag);
+
+    assertEquals(0, this.testEnvironment.getEntitiesByTag().size());
+  }
+
+  //DD2480: check if branch #29 is reached.
+  //In the case that we send an empty tag then the ArrayList for getEntitiesByTag should be empty.
+  @Test
+  public void testEmptyTag() {
+    IMobileEntity entityWithEmptyTag = mock(IMobileEntity.class);
+    when(entityWithEmptyTag.getMapId()).thenReturn(123);
+    when(entityWithEmptyTag.getRenderType()).thenReturn(RenderType.NORMAL);
+
+    ArrayList<String> tags = new ArrayList<>();
+    tags.add("");
+
+    when(entityWithEmptyTag.getTags()).thenReturn(tags);
+
+    this.testEnvironment.add(entityWithEmptyTag);
+
+    assertEquals(0, this.testEnvironment.getEntitiesByTag().size());
   }
 
   @Test
@@ -492,37 +528,6 @@ public class EnvironmentTests {
 
     assertEquals(0, this.testEnvironment.getByTag("tag1").size());
     assertEquals(0, this.testEnvironment.getByTag("tag2").size());
-
-    //DD2480: In the case that we send a tag that is null then the ArrayList for getEntitiesByTag should be empty.
-    tags.remove("tag1");
-    tags.remove("tag2");
-
-    IMobileEntity entityWithNullTag = mock(IMobileEntity.class);
-    when(entityWithNullTag.getMapId()).thenReturn(123);
-    when(entityWithNullTag.getRenderType()).thenReturn(RenderType.NORMAL);
-
-    tags.add(null);
-
-    when(entityWithNullTag.getTags()).thenReturn(tags);
-
-    this.testEnvironment.add(entityWithNullTag);
-
-    assertEquals(0, this.testEnvironment.getEntitiesByTag().size());
-
-    tags.remove(null);
-
-    //DD2480: In the case that we send an empty tag then the ArrayList for getEntitiesByTag should be empty.
-    IMobileEntity entityWithEmptyTag = mock(IMobileEntity.class);
-    when(entityWithEmptyTag.getMapId()).thenReturn(123);
-    when(entityWithEmptyTag.getRenderType()).thenReturn(RenderType.NORMAL);
-
-    tags.add("");
-
-    when(entityWithEmptyTag.getTags()).thenReturn(tags);
-
-    this.testEnvironment.add(entityWithEmptyTag);
-
-    assertEquals(0, this.testEnvironment.getEntitiesByTag().size());
   }
 
   @Test
