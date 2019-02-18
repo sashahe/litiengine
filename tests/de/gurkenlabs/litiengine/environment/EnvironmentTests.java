@@ -77,7 +77,7 @@ public class EnvironmentTests {
     this.testEnvironment = new Environment(map);
     this.testEnvironment.init();
   }
-  //DD2480: check if we reach branch #3.
+  //DD2480: check if we reach branch #4.
   //in the case that the render type is NULL, nothing should be added to the getEntities list.
   @Test
   public void testRenderTypeNull() {
@@ -89,7 +89,7 @@ public class EnvironmentTests {
     assertEquals(0, this.testEnvironment.getEntities().size());
   }
 
-  //DD2480: check if we reach branch #8.
+  //DD2480: check if we reach branch #9.
   //In this case a key that is not contained in getEntitiesByTag list should return false when called by containsKey function.
   @Test
   public void testEntitiesByTagDoesNotContainKey() {
