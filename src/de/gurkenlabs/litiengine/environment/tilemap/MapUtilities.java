@@ -205,7 +205,6 @@ public final class MapUtilities {
     } else {
       branches[18] = 1;
     }
-   
 
     if (staggerAxis == StaggerAxis.X && isStaggeredRowOrColumn(staggerIndex, xCoord)) {
       branches[19] = 1;
@@ -228,7 +227,7 @@ public final class MapUtilities {
     } else {
       branches[25] = 1;
     }
-    
+
     try {
       CSV.write(branches, 5);
     } catch (Exception e) {
@@ -253,8 +252,12 @@ public final class MapUtilities {
     return (staggerIndex == StaggerIndex.ODD && MathUtilities.isOddNumber(index)) || (staggerIndex == StaggerIndex.EVEN && !MathUtilities.isOddNumber(index));
   }
 
+  public static Point callAccessHexStaggering(StaggerAxis staggerAxis, StaggerIndex staggerIndex, Point tileLocation, int s, int t, int r, int jumpWidth, int jumpHeight, double mouseX, double mouseY) {
+    return assessHexStaggering(staggerAxis, staggerIndex, tileLocation, s, t, r, jumpWidth, jumpHeight, mouseX, mouseY);
+  }
+
   private static Point assessHexStaggering(StaggerAxis staggerAxis, StaggerIndex staggerIndex, Point tileLocation, int s, int t, int r, int jumpWidth, int jumpHeight, double mouseX, double mouseY) {
-    int numberOfBranches = 17;
+    int numberOfBranches = 16;
     int branches[] = new int[numberOfBranches];
 
     branches[0] = 1;
@@ -277,10 +280,10 @@ public final class MapUtilities {
     }
 
     Polygon hex = GeometricUtilities.getHex(x, y, staggerAxis, s, r, t);
-    //we don't need any further computation if the mouse is already inside the hex
+
     if (hex.contains(mouseX, mouseY)) {
       branches[5] = 1;
-      return new Point(xIndex, yIndex);
+      // return new Point(xIndex, yIndex);
     } else if (mouseY < hex.getBounds2D().getY() + hex.getBounds2D().getHeight() / 2) { //is the mouse in the upper left triangle outside the hex -> switch to the hex left and above the current hex
       branches[6] = 1;
 
@@ -315,8 +318,6 @@ public final class MapUtilities {
       } else {
         branches[15] = 1;
       }
-    } else {
-      branches[16] = 1;
     }
 
     try {
