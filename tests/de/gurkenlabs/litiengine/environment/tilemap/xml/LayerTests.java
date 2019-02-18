@@ -22,6 +22,7 @@ public class LayerTests {
     this.unmarshaller = mock(Unmarshaller.class);
   }
 
+  // Test the edge case when the object passed in is of type Map
   @Test
   public void testParentMapisMapWhenObjectisMap() {
     Map map = new Map();
@@ -30,6 +31,7 @@ public class LayerTests {
     assertTrue(this.layer.getParentMap() instanceof Map);
   }
 
+  // Test all the 0 -> null functionallity, i.e. that it stores a value of null instead of zero.
   @Test
   public void testOffsetXBecomesNullWhenZero() {
     this.layer.setOffsetX(0);
@@ -62,6 +64,7 @@ public class LayerTests {
     assertEquals(null, this.layer.getHeightRaw());
   }
 
+  // Test the 1 -> null functionallity, i.e. that it stores a value of null instead of one.
   @Test
   public void testOpacityBecomesNullWhenOne() {
     this.layer.setOpacity(1.0f);
@@ -70,6 +73,7 @@ public class LayerTests {
     assertEquals(null, this.layer.getOpacityRaw());
   }
 
+  // Test all the true -> null functionallity, i.e. that it stores a value of null instead of true.
   @Test
   public void testVisibleBecomesNullWhenTrue() {
     this.layer.setVisible(true);
