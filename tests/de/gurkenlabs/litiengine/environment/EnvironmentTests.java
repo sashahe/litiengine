@@ -77,20 +77,39 @@ public class EnvironmentTests {
     this.testEnvironment = new Environment(map);
     this.testEnvironment.init();
   }
-  //DD2480: check if we reach branch #4.
-  //in the case that the render type is NULL, nothing should be added to the getEntities list.
+
+  /*
+   * DD2480: checks if branch #4 is reached.
+   * Test RenderType is null -> getEntities should not have anything removed.
+   *
+   */
   @Test
   public void testRenderTypeNull() {
-    ICombatEntity testEntity = mock(ICombatEntity.class);
-    when(testEntity.getRenderType()).thenReturn(null);
+    IMobileEntity arbitraryEntity = mock(IMobileEntity.class);
+    when(arbitraryEntity.getMapId()).thenReturn(123);
+    when(arbitraryEntity.getRenderType()).thenReturn(RenderType.NORMAL);
 
-    this.testEnvironment.remove(testEntity);
+    ArrayList<String> tags = new ArrayList<>();
+    tags.add("arbitraryTag");
 
+    when(arbitraryEntity.getTags()).thenReturn(tags);
+    this.testEnvironment.add(arbitraryEntity);
+
+    ICombatEntity nullRenderTypeEntity = mock(ICombatEntity.class);
+    when(nullRenderTypeEntity.getRenderType()).thenReturn(null);
+
+    this.testEnvironment.remove(nullRenderTypeEntity);
+    assertEquals(1, this.testEnvironment.getEntities().size());
+
+    this.testEnvironment.remove(arbitraryEntity);
     assertEquals(0, this.testEnvironment.getEntities().size());
   }
 
-  //DD2480: check if we reach branch #9.
-  //In this case a key that is not contained in getEntitiesByTag list should return false when called by containsKey function.
+  /*
+   * DD2480: checks if branch #9 is reached.
+   * Test getEntitiesByTag does not contain specific tag key -> return false when called by containsKey function.
+   *
+   */
   @Test
   public void testEntitiesByTagDoesNotContainKey() {
     IMobileEntity entityWithTag = mock(IMobileEntity.class);

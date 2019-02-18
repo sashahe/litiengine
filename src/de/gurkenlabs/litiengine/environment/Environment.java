@@ -867,7 +867,13 @@ public final class Environment implements IRenderable {
     this.remove(mapId);
     this.loadFromMap(mapId);
   }
-  //QuickFind3
+
+  /*
+   * DD2480:
+   * Unit Tested: Branch #4 and #9 do not have unit tests.
+   * Requested: Remove entity (of different types) from environment.
+   *
+   */
   public void remove(final IEntity entity) {
     int numberOfBranches = 33;
     int branches[] = new int [numberOfBranches];
