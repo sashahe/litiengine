@@ -16,7 +16,7 @@ There are no clear guidelines regarding specifically how to build the project, h
 ## Complexity
 
 ##### 1. What are your results for the ten most complex functions? (If ranking is not easily possible: ten complex functions)?
-The following table shows the ten most complex functions that were found by `lizard` and the computed cyclomatic complexity by lizard (CCN1) as well as the cyclomatic complexity counted by hand (CCN2). The formula used for calculating CCN2 was [$M$ = $E$ − $N$ + $2P$](https://en.wikipedia.org/wiki/Cyclomatic_complexity). 
+The following table shows the ten most complex functions that were found by `lizard` and the computed cyclomatic complexity by lizard (CCN1) as well as the cyclomatic complexity counted by hand (CCN2). The formula used for calculating CCN2 was [M = E − N + 2P](https://en.wikipedia.org/wiki/Cyclomatic_complexity). 
 
 | ID 	| File                                                                           	| Function              	| CCN1 	| CCN2 	|
 |----	|--------------------------------------------------------------------------------	|-----------------------	|------	|------	|
@@ -76,18 +76,14 @@ Report of new coverage: [New Results](https://github.com/sashahe/litiengine/blob
 To see the patch for the added test cases use the following git command:
 
 ```shell
-git diff 
+git diff <insert commit ID>
 ```
 
 ## Refactoring (Not done)
+Plan for refactoring complex code.
 
-Plan for refactoring complex code:
 
-Carried out refactoring (optional)
-
-git diff ...
-
-# Effort spent
+# Effort spent (Not done)
 For each team member, how much time was spent in
 1.  plenary discussions/meetings;
 * Adib
@@ -145,7 +141,5 @@ For each team member, how much time was spent in
 * Sasha
 * Vera
 
-## Overall experience (Not done)
-What are your main take-aways from this project? What did you learn?
-
-Is there something special you want to mention here?
+## Overall experience
+Working with this project gave us an insight on how it is to work with open source projects. It was also interesting to see how different people decided to implement certain features, how they structured their code as well as learned about new Java frameworks. In addition, we were able to learn new tools such as, *Lizard* and *SonarCloud*, that we can integrate in future projects. This also allowed us to learn more about coverage which deepened our knowledge on software testing. 
