@@ -9,11 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.util.MathUtilities;
 import de.gurkenlabs.litiengine.util.geom.GeometricUtilities;
-
 import de.gurkenlabs.litiengine.util.io.CSV;
 
 public final class MapUtilities {
@@ -122,15 +120,35 @@ public final class MapUtilities {
   }
 
   public static Point getTile(final IMap map, final double x, final double y) {
+    int numberOfBranches = 27;
+    int branches[] = new int[numberOfBranches];
     //standard behaviour for rectangular Tiles: search on a grid with the tile dimensions
     int jumpWidth = map.getTileWidth();
     int jumpHeight = map.getTileHeight();
+    branches[0] = 1;
     //if we're less than 1 tile left or up the map, get -1 instead of 0 as tile coordinate.
     int xCoord = x < 0 && -x < jumpWidth ? -1 : (int) (x / jumpWidth);
+    if (xCoord == -1) {
+      branches[1] = 1;
+    } else {
+      branches[2] = 1;
+    }
     int yCoord = y < 0 && -y < jumpHeight ? -1 : (int) (y / jumpHeight);
-
+    if (yCoord == -1) {
+      branches[3] = 1;
+    } else {
+      branches[4] = 1;
+    }
     if (map.getOrientation() != MapOrientation.HEXAGONAL) {
+      branches[5] = 1;
+      try {
+        CSV.write(branches, 5);
+      } catch (Exception e) {
+        System.err.println("Error: " + e);
+      }
       return new Point(xCoord, yCoord);
+    } else {
+      branches[7] = 1;
     }
     //for hex maps, we must adjust our jump size for cropping the subImages since tiles are not aligned orthogonally.
 
@@ -139,21 +157,77 @@ public final class MapUtilities {
     //the t parameter describes the distance between one end of the flat hex side to the bounding box.
     int s = map.getHexSideLength();
     int t = staggerAxis == StaggerAxis.X ? (map.getTileWidth() - s) / 2 : (map.getTileHeight() - s) / 2;
+    if (t == (map.getTileWidth() - s) / 2) {
+      branches[8] = 1;
+    } else {
+      branches[9] = 1;
+    }
+
     int r = staggerAxis == StaggerAxis.X ? map.getTileHeight() / 2 : map.getTileWidth() / 2;
+    if (r == map.getTileHeight() / 2) {
+      branches[10] = 1;
+    } else {
+      branches[11] = 1;
+    }
+
     //Since we require to get Tiles outside of the map as well, we need to construct an infinite hex grid on which we can determine
     //tile indices. This follows the hex grid click detection from http://www.quarkphysics.ca/scripsi/hexgrid/ 
 
     jumpWidth = staggerAxis == StaggerAxis.X ? t + s : map.getTileWidth();
+    if (jumpWidth == t + s) {
+      branches[12] = 1;
+    } else {
+      branches[13] = 1;
+    }
     jumpHeight = staggerAxis == StaggerAxis.X ? map.getTileHeight() : t + s;
+    if (jumpHeight == t + s) {
+      branches[14] = 1;
+    } else {
+      branches[15] = 1;
+    }
+
     xCoord = x < 0 ? (int) (x / jumpWidth) - 1 : (int) (x / jumpWidth);
+    if (xCoord == (int) (x / jumpWidth)) {
+      branches[16] = 1;
+    } else {
+      branches[17] = 1;
+    }
+
     yCoord = y < 0 ? (int) (y / jumpHeight) - 1 : (int) (y / jumpHeight);
+    if (yCoord == (int) (y / jumpWidth)) {
+      branches[18] = 1;
+    } else {
+      branches[19] = 1;
+    }
+
     if (staggerAxis == StaggerAxis.X && isStaggeredRowOrColumn(staggerIndex, xCoord)) {
+      branches[20] = 1;
       yCoord = (int) ((y - jumpHeight / 2.0) / jumpHeight);
       yCoord = y < jumpHeight / 2 ? yCoord - 1 : yCoord;
+      if (yCoord == jumpHeight / 2) {
+        branches[21] = 1;
+      } else {
+        branches[22] = 1;
+      }
     } else if (staggerAxis == StaggerAxis.Y && isStaggeredRowOrColumn(staggerIndex, yCoord)) {
+      branches[23] = 1;
       xCoord = (int) ((x - jumpWidth / 2.0) / jumpWidth);
       xCoord = x < jumpWidth / 2 ? xCoord - 1 : xCoord;
+      if (xCoord == jumpWidth / 2) {
+        branches[24] = 1;
+      } else {
+        branches[25] = 1;
+      }
+    } else {
+      branches[26] = 1;
     }
+
+    try {
+      CSV.write(branches, 5);
+    } catch (Exception e) {
+      System.err.println("Error: " + e);
+    }
+
     return assessHexStaggering(staggerAxis, staggerIndex, new Point(xCoord, yCoord), s, t, r, jumpWidth, jumpHeight, x, y);
   }
 
@@ -172,8 +246,12 @@ public final class MapUtilities {
     return (staggerIndex == StaggerIndex.ODD && MathUtilities.isOddNumber(index)) || (staggerIndex == StaggerIndex.EVEN && !MathUtilities.isOddNumber(index));
   }
 
+  public static Point callAccessHexStaggering(StaggerAxis staggerAxis, StaggerIndex staggerIndex, Point tileLocation, int s, int t, int r, int jumpWidth, int jumpHeight, double mouseX, double mouseY) {
+    return assessHexStaggering(staggerAxis, staggerIndex, tileLocation, s, t, r, jumpWidth, jumpHeight, mouseX, mouseY);
+  }
+
   private static Point assessHexStaggering(StaggerAxis staggerAxis, StaggerIndex staggerIndex, Point tileLocation, int s, int t, int r, int jumpWidth, int jumpHeight, double mouseX, double mouseY) {
-    int numberOfBranches = 17;
+    int numberOfBranches = 16;
     int branches[] = new int[numberOfBranches];
 
     branches[0] = 1;
@@ -196,10 +274,10 @@ public final class MapUtilities {
     }
 
     Polygon hex = GeometricUtilities.getHex(x, y, staggerAxis, s, r, t);
-    //we don't need any further computation if the mouse is already inside the hex
+
     if (hex.contains(mouseX, mouseY)) {
       branches[5] = 1;
-      return new Point(xIndex, yIndex);
+      // return new Point(xIndex, yIndex);
     } else if (mouseY < hex.getBounds2D().getY() + hex.getBounds2D().getHeight() / 2) { //is the mouse in the upper left triangle outside the hex -> switch to the hex left and above the current hex
       branches[6] = 1;
 
@@ -234,8 +312,6 @@ public final class MapUtilities {
       } else {
         branches[15] = 1;
       }
-    } else {
-      branches[16] = 1;
     }
 
     try {
