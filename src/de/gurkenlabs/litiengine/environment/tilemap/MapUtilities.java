@@ -119,6 +119,14 @@ public final class MapUtilities {
     return getTile(map, mapLocation.getX(), mapLocation.getY());
   }
 
+<<<<<<< HEAD
+  /*
+   * Unit tested: Nothing
+   * Untested:
+   * Invalid coordinates (Decimal, Hexadecimal)
+   * Valid coordinates(Decimal. Hexadecimal)
+   */
+=======
   /**
    *  Returns a Point representing the location of the tile positioned at x, y.
    *  Handles both orthogonal and hexadecimal map orientations.
@@ -128,6 +136,7 @@ public final class MapUtilities {
    *   Valid coordinates x, y
    *
   */
+>>>>>>> test-branch
   public static Point getTile(final IMap map, final double x, final double y) {
     int numberOfBranches = 26;
     int branches[] = new int[numberOfBranches];
@@ -166,7 +175,7 @@ public final class MapUtilities {
     //the t parameter describes the distance between one end of the flat hex side to the bounding box.
     int s = map.getHexSideLength();
     int t = staggerAxis == StaggerAxis.X ? (map.getTileWidth() - s) / 2 : (map.getTileHeight() - s) / 2;
-    if(t == (map.getTileWidth() - s) / 2) {
+    if (t == (map.getTileWidth() - s) / 2) {
       branches[7] = 1;
     } else {
       branches[8] = 1;
@@ -183,27 +192,27 @@ public final class MapUtilities {
     //tile indices. This follows the hex grid click detection from http://www.quarkphysics.ca/scripsi/hexgrid/ 
 
     jumpWidth = staggerAxis == StaggerAxis.X ? t + s : map.getTileWidth();
-    if (jumpWidth == t + s ) {
+    if (jumpWidth == t + s) {
       branches[11] = 1;
     } else {
       branches[12] = 1;
     }
     jumpHeight = staggerAxis == StaggerAxis.X ? map.getTileHeight() : t + s;
-    if (jumpHeight == t + s ) {
+    if (jumpHeight == t + s) {
       branches[13] = 1;
     } else {
       branches[14] = 1;
     }
 
     xCoord = x < 0 ? (int) (x / jumpWidth) - 1 : (int) (x / jumpWidth);
-    if (xCoord ==  (int) (x / jumpWidth)) {
+    if (xCoord == (int) (x / jumpWidth)) {
       branches[15] = 1;
     } else {
       branches[16] = 1;
     }
 
     yCoord = y < 0 ? (int) (y / jumpHeight) - 1 : (int) (y / jumpHeight);
-    if (yCoord ==  (int) (y / jumpWidth)) {
+    if (yCoord == (int) (y / jumpWidth)) {
       branches[17] = 1;
     } else {
       branches[18] = 1;
@@ -213,7 +222,7 @@ public final class MapUtilities {
       branches[19] = 1;
       yCoord = (int) ((y - jumpHeight / 2.0) / jumpHeight);
       yCoord = y < jumpHeight / 2 ? yCoord - 1 : yCoord;
-      if (yCoord == jumpHeight / 2 ) {
+      if (yCoord == jumpHeight / 2) {
         branches[20] = 1;
       } else {
         branches[21] = 1;
@@ -225,7 +234,7 @@ public final class MapUtilities {
       if (xCoord == jumpWidth / 2) {
         branches[23] = 1;
       } else {
-        branches[24] =1;
+        branches[24] = 1;
       }
     } else {
       branches[25] = 1;
