@@ -38,7 +38,7 @@ The calculations we performed resulted in very similar results. However, somethi
 The functions were relative straightforward which made it easy to graph. As such, it was somewhat clear how lizard calculated the CNN, given that the hand calculated CCN gave a similar result to lizard's CCN.   
 
 ##### 2. Are the functions just complex, or also long?
-The length of the functions is varying, from around 10 lines to 75. In other words, not all complex functions in this project are very long.
+The length of the functions is varying, from around 35 lines to 75. In other words, not all complex functions in this project are very long.
 
 ##### 3. What is the purpose of the functions?
 The purpose of the functions also vary. Some are regarding the environmental setup of the engine, thus they are complex. Others are functions related to utilities, e.g. finding a point that intersects two lines. 
@@ -47,7 +47,7 @@ The purpose of the functions also vary. Some are regarding the environmental set
 Some of the methods examined, e.g. `storeProperties`, handles exceptions. This increased the CC count by one, since it increases the possible paths through the function by one. 
 
 ##### 5. Is the documentation clear w.r.t. all the possible outcomes?
-The documentation regarding the possible paths is varying. The method `getIntersectionPoint` does not explain the possible paths, for example if a point does not exist on the lines it is not defined what the result will be. In general the documentation of the different paths possible and their corresponding results is lacking. Some of the methods examined do not have a method comment, e.g. `afterUnmarshal`.
+The documentation regarding the possible paths is varying. The method `getIntersectionPoints` does not explain the possible paths, for example if an intersection point does not exist, it is not defined what the result will be. In general the documentation of the different paths possible and their corresponding results is lacking. Some of the methods examined do not have a method comment, e.g. `afterUnmarshal`.
 
 ## Coverage
 
@@ -89,56 +89,56 @@ For each team member, how much time was spent in
 * Adib
 * Emelie = 3 hours
 * Gustav
-* Sasha
+* Sasha = 3 hours
 * Vera
 
 2.  discussions within parts of the group;
 * Adib
 * Emelie = 2 hours
 * Gustav
-* Sasha
+* Sasha = 2 hours
 * Vera
 
 3.  reading documentation;
 * Adib
 * Emelie = 2 hours
 * Gustav
-* Sasha
+* Sasha = 2 hours
 * Vera
 
 4.  configuration;
 * Adib
 * Emelie = 1 hour
 * Gustav
-* Sasha
+* Sasha = 6 hours
 * Vera
 
 5.  analyzing code/output;
 * Adib
 * Emelie = 2 hours
 * Gustav
-* Sasha
+* Sasha = 4 hours
 * Vera
 
 6.  writing documentation;
 * Adib
 * Emelie = 4 hours
 * Gustav
-* Sasha
+* Sasha = 2 hours
 * Vera
 
 7.  writing code;
 * Adib
 * Emelie = 2 hours
 * Gustav
-* Sasha
+* Sasha = 8 hours
 * Vera
 
 8.  running code?
 * Adib
 * Emelie = 2 hours
 * Gustav
-* Sasha
+* Sasha = 3 hours
 * Vera
 
 ## Overall experience
