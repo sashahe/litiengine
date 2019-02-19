@@ -35,8 +35,8 @@ Branch 27: ✅
 –––––––––––––––––––––––––
 Function ID: #2
 Branches: 34
-Branches covered: 30
-Branch coverage: 88.24%
+Branches covered: 33
+Branch coverage: 97.06%
 
 Branch 1: ✅
 Branch 2: ❌
@@ -51,7 +51,7 @@ Branch 10: ✅
 Branch 11: ✅
 Branch 12: ✅
 Branch 13: ✅
-Branch 14: ❌
+Branch 14: ✅
 Branch 15: ✅
 Branch 16: ✅
 Branch 17: ✅
@@ -65,9 +65,9 @@ Branch 24: ✅
 Branch 25: ✅
 Branch 26: ✅
 Branch 27: ✅
-Branch 28: ❌
+Branch 28: ✅
 Branch 29: ✅
-Branch 30: ❌
+Branch 30: ✅
 Branch 31: ✅
 Branch 32: ✅
 Branch 33: ✅
@@ -76,19 +76,19 @@ Branch 34: ✅
 –––––––––––––––––––––––––
 Function ID: #3
 Branches: 33
-Branches covered: 29
-Branch coverage: 87.88%
+Branches covered: 32
+Branch coverage: 96.97%
 
 Branch 1: ✅
 Branch 2: ❌
 Branch 3: ✅
 Branch 4: ✅
-Branch 5: ❌
+Branch 5: ✅
 Branch 6: ✅
 Branch 7: ✅
 Branch 8: ✅
 Branch 9: ✅
-Branch 10: ❌
+Branch 10: ✅
 Branch 11: ✅
 Branch 12: ✅
 Branch 13: ✅
@@ -96,7 +96,7 @@ Branch 14: ✅
 Branch 15: ✅
 Branch 16: ✅
 Branch 17: ✅
-Branch 18: ❌
+Branch 18: ✅
 Branch 19: ✅
 Branch 20: ✅
 Branch 21: ✅
@@ -262,4 +262,3 @@ Branch 6: ✅
 Branch 7: ✅
 Branch 8: ✅
 Branch 9: ✅
-

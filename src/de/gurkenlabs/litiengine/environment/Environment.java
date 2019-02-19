@@ -164,10 +164,18 @@ public final class Environment implements IRenderable {
    *
    * @param entity
    *          The entity to add to the environment.
-   *
+   */
+
+  /*
    * DD2480:
-   * Unit Tested: Branch #12, 27 and 29 do not have unit tests.
-   * Requested: Add entity (of different types) to environment.
+   * Adds an entity of type Emitter, MapArea, Prop, Creature, CollisionBox, LightSource, Trigger,
+   * Spawnpoint, StaticShadow, IMobileEntity or ICombatEntity from environment. It also sets the entity's
+   * MapId if none is found.
+   *
+   * Test Requirements for each entity type:
+   * Adds entities of valid types with valid MapId, RenderType and Tag.
+   * Does not add entities with invalid Tag (empty string or null).
+   * Does not add entities of invalid types.
    *
    */
   public void add(final IEntity entity) {
@@ -875,8 +883,14 @@ public final class Environment implements IRenderable {
 
   /*
    * DD2480:
-   * Unit Tested: Branch #4 and #9 do not have unit tests.
-   * Requested: Remove entity (of different types) from environment.
+   * Removes an entity of type Emitter, MapArea, Prop, Creature, CollisionBox, LightSource, Trigger,
+   * Spawnpoint, StaticShadow, IMobileEntity or ICombatEntity from environment. It also removes the entity
+   * by RenderType and Tags.
+   *
+   * Test Requirements for each entity type:
+   * Removes entities of valid types with valid Tags and RenderTypes.
+   * Does not remove entities of invalid types; including those with invalid RenderTypes (null)
+   * and Tags (keys) that are not contained in getEntitiesByTag list.
    *
    */
   public void remove(final IEntity entity) {
