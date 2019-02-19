@@ -87,7 +87,7 @@ Report of old coverage: [Old Results](https://github.com/sashahe/litiengine/blob
 
 Report of new coverage: [New Results](https://github.com/sashahe/litiengine/blob/test-branch/branchtest/result.txt)
 
-To see the patch for the added test cases use the following git command:
+The total branch coverage went from 49.346% to 73.655%, an increase of 24.309 percentage points. In total we covered 46 new branches.
 
 ## Refactoring
 Fucntion 2: `add`: 
