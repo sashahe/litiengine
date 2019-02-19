@@ -106,7 +106,7 @@ For each team member, how much time was spent in
 
 1.  plenary discussions/meetings;
 
-- Adib
+- Adib = 2 hours
 - Emelie = 3 hours
 - Gustaf = 3 hours
 - Sasha = 3 hours
@@ -114,7 +114,7 @@ For each team member, how much time was spent in
 
 2.  discussions within parts of the group;
 
-- Adib
+- Adib = 1.5 hours
 - Emelie = 2 hours
 - Gustaf = 1.5 hours
 - Sasha = 2 hours
@@ -122,7 +122,7 @@ For each team member, how much time was spent in
 
 3.  reading documentation;
 
-- Adib
+- Adib = 3 hours
 - Emelie = 2 hours
 - Gustaf = 2 hours
 - Sasha = 2 hours
@@ -130,7 +130,7 @@ For each team member, how much time was spent in
 
 4.  configuration;
 
-- Adib
+- Adib = 1 hour
 - Emelie = 1 hour
 - Gustaf = 3 hours
 - Sasha = 6 hours
@@ -138,7 +138,7 @@ For each team member, how much time was spent in
 
 5.  analyzing code/output;
 
-- Adib
+- Adib = 3 hours
 - Emelie = 2 hours
 - Gustaf = 4 hours
 - Sasha = 4 hours
@@ -146,7 +146,7 @@ For each team member, how much time was spent in
 
 6.  writing documentation;
 
-- Adib
+- Adib = 1 hour
 - Emelie = 4 hours
 - Gustaf = 1 hour
 - Sasha = 2 hours
@@ -154,7 +154,7 @@ For each team member, how much time was spent in
 
 7.  writing code;
 
-- Adib
+- Adib = 3 hours
 - Emelie = 2 hours
 - Gustaf = 4 hours
 - Sasha = 8 hours
@@ -162,7 +162,7 @@ For each team member, how much time was spent in
 
 8.  running code?
 
-- Adib
+- Adib = 2.5 hours
 - Emelie = 2 hours
 - Gustaf = 2 hours
 - Sasha = 3 hours
