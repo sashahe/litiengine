@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.util.UUID;
 import java.util.logging.Logger;
+import java.util.Properties;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -57,6 +58,28 @@ public class ConfigurationTests {
     } finally {
       deleteTempConfigFile(config);
     }
+  }
+  
+  @Test
+  public void testStoreProperties() {
+    Configuration config = null;
+    final TestConfigurationGroup group = new TestConfigurationGroup();
+    final Properties groupProperties = new CleanProperties();
+    group.storeProperties(groupProperties);
+
+    groupProperties.list(System.out);
+    assertEquals("100", groupProperties.getProperty("test-prefixtestInt"));
+    assertEquals("101", groupProperties.getProperty("test-prefixtestByte"));
+    assertEquals("102", groupProperties.getProperty("test-prefixtestShort"));
+    assertEquals("103", groupProperties.getProperty("test-prefixtestLong"));
+    assertEquals("104.0", groupProperties.getProperty("test-prefixtestDouble"));
+    assertEquals("105.0", groupProperties.getProperty("test-prefixtestFloat"));
+    assertEquals("test", groupProperties.getProperty("test-prefixtestString"));
+    assertEquals("", groupProperties.getProperty("test-prefixtestNullString"));
+    assertEquals("true", groupProperties.getProperty("test-prefixtestBoolean"));
+    assertEquals("TEST1", groupProperties.getProperty("test-prefixtestEnum"));
+    assertEquals("test,testicle", groupProperties.getProperty("test-prefixtestStringArray"));
+    assertEquals("", groupProperties.getProperty("test-prefixtestNullStringArray"));
   }
 
   @Test
@@ -116,9 +139,11 @@ public class ConfigurationTests {
     private double testDouble = 104.0d;
     private float testFloat = 105.0f;
     private String testString = "test";
+    private String testNullString = null;
     private boolean testBoolean = true;
     private TEST testEnum = TEST.TEST1;
     private String[] testStringArray = new String[] { "test", "testicle" };
+    private String[] testNullStringArray = null;
     private String testWithNoSetter = "";
 
     public byte getTestByte() {
