@@ -119,24 +119,15 @@ public final class MapUtilities {
     return getTile(map, mapLocation.getX(), mapLocation.getY());
   }
 
-<<<<<<< HEAD
-  /*
-   * Unit tested: Nothing
-   * Untested:
-   * Invalid coordinates (Decimal, Hexadecimal)
-   * Valid coordinates(Decimal. Hexadecimal)
-   */
-=======
   /**
-   *  Returns a Point representing the location of the tile positioned at x, y.
-   *  Handles both orthogonal and hexadecimal map orientations.
+   * 
+   * Returns a Point representing the location of the tile positioned at x, y.
+   * Handles both orthogonal and hexadecimal map orientations.
    *
    * Test Requirements for each map orientation:
-   *   Invalid coordinates x, y
-   *   Valid coordinates x, y
-   *
-  */
->>>>>>> test-branch
+   * Invalid coordinates x, y
+   * Valid coordinates x, y
+   */
   public static Point getTile(final IMap map, final double x, final double y) {
     int numberOfBranches = 26;
     int branches[] = new int[numberOfBranches];
@@ -268,6 +259,32 @@ public final class MapUtilities {
     return assessHexStaggering(staggerAxis, staggerIndex, tileLocation, s, t, r, jumpWidth, jumpHeight, mouseX, mouseY);
   }
 
+  /*
+   * A helper method for getting the point of a tile in the map.
+   * 
+   * @param staggerAxis the stagger direction (X or Y).
+   * @param staggerIndex the stagger index (even or odd).
+   * @param tileLocation the location of the tile.
+   * @param s the length of the flat edges in the hex.
+   * @param t half the length of a pointy side in the hex.
+   * @param r the space from both ends of a flat edge of the hex to the bounding box.
+   * @param jumpWidth the width of the jump.
+   * @param jumpHeight the height of the jump.
+   * @param mouseX the mouse's X coordinate.
+   * @param mouseY the mouse's Y coordinate.
+   * 
+   * @return the point of the tile.
+   * 
+   * Test requirements:
+   *  The generated hex contains the mouse in both X and Y staggering direction.
+   *  The generated hex does not contain the mouse in X and Y stagggering direction.  
+   * 
+   * The different branches that can be taken in this method has to do with the positioning.
+   * The factors of this are if the the row or column is staggered, if the generated hex already contains
+   * the mouse, the directions of staggering and the stagger index.
+   * 
+   * @return 
+   */
   private static Point assessHexStaggering(StaggerAxis staggerAxis, StaggerIndex staggerIndex, Point tileLocation, int s, int t, int r, int jumpWidth, int jumpHeight, double mouseX, double mouseY) {
     int numberOfBranches = 16;
     int branches[] = new int[numberOfBranches];
@@ -295,7 +312,6 @@ public final class MapUtilities {
 
     if (hex.contains(mouseX, mouseY)) {
       branches[5] = 1;
-      // return new Point(xIndex, yIndex);
     } else if (mouseY < hex.getBounds2D().getY() + hex.getBounds2D().getHeight() / 2) { //is the mouse in the upper left triangle outside the hex -> switch to the hex left and above the current hex
       branches[6] = 1;
 
