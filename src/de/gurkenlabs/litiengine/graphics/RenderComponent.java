@@ -251,7 +251,7 @@ public class RenderComponent extends Canvas {
     }
 
     try {
-      CSV.write(branches, 20);
+      CSV.write(branches, 7);
     } catch (Exception e) {
       System.err.println("Error: " + e);
     }
