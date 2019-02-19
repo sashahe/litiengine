@@ -35,11 +35,11 @@ The following table shows the ten most complex functions that were found by `liz
 
 ###### a. Did all tools/methods get the same result?
 
-The calculations we performed resulted in very similar results. However, something that the calculations had in common, compared to the results from running lizard, was that they were slightly lower in general (see function #2, #5, #8 and #9).
+The calculations we performed resulted in very similar results. However, something that the calculations had in common, compared to the results from running lizard, was that they were slightly lower in general (see function #1, #2, #5, #8 and #9).
 
 ###### b. Are the results clear?
 
-The functions were relative straightforward which made it easy to graph. As such, it was somewhat clear how lizard calculated the CNN, given that the hand calculated CCN gave a similar result to lizard's CCN.
+Most functions were relative straightforward which made it easy to graph. As such, it was somewhat clear how lizard calculated the CNN, given that the hand calculated CCN gave a similar result to lizard's CCN.
 
 ##### 2. Are the functions just complex, or also long?
 
@@ -51,7 +51,7 @@ The purpose of the functions also vary. Some are regarding the environmental set
 
 ##### 4. Are exceptions taken into account in the given measurements?
 
-Some of the methods examined, e.g. `storeProperties`, handles exceptions. This increased the CC count by one, since it increases the possible paths through the function by one.
+Yes. Some of the methods examined, e.g. `storeProperties`, handles exceptions. This increased the CC count by one, since it increases the possible paths through the function by one.
 
 ##### 5. Is the documentation clear w.r.t. all the possible outcomes?
 
@@ -61,7 +61,7 @@ The documentation regarding the possible paths is varying. The method `getInters
 
 ### Tools
 
-LITIEngine used a software called _SonarCloud_ which has a feature of showing the coverage of a code. Since the LITIEngine community has already integrated a coverage tool to their build environment, it was relatively easy to use it. SonarCloud provides a GUI for the user to access and read the coverage for all and specific code in the project. How to setup/integrate/use [SonarCloud](https://sonarcloud.io/about) is fairly well documented and if neccessary there are also guides in [other websites](https://www.azuredevopslabs.com/labs/vstsextend/sonarcloud/) that provide information on how to do that.
+LITIEngine used a software called _SonarCloud_ which has a feature of showing the line and/or condition coverage of a code. Since the LITIEngine community has already integrated a coverage tool to their build environment, it was relatively easy to use it. SonarCloud provides a GUI for the user to access and read the coverage for all and specific code in the project. How to setup/integrate/use [SonarCloud](https://sonarcloud.io/about) is fairly well documented and if neccessary there are also guides in [other websites](https://www.azuredevopslabs.com/labs/vstsextend/sonarcloud/) that provide information on how to do that.
 
 We also made use of _lizard_ which is a tool that calculates the cyclomatic complexity for a given code. The tool was not very well documented but with a few searches we were able to figure out how to install and use lizard. We mostly used it to find the 10 functions with the highest CCN.
 
@@ -105,7 +105,7 @@ For each team member, how much time was spent in
 - Emelie = 3 hours
 - Gustaf = 3 hours
 - Sasha = 3 hours
-- Vera
+- Vera = 3 hours
 
 2.  discussions within parts of the group;
 
@@ -113,7 +113,7 @@ For each team member, how much time was spent in
 - Emelie = 2 hours
 - Gustaf = 1.5 hours
 - Sasha = 2 hours
-- Vera
+- Vera = 2 hours
 
 3.  reading documentation;
 
@@ -121,7 +121,7 @@ For each team member, how much time was spent in
 - Emelie = 2 hours
 - Gustaf = 2 hours
 - Sasha = 2 hours
-- Vera
+- Vera = 2 hours
 
 4.  configuration;
 
@@ -129,7 +129,7 @@ For each team member, how much time was spent in
 - Emelie = 1 hour
 - Gustaf = 3 hours
 - Sasha = 6 hours
-- Vera
+- Vera = 1 hour
 
 5.  analyzing code/output;
 
@@ -137,7 +137,7 @@ For each team member, how much time was spent in
 - Emelie = 2 hours
 - Gustaf = 4 hours
 - Sasha = 4 hours
-- Vera
+- Vera = 4 hours
 
 6.  writing documentation;
 
@@ -145,7 +145,7 @@ For each team member, how much time was spent in
 - Emelie = 4 hours
 - Gustaf = 1 hour
 - Sasha = 2 hours
-- Vera
+- Vera = 1 hour
 
 7.  writing code;
 
@@ -153,7 +153,7 @@ For each team member, how much time was spent in
 - Emelie = 2 hours
 - Gustaf = 4 hours
 - Sasha = 8 hours
-- Vera
+- Vera = 5 hours
 
 8.  running code?
 
@@ -161,7 +161,7 @@ For each team member, how much time was spent in
 - Emelie = 2 hours
 - Gustaf = 2 hours
 - Sasha = 3 hours
-- Vera
+- Vera = 2.5 hours
 
 ## Overall experience
 
