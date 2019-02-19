@@ -120,13 +120,13 @@ public final class MapUtilities {
   }
 
   /**
+   * 
    * Returns a Point representing the location of the tile positioned at x, y.
    * Handles both orthogonal and hexadecimal map orientations.
    *
    * Test Requirements for each map orientation:
    * Invalid coordinates x, y
    * Valid coordinates x, y
-   *
    */
   public static Point getTile(final IMap map, final double x, final double y) {
     int numberOfBranches = 26;

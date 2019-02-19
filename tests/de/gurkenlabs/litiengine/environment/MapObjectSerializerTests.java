@@ -2,6 +2,8 @@ package de.gurkenlabs.litiengine.environment;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.lang.reflect.Field;
+
 import org.junit.jupiter.api.Test;
 
 import de.gurkenlabs.litiengine.Align;
@@ -9,11 +11,38 @@ import de.gurkenlabs.litiengine.Valign;
 import de.gurkenlabs.litiengine.entities.Material;
 import de.gurkenlabs.litiengine.entities.Prop;
 import de.gurkenlabs.litiengine.entities.Rotation;
+import de.gurkenlabs.litiengine.environment.MapObjectSerializer;
 import de.gurkenlabs.litiengine.environment.tilemap.IMapObject;
 import de.gurkenlabs.litiengine.environment.tilemap.MapObjectProperty;
 import de.gurkenlabs.litiengine.environment.tilemap.TmxProperty;
 
 public class MapObjectSerializerTests {
+  @Test
+  public void testGetPropertyValueOfFloatWithDecimals() {
+    // branches[1] and branches[2]
+    Object o = new Float(1.2f);
+    Field f = o.getClass().getFields()[0];
+    String result = MapObjectSerializer.getPropertyValue(f, o);
+    assertEquals("1.2", result);
+  }
+
+  @Test
+  public void testGetPropertyValueOfFloatWithoutDecimals() {
+    // branches[1] and branches[2]
+    Object o = new Float(12.0f);
+    Field f = o.getClass().getFields()[0];
+    String result = MapObjectSerializer.getPropertyValue(f, o);
+    assertEquals("12", result);
+  }
+
+  @Test
+  public void testGetPropertyValueOfInteger() {
+    // branches[4]
+    Object o = 4;
+    Field f = o.getClass().getFields()[0];
+    String result = MapObjectSerializer.getPropertyValue(f, o);
+    assertEquals("4", result);
+  }
 
   @Test
   public void testSerialization() {
