@@ -72,6 +72,7 @@ We also made use of _lizard_ which is a tool that calculates the cyclomatic comp
 To see the patch for the implemented branch coverages use the following git command:
 
 ```shell
+git checkout testCoverage
 git diff aed8f170c90315faa2b72c6c5894f63cfa6519c6
 ```
 
@@ -88,6 +89,13 @@ Report of old coverage: [Old Results](https://github.com/sashahe/litiengine/blob
 Report of new coverage: [New Results](https://github.com/sashahe/litiengine/blob/test-branch/branchtest/result.txt)
 
 The total branch coverage went from 49.346% to 73.655%, an increase of 24.309 percentage points. In total we covered 46 new branches.
+
+To see the changes in test-branch (where the new test cases are implemented) use the following git commands:
+
+```shell
+git checkout test-branch
+git diff aed8f170c90315faa2b72c6c5894f63cfa6519c6
+```
 
 ## Refactoring
 Fucntion 2: `add`: 
@@ -175,4 +183,4 @@ For each team member, how much time was spent in
 
 ## Overall experience
 
-Working with this project gave us an insight on how it is to work with open source projects. It was also interesting to see how different people decided to implement certain features, how they structured their code as well as learned about new Java frameworks. In addition, we were able to learn new tools such as, _Lizard_ and _SonarCloud_, that we can integrate in future projects. This also allowed us to learn more about coverage which deepened our knowledge on software testing.
+Working with this project gave us an insight on how it is to work with open source projects. It was also interesting to see how different people decided to implement certain features, how they structured their code as well as learn about new Java frameworks. In addition, we were able to learn new tools such as, _Lizard_ and _SonarCloud_, that we can integrate in future projects. This also allowed us to learn more about coverage which deepened our knowledge on software testing.
