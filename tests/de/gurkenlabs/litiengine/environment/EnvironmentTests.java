@@ -154,7 +154,6 @@ public class EnvironmentTests {
   /*
    * DD2480: checks if function 3's branch #4 is reached.
    * Test RenderType is null -> getEntities should not have anything removed.
-   *
    */
   @Test
   public void testRenderTypeNull() {
