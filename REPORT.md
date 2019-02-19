@@ -92,10 +92,13 @@ git diff <insert commit ID>
 ```
 
 ## Refactoring (Not done)
+
+Function 6 `invoke`:
+ The function is responsible both for finding out what constructors an object have, prioritizing them, and invoking the constructor with the highest priority.If finding and/or prioritizing the object's constructors was moved to an external function the code would be simpler to read.  
+
 Function 10 `getTile`: 
 	The complexity of this function is very high because it handles different map orientations. To reduce the complexity the latter part of the funciton should be a separate function, dealing with the hexagonal case. This would greatly reduce the complexity of `getTile`, with a branch representing a valid or invalid coordinate for x and y. The new function dealing with the hexagonal map orientation is consice. However, it deals with increased complexity due to the fact that tiles can be located outside the map and these cases create new branches.
 
-Plan for refactoring complex code.
 
 # Effort spent (Not done)
 
