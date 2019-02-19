@@ -194,9 +194,6 @@ public class GeometricUtilities {
    *          the line b
    * @return the intersection point
    *
-   * Unit tested: Nothing
-   * Requested: All possible intersections between a line and rectangle
-   * 
    */
   public static Point2D getIntersectionPoint(final Line2D lineA, final Line2D lineB) {
 
@@ -232,7 +229,8 @@ public class GeometricUtilities {
    *          the line
    * @param rectangle
    *          the rectangle
-   * @return the point2 d
+   * @return the point2 
+   *
    */
   public static Point2D getIntersectionPoint(final Line2D line, final Rectangle2D rectangle) {
     final List<Point2D> intersectionPoints = getIntersectionPoints(line, rectangle);
@@ -252,6 +250,15 @@ public class GeometricUtilities {
    * @param rectangle
    *          the rectangle
    * @return the intersection points
+   *
+   *
+   * Returns a list of Points that are the intersection points between
+   * `line` and `rectangle`.
+   *
+   * Test requirements:
+   *    line that does not intersect with rectangle
+   *    line that intersects one side of rectangle (for each possible side)
+   *    line that intersects two sides of rectangle (for each possible combination)
    */
   public static List<Point2D> getIntersectionPoints(final Line2D line, final Rectangle2D rectangle) {
     int numberOfPaths = 4;
