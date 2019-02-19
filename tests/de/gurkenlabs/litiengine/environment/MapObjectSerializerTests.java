@@ -17,6 +17,9 @@ import de.gurkenlabs.litiengine.environment.tilemap.MapObjectProperty;
 import de.gurkenlabs.litiengine.environment.tilemap.TmxProperty;
 
 public class MapObjectSerializerTests {
+  /**
+   * Test function getPropertyValue with a float value cointaing decimals.
+   */
   @Test
   public void testGetPropertyValueOfFloatWithDecimals() {
     // branches[1] and branches[2]
@@ -26,6 +29,9 @@ public class MapObjectSerializerTests {
     assertEquals("1.2", result);
   }
 
+  /**
+   * Test function getPropertyValue with a float value without decimals.
+   */
   @Test
   public void testGetPropertyValueOfFloatWithoutDecimals() {
     // branches[1] and branches[2]
@@ -35,6 +41,9 @@ public class MapObjectSerializerTests {
     assertEquals("12", result);
   }
 
+  /**
+   * Test function getPropertyValue with an integer.
+   */
   @Test
   public void testGetPropertyValueOfInteger() {
     // branches[4]

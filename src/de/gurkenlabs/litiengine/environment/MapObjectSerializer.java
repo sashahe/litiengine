@@ -68,6 +68,15 @@ public final class MapObjectSerializer {
     }
   }
 
+  /**
+   * Returns String representation of an object. Handles array of Objects as well
+   * 
+   * @param field
+   *                for determining what kind of primitive or ojective type the Object is.
+   * @param value
+   *                Object, can be primitive or Objecte types.
+   * 
+   */
   public static String getPropertyValue(Field field, Object value) {
     int numberOfBranches = 21;
     int branches[] = new int[numberOfBranches];
