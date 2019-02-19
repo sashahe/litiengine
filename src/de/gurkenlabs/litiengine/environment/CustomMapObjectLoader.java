@@ -19,6 +19,19 @@ public final class CustomMapObjectLoader extends MapObjectLoader {
     IEntity invoke(Environment environment, IMapObject mapObject) throws InvocationTargetException, IllegalAccessException, InstantiationException;
   }
 
+  /*
+   * Creates a loader for a custom map object.
+   * Invokes the custom map object's constructor with the highest priority.
+   * The priority of the constructors is based on the parameters it takes (their types and order):
+   *
+   * Highest to lowest priority:
+   * Environment, Map Object
+   * Map Object, Environment
+   * Map Object
+   * Environment
+   * Nullary constructor
+   *
+   */
   protected CustomMapObjectLoader(String mapObjectType, Class<? extends IEntity> entityType) {
     super(mapObjectType);
     int numberOfBranches = 19;
