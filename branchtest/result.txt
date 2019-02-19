@@ -1,8 +1,8 @@
 –––––––––––––––––––––––––
 Function ID: #1
 Branches: 27
-Branches covered: 21
-Branch coverage: 77.78%
+Branches covered: 23
+Branch coverage: 85.19%
 
 Branch 1: ✅
 Branch 2: ✅
@@ -18,10 +18,10 @@ Branch 11: ✅
 Branch 12: ✅
 Branch 13: ✅
 Branch 14: ✅
-Branch 15: ❌
+Branch 15: ✅
 Branch 16: ✅
 Branch 17: ✅
-Branch 18: ❌
+Branch 18: ✅
 Branch 19: ✅
 Branch 20: ❌
 Branch 21: ✅
@@ -144,13 +144,13 @@ Branch 21: ✅
 –––––––––––––––––––––––––
 Function ID: #5
 Branches: 26
-Branches covered: 4
-Branch coverage: 15.38%
+Branches covered: 6
+Branch coverage: 23.08%
 
 Branch 1: ✅
-Branch 2: ❌
+Branch 2: ✅
 Branch 3: ✅
-Branch 4: ❌
+Branch 4: ✅
 Branch 5: ✅
 Branch 6: ✅
 Branch 7: ❌
@@ -177,51 +177,80 @@ Branch 26: ❌
 –––––––––––––––––––––––––
 Function ID: #6
 Branches: 19
-Branches covered: 8
-Branch coverage: 42.11%
+Branches covered: 13
+Branch coverage: 68.42%
 
 Branch 1: ✅
 Branch 2: ❌
 Branch 3: ✅
 Branch 4: ✅
-Branch 5: ❌
-Branch 6: ❌
-Branch 7: ❌
+Branch 5: ✅
+Branch 6: ✅
+Branch 7: ✅
 Branch 8: ❌
 Branch 9: ✅
 Branch 10: ✅
 Branch 11: ✅
 Branch 12: ❌
 Branch 13: ❌
-Branch 14: ❌
-Branch 15: ❌
+Branch 14: ✅
+Branch 15: ✅
 Branch 16: ❌
 Branch 17: ✅
 Branch 18: ❌
 Branch 19: ✅
 
 –––––––––––––––––––––––––
+Function ID: #7
+Branches: 22
+Branches covered: 0 
+Branch coverage: 0%
+
+Branch 1: ❌
+Branch 2: ❌
+Branch 3: ❌
+Branch 4: ❌
+Branch 5: ❌
+Branch 6: ❌
+Branch 7: ❌
+Branch 8: ❌
+Branch 9: ❌
+Branch 10: ❌
+Branch 11: ❌
+Branch 12: ❌
+Branch 13: ❌
+Branch 14: ❌
+Branch 15: ❌
+Branch 16: ❌
+Branch 17: ❌
+Branch 18: ❌
+Branch 19: ❌
+Branch 20: ❌
+Branch 21: ❌
+Branch 22: ❌
+
+–––––––––––––––––––––––––
 Function ID: #8
 Branches: 17
-Branches covered: 10
-Branch coverage: 58.82%
+Branches covered: 17
+Branch coverage: 100.0%
 
 Branch 1: ✅
 Branch 2: ✅
-Branch 3: ❌
+Branch 3: ✅
 Branch 4: ✅
 Branch 5: ✅
-Branch 6: ❌
+Branch 6: ✅
 Branch 7: ✅
-Branch 8: ❌
+Branch 8: ✅
 Branch 9: ✅
-Branch 10: ❌
+Branch 10: ✅
 Branch 11: ✅
-Branch 12: ❌
+Branch 12: ✅
 Branch 13: ✅
-Branch 14: ❌
+Branch 14: ✅
 Branch 15: ✅
-Branch 16: ❌
+Branch 16: ✅
 Branch 17: ✅
 
 –––––––––––––––––––––––––
@@ -249,9 +278,9 @@ Branch 16: ✅
 
 –––––––––––––––––––––––––
 Function ID: #10
-Branches: 9
-Branches covered: 9
-Branch coverage: 100.0%
+Branches: 17
+Branches covered: 12
+Branch coverage: 70.59%
 
 Branch 1: ✅
 Branch 2: ✅
@@ -261,4 +290,13 @@ Branch 5: ✅
 Branch 6: ✅
 Branch 7: ✅
 Branch 8: ✅
-Branch 9: ✅
+Branch 9: ❌
+Branch 10: ✅
+Branch 11: ✅
+Branch 12: ✅
+Branch 13: ❌
+Branch 14: ✅
+Branch 15: ❌
+Branch 16: ❌
+Branch 17: ❌
+
