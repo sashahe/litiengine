@@ -120,14 +120,14 @@ public final class MapUtilities {
   }
 
   /**
-   *  Returns a Point representing the location of the tile positioned at x, y.
-   *  Handles both orthogonal and hexadecimal map orientations.
+   * 
+   * Returns a Point representing the location of the tile positioned at x, y.
+   * Handles both orthogonal and hexadecimal map orientations.
    *
    * Test Requirements for each map orientation:
-   *   Invalid coordinates x, y
-   *   Valid coordinates x, y
-   *
-  */
+   * Invalid coordinates x, y
+   * Valid coordinates x, y
+   */
   public static Point getTile(final IMap map, final double x, final double y) {
     int numberOfBranches = 26;
     int branches[] = new int[numberOfBranches];
@@ -166,7 +166,7 @@ public final class MapUtilities {
     //the t parameter describes the distance between one end of the flat hex side to the bounding box.
     int s = map.getHexSideLength();
     int t = staggerAxis == StaggerAxis.X ? (map.getTileWidth() - s) / 2 : (map.getTileHeight() - s) / 2;
-    if(t == (map.getTileWidth() - s) / 2) {
+    if (t == (map.getTileWidth() - s) / 2) {
       branches[7] = 1;
     } else {
       branches[8] = 1;
@@ -183,27 +183,27 @@ public final class MapUtilities {
     //tile indices. This follows the hex grid click detection from http://www.quarkphysics.ca/scripsi/hexgrid/ 
 
     jumpWidth = staggerAxis == StaggerAxis.X ? t + s : map.getTileWidth();
-    if (jumpWidth == t + s ) {
+    if (jumpWidth == t + s) {
       branches[11] = 1;
     } else {
       branches[12] = 1;
     }
     jumpHeight = staggerAxis == StaggerAxis.X ? map.getTileHeight() : t + s;
-    if (jumpHeight == t + s ) {
+    if (jumpHeight == t + s) {
       branches[13] = 1;
     } else {
       branches[14] = 1;
     }
 
     xCoord = x < 0 ? (int) (x / jumpWidth) - 1 : (int) (x / jumpWidth);
-    if (xCoord ==  (int) (x / jumpWidth)) {
+    if (xCoord == (int) (x / jumpWidth)) {
       branches[15] = 1;
     } else {
       branches[16] = 1;
     }
 
     yCoord = y < 0 ? (int) (y / jumpHeight) - 1 : (int) (y / jumpHeight);
-    if (yCoord ==  (int) (y / jumpWidth)) {
+    if (yCoord == (int) (y / jumpWidth)) {
       branches[17] = 1;
     } else {
       branches[18] = 1;
@@ -213,7 +213,7 @@ public final class MapUtilities {
       branches[19] = 1;
       yCoord = (int) ((y - jumpHeight / 2.0) / jumpHeight);
       yCoord = y < jumpHeight / 2 ? yCoord - 1 : yCoord;
-      if (yCoord == jumpHeight / 2 ) {
+      if (yCoord == jumpHeight / 2) {
         branches[20] = 1;
       } else {
         branches[21] = 1;
@@ -225,7 +225,7 @@ public final class MapUtilities {
       if (xCoord == jumpWidth / 2) {
         branches[23] = 1;
       } else {
-        branches[24] =1;
+        branches[24] = 1;
       }
     } else {
       branches[25] = 1;
@@ -259,6 +259,32 @@ public final class MapUtilities {
     return assessHexStaggering(staggerAxis, staggerIndex, tileLocation, s, t, r, jumpWidth, jumpHeight, mouseX, mouseY);
   }
 
+  /*
+   * A helper method for getting the point of a tile in the map.
+   * 
+   * @param staggerAxis the stagger direction (X or Y).
+   * @param staggerIndex the stagger index (even or odd).
+   * @param tileLocation the location of the tile.
+   * @param s the length of the flat edges in the hex.
+   * @param t half the length of a pointy side in the hex.
+   * @param r the space from both ends of a flat edge of the hex to the bounding box.
+   * @param jumpWidth the width of the jump.
+   * @param jumpHeight the height of the jump.
+   * @param mouseX the mouse's X coordinate.
+   * @param mouseY the mouse's Y coordinate.
+   * 
+   * @return the point of the tile.
+   * 
+   * Test requirements:
+   *  The generated hex contains the mouse in both X and Y staggering direction.
+   *  The generated hex does not contain the mouse in X and Y stagggering direction.  
+   * 
+   * The different branches that can be taken in this method has to do with the positioning.
+   * The factors of this are if the the row or column is staggered, if the generated hex already contains
+   * the mouse, the directions of staggering and the stagger index.
+   * 
+   * @return 
+   */
   private static Point assessHexStaggering(StaggerAxis staggerAxis, StaggerIndex staggerIndex, Point tileLocation, int s, int t, int r, int jumpWidth, int jumpHeight, double mouseX, double mouseY) {
     int numberOfBranches = 16;
     int branches[] = new int[numberOfBranches];
@@ -286,7 +312,6 @@ public final class MapUtilities {
 
     if (hex.contains(mouseX, mouseY)) {
       branches[5] = 1;
-      // return new Point(xIndex, yIndex);
     } else if (mouseY < hex.getBounds2D().getY() + hex.getBounds2D().getHeight() / 2) { //is the mouse in the upper left triangle outside the hex -> switch to the hex left and above the current hex
       branches[6] = 1;
 
