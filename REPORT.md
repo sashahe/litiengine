@@ -80,7 +80,8 @@ git diff <insert commit ID>
 ```
 
 ## Refactoring (Not done)
-Plan for refactoring complex code.
+Function 10 `getTile`: 
+	The complexity of this function is very high because it handles different map orientations. To reduce the complexity the latter part of the funciton should be a separate function, dealing with the hexagonal case. This would greatly reduce the complexity of `getTile`, with a branch representing a valid or invalid coordinate for x and y. The new function dealing with the hexagonal map orientation is consice. However, it deals with increased complexity due to the fact that tiles can be located outside the map and these cases create new branches.
 
 
 # Effort spent (Not done)
