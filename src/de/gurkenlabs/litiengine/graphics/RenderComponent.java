@@ -129,6 +129,9 @@ public class RenderComponent extends Canvas {
     }
   }
 
+  /**
+   * Renders the game
+   */
   public void render() {
     final long currentMillis = System.currentTimeMillis();
     this.handleFade();
