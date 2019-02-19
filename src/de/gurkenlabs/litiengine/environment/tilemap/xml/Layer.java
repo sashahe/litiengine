@@ -273,6 +273,22 @@ public abstract class Layer extends CustomPropertyProvider implements ILayer, Se
     this.afterUnmarshal(u, parent);
   }
 
+  /**
+   * A method for unmarshalling xml.
+   * @param u an unmarshaller object.
+   * @param parent the parent object.
+   * 
+   * The looks at the passed object and updates the surrounding class's corresponding field values accordingly.
+   * 
+   * Test requirements:
+   *  when parent is of type Map
+   *  the 0 -> null parse functionality
+   *  the 1 -> null parse functionality
+   *  the true -> null parse functionality
+   * 
+   * The different branches that can be taken in this method has to do with the type of parent and the Layer's current field values. 
+   * Most of the branches are for parsing edge case values of the offsets, dimensions and other values to null.
+   */
   @SuppressWarnings("unused")
   private void afterUnmarshal(Unmarshaller u, Object parent) {
     int numberOfBranches = 17;
