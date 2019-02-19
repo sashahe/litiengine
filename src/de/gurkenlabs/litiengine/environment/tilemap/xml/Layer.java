@@ -96,6 +96,10 @@ public abstract class Layer extends CustomPropertyProvider implements ILayer, Se
     return this.height;
   }
 
+  public Integer getHeightRaw() {
+    return this.height;
+  }
+
   @Override
   public int getId() {
     return this.id;
@@ -114,6 +118,10 @@ public abstract class Layer extends CustomPropertyProvider implements ILayer, Se
     return this.opacity;
   }
 
+  public Float getOpacityRaw() {
+    return this.opacity;
+  }
+
   @Override
   public Point getOffset() {
     return new Point(this.getOffsetX(), this.getOffsetY());
@@ -128,6 +136,14 @@ public abstract class Layer extends CustomPropertyProvider implements ILayer, Se
     return this.offsetx;
   }
 
+  public Integer getOffsetXRaw() {
+    return this.offsetx;
+  }
+
+  public void setOffsetX(Integer offsetx) {
+    this.offsetx = offsetx;
+  }
+
   @Override
   public int getOffsetY() {
     if (this.offsety == null) {
@@ -135,6 +151,18 @@ public abstract class Layer extends CustomPropertyProvider implements ILayer, Se
     }
 
     return offsety;
+  }
+
+  public Integer getOffsetYRaw() {
+    return this.offsety;
+  }
+
+  public void setOffsetY(Integer offsety) {
+    this.offsety = offsety;
+  }
+
+  public Map getParentMap() {
+    return this.parentMap;
   }
 
   @Override
@@ -177,6 +205,10 @@ public abstract class Layer extends CustomPropertyProvider implements ILayer, Se
     return this.width;
   }
 
+  public Integer getWidthRaw() {
+    return this.width;
+  }
+
   @Override
   public int getOrder() {
     return this.getIntValue(LayerProperty.LAYER_ORDER, -1);
@@ -194,6 +226,10 @@ public abstract class Layer extends CustomPropertyProvider implements ILayer, Se
     }
 
     return this.visible > 0;
+  }
+
+  public Integer getIsVisibleRaw() {
+    return this.visible;
   }
 
   @Override
@@ -233,6 +269,26 @@ public abstract class Layer extends CustomPropertyProvider implements ILayer, Se
     this.setValue(LayerProperty.LAYER_ORDER, order);
   }
 
+  public void callAfterUnmarshal(Unmarshaller u, Object parent) {
+    this.afterUnmarshal(u, parent);
+  }
+
+  /**
+   * A method for unmarshalling xml.
+   * @param u an unmarshaller object.
+   * @param parent the parent object.
+   * 
+   * The looks at the passed object and updates the surrounding class's corresponding field values accordingly.
+   * 
+   * Test requirements:
+   *  when parent is of type Map
+   *  the 0 -> null parse functionality
+   *  the 1 -> null parse functionality
+   *  the true -> null parse functionality
+   * 
+   * The different branches that can be taken in this method has to do with the type of parent and the Layer's current field values. 
+   * Most of the branches are for parsing edge case values of the offsets, dimensions and other values to null.
+   */
   @SuppressWarnings("unused")
   private void afterUnmarshal(Unmarshaller u, Object parent) {
     int numberOfBranches = 17;

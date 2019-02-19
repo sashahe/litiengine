@@ -9,6 +9,9 @@ import de.gurkenlabs.litiengine.environment.tilemap.MapUtilities;
 
 public class MapUtilitiesTests {
 
+  /*
+   * Testing cases when the mouse already is inside the hex.
+   */
   @Test
   public void testHexContainsMouse() {
     Point p;
@@ -42,6 +45,9 @@ public class MapUtilitiesTests {
     assertEquals(tileLocation.getY(), p.getY());
   }
 
+  /*
+   * Testing cases when the mouse is outside the hex.
+   */
   @Test
   public void testMouseIsOutsideHex() {
     Point p;

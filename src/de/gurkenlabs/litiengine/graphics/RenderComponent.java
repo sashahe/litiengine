@@ -32,6 +32,7 @@ import de.gurkenlabs.litiengine.util.Imaging;
 import de.gurkenlabs.litiengine.util.MathUtilities;
 import de.gurkenlabs.litiengine.util.TimeUtilities;
 import de.gurkenlabs.litiengine.util.io.ImageSerializer;
+import de.gurkenlabs.litiengine.util.io.CSV;
 
 @SuppressWarnings("serial")
 public class RenderComponent extends Canvas {
@@ -132,8 +133,16 @@ public class RenderComponent extends Canvas {
     final long currentMillis = System.currentTimeMillis();
     this.handleFade();
     Graphics2D g = null;
+
+    int numberOfBranches = 22;
+    int[] branches = new int[numberOfBranches];
+
+    branches[0] = 1;
+
     do {
+      branches[1] = 1;
       try {
+        branches[2] = 1;
 
         g = (Graphics2D) this.currentBufferStrategy.getDrawGraphics();
 
@@ -143,33 +152,52 @@ public class RenderComponent extends Canvas {
         g.setClip(bounds);
         g.fill(bounds);
 
+        // Same ternary operation for both RenderingHints.KEY_ANTIALIASING and RenderingHints.KEY_INTERPOLATION
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, Game.config().graphics().colorInterpolation() ? RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF);
         g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, Game.config().graphics().colorInterpolation() ? RenderingHints.VALUE_INTERPOLATION_BILINEAR : RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+        if (Game.config().graphics().colorInterpolation()) {
+          branches[3] = 1;
+        } else {
+          branches[4] = 1;
+        }
 
         final Screen currentScreen = Game.screens().current();
         if (currentScreen != null) {
+          branches[5] = 0;
           long renderStart = System.nanoTime();
           currentScreen.render(g);
 
           if (Game.config().debug().trackRenderTimes()) {
+            branches[6] = 1;
             final double totalRenderTime = TimeUtilities.nanoToMs(System.nanoTime() - renderStart);
             Game.metrics().trackRenderTime("screen", totalRenderTime);
+          } else {
+            branches[7] = 1;
           }
+        } else {
+          branches[8] = 1;
         }
 
         final Point locationOnScreen = this.getLocationOnScreen();
         final Rectangle rect = new Rectangle(locationOnScreen.x, locationOnScreen.y, this.getWidth(), this.getHeight());
         final PointerInfo pointerInfo = MouseInfo.getPointerInfo();
         if (this.cursorImage != null && (Input.mouse().isGrabMouse() || pointerInfo != null && rect.contains(pointerInfo.getLocation()))) {
+          branches[9] = 1;
           final Point2D locationWithOffset = new Point2D.Double(Input.mouse().getLocation().getX() - this.getCursorOffsetX(), Input.mouse().getLocation().getY() - this.getCursorOffsetY());
           ImageRenderer.renderTransformed(g, this.cursorImage, locationWithOffset, this.getCursorTransform());
+        } else {
+          branches[10] = 1;
         }
 
         if (Game.config().debug().isRenderDebugMouse()) {
+          branches[11] = 1;
+
           g.setColor(Color.RED);
 
           g.draw(new Line2D.Double(Input.mouse().getLocation().getX(), Input.mouse().getLocation().getY() - DEBUG_MOUSE_SIZE, Input.mouse().getLocation().getX(), Input.mouse().getLocation().getY() + DEBUG_MOUSE_SIZE));
           g.draw(new Line2D.Double(Input.mouse().getLocation().getX() - DEBUG_MOUSE_SIZE, Input.mouse().getLocation().getY(), Input.mouse().getLocation().getX() + DEBUG_MOUSE_SIZE, Input.mouse().getLocation().getY()));
+        } else {
+          branches[12] = 1;
         }
 
         for (final Consumer<Graphics2D> consumer : this.renderedConsumer) {
@@ -177,22 +205,32 @@ public class RenderComponent extends Canvas {
         }
 
         if (this.currentAlpha != -1) {
+          branches[13] = 1;
           final int visibleAlpha = MathUtilities.clamp(Math.round(255 * (1 - this.currentAlpha)), 0, 255);
           g.setColor(new Color(this.getBackground().getRed(), this.getBackground().getGreen(), this.getBackground().getBlue(), visibleAlpha));
           g.fill(bounds);
+        } else {
+          branches[14] = 1;
         }
 
         if (this.takeScreenShot && currentScreen != null) {
+          branches[15] = 1;
           final BufferedImage img = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);
           final Graphics2D imgGraphics = img.createGraphics();
           currentScreen.render(imgGraphics);
 
           imgGraphics.dispose();
           this.saveScreenShot(img);
+        } else {
+          branches[16] = 1;
         }
       } finally {
+        branches[17] = 1;
         if (g != null) {
+          branches[18] = 1;
           g.dispose();
+        } else {
+          branches[19] = 1;
         }
       }
 
@@ -204,9 +242,18 @@ public class RenderComponent extends Canvas {
     this.frameCount++;
 
     if (currentMillis - this.lastFpsTime >= 1000) {
+      branches[20] = 1;
       this.lastFpsTime = currentMillis;
       this.fpsChangedConsumer.forEach(consumer -> consumer.accept(this.frameCount));
       this.frameCount = 0;
+    } else {
+      branches[21] = 1;
+    }
+
+    try {
+      CSV.write(branches, 20);
+    } catch (Exception e) {
+      System.err.println("Error: " + e);
     }
   }
 
