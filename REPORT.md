@@ -93,12 +93,14 @@ git diff <insert commit ID>
 
 ## Refactoring (Not done)
 
+Function 4 `getPropertyValue`:
+The function is returns a String from an object, but it also handles if the Object is an array. This could be refactored out two two different methods. One that handles if is an array, and one if not array. This will then be easier to unit test.
+
 Function 6 `invoke`:
- The function is responsible both for finding out what constructors an object have, prioritizing them, and invoking the constructor with the highest priority.If finding and/or prioritizing the object's constructors was moved to an external function the code would be simpler to read.  
+The function is responsible both for finding out what constructors an object have, prioritizing them, and invoking the constructor with the highest priority.If finding and/or prioritizing the object's constructors was moved to an external function the code would be simpler to read.
 
-Function 10 `getTile`: 
-	The complexity of this function is very high because it handles different map orientations. To reduce the complexity the latter part of the funciton should be a separate function, dealing with the hexagonal case. This would greatly reduce the complexity of `getTile`, with a branch representing a valid or invalid coordinate for x and y. The new function dealing with the hexagonal map orientation is consice. However, it deals with increased complexity due to the fact that tiles can be located outside the map and these cases create new branches.
-
+Function 10 `getTile`:
+The complexity of this function is very high because it handles different map orientations. To reduce the complexity the latter part of the funciton should be a separate function, dealing with the hexagonal case. This would greatly reduce the complexity of `getTile`, with a branch representing a valid or invalid coordinate for x and y. The new function dealing with the hexagonal map orientation is consice. However, it deals with increased complexity due to the fact that tiles can be located outside the map and these cases create new branches.
 
 # Effort spent (Not done)
 
