@@ -63,6 +63,8 @@ The documentation regarding the possible paths is varying. The method `getInters
 
 LITIEngine used a software called _SonarCloud_ which has a feature of showing the line and/or condition coverage of a code. Since the LITIEngine community has already integrated a coverage tool to their build environment, it was relatively easy to use it. SonarCloud provides a GUI for the user to access and read the coverage for all and specific code in the project. How to setup/integrate/use [SonarCloud](https://sonarcloud.io/about) is fairly well documented and if neccessary there are also guides in [other websites](https://www.azuredevopslabs.com/labs/vstsextend/sonarcloud/) that provide information on how to do that.
 
+[JaCoCo](https://github.com/jacoco/jacoco) is an external tool that we used for checking branch coverage before and after our improvements to the tests.
+
 We also made use of _lizard_ which is a tool that calculates the cyclomatic complexity for a given code. The tool was not very well documented but with a few searches we were able to figure out how to install and use lizard. We mostly used it to find the 10 functions with the highest CCN.
 
 ### DYI
