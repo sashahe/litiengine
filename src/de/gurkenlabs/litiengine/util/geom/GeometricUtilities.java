@@ -256,9 +256,15 @@ public class GeometricUtilities {
    * `line` and `rectangle`.
    *
    * Test requirements:
-   *    line that does not intersect with rectangle
-   *    line that intersects one side of rectangle (for each possible side)
-   *    line that intersects two sides of rectangle (for each possible combination)
+   *    line that does not intersect with rectangle -> empty list
+   *    line that intersects one side of rectangle (for each possible side) -> list with one Point
+   *    line that intersects two sides of rectangle (for each possible combination) -> list with two Points
+   *
+   * The different possible paths of this function are the combinations of the different
+   * possible intersections sides of the rectangle. There are some paths that are not reachable.
+   * For example there is no line that can intersect three sides of the rectange. 
+   *
+   * Refactoring this method is not proposed.
    */
   public static List<Point2D> getIntersectionPoints(final Line2D line, final Rectangle2D rectangle) {
     int numberOfPaths = 4;
