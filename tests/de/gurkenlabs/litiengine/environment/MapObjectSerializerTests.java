@@ -20,7 +20,7 @@ public class MapObjectSerializerTests {
   @Test
   public void testGetPropertyValueOfFloatWithDecimals() {
     // branches[1] and branches[2]
-    Object o = new Float(1.2f);
+    Object o = 1.2f;
     Field f = o.getClass().getFields()[0];
     String result = MapObjectSerializer.getPropertyValue(f, o);
     assertEquals("1.2", result);
@@ -29,7 +29,7 @@ public class MapObjectSerializerTests {
   @Test
   public void testGetPropertyValueOfFloatWithoutDecimals() {
     // branches[1] and branches[2]
-    Object o = new Float(12.0f);
+    Object o = 12.0f;
     Field f = o.getClass().getFields()[0];
     String result = MapObjectSerializer.getPropertyValue(f, o);
     assertEquals("12", result);
