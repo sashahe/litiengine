@@ -81,7 +81,7 @@ To use our ad-hoc tool the user needs to identify and mark down in the source co
 
 The tool might not be accurate because the program could contain "dead code" and if flagged, might not allow the tool to reach 100% branch coverage.
 
-### Evaluation (Not done)
+### Evaluation
 
 Report of old coverage: [Old Results](https://github.com/sashahe/litiengine/blob/testCoverage/branchtest/result.txt)
 
@@ -89,11 +89,9 @@ Report of new coverage: [New Results](https://github.com/sashahe/litiengine/blob
 
 To see the patch for the added test cases use the following git command:
 
-```shell
-git diff <insert commit ID>
-```
-
-## Refactoring (Not done)
+## Refactoring
+Fucntion 2: `add`: 
+The function add different types of objects called Entity by checking the type with if-statements, thus adding to the function's complexity. As such, there are several components that could be refactored into sub-methods which adds respective entity to the environment. 
 
 Function 4 `getPropertyValue`:
 The function is returns a String from an object, but it also handles if the Object is an array. This could be refactored out two two different methods. One that handles if is an array, and one if not array. This will then be easier to unit test.
@@ -107,7 +105,7 @@ This function is pretty straight to the point but its complexity is mostly due t
 Function 10 `getTile`:
 The complexity of this function is very high because it handles different map orientations. To reduce the complexity the latter part of the funciton should be a separate function, dealing with the hexagonal case. This would greatly reduce the complexity of `getTile`, with a branch representing a valid or invalid coordinate for x and y. The new function dealing with the hexagonal map orientation is consice. However, it deals with increased complexity due to the fact that tiles can be located outside the map and these cases create new branches.
 
-# Effort spent (Not done)
+# Effort spent
 
 For each team member, how much time was spent in
 
@@ -146,7 +144,7 @@ For each team member, how much time was spent in
 5.  analyzing code/output;
 
 - Adib = 3 hours
-- Emelie = 2 hours
+- Emelie = 3 hours
 - Gustaf = 4 hours
 - Sasha = 4 hours
 - Vera = 4 hours
