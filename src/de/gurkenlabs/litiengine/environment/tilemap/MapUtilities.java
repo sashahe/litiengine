@@ -121,11 +121,20 @@ public final class MapUtilities {
 
   /**
    *  Returns a Point representing the location of the tile positioned at x, y.
-   *  Handles both orthogonal and hexadecimal map orientations.
+   *  Handles both orthogonal and hexagonal map orientations.
    *
    * Test Requirements for each map orientation:
-   *   Invalid coordinates x, y
-   *   Valid coordinates x, y
+   *   Invalid coordinates x, y -> Point(-1, -1)
+   *   Valid coordinates x, y -> Point(x1 y1)
+   *
+   * The complexity of this function is very high because it handles different map orientations.
+   * To reduce the complexity the latter part of the funciton should be a separate function, dealing
+   * with the hexagonal case. This would greatly reduce the complexity of getTile, with a branch
+   * representing a valid or invalid coordinate for x and y.
+   *
+   * The new function dealing with the hexagonal map orientation is consice. However, it deals with
+   * increased complexity due to the fact that tiles can be located outside the map and these cases create
+   * new branches.
    *
   */
   public static Point getTile(final IMap map, final double x, final double y) {
