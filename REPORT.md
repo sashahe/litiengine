@@ -27,14 +27,43 @@ There are no clear guidelines regarding specifically how to build the project, h
 ## Requirements affected by functionality being refactored
 An ability is initialized with an executor. In the current state this executor must be a creature. The methods within the ability class that involve the executor are:
 
-| Function                        	| Requirements on executor:                                                                                                                         	| Requirements for testing:                                                                                                                                                                                                            	|
-|---------------------------------	|---------------------------------------------------------------------------------------------------------------------------------------------------	|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
-| Ability()                       	| Current implementation requires the executor to be a Creature. This should be refactored to instead require that the executor implements IEntity. 	|                                                                                                                                                                                                                                      	|
-| calculateImpactArea()           	| Implements getAngle()                                                                                                                             	| Return the Shape given by internalCalculateImpactArea and the angle                                                                                                                                                                  	|
-| calculatePotentialImpactArea()  	| Implements getCollisionBox()                                                                                                                      	| Return the Ellipse2D describing the potential impact area given by the ability’s range and the executors collision box                                                                                                               	|
-| canCast()                       	| Implements isDead()                                                                                                                               	| Return true when casting is possible for the executor Return false when casting is not possible for the executor                                                                                                                     	|
-| getOrigin()                     	| Implements getCollisionBox(), getCenter(), getX(), getY(), getLocation()                                                                          	| Returns executors collisionbox center when originbox is COLLISIONBOX_CENTER  Returns executors center when originbox is DIMENSION_CENTER  Returns executors x,y coords incremented with origins x,y coords when origintype is CUSTOM 	|
-| getRemainingCooldownInSeconds() 	| Executor is either null or  implements isDead()                                                                                                   	| Returns 0 if executor is dead  Return 0 if executor is null  Returns 0 if executor can not cast (cooldown is 0 if we can cast)  Returns remaining cooldown in seconds when there is a remaining cooldown                             	|
+<table>
+  <tr>
+    <td>Function</td>
+    <td>Requirements on executor: </td>
+    <td>Requirements for testing:</td>
+  </tr>
+  <tr>
+    <td>Ability()</td>
+    <td>Current implementation requires the executor to be a Creature. This should be refactored to instead require that the executor implements IEntity.</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>calculateImpactArea()</td>
+    <td>Implements getAngle()</td>
+    <td>Return the Shape given by internalCalculateImpactArea and the angle</td>
+  </tr>
+  <tr>
+    <td>calculatePotentialImpactArea()</td>
+    <td>Implements getCollisionBox()</td>
+    <td>Return the Ellipse2D describing the potential impact area given by the ability’s range and the executors collision box</td>
+  </tr>
+  <tr>
+    <td>canCast()</td>
+    <td>Implements isDead()<br></td>
+    <td>Return true when casting is possible for the executor<br><br>Return false when casting is not possible for the executor</td>
+  </tr>
+  <tr>
+    <td>getOrigin()</td>
+    <td>Implements getCollisionBox(), getCenter(), getX(), getY(), getLocation()</td>
+    <td>Returns executors collisionbox center when originbox is COLLISIONBOX_CENTER<br><br>Returns executors center when originbox is DIMENSION_CENTER<br><br>Returns executors x,y coords incremented with origins x,y coords when origintype is CUSTOM</td>
+  </tr>
+  <tr>
+    <td>getRemainingCooldownInSeconds()</td>
+    <td>Executor is either null or  implements isDead()</td>
+    <td>Returns 0 if executor is dead<br><br>Return 0 if executor is null<br><br>Returns 0 if executor can not cast (cooldown is 0 if we can cast)<br><br>Returns remaining cooldown in seconds when there is a remaining cooldown</td>
+  </tr>
+</table>
 
 ## Existing test cases relating to refactored code
 
