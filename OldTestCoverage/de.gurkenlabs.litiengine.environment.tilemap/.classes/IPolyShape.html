@@ -1,0 +1,83 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IPolyShape</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment.tilemap</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IPolyShape (de.gurkenlabs.litiengine.environment.tilemap)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">IPolyShape</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment.tilemap;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.geom.Point2D;
+<i>4</i>&nbsp;import java.util.List;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;public interface IPolyShape {
+<i>7</i>&nbsp;  /**
+<i>8</i>&nbsp;   * Gets all points of a polyline. The points are relative to the x and y
+<i>9</i>&nbsp;   * coordinate of the parent {@link IMapObject}.
+<i>10</i>&nbsp;   * 
+<i>11</i>&nbsp;   * &lt;p&gt;&lt;i&gt;To get a &lt;code&gt;Path2D&lt;/code&gt; object, you should use &lt;code&gt;Map&lt;/code&gt;&lt;/i&gt;&lt;/p&gt;
+<i>12</i>&nbsp;   * 
+<i>13</i>&nbsp;   * @return A list containing all points of the polyline.
+<i>14</i>&nbsp;   */
+<i>15</i>&nbsp;  public List&lt;Point2D&gt; getPoints();
+<i>16</i>&nbsp;  
+<i>17</i>&nbsp;  public List&lt;Point2D&gt; getAbsolutePoints(double originX, double originY);
+<i>18</i>&nbsp;  
+<i>19</i>&nbsp;  public List&lt;Point2D&gt; getAbsolutePoints(Point2D origin);
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;  /**
+<i>22</i>&nbsp;   * Tests for equality between two polylines. Two polylines are &lt;i&gt;equal&lt;/i&gt;
+<i>23</i>&nbsp;   * if they have the same points.
+<i>24</i>&nbsp;   * @param anObject The polyline to test equality for
+<i>25</i>&nbsp;   * @return Whether the two polylines are equal, or {@code false} if {@code
+<i>26</i>&nbsp;   * anObject} is not a polyline
+<i>27</i>&nbsp;   */
+<i>28</i>&nbsp;  public boolean equals(Object anObject);
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;  /**
+<i>31</i>&nbsp;   * Computes a hash code for this polyline. A polyline&#39;s hash code is equal
+<i>32</i>&nbsp;   * to the hash code of its points.
+<i>33</i>&nbsp;   * @return The hash code for this polyline
+<i>34</i>&nbsp;   */
+<i>35</i>&nbsp;  public int hashCode();
+<i>36</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

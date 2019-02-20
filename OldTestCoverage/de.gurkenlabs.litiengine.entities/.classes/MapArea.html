@@ -1,0 +1,104 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MapArea</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.entities</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MapArea (de.gurkenlabs.litiengine.entities)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MapArea</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    66.7%
+  </span>
+  <span class="absValue">
+    (2/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    77.8%
+  </span>
+  <span class="absValue">
+    (7/ 9)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.entities;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import de.gurkenlabs.litiengine.annotation.EntityInfo;
+<i>4</i>&nbsp;import de.gurkenlabs.litiengine.graphics.RenderType;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;@EntityInfo(renderType = RenderType.NONE)
+<i>7</i>&nbsp;public class MapArea extends Entity {
+<b class="nc"><i>8</i>&nbsp;  public MapArea() {</b>
+<b class="nc"><i>9</i>&nbsp;  }</b>
+<i>10</i>&nbsp;  
+<i>11</i>&nbsp;  public MapArea(final double x, final double y, final float width, final float height) {
+<b class="fc"><i>12</i>&nbsp;    this(0, null, x, y, width, height);</b>
+<b class="fc"><i>13</i>&nbsp;  }</b>
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;  public MapArea(final int id, final String name, final double x, final double y, final float width, final float height) {
+<b class="fc"><i>16</i>&nbsp;    super(id, name);</b>
+<b class="fc"><i>17</i>&nbsp;    this.setLocation(x, y);</b>
+<b class="fc"><i>18</i>&nbsp;    this.setWidth(width);</b>
+<b class="fc"><i>19</i>&nbsp;    this.setHeight(height);</b>
+<b class="fc"><i>20</i>&nbsp;  }</b>
+<i>21</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

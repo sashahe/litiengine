@@ -1,0 +1,138 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: UpdateLoop</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine</a> ]
+</div>
+
+<h1>Coverage Summary for Class: UpdateLoop (de.gurkenlabs.litiengine)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UpdateLoop</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (6/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    72.7%
+  </span>
+  <span class="absValue">
+    (16/ 22)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.util.Collections;
+<i>4</i>&nbsp;import java.util.Set;
+<i>5</i>&nbsp;import java.util.concurrent.ConcurrentHashMap;
+<i>6</i>&nbsp;import java.util.logging.Level;
+<i>7</i>&nbsp;import java.util.logging.Logger;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;public abstract class UpdateLoop extends Thread implements ILoop {
+<b class="fc"><i>10</i>&nbsp;  private static final Logger log = Logger.getLogger(UpdateLoop.class.getName());</b>
+<i>11</i>&nbsp;  private final Set&lt;IUpdateable&gt; updatables;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;  protected UpdateLoop(String name) {
+<b class="fc"><i>14</i>&nbsp;    super(name);</b>
+<b class="fc"><i>15</i>&nbsp;    this.updatables = Collections.newSetFromMap(new ConcurrentHashMap&lt;IUpdateable, Boolean&gt;());</b>
+<b class="fc"><i>16</i>&nbsp;  }</b>
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;  @Override
+<i>19</i>&nbsp;  public void run() {
+<i>20</i>&nbsp;    // nothing to do for now in the base implementation
+<b class="nc"><i>21</i>&nbsp;  }</b>
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;  @Override
+<i>24</i>&nbsp;  public void attach(final IUpdateable updatable) {
+<b class="fc"><i>25</i>&nbsp;    if (updatable == null) {</b>
+<b class="nc"><i>26</i>&nbsp;      return;</b>
+<i>27</i>&nbsp;    }
+<i>28</i>&nbsp;
+<b class="fc"><i>29</i>&nbsp;    if (!this.updatables.add(updatable)) {</b>
+<b class="nc"><i>30</i>&nbsp;      log.log(Level.FINE, &quot;Updatable {0} already registered for update!&quot;, new Object[] { updatable });</b>
+<b class="nc"><i>31</i>&nbsp;      return;</b>
+<i>32</i>&nbsp;    }
+<b class="fc"><i>33</i>&nbsp;  }</b>
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;  @Override
+<i>36</i>&nbsp;  public void detach(final IUpdateable updatable) {
+<b class="fc"><i>37</i>&nbsp;    this.updatables.remove(updatable);</b>
+<b class="fc"><i>38</i>&nbsp;  }</b>
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;  protected Set&lt;IUpdateable&gt; getUpdatables() {
+<b class="fc"><i>41</i>&nbsp;    return this.updatables;</b>
+<i>42</i>&nbsp;  }
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;  protected void update() {
+<b class="fc"><i>45</i>&nbsp;    for (IUpdateable updatable : this.getUpdatables()) {</b>
+<i>46</i>&nbsp;      try {
+<b class="fc"><i>47</i>&nbsp;        if (updatable != null) {</b>
+<b class="fc"><i>48</i>&nbsp;          updatable.update();</b>
+<i>49</i>&nbsp;        }
+<b class="nc"><i>50</i>&nbsp;      } catch (final Exception e) {</b>
+<b class="nc"><i>51</i>&nbsp;        log.log(Level.SEVERE, e.getMessage(), e);</b>
+<b class="fc"><i>52</i>&nbsp;      }</b>
+<b class="fc"><i>53</i>&nbsp;    }</b>
+<b class="fc"><i>54</i>&nbsp;  }</b>
+<i>55</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

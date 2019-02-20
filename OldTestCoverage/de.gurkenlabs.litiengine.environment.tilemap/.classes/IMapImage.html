@@ -1,0 +1,107 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IMapImage</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment.tilemap</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IMapImage (de.gurkenlabs.litiengine.environment.tilemap)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">IMapImage</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment.tilemap;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Color;
+<i>4</i>&nbsp;import java.awt.Dimension;
+<i>5</i>&nbsp;import java.io.File;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;/**
+<i>8</i>&nbsp; * The Interface IMapImage.
+<i>9</i>&nbsp; */
+<i>10</i>&nbsp;public interface IMapImage extends ICustomPropertyProvider {
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;  public String getAbsoluteSourcePath();
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;  /**
+<i>15</i>&nbsp;   * Gets the dimension.
+<i>16</i>&nbsp;   *
+<i>17</i>&nbsp;   * @return the dimension
+<i>18</i>&nbsp;   */
+<i>19</i>&nbsp;  public Dimension getDimension();
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;  /**
+<i>22</i>&nbsp;   * Gets the source.
+<i>23</i>&nbsp;   *
+<i>24</i>&nbsp;   * @return the source
+<i>25</i>&nbsp;   */
+<i>26</i>&nbsp;  public String getSource();
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;  /**
+<i>29</i>&nbsp;   * Gets the source file.
+<i>30</i>&nbsp;   *
+<i>31</i>&nbsp;   * @return the source file
+<i>32</i>&nbsp;   */
+<i>33</i>&nbsp;  public File getSourceFile();
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;  /**
+<i>36</i>&nbsp;   * Gets the transparent color.
+<i>37</i>&nbsp;   *
+<i>38</i>&nbsp;   * @return the transparent color
+<i>39</i>&nbsp;   */
+<i>40</i>&nbsp;  public Color getTransparentColor();
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;  /**
+<i>43</i>&nbsp;   * Tests for equality between two map images. Two map images
+<i>44</i>&nbsp;   * are &lt;i&gt;equal&lt;/i&gt; if they have the same absolute source path
+<i>45</i>&nbsp;   * and the same transparent color.
+<i>46</i>&nbsp;   * @param anObject The map image to test for equality with
+<i>47</i>&nbsp;   * @return Whether this map image is equal to the provided map
+<i>48</i>&nbsp;   *  image, or {@code false} if {@code anObject} is not a map
+<i>49</i>&nbsp;   *  image
+<i>50</i>&nbsp;   */
+<i>51</i>&nbsp;  public boolean equals(Object anObject);
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;  /**
+<i>54</i>&nbsp;   * Computes a hash code for this map image. The hash code for
+<i>55</i>&nbsp;   * a map image is equal to the hash code of its absolute source
+<i>56</i>&nbsp;   * path xor the hash code of its transparent color.
+<i>57</i>&nbsp;   * @return The hash code for this map image
+<i>58</i>&nbsp;   */
+<i>59</i>&nbsp;  public int hashCode();
+<i>60</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

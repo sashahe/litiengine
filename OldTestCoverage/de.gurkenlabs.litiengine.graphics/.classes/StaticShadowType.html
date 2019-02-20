@@ -1,0 +1,100 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: StaticShadowType</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.graphics</a> ]
+</div>
+
+<h1>Coverage Summary for Class: StaticShadowType (de.gurkenlabs.litiengine.graphics)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">StaticShadowType</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    66.7%
+  </span>
+  <span class="absValue">
+    (2/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    28.6%
+  </span>
+  <span class="absValue">
+    (2/ 7)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.graphics;
+<i>2</i>&nbsp;
+<b class="fc"><i>3</i>&nbsp;public enum StaticShadowType {</b>
+<b class="fc"><i>4</i>&nbsp;  DOWN, DOWNLEFT, DOWNRIGHT, LEFT, LEFTDOWN, LEFTRIGHT, NONE, NOOFFSET, RIGHT, RIGHTDOWN, RIGHTLEFT;</b>
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;  public static StaticShadowType get(final String mapObjectType) {
+<b class="nc"><i>7</i>&nbsp;    if (mapObjectType == null || mapObjectType.isEmpty()) {</b>
+<b class="nc"><i>8</i>&nbsp;      return StaticShadowType.NOOFFSET;</b>
+<i>9</i>&nbsp;    }
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;    try {
+<b class="nc"><i>12</i>&nbsp;      return StaticShadowType.valueOf(mapObjectType);</b>
+<b class="nc"><i>13</i>&nbsp;    } catch (final IllegalArgumentException iae) {</b>
+<b class="nc"><i>14</i>&nbsp;      return StaticShadowType.NOOFFSET;</b>
+<i>15</i>&nbsp;    }
+<i>16</i>&nbsp;  }
+<i>17</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

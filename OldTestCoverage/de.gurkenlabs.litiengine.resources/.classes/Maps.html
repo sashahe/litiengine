@@ -1,0 +1,149 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Maps</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.resources</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Maps (de.gurkenlabs.litiengine.resources)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Maps</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    81.5%
+  </span>
+  <span class="absValue">
+    (22/ 27)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.resources;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import javax.xml.bind.JAXBException;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.IMap;
+<i>6</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.xml.Map;
+<i>7</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.xml.TileLayer;
+<i>8</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.xml.Tileset;
+<i>9</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.xml.TmxException;
+<i>10</i>&nbsp;import de.gurkenlabs.litiengine.util.io.FileUtilities;
+<i>11</i>&nbsp;import de.gurkenlabs.litiengine.util.io.XmlUtilities;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;public final class Maps extends ResourcesContainer&lt;IMap&gt; {
+<i>14</i>&nbsp;
+<b class="fc"><i>15</i>&nbsp;  Maps() {</b>
+<b class="fc"><i>16</i>&nbsp;  }</b>
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;  public static boolean isSupported(String fileName) {
+<b class="fc"><i>19</i>&nbsp;    String extension = FileUtilities.getExtension(fileName);</b>
+<b class="fc"><i>20</i>&nbsp;    return extension != null &amp;&amp; !extension.isEmpty() &amp;&amp; extension.equalsIgnoreCase(Map.FILE_EXTENSION);</b>
+<i>21</i>&nbsp;  }
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;  @Override
+<i>24</i>&nbsp;  protected IMap load(String resourceName) throws TmxException {
+<b class="fc"><i>25</i>&nbsp;    if (!isSupported(resourceName)) {</b>
+<b class="nc"><i>26</i>&nbsp;      return null;</b>
+<i>27</i>&nbsp;    }
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    Map map;
+<i>30</i>&nbsp;    try {
+<b class="fc"><i>31</i>&nbsp;      map = XmlUtilities.readFromFile(Map.class, resourceName);</b>
+<b class="nc"><i>32</i>&nbsp;    } catch (JAXBException e) {</b>
+<b class="nc"><i>33</i>&nbsp;      throw new TmxException(&quot;could not parse xml data&quot;, e);</b>
+<b class="fc"><i>34</i>&nbsp;    }</b>
+<b class="fc"><i>35</i>&nbsp;    if (map == null) {</b>
+<b class="nc"><i>36</i>&nbsp;      return null;</b>
+<i>37</i>&nbsp;    }
+<i>38</i>&nbsp;
+<b class="fc"><i>39</i>&nbsp;    String basePath = FileUtilities.getParentDirPath(resourceName);</b>
+<b class="fc"><i>40</i>&nbsp;    for (Tileset tilesets : map.getRawTilesets()) {</b>
+<b class="fc"><i>41</i>&nbsp;      tilesets.loadFromSource(basePath);</b>
+<b class="fc"><i>42</i>&nbsp;    }</b>
+<i>43</i>&nbsp;
+<b class="fc"><i>44</i>&nbsp;    for (TileLayer layer : map.getRawTileLayers()) {</b>
+<b class="fc"><i>45</i>&nbsp;      layer.setTilesetEntries(map);</b>
+<b class="fc"><i>46</i>&nbsp;    }</b>
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    // by default the map is named by the source file
+<b class="fc"><i>49</i>&nbsp;    String name = FileUtilities.getFileName(resourceName);</b>
+<i>50</i>&nbsp;
+<b class="fc"><i>51</i>&nbsp;    map.setName(name);</b>
+<b class="fc"><i>52</i>&nbsp;    map.setPath(resourceName);</b>
+<b class="fc"><i>53</i>&nbsp;    map.updateTileTerrain();</b>
+<i>54</i>&nbsp;
+<b class="fc"><i>55</i>&nbsp;    return map;</b>
+<i>56</i>&nbsp;  }
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;  @Override
+<i>59</i>&nbsp;  protected String getAlias(String resourceName, IMap resource) {
+<b class="fc"><i>60</i>&nbsp;    if (resource == null || resource.getName() == null || resource.getName().isEmpty() || resource.getName().equalsIgnoreCase(resourceName)) {</b>
+<b class="nc"><i>61</i>&nbsp;      return null;</b>
+<i>62</i>&nbsp;    }
+<i>63</i>&nbsp;
+<b class="fc"><i>64</i>&nbsp;    return resource.getName();</b>
+<i>65</i>&nbsp;  }
+<i>66</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

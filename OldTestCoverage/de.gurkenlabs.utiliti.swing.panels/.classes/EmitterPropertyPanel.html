@@ -1,0 +1,1354 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: EmitterPropertyPanel</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.utiliti.swing.panels</a> ]
+</div>
+
+<h1>Coverage Summary for Class: EmitterPropertyPanel (de.gurkenlabs.utiliti.swing.panels)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EmitterPropertyPanel</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 24)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 931)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">EmitterPropertyPanel$ParticleColorCellRenderer</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 8)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">EmitterPropertyPanel$ParticleRadioButtonListener</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 29)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 943)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.utiliti.swing.panels;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Color;
+<i>4</i>&nbsp;import java.awt.Component;
+<i>5</i>&nbsp;import java.awt.Dimension;
+<i>6</i>&nbsp;import java.awt.event.ItemEvent;
+<i>7</i>&nbsp;import java.util.ArrayList;
+<i>8</i>&nbsp;import java.util.List;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import javax.swing.ButtonGroup;
+<i>11</i>&nbsp;import javax.swing.DefaultComboBoxModel;
+<i>12</i>&nbsp;import javax.swing.GroupLayout;
+<i>13</i>&nbsp;import javax.swing.GroupLayout.Alignment;
+<i>14</i>&nbsp;import javax.swing.JButton;
+<i>15</i>&nbsp;import javax.swing.JCheckBox;
+<i>16</i>&nbsp;import javax.swing.JColorChooser;
+<i>17</i>&nbsp;import javax.swing.JComboBox;
+<i>18</i>&nbsp;import javax.swing.JLabel;
+<i>19</i>&nbsp;import javax.swing.JPanel;
+<i>20</i>&nbsp;import javax.swing.JRadioButton;
+<i>21</i>&nbsp;import javax.swing.JScrollPane;
+<i>22</i>&nbsp;import javax.swing.JSpinner;
+<i>23</i>&nbsp;import javax.swing.JTabbedPane;
+<i>24</i>&nbsp;import javax.swing.JTable;
+<i>25</i>&nbsp;import javax.swing.JTextField;
+<i>26</i>&nbsp;import javax.swing.LayoutStyle.ComponentPlacement;
+<i>27</i>&nbsp;import javax.swing.SpinnerNumberModel;
+<i>28</i>&nbsp;import javax.swing.SwingConstants;
+<i>29</i>&nbsp;import javax.swing.border.EmptyBorder;
+<i>30</i>&nbsp;import javax.swing.table.DefaultTableCellRenderer;
+<i>31</i>&nbsp;import javax.swing.table.DefaultTableModel;
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;import de.gurkenlabs.litiengine.Align;
+<i>34</i>&nbsp;import de.gurkenlabs.litiengine.Valign;
+<i>35</i>&nbsp;import de.gurkenlabs.litiengine.environment.EmitterMapObjectLoader;
+<i>36</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.IMapObject;
+<i>37</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.MapObjectProperty;
+<i>38</i>&nbsp;import de.gurkenlabs.litiengine.graphics.emitters.Emitter;
+<i>39</i>&nbsp;import de.gurkenlabs.litiengine.graphics.emitters.particles.ParticleType;
+<i>40</i>&nbsp;import de.gurkenlabs.litiengine.graphics.emitters.xml.ParticleColor;
+<i>41</i>&nbsp;import de.gurkenlabs.litiengine.physics.CollisionType;
+<i>42</i>&nbsp;import de.gurkenlabs.litiengine.resources.Resources;
+<i>43</i>&nbsp;import de.gurkenlabs.litiengine.resources.SpritesheetResource;
+<i>44</i>&nbsp;import de.gurkenlabs.litiengine.util.ArrayUtilities;
+<i>45</i>&nbsp;import de.gurkenlabs.utiliti.EditorScreen;
+<i>46</i>&nbsp;import de.gurkenlabs.utiliti.Icons;
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;@SuppressWarnings(&quot;serial&quot;)
+<b class="nc"><i>49</i>&nbsp;public class EmitterPropertyPanel extends PropertyPanel {</b>
+<i>50</i>&nbsp;  private static final double PARTICLESPINNER_MAX_VALUE = 100.0;
+<i>51</i>&nbsp;  private static final double PARTICLEDELTA_MAX_VALUE = 1.0;
+<i>52</i>&nbsp;  private static final double PARTICLEDELTA_DEFAULT_VALUE = 0.1;
+<i>53</i>&nbsp;  private static final int PARTICLEMINTTL_DEFAULT_VALUE = 2000;
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;  private final DefaultTableModel model;
+<i>56</i>&nbsp;  private final JTextField txt;
+<i>57</i>&nbsp;  private final JTable table;
+<i>58</i>&nbsp;  private final List&lt;ParticleColor&gt; colors;
+<i>59</i>&nbsp;  private transient IMapObject backupMapObject;
+<i>60</i>&nbsp;  private final JTabbedPane tabbedPanel;
+<i>61</i>&nbsp;  private final JPanel colorPanel;
+<i>62</i>&nbsp;  private final JPanel spritePanel;
+<i>63</i>&nbsp;
+<b class="nc"><i>64</i>&nbsp;  private final JComboBox&lt;ParticleType&gt; comboBoxParticleType = new JComboBox&lt;&gt;();</b>
+<b class="nc"><i>65</i>&nbsp;  private final JComboBox&lt;String&gt; comboBoxSpriteType = new JComboBox&lt;&gt;();</b>
+<b class="nc"><i>66</i>&nbsp;  private final JComboBox&lt;String&gt; comboBoxSprite = new JComboBox&lt;&gt;();</b>
+<b class="nc"><i>67</i>&nbsp;  private final JComboBox&lt;CollisionType&gt; comboBoxCollisionType = new JComboBox&lt;&gt;();</b>
+<b class="nc"><i>68</i>&nbsp;  private final JComboBox&lt;Align&gt; comboBoxAlign = new JComboBox&lt;&gt;();</b>
+<b class="nc"><i>69</i>&nbsp;  private final JComboBox&lt;Valign&gt; comboBoxValign = new JComboBox&lt;&gt;();</b>
+<i>70</i>&nbsp;  
+<b class="nc"><i>71</i>&nbsp;  private final JRadioButton rdbtnLockDeltaX = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>72</i>&nbsp;  private final JRadioButton rdbtnLockDeltaY = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>73</i>&nbsp;  private final JRadioButton rdbtnLockGravityX = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>74</i>&nbsp;  private final JRadioButton rdbtnLockGravityY = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>75</i>&nbsp;  private final JRadioButton rdbtnLockStartWidth = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>76</i>&nbsp;  private final JRadioButton rdbtnLockStartHeight = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>77</i>&nbsp;  private final JRadioButton rdbtnLockDeltaWidth = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>78</i>&nbsp;  private final JRadioButton rdbtnLockDeltaHeight = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>79</i>&nbsp;  private final JRadioButton rdbtnRandomDeltaX = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>80</i>&nbsp;  private final JRadioButton rdbtnRandomDeltaY = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>81</i>&nbsp;  private final JRadioButton rdbtnRandomGravityX = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>82</i>&nbsp;  private final JRadioButton rdbtnRandomGravityY = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>83</i>&nbsp;  private final JRadioButton rdbtnRandomStartWidth = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>84</i>&nbsp;  private final JRadioButton rdbtnRandomStartHeight = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>85</i>&nbsp;  private final JRadioButton rdbtnRandomDeltaWidth = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>86</i>&nbsp;  private final JRadioButton rdbtnRandomDeltaHeight = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>87</i>&nbsp;  private final JRadioButton rdbtnLockParticleTTL = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>88</i>&nbsp;  private final JRadioButton rdbtnRandomParticleTTL = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>89</i>&nbsp;  private final JRadioButton rdbtnLockStartX = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>90</i>&nbsp;  private final JRadioButton rdbtnRandomStartX = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>91</i>&nbsp;  private final JRadioButton rdbtnLockStartY = new JRadioButton(&quot;&quot;);</b>
+<b class="nc"><i>92</i>&nbsp;  private final JRadioButton rdbtnRandomStartY = new JRadioButton(&quot;&quot;);</b>
+<i>93</i>&nbsp;
+<b class="nc"><i>94</i>&nbsp;  private final JButton btnSelectColor = new JButton();</b>
+<b class="nc"><i>95</i>&nbsp;  private final JButton btnAddColor = new JButton(&quot;+&quot;);</b>
+<b class="nc"><i>96</i>&nbsp;  private final JButton btnRemoveColor = new JButton(&quot;-&quot;);</b>
+<i>97</i>&nbsp;
+<b class="nc"><i>98</i>&nbsp;  private final ButtonGroup buttonGroupDeltaX = new ButtonGroup();</b>
+<b class="nc"><i>99</i>&nbsp;  private final ButtonGroup buttonGroupDeltaY = new ButtonGroup();</b>
+<b class="nc"><i>100</i>&nbsp;  private final ButtonGroup buttonGroupGravityX = new ButtonGroup();</b>
+<b class="nc"><i>101</i>&nbsp;  private final ButtonGroup buttonGroupGravityY = new ButtonGroup();</b>
+<b class="nc"><i>102</i>&nbsp;  private final ButtonGroup buttonGroupStartWidth = new ButtonGroup();</b>
+<b class="nc"><i>103</i>&nbsp;  private final ButtonGroup buttonGroupStartHeight = new ButtonGroup();</b>
+<b class="nc"><i>104</i>&nbsp;  private final ButtonGroup buttonGroupDeltaWidth = new ButtonGroup();</b>
+<b class="nc"><i>105</i>&nbsp;  private final ButtonGroup buttonGroupDeltaHeight = new ButtonGroup();</b>
+<b class="nc"><i>106</i>&nbsp;  private final ButtonGroup buttonGroupParticleTTL = new ButtonGroup();</b>
+<b class="nc"><i>107</i>&nbsp;  private final ButtonGroup buttonGroupStartX = new ButtonGroup();</b>
+<b class="nc"><i>108</i>&nbsp;  private final ButtonGroup buttonGroupStartY = new ButtonGroup();</b>
+<b class="nc"><i>109</i>&nbsp;  private final JSpinner spinnerSpawnRate = new JSpinner();</b>
+<b class="nc"><i>110</i>&nbsp;  private final JSpinner spinnerSpawnAmount = new JSpinner(new SpinnerNumberModel(Emitter.DEFAULT_SPAWNAMOUNT, 1, 100, 1));</b>
+<b class="nc"><i>111</i>&nbsp;  private final JSpinner spinnerUpdateRate = new JSpinner();</b>
+<b class="nc"><i>112</i>&nbsp;  private final JSpinner spinnerTTL = new JSpinner();</b>
+<b class="nc"><i>113</i>&nbsp;  private final JSpinner spinnerMaxParticles = new JSpinner(new SpinnerNumberModel(Emitter.DEFAULT_MAXPARTICLES, 1, 10000, 1));</b>
+<b class="nc"><i>114</i>&nbsp;  private final JSpinner spinnerColorDeviation = new JSpinner(getPercentModel());</b>
+<b class="nc"><i>115</i>&nbsp;  private final JSpinner spinnerAlphaDeviation = new JSpinner(getPercentModel());</b>
+<b class="nc"><i>116</i>&nbsp;  private final JSpinner spinnerMinDeltaX = new JSpinner(getParticleMinModel());</b>
+<b class="nc"><i>117</i>&nbsp;  private final JSpinner spinnerMinDeltaY = new JSpinner(getParticleMinModel());</b>
+<b class="nc"><i>118</i>&nbsp;  private final JSpinner spinnerMinGravityX = new JSpinner(getDeltaModel());</b>
+<b class="nc"><i>119</i>&nbsp;  private final JSpinner spinnerMinGravityY = new JSpinner(getDeltaModel());</b>
+<b class="nc"><i>120</i>&nbsp;  private final JSpinner spinnerMinStartWidth = new JSpinner(getParticleDimensionModel());</b>
+<b class="nc"><i>121</i>&nbsp;  private final JSpinner spinnerMinStartHeight = new JSpinner(getParticleDimensionModel());</b>
+<b class="nc"><i>122</i>&nbsp;  private final JSpinner spinnerMinDeltaWidth = new JSpinner(getDeltaModel());</b>
+<b class="nc"><i>123</i>&nbsp;  private final JSpinner spinnerMinDeltaHeight = new JSpinner(getDeltaModel());</b>
+<b class="nc"><i>124</i>&nbsp;  private final JSpinner spinnerMaxDeltaX = new JSpinner(getParticleMaxModel());</b>
+<b class="nc"><i>125</i>&nbsp;  private final JSpinner spinnerMaxDeltaY = new JSpinner(getParticleMaxModel());</b>
+<b class="nc"><i>126</i>&nbsp;  private final JSpinner spinnerMaxGravityX = new JSpinner(getDeltaModel());</b>
+<b class="nc"><i>127</i>&nbsp;  private final JSpinner spinnerMaxGravityY = new JSpinner(getDeltaModel());</b>
+<b class="nc"><i>128</i>&nbsp;  private final JSpinner spinnerMaxStartWidth = new JSpinner(getParticleDimensionModel());</b>
+<b class="nc"><i>129</i>&nbsp;  private final JSpinner spinnerMaxStartHeight = new JSpinner(getParticleDimensionModel());</b>
+<b class="nc"><i>130</i>&nbsp;  private final JSpinner spinnerMaxDeltaWidth = new JSpinner(getDeltaModel());</b>
+<b class="nc"><i>131</i>&nbsp;  private final JSpinner spinnerMaxDeltaHeight = new JSpinner(getDeltaModel());</b>
+<i>132</i>&nbsp;  
+<b class="nc"><i>133</i>&nbsp;  private final JSpinner spinnerMinStartX = new JSpinner(getLocationModel());</b>
+<b class="nc"><i>134</i>&nbsp;  private final JSpinner spinnerMaxStartX = new JSpinner(getLocationModel());</b>
+<b class="nc"><i>135</i>&nbsp;  private final JSpinner spinnerMinStartY = new JSpinner(getLocationModel());</b>
+<b class="nc"><i>136</i>&nbsp;  private final JSpinner spinnerMaxStartY = new JSpinner(getLocationModel());</b>
+<i>137</i>&nbsp;  
+<b class="nc"><i>138</i>&nbsp;  private final JSpinner spinnerMinParticleTTL = new JSpinner(new SpinnerNumberModel(PARTICLEMINTTL_DEFAULT_VALUE, 0, 30000, 1));</b>
+<b class="nc"><i>139</i>&nbsp;  private final JSpinner spinnerMaxParticleTTL = new JSpinner(new SpinnerNumberModel(0, 0, 30000, 1));</b>
+<i>140</i>&nbsp;  
+<i>141</i>&nbsp;  private final JCheckBox checkBoxFade;
+<b class="nc"><i>142</i>&nbsp;  private final JLabel lblPivotY = new JLabel(&quot;pivot Y&quot;);</b>
+<b class="nc"><i>143</i>&nbsp;  private final JLabel label = new JLabel(&quot;pivot X&quot;);</b>
+<i>144</i>&nbsp;
+<i>145</i>&nbsp;  /**
+<i>146</i>&nbsp;   * Create the dialog.
+<i>147</i>&nbsp;   */
+<i>148</i>&nbsp;  public EmitterPropertyPanel() {
+<b class="nc"><i>149</i>&nbsp;    super(&quot;panel_emitterProperties&quot;);</b>
+<b class="nc"><i>150</i>&nbsp;    rdbtnLockParticleTTL.setSelected(true);</b>
+<b class="nc"><i>151</i>&nbsp;    setBounds(100, 100, 700, 464);</b>
+<b class="nc"><i>152</i>&nbsp;    this.setBorder(new EmptyBorder(5, 5, 5, 5));</b>
+<i>153</i>&nbsp;
+<b class="nc"><i>154</i>&nbsp;    this.colors = new ArrayList&lt;&gt;();</b>
+<i>155</i>&nbsp;
+<b class="nc"><i>156</i>&nbsp;    this.initRadioButtons();</b>
+<i>157</i>&nbsp;
+<b class="nc"><i>158</i>&nbsp;    this.btnSelectColor.setIcon(Icons.COLOR);</b>
+<b class="nc"><i>159</i>&nbsp;    this.btnSelectColor.setMinimumSize(new Dimension(30, 10));</b>
+<b class="nc"><i>160</i>&nbsp;    this.btnSelectColor.setMaximumSize(new Dimension(30, 10));</b>
+<i>161</i>&nbsp;
+<b class="nc"><i>162</i>&nbsp;    this.comboBoxParticleType.setModel(new DefaultComboBoxModel&lt;ParticleType&gt;(ParticleType.values()));</b>
+<b class="nc"><i>163</i>&nbsp;    this.comboBoxCollisionType.setModel(new DefaultComboBoxModel&lt;CollisionType&gt;(CollisionType.values()));</b>
+<b class="nc"><i>164</i>&nbsp;    this.comboBoxAlign.setModel(new DefaultComboBoxModel&lt;Align&gt;(Align.values()));</b>
+<b class="nc"><i>165</i>&nbsp;    this.comboBoxValign.setModel(new DefaultComboBoxModel&lt;Valign&gt;(Valign.values()));</b>
+<i>166</i>&nbsp;    
+<b class="nc"><i>167</i>&nbsp;    this.comboBoxSpriteType.addItem(Resources.strings().get(&quot;panel_animation&quot;));</b>
+<b class="nc"><i>168</i>&nbsp;    this.comboBoxSpriteType.addItem(Resources.strings().get(&quot;panel_spritesheet&quot;));</b>
+<b class="nc"><i>169</i>&nbsp;    this.comboBoxSpriteType.setSelectedIndex(0);</b>
+<b class="nc"><i>170</i>&nbsp;    for (SpritesheetResource s : EditorScreen.instance().getGameFile().getSpriteSheets()) {</b>
+<b class="nc"><i>171</i>&nbsp;      this.comboBoxSprite.addItem(s.getName());</b>
+<b class="nc"><i>172</i>&nbsp;    }</b>
+<i>173</i>&nbsp;    
+<b class="nc"><i>174</i>&nbsp;    this.txt = new JTextField();</b>
+<b class="nc"><i>175</i>&nbsp;    this.txt.setEnabled(false);</b>
+<b class="nc"><i>176</i>&nbsp;    this.txt.setText(&quot;IFFF&quot;);</b>
+<b class="nc"><i>177</i>&nbsp;    this.txt.setColumns(10);</b>
+<i>178</i>&nbsp;
+<b class="nc"><i>179</i>&nbsp;    this.tabbedPanel = new JTabbedPane(JTabbedPane.TOP);</b>
+<b class="nc"><i>180</i>&nbsp;    this.tabbedPanel.setBorder(null);</b>
+<i>181</i>&nbsp;
+<b class="nc"><i>182</i>&nbsp;    this.colorPanel = new JPanel();</b>
+<b class="nc"><i>183</i>&nbsp;    this.tabbedPanel.addTab(Resources.strings().get(&quot;panel_color&quot;), null, colorPanel, null);</b>
+<b class="nc"><i>184</i>&nbsp;    this.tabbedPanel.setEnabledAt(0, true);</b>
+<i>185</i>&nbsp;
+<b class="nc"><i>186</i>&nbsp;    JScrollPane scrollPane = new JScrollPane();</b>
+<i>187</i>&nbsp;
+<b class="nc"><i>188</i>&nbsp;    this.table = new JTable();</b>
+<b class="nc"><i>189</i>&nbsp;    this.table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { &quot;percentage&quot;, &quot;color&quot; }));</b>
+<b class="nc"><i>190</i>&nbsp;    this.model = (DefaultTableModel) table.getModel();</b>
+<b class="nc"><i>191</i>&nbsp;    this.table.getColumnModel().getColumn(1).setCellRenderer(new ParticleColorCellRenderer());</b>
+<b class="nc"><i>192</i>&nbsp;    scrollPane.setViewportView(this.table);</b>
+<b class="nc"><i>193</i>&nbsp;    this.spritePanel = new JPanel();</b>
+<b class="nc"><i>194</i>&nbsp;    this.tabbedPanel.addTab(Resources.strings().get(&quot;panel_sprite&quot;), null, spritePanel, null);</b>
+<b class="nc"><i>195</i>&nbsp;    this.tabbedPanel.setEnabledAt(1, false);</b>
+<i>196</i>&nbsp;    
+<b class="nc"><i>197</i>&nbsp;    final String min = Resources.strings().get(&quot;panel_min&quot;);</b>
+<b class="nc"><i>198</i>&nbsp;    final String max = Resources.strings().get(&quot;panel_max&quot;);</b>
+<i>199</i>&nbsp; 
+<i>200</i>&nbsp;    
+<i>201</i>&nbsp;    // init all labels
+<b class="nc"><i>202</i>&nbsp;    JLabel labelEmitterData = new JLabel(Resources.strings().get(&quot;panel_emitterData&quot;));</b>
+<i>203</i>&nbsp;
+<b class="nc"><i>204</i>&nbsp;    JLabel lblSpawnRate = new JLabel(Resources.strings().get(&quot;panel_emitterSpawnRate&quot;));</b>
+<b class="nc"><i>205</i>&nbsp;    JLabel lblSpawnAmount = new JLabel(Resources.strings().get(&quot;panel_emitterSpawnAmount&quot;));</b>
+<b class="nc"><i>206</i>&nbsp;    JLabel lblParticleData = new JLabel(Resources.strings().get(&quot;panel_particleData&quot;));</b>
+<i>207</i>&nbsp;
+<b class="nc"><i>208</i>&nbsp;    JLabel lblDeltax = new JLabel(Resources.strings().get(&quot;panel_particleDeltaX&quot;));</b>
+<i>209</i>&nbsp;
+<b class="nc"><i>210</i>&nbsp;    JLabel lblDeltaY = new JLabel(Resources.strings().get(&quot;panel_particleDeltaY&quot;));</b>
+<i>211</i>&nbsp;
+<b class="nc"><i>212</i>&nbsp;    JLabel lblMin1 = new JLabel(min);</b>
+<b class="nc"><i>213</i>&nbsp;    lblMin1.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>214</i>&nbsp;
+<b class="nc"><i>215</i>&nbsp;    JLabel lblMin2 = new JLabel(min);</b>
+<b class="nc"><i>216</i>&nbsp;    lblMin2.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>217</i>&nbsp;
+<b class="nc"><i>218</i>&nbsp;    JLabel lblLock = new JLabel(Resources.strings().get(&quot;panel_lock&quot;));</b>
+<i>219</i>&nbsp;
+<b class="nc"><i>220</i>&nbsp;    JLabel lblRandom = new JLabel(Resources.strings().get(&quot;panel_random&quot;));</b>
+<i>221</i>&nbsp;
+<b class="nc"><i>222</i>&nbsp;    JLabel lblMax = new JLabel(max);</b>
+<b class="nc"><i>223</i>&nbsp;    lblMax.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>224</i>&nbsp;
+<b class="nc"><i>225</i>&nbsp;    JLabel lblMax1 = new JLabel(max);</b>
+<b class="nc"><i>226</i>&nbsp;    lblMax1.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>227</i>&nbsp;
+<b class="nc"><i>228</i>&nbsp;    JLabel lblUpdateDelay = new JLabel(Resources.strings().get(&quot;panel_emitterUpdateDelay&quot;));</b>
+<i>229</i>&nbsp;
+<b class="nc"><i>230</i>&nbsp;    JLabel lblGravityX = new JLabel(Resources.strings().get(&quot;panel_particleGravityX&quot;));</b>
+<i>231</i>&nbsp;
+<b class="nc"><i>232</i>&nbsp;    JLabel lblMin3 = new JLabel(min);</b>
+<b class="nc"><i>233</i>&nbsp;    lblMin3.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>234</i>&nbsp;
+<b class="nc"><i>235</i>&nbsp;    JLabel lblMax2 = new JLabel(max);</b>
+<b class="nc"><i>236</i>&nbsp;    lblMax2.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>237</i>&nbsp;
+<b class="nc"><i>238</i>&nbsp;    JLabel labelTtl = new JLabel(Resources.strings().get(&quot;panel_emitterTTL&quot;));</b>
+<i>239</i>&nbsp;
+<b class="nc"><i>240</i>&nbsp;    JLabel lblGravityY = new JLabel(Resources.strings().get(&quot;panel_particleGravityY&quot;));</b>
+<i>241</i>&nbsp;
+<b class="nc"><i>242</i>&nbsp;    JLabel lblMin4 = new JLabel(min);</b>
+<b class="nc"><i>243</i>&nbsp;    lblMin4.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>244</i>&nbsp;
+<b class="nc"><i>245</i>&nbsp;    JLabel lblMax3 = new JLabel(max);</b>
+<b class="nc"><i>246</i>&nbsp;    lblMax3.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>247</i>&nbsp;
+<b class="nc"><i>248</i>&nbsp;    JLabel lblMaxParticles = new JLabel(Resources.strings().get(&quot;panel_emitterMaxParticles&quot;));</b>
+<i>249</i>&nbsp;
+<b class="nc"><i>250</i>&nbsp;    JLabel lblStartWidth = new JLabel(Resources.strings().get(&quot;panel_particleStartWidth&quot;));</b>
+<i>251</i>&nbsp;
+<b class="nc"><i>252</i>&nbsp;    JLabel lblMin5 = new JLabel(min);</b>
+<b class="nc"><i>253</i>&nbsp;    lblMin5.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>254</i>&nbsp;
+<b class="nc"><i>255</i>&nbsp;    JLabel lblMax4 = new JLabel(max);</b>
+<b class="nc"><i>256</i>&nbsp;    lblMax4.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>257</i>&nbsp;
+<b class="nc"><i>258</i>&nbsp;    JLabel lblParticleType = new JLabel(Resources.strings().get(&quot;panel_particleType&quot;));</b>
+<i>259</i>&nbsp;
+<b class="nc"><i>260</i>&nbsp;    JLabel lblStartHeight = new JLabel(Resources.strings().get(&quot;panel_particleStartHeight&quot;));</b>
+<i>261</i>&nbsp;
+<b class="nc"><i>262</i>&nbsp;    JLabel lblMin6 = new JLabel(min);</b>
+<b class="nc"><i>263</i>&nbsp;    lblMin6.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>264</i>&nbsp;
+<b class="nc"><i>265</i>&nbsp;    JLabel lblMax5 = new JLabel(max);</b>
+<b class="nc"><i>266</i>&nbsp;    lblMax5.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>267</i>&nbsp;
+<b class="nc"><i>268</i>&nbsp;    JLabel lblColorDeviation = new JLabel(Resources.strings().get(&quot;panel_colorDeviation&quot;));</b>
+<i>269</i>&nbsp;
+<b class="nc"><i>270</i>&nbsp;    JLabel lblAlphaDeviation = new JLabel(Resources.strings().get(&quot;panel_alphaDeviation&quot;));</b>
+<i>271</i>&nbsp;
+<b class="nc"><i>272</i>&nbsp;    JLabel lblEmittertype = new JLabel(Resources.strings().get(&quot;panel_spriteType&quot;));</b>
+<i>273</i>&nbsp;
+<b class="nc"><i>274</i>&nbsp;    JLabel lblSpritesheet = new JLabel(Resources.strings().get(&quot;panel_sprite&quot;));</b>
+<i>275</i>&nbsp;
+<b class="nc"><i>276</i>&nbsp;    JLabel lblDeltaWidth = new JLabel(Resources.strings().get(&quot;panel_particleDeltaWidth&quot;));</b>
+<i>277</i>&nbsp;
+<b class="nc"><i>278</i>&nbsp;    JLabel lblMin7 = new JLabel(min);</b>
+<b class="nc"><i>279</i>&nbsp;    lblMin7.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>280</i>&nbsp;
+<b class="nc"><i>281</i>&nbsp;    JLabel lblMax6 = new JLabel(max);</b>
+<b class="nc"><i>282</i>&nbsp;    lblMax6.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>283</i>&nbsp;
+<b class="nc"><i>284</i>&nbsp;    JLabel lblDeltaHeight = new JLabel(Resources.strings().get(&quot;panel_particleDeltaHeight&quot;));</b>
+<i>285</i>&nbsp;
+<b class="nc"><i>286</i>&nbsp;    JLabel lblMin = new JLabel(min);</b>
+<b class="nc"><i>287</i>&nbsp;    lblMin.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>288</i>&nbsp;
+<b class="nc"><i>289</i>&nbsp;    JLabel lblMax7 = new JLabel(max);</b>
+<b class="nc"><i>290</i>&nbsp;    lblMax7.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>291</i>&nbsp;
+<b class="nc"><i>292</i>&nbsp;    JLabel lblStaticPhysics = new JLabel(&quot;collision type&quot;);</b>
+<b class="nc"><i>293</i>&nbsp;    lblStaticPhysics.setHorizontalAlignment(SwingConstants.LEFT);</b>
+<i>294</i>&nbsp;
+<b class="nc"><i>295</i>&nbsp;    JLabel lblText = new JLabel(Resources.strings().get(&quot;panel_particleText&quot;));</b>
+<i>296</i>&nbsp;
+<b class="nc"><i>297</i>&nbsp;    JLabel lblParticleTtl = new JLabel(&quot;particle ttl&quot;);</b>
+<i>298</i>&nbsp;
+<b class="nc"><i>299</i>&nbsp;    JLabel labelMinParticleTtl = new JLabel(min);</b>
+<b class="nc"><i>300</i>&nbsp;    labelMinParticleTtl.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>301</i>&nbsp;
+<b class="nc"><i>302</i>&nbsp;    JLabel lblMaxParticleTtl = new JLabel(max);</b>
+<b class="nc"><i>303</i>&nbsp;    lblMaxParticleTtl.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>304</i>&nbsp;    
+<b class="nc"><i>305</i>&nbsp;    JLabel lblStartX = new JLabel(&quot;start x&quot;);</b>
+<b class="nc"><i>306</i>&nbsp;    JLabel lblStartY = new JLabel(&quot;start y&quot;);</b>
+<i>307</i>&nbsp;    
+<b class="nc"><i>308</i>&nbsp;    JLabel label8 = new JLabel(min);</b>
+<b class="nc"><i>309</i>&nbsp;    label8.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>310</i>&nbsp;    
+<b class="nc"><i>311</i>&nbsp;    JLabel label9 = new JLabel(max);</b>
+<b class="nc"><i>312</i>&nbsp;    label9.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>313</i>&nbsp;    
+<b class="nc"><i>314</i>&nbsp;    JLabel label10 = new JLabel(min);</b>
+<b class="nc"><i>315</i>&nbsp;    label10.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>316</i>&nbsp;    
+<b class="nc"><i>317</i>&nbsp;    JLabel label11 = new JLabel(max);</b>
+<b class="nc"><i>318</i>&nbsp;    label11.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>319</i>&nbsp;
+<b class="nc"><i>320</i>&nbsp;    GroupLayout groupLayoutcolorPanel = new GroupLayout(colorPanel);</b>
+<b class="nc"><i>321</i>&nbsp;    groupLayoutcolorPanel.setHorizontalGroup(groupLayoutcolorPanel.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>322</i>&nbsp;        .addGroup(groupLayoutcolorPanel.createSequentialGroup().addGap(10)</b>
+<b class="nc"><i>323</i>&nbsp;            .addGroup(groupLayoutcolorPanel.createParallelGroup(Alignment.LEADING).addComponent(btnSelectColor, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE).addComponent(btnAddColor, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>324</i>&nbsp;                .addComponent(btnRemoveColor, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>325</i>&nbsp;                .addGroup(groupLayoutcolorPanel.createSequentialGroup().addComponent(lblColorDeviation, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE).addComponent(spinnerColorDeviation, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>326</i>&nbsp;                .addGroup(groupLayoutcolorPanel.createSequentialGroup().addComponent(lblAlphaDeviation, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE).addComponent(spinnerAlphaDeviation, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)))</b>
+<b class="nc"><i>327</i>&nbsp;            .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)));</b>
+<b class="nc"><i>328</i>&nbsp;    groupLayoutcolorPanel.setVerticalGroup(groupLayoutcolorPanel.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>329</i>&nbsp;        .addGroup(groupLayoutcolorPanel.createSequentialGroup().addComponent(btnSelectColor, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE).addGap(7).addComponent(btnAddColor).addComponent(btnRemoveColor).addGap(12)</b>
+<b class="nc"><i>330</i>&nbsp;            .addGroup(groupLayoutcolorPanel.createParallelGroup(Alignment.LEADING).addGroup(groupLayoutcolorPanel.createSequentialGroup().addGap(3).addComponent(lblColorDeviation)).addComponent(spinnerColorDeviation, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>331</i>&nbsp;            .addGap(10)</b>
+<b class="nc"><i>332</i>&nbsp;            .addGroup(groupLayoutcolorPanel.createParallelGroup(Alignment.LEADING).addGroup(groupLayoutcolorPanel.createSequentialGroup().addGap(3).addComponent(lblAlphaDeviation)).addComponent(spinnerAlphaDeviation, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))</b>
+<b class="nc"><i>333</i>&nbsp;        .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE));</b>
+<b class="nc"><i>334</i>&nbsp;    colorPanel.setLayout(groupLayoutcolorPanel);</b>
+<i>335</i>&nbsp;
+<b class="nc"><i>336</i>&nbsp;    GroupLayout groupLayoutSpritePanel = new GroupLayout(spritePanel);</b>
+<b class="nc"><i>337</i>&nbsp;    groupLayoutSpritePanel.setHorizontalGroup(groupLayoutSpritePanel.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>338</i>&nbsp;        .addGroup(groupLayoutSpritePanel.createSequentialGroup().addGap(10)</b>
+<b class="nc"><i>339</i>&nbsp;            .addGroup(groupLayoutSpritePanel.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>340</i>&nbsp;                .addGroup(groupLayoutSpritePanel.createSequentialGroup().addComponent(lblEmittertype, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE).addComponent(comboBoxSpriteType, GroupLayout.PREFERRED_SIZE, 191, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>341</i>&nbsp;                .addGroup(groupLayoutSpritePanel.createSequentialGroup().addComponent(lblSpritesheet).addGap(43).addComponent(comboBoxSprite, GroupLayout.PREFERRED_SIZE, 191, GroupLayout.PREFERRED_SIZE)))));</b>
+<b class="nc"><i>342</i>&nbsp;    groupLayoutSpritePanel.setVerticalGroup(groupLayoutSpritePanel.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>343</i>&nbsp;        .addGroup(groupLayoutSpritePanel.createSequentialGroup().addGap(5)</b>
+<b class="nc"><i>344</i>&nbsp;            .addGroup(groupLayoutSpritePanel.createParallelGroup(Alignment.LEADING).addGroup(groupLayoutSpritePanel.createSequentialGroup().addGap(3).addComponent(lblEmittertype)).addComponent(comboBoxSpriteType, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>345</i>&nbsp;            .addGap(10)</b>
+<b class="nc"><i>346</i>&nbsp;            .addGroup(groupLayoutSpritePanel.createParallelGroup(Alignment.LEADING).addGroup(groupLayoutSpritePanel.createSequentialGroup().addGap(3).addComponent(lblSpritesheet)).addComponent(comboBoxSprite, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))));</b>
+<b class="nc"><i>347</i>&nbsp;    spritePanel.setLayout(groupLayoutSpritePanel);</b>
+<i>348</i>&nbsp;    
+<b class="nc"><i>349</i>&nbsp;    this.checkBoxFade = new JCheckBox(&quot;fade&quot;);</b>
+<b class="nc"><i>350</i>&nbsp;    this.checkBoxFade.setSelected(true);</b>
+<i>351</i>&nbsp;
+<b class="nc"><i>352</i>&nbsp;    GroupLayout groupLayout = new GroupLayout(this);</b>
+<b class="nc"><i>353</i>&nbsp;    groupLayout.setHorizontalGroup(</b>
+<b class="nc"><i>354</i>&nbsp;      groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>355</i>&nbsp;        .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>356</i>&nbsp;          .addGap(10)</b>
+<b class="nc"><i>357</i>&nbsp;          .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>358</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>359</i>&nbsp;              .addComponent(labelEmitterData)</b>
+<b class="nc"><i>360</i>&nbsp;              .addGap(226)</b>
+<b class="nc"><i>361</i>&nbsp;              .addComponent(lblParticleData)</b>
+<b class="nc"><i>362</i>&nbsp;              .addGap(219)</b>
+<b class="nc"><i>363</i>&nbsp;              .addComponent(lblLock)</b>
+<b class="nc"><i>364</i>&nbsp;              .addGap(13)</b>
+<b class="nc"><i>365</i>&nbsp;              .addComponent(lblRandom))</b>
+<b class="nc"><i>366</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>367</i>&nbsp;              .addComponent(lblParticleType)</b>
+<b class="nc"><i>368</i>&nbsp;              .addGap(20)</b>
+<b class="nc"><i>369</i>&nbsp;              .addComponent(comboBoxParticleType, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>370</i>&nbsp;              .addGap(18)</b>
+<b class="nc"><i>371</i>&nbsp;              .addComponent(lblStartHeight, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>372</i>&nbsp;              .addComponent(lblMin6, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>373</i>&nbsp;              .addComponent(spinnerMinStartHeight, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>374</i>&nbsp;              .addComponent(lblMax5, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>375</i>&nbsp;              .addComponent(spinnerMaxStartHeight, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>376</i>&nbsp;              .addGap(29)</b>
+<b class="nc"><i>377</i>&nbsp;              .addComponent(rdbtnLockStartHeight)</b>
+<b class="nc"><i>378</i>&nbsp;              .addGap(19)</b>
+<b class="nc"><i>379</i>&nbsp;              .addComponent(rdbtnRandomStartHeight))</b>
+<b class="nc"><i>380</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>381</i>&nbsp;              .addComponent(tabbedPanel, GroupLayout.PREFERRED_SIZE, 286, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>382</i>&nbsp;              .addGap(18)</b>
+<b class="nc"><i>383</i>&nbsp;              .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>384</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>385</i>&nbsp;                  .addComponent(lblStaticPhysics, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>386</i>&nbsp;                  .addPreferredGap(ComponentPlacement.UNRELATED)</b>
+<b class="nc"><i>387</i>&nbsp;                  .addComponent(comboBoxCollisionType, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>388</i>&nbsp;                  .addPreferredGap(ComponentPlacement.UNRELATED)</b>
+<b class="nc"><i>389</i>&nbsp;                  .addComponent(checkBoxFade))</b>
+<b class="nc"><i>390</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>391</i>&nbsp;                  .addComponent(lblStartY, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>392</i>&nbsp;                  .addComponent(label10, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>393</i>&nbsp;                  .addComponent(spinnerMinStartY, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>394</i>&nbsp;                  .addComponent(label11, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>395</i>&nbsp;                  .addComponent(spinnerMaxStartY, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>396</i>&nbsp;                  .addGap(29)</b>
+<b class="nc"><i>397</i>&nbsp;                  .addComponent(rdbtnLockStartY, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>398</i>&nbsp;                  .addGap(19)</b>
+<b class="nc"><i>399</i>&nbsp;                  .addComponent(rdbtnRandomStartY, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>400</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>401</i>&nbsp;                  .addComponent(lblStartX, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>402</i>&nbsp;                  .addComponent(label8, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>403</i>&nbsp;                  .addComponent(spinnerMinStartX, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>404</i>&nbsp;                  .addComponent(label9, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>405</i>&nbsp;                  .addComponent(spinnerMaxStartX, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>406</i>&nbsp;                  .addGap(29)</b>
+<b class="nc"><i>407</i>&nbsp;                  .addComponent(rdbtnLockStartX, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>408</i>&nbsp;                  .addGap(19)</b>
+<b class="nc"><i>409</i>&nbsp;                  .addComponent(rdbtnRandomStartX, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>410</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>411</i>&nbsp;                  .addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)</b>
+<b class="nc"><i>412</i>&nbsp;                    .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>413</i>&nbsp;                      .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>414</i>&nbsp;                        .addComponent(lblDeltaWidth, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>415</i>&nbsp;                        .addComponent(lblDeltaHeight, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>416</i>&nbsp;                      .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>417</i>&nbsp;                        .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>418</i>&nbsp;                          .addComponent(lblMin7, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>419</i>&nbsp;                          .addComponent(spinnerMinDeltaWidth, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>420</i>&nbsp;                        .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>421</i>&nbsp;                          .addComponent(lblMin, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>422</i>&nbsp;                          .addComponent(spinnerMinDeltaHeight, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)))</b>
+<b class="nc"><i>423</i>&nbsp;                      .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>424</i>&nbsp;                        .addComponent(lblMax6, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>425</i>&nbsp;                        .addComponent(lblMax7, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>426</i>&nbsp;                      .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>427</i>&nbsp;                        .addComponent(spinnerMaxDeltaWidth, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>428</i>&nbsp;                        .addComponent(spinnerMaxDeltaHeight, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)))</b>
+<b class="nc"><i>429</i>&nbsp;                    .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>430</i>&nbsp;                      .addComponent(lblParticleTtl, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>431</i>&nbsp;                      .addComponent(labelMinParticleTtl, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>432</i>&nbsp;                      .addGap(1)</b>
+<b class="nc"><i>433</i>&nbsp;                      .addComponent(spinnerMinParticleTTL, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>434</i>&nbsp;                      .addPreferredGap(ComponentPlacement.RELATED)</b>
+<b class="nc"><i>435</i>&nbsp;                      .addComponent(lblMaxParticleTtl, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>436</i>&nbsp;                      .addGap(1)</b>
+<b class="nc"><i>437</i>&nbsp;                      .addComponent(spinnerMaxParticleTTL, 0, 0, Short.MAX_VALUE)))</b>
+<b class="nc"><i>438</i>&nbsp;                  .addGap(29)</b>
+<b class="nc"><i>439</i>&nbsp;                  .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)</b>
+<b class="nc"><i>440</i>&nbsp;                    .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>441</i>&nbsp;                      .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>442</i>&nbsp;                        .addComponent(rdbtnLockDeltaWidth)</b>
+<b class="nc"><i>443</i>&nbsp;                        .addComponent(rdbtnLockDeltaHeight))</b>
+<b class="nc"><i>444</i>&nbsp;                      .addGap(19)</b>
+<b class="nc"><i>445</i>&nbsp;                      .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>446</i>&nbsp;                        .addComponent(rdbtnRandomDeltaWidth)</b>
+<b class="nc"><i>447</i>&nbsp;                        .addComponent(rdbtnRandomDeltaHeight)))</b>
+<b class="nc"><i>448</i>&nbsp;                    .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>449</i>&nbsp;                      .addComponent(rdbtnLockParticleTTL, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>450</i>&nbsp;                      .addGap(19)</b>
+<b class="nc"><i>451</i>&nbsp;                      .addComponent(rdbtnRandomParticleTTL, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))))</b>
+<b class="nc"><i>452</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>453</i>&nbsp;                  .addPreferredGap(ComponentPlacement.RELATED)</b>
+<b class="nc"><i>454</i>&nbsp;                  .addComponent(lblText, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>455</i>&nbsp;                  .addPreferredGap(ComponentPlacement.UNRELATED)</b>
+<b class="nc"><i>456</i>&nbsp;                  .addComponent(txt, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE))))</b>
+<b class="nc"><i>457</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>458</i>&nbsp;              .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)</b>
+<b class="nc"><i>459</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>460</i>&nbsp;                  .addComponent(lblMaxParticles)</b>
+<b class="nc"><i>461</i>&nbsp;                  .addGap(17)</b>
+<b class="nc"><i>462</i>&nbsp;                  .addComponent(spinnerMaxParticles, 0, 0, Short.MAX_VALUE))</b>
+<b class="nc"><i>463</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>464</i>&nbsp;                  .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>465</i>&nbsp;                    .addGroup(Alignment.TRAILING, groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>466</i>&nbsp;                      .addGroup(Alignment.TRAILING, groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>467</i>&nbsp;                        .addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>468</i>&nbsp;                          .addComponent(lblSpawnRate)</b>
+<b class="nc"><i>469</i>&nbsp;                          .addGap(26))</b>
+<b class="nc"><i>470</i>&nbsp;                        .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>471</i>&nbsp;                          .addComponent(lblSpawnAmount)</b>
+<b class="nc"><i>472</i>&nbsp;                          .addGap(1)))</b>
+<b class="nc"><i>473</i>&nbsp;                      .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>474</i>&nbsp;                        .addComponent(lblUpdateDelay)</b>
+<b class="nc"><i>475</i>&nbsp;                        .addPreferredGap(ComponentPlacement.RELATED)))</b>
+<b class="nc"><i>476</i>&nbsp;                    .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>477</i>&nbsp;                      .addComponent(labelTtl)</b>
+<b class="nc"><i>478</i>&nbsp;                      .addGap(1)))</b>
+<b class="nc"><i>479</i>&nbsp;                  .addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)</b>
+<b class="nc"><i>480</i>&nbsp;                    .addComponent(spinnerTTL)</b>
+<b class="nc"><i>481</i>&nbsp;                    .addComponent(spinnerUpdateRate)</b>
+<b class="nc"><i>482</i>&nbsp;                    .addComponent(spinnerSpawnAmount)</b>
+<b class="nc"><i>483</i>&nbsp;                    .addComponent(spinnerSpawnRate, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE))))</b>
+<b class="nc"><i>484</i>&nbsp;              .addPreferredGap(ComponentPlacement.UNRELATED)</b>
+<b class="nc"><i>485</i>&nbsp;              .addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)</b>
+<b class="nc"><i>486</i>&nbsp;                .addComponent(lblPivotY, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)</b>
+<b class="nc"><i>487</i>&nbsp;                .addComponent(label, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))</b>
+<b class="nc"><i>488</i>&nbsp;              .addGap(18)</b>
+<b class="nc"><i>489</i>&nbsp;              .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>490</i>&nbsp;                .addComponent(comboBoxAlign, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>491</i>&nbsp;                .addComponent(comboBoxValign, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>492</i>&nbsp;              .addGap(16)</b>
+<b class="nc"><i>493</i>&nbsp;              .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)</b>
+<b class="nc"><i>494</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>495</i>&nbsp;                  .addComponent(lblStartWidth, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>496</i>&nbsp;                  .addComponent(lblMin5, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>497</i>&nbsp;                  .addComponent(spinnerMinStartWidth, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>498</i>&nbsp;                  .addComponent(lblMax4, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>499</i>&nbsp;                  .addComponent(spinnerMaxStartWidth, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>500</i>&nbsp;                  .addGap(29)</b>
+<b class="nc"><i>501</i>&nbsp;                  .addComponent(rdbtnLockStartWidth)</b>
+<b class="nc"><i>502</i>&nbsp;                  .addGap(19)</b>
+<b class="nc"><i>503</i>&nbsp;                  .addComponent(rdbtnRandomStartWidth))</b>
+<b class="nc"><i>504</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>505</i>&nbsp;                  .addComponent(lblGravityY, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>506</i>&nbsp;                  .addComponent(lblMin4, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>507</i>&nbsp;                  .addComponent(spinnerMinGravityY, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>508</i>&nbsp;                  .addComponent(lblMax3, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>509</i>&nbsp;                  .addComponent(spinnerMaxGravityY, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>510</i>&nbsp;                  .addGap(29)</b>
+<b class="nc"><i>511</i>&nbsp;                  .addComponent(rdbtnLockGravityY)</b>
+<b class="nc"><i>512</i>&nbsp;                  .addGap(19)</b>
+<b class="nc"><i>513</i>&nbsp;                  .addComponent(rdbtnRandomGravityY))</b>
+<b class="nc"><i>514</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>515</i>&nbsp;                  .addComponent(lblGravityX, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>516</i>&nbsp;                  .addComponent(lblMin3, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>517</i>&nbsp;                  .addComponent(spinnerMinGravityX, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>518</i>&nbsp;                  .addComponent(lblMax2, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>519</i>&nbsp;                  .addComponent(spinnerMaxGravityX, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>520</i>&nbsp;                  .addGap(29)</b>
+<b class="nc"><i>521</i>&nbsp;                  .addComponent(rdbtnLockGravityX)</b>
+<b class="nc"><i>522</i>&nbsp;                  .addGap(19)</b>
+<b class="nc"><i>523</i>&nbsp;                  .addComponent(rdbtnRandomGravityX))</b>
+<b class="nc"><i>524</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>525</i>&nbsp;                  .addComponent(lblDeltaY, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>526</i>&nbsp;                  .addComponent(lblMin2, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>527</i>&nbsp;                  .addComponent(spinnerMinDeltaY, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>528</i>&nbsp;                  .addComponent(lblMax1, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>529</i>&nbsp;                  .addComponent(spinnerMaxDeltaY, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>530</i>&nbsp;                  .addGap(29)</b>
+<b class="nc"><i>531</i>&nbsp;                  .addComponent(rdbtnLockDeltaY)</b>
+<b class="nc"><i>532</i>&nbsp;                  .addGap(19)</b>
+<b class="nc"><i>533</i>&nbsp;                  .addComponent(rdbtnRandomDeltaY))</b>
+<b class="nc"><i>534</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>535</i>&nbsp;                  .addComponent(lblDeltax, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>536</i>&nbsp;                  .addComponent(lblMin1, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>537</i>&nbsp;                  .addComponent(spinnerMinDeltaX, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>538</i>&nbsp;                  .addComponent(lblMax, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>539</i>&nbsp;                  .addComponent(spinnerMaxDeltaX, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>540</i>&nbsp;                  .addGap(29)</b>
+<b class="nc"><i>541</i>&nbsp;                  .addComponent(rdbtnLockDeltaX)</b>
+<b class="nc"><i>542</i>&nbsp;                  .addGap(19)</b>
+<b class="nc"><i>543</i>&nbsp;                  .addComponent(rdbtnRandomDeltaX)))))</b>
+<b class="nc"><i>544</i>&nbsp;          .addContainerGap(12, Short.MAX_VALUE))</b>
+<i>545</i>&nbsp;    );
+<b class="nc"><i>546</i>&nbsp;    groupLayout.setVerticalGroup(</b>
+<b class="nc"><i>547</i>&nbsp;      groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>548</i>&nbsp;        .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>549</i>&nbsp;          .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>550</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>551</i>&nbsp;              .addGap(10)</b>
+<b class="nc"><i>552</i>&nbsp;              .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>553</i>&nbsp;                .addComponent(labelEmitterData)</b>
+<b class="nc"><i>554</i>&nbsp;                .addComponent(lblParticleData)</b>
+<b class="nc"><i>555</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>556</i>&nbsp;                  .addGap(1)</b>
+<b class="nc"><i>557</i>&nbsp;                  .addComponent(lblLock))</b>
+<b class="nc"><i>558</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>559</i>&nbsp;                  .addGap(1)</b>
+<b class="nc"><i>560</i>&nbsp;                  .addComponent(lblRandom)))</b>
+<b class="nc"><i>561</i>&nbsp;              .addGap(12)</b>
+<b class="nc"><i>562</i>&nbsp;              .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>563</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>564</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>565</i>&nbsp;                  .addComponent(lblSpawnRate))</b>
+<b class="nc"><i>566</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>567</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>568</i>&nbsp;                  .addComponent(lblDeltax))</b>
+<b class="nc"><i>569</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>570</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>571</i>&nbsp;                  .addComponent(lblMin1))</b>
+<b class="nc"><i>572</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>573</i>&nbsp;                  .addGap(1)</b>
+<b class="nc"><i>574</i>&nbsp;                  .addComponent(spinnerMinDeltaX, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>575</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>576</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>577</i>&nbsp;                  .addComponent(lblMax))</b>
+<b class="nc"><i>578</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>579</i>&nbsp;                  .addGap(1)</b>
+<b class="nc"><i>580</i>&nbsp;                  .addComponent(spinnerMaxDeltaX, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>581</i>&nbsp;                .addComponent(rdbtnLockDeltaX)</b>
+<b class="nc"><i>582</i>&nbsp;                .addComponent(rdbtnRandomDeltaX)))</b>
+<b class="nc"><i>583</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>584</i>&nbsp;              .addGap(38)</b>
+<b class="nc"><i>585</i>&nbsp;              .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)</b>
+<b class="nc"><i>586</i>&nbsp;                .addComponent(spinnerSpawnRate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>587</i>&nbsp;                .addComponent(label)</b>
+<b class="nc"><i>588</i>&nbsp;                .addComponent(comboBoxAlign, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))</b>
+<b class="nc"><i>589</i>&nbsp;          .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>590</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>591</i>&nbsp;              .addGap(9)</b>
+<b class="nc"><i>592</i>&nbsp;              .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>593</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>594</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>595</i>&nbsp;                  .addComponent(lblSpawnAmount))</b>
+<b class="nc"><i>596</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>597</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>598</i>&nbsp;                  .addComponent(lblDeltaY))</b>
+<b class="nc"><i>599</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>600</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>601</i>&nbsp;                  .addComponent(lblMin2))</b>
+<b class="nc"><i>602</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>603</i>&nbsp;                  .addGap(1)</b>
+<b class="nc"><i>604</i>&nbsp;                  .addComponent(spinnerMinDeltaY, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>605</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>606</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>607</i>&nbsp;                  .addComponent(lblMax1))</b>
+<b class="nc"><i>608</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>609</i>&nbsp;                  .addGap(1)</b>
+<b class="nc"><i>610</i>&nbsp;                  .addComponent(spinnerMaxDeltaY, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>611</i>&nbsp;                .addComponent(rdbtnLockDeltaY)</b>
+<b class="nc"><i>612</i>&nbsp;                .addComponent(rdbtnRandomDeltaY)))</b>
+<b class="nc"><i>613</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>614</i>&nbsp;              .addGap(10)</b>
+<b class="nc"><i>615</i>&nbsp;              .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)</b>
+<b class="nc"><i>616</i>&nbsp;                .addComponent(spinnerSpawnAmount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>617</i>&nbsp;                .addComponent(lblPivotY)</b>
+<b class="nc"><i>618</i>&nbsp;                .addComponent(comboBoxValign, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))</b>
+<b class="nc"><i>619</i>&nbsp;          .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>620</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>621</i>&nbsp;              .addGap(9)</b>
+<b class="nc"><i>622</i>&nbsp;              .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>623</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>624</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>625</i>&nbsp;                  .addComponent(lblUpdateDelay))</b>
+<b class="nc"><i>626</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>627</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>628</i>&nbsp;                  .addComponent(lblGravityX))</b>
+<b class="nc"><i>629</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>630</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>631</i>&nbsp;                  .addComponent(lblMin3))</b>
+<b class="nc"><i>632</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>633</i>&nbsp;                  .addGap(1)</b>
+<b class="nc"><i>634</i>&nbsp;                  .addComponent(spinnerMinGravityX, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>635</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>636</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>637</i>&nbsp;                  .addComponent(lblMax2))</b>
+<b class="nc"><i>638</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>639</i>&nbsp;                  .addGap(1)</b>
+<b class="nc"><i>640</i>&nbsp;                  .addComponent(spinnerMaxGravityX, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>641</i>&nbsp;                .addComponent(rdbtnLockGravityX)</b>
+<b class="nc"><i>642</i>&nbsp;                .addComponent(rdbtnRandomGravityX)))</b>
+<b class="nc"><i>643</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>644</i>&nbsp;              .addGap(10)</b>
+<b class="nc"><i>645</i>&nbsp;              .addComponent(spinnerUpdateRate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))</b>
+<b class="nc"><i>646</i>&nbsp;          .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>647</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>648</i>&nbsp;              .addGap(9)</b>
+<b class="nc"><i>649</i>&nbsp;              .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>650</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>651</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>652</i>&nbsp;                  .addComponent(labelTtl))</b>
+<b class="nc"><i>653</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>654</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>655</i>&nbsp;                  .addComponent(lblGravityY))</b>
+<b class="nc"><i>656</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>657</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>658</i>&nbsp;                  .addComponent(lblMin4))</b>
+<b class="nc"><i>659</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>660</i>&nbsp;                  .addGap(1)</b>
+<b class="nc"><i>661</i>&nbsp;                  .addComponent(spinnerMinGravityY, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>662</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>663</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>664</i>&nbsp;                  .addComponent(lblMax3))</b>
+<b class="nc"><i>665</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>666</i>&nbsp;                  .addGap(1)</b>
+<b class="nc"><i>667</i>&nbsp;                  .addComponent(spinnerMaxGravityY, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>668</i>&nbsp;                .addComponent(rdbtnLockGravityY)</b>
+<b class="nc"><i>669</i>&nbsp;                .addComponent(rdbtnRandomGravityY)))</b>
+<b class="nc"><i>670</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>671</i>&nbsp;              .addGap(10)</b>
+<b class="nc"><i>672</i>&nbsp;              .addComponent(spinnerTTL, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))</b>
+<b class="nc"><i>673</i>&nbsp;          .addPreferredGap(ComponentPlacement.RELATED)</b>
+<b class="nc"><i>674</i>&nbsp;          .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>675</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>676</i>&nbsp;              .addGap(9)</b>
+<b class="nc"><i>677</i>&nbsp;              .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>678</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>679</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>680</i>&nbsp;                  .addComponent(lblMaxParticles))</b>
+<b class="nc"><i>681</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>682</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>683</i>&nbsp;                  .addComponent(lblStartWidth))</b>
+<b class="nc"><i>684</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>685</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>686</i>&nbsp;                  .addComponent(lblMin5))</b>
+<b class="nc"><i>687</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>688</i>&nbsp;                  .addGap(1)</b>
+<b class="nc"><i>689</i>&nbsp;                  .addComponent(spinnerMinStartWidth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>690</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>691</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>692</i>&nbsp;                  .addComponent(lblMax4))</b>
+<b class="nc"><i>693</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>694</i>&nbsp;                  .addGap(1)</b>
+<b class="nc"><i>695</i>&nbsp;                  .addComponent(spinnerMaxStartWidth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>696</i>&nbsp;                .addComponent(rdbtnLockStartWidth)</b>
+<b class="nc"><i>697</i>&nbsp;                .addComponent(rdbtnRandomStartWidth)))</b>
+<b class="nc"><i>698</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>699</i>&nbsp;              .addGap(10)</b>
+<b class="nc"><i>700</i>&nbsp;              .addComponent(spinnerMaxParticles, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))</b>
+<b class="nc"><i>701</i>&nbsp;          .addGap(9)</b>
+<b class="nc"><i>702</i>&nbsp;          .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>703</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>704</i>&nbsp;              .addGap(4)</b>
+<b class="nc"><i>705</i>&nbsp;              .addComponent(lblParticleType))</b>
+<b class="nc"><i>706</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>707</i>&nbsp;              .addGap(1)</b>
+<b class="nc"><i>708</i>&nbsp;              .addComponent(comboBoxParticleType, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>709</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>710</i>&nbsp;              .addGap(4)</b>
+<b class="nc"><i>711</i>&nbsp;              .addComponent(lblStartHeight))</b>
+<b class="nc"><i>712</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>713</i>&nbsp;              .addGap(4)</b>
+<b class="nc"><i>714</i>&nbsp;              .addComponent(lblMin6))</b>
+<b class="nc"><i>715</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>716</i>&nbsp;              .addGap(1)</b>
+<b class="nc"><i>717</i>&nbsp;              .addComponent(spinnerMinStartHeight, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>718</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>719</i>&nbsp;              .addGap(4)</b>
+<b class="nc"><i>720</i>&nbsp;              .addComponent(lblMax5))</b>
+<b class="nc"><i>721</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>722</i>&nbsp;              .addGap(1)</b>
+<b class="nc"><i>723</i>&nbsp;              .addComponent(spinnerMaxStartHeight, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>724</i>&nbsp;            .addComponent(rdbtnLockStartHeight)</b>
+<b class="nc"><i>725</i>&nbsp;            .addComponent(rdbtnRandomStartHeight))</b>
+<b class="nc"><i>726</i>&nbsp;          .addGap(5)</b>
+<b class="nc"><i>727</i>&nbsp;          .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>728</i>&nbsp;            .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>729</i>&nbsp;              .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>730</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>731</i>&nbsp;                  .addGap(8)</b>
+<b class="nc"><i>732</i>&nbsp;                  .addComponent(lblMax6)</b>
+<b class="nc"><i>733</i>&nbsp;                  .addGap(16)</b>
+<b class="nc"><i>734</i>&nbsp;                  .addComponent(lblMax7))</b>
+<b class="nc"><i>735</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>736</i>&nbsp;                  .addGap(5)</b>
+<b class="nc"><i>737</i>&nbsp;                  .addComponent(spinnerMaxDeltaWidth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>738</i>&nbsp;                  .addGap(10)</b>
+<b class="nc"><i>739</i>&nbsp;                  .addComponent(spinnerMaxDeltaHeight, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>740</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>741</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>742</i>&nbsp;                  .addComponent(rdbtnLockDeltaWidth)</b>
+<b class="nc"><i>743</i>&nbsp;                  .addGap(9)</b>
+<b class="nc"><i>744</i>&nbsp;                  .addComponent(rdbtnLockDeltaHeight))</b>
+<b class="nc"><i>745</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>746</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>747</i>&nbsp;                  .addComponent(rdbtnRandomDeltaWidth)</b>
+<b class="nc"><i>748</i>&nbsp;                  .addGap(9)</b>
+<b class="nc"><i>749</i>&nbsp;                  .addComponent(rdbtnRandomDeltaHeight))</b>
+<b class="nc"><i>750</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>751</i>&nbsp;                  .addGap(8)</b>
+<b class="nc"><i>752</i>&nbsp;                  .addComponent(lblDeltaWidth)</b>
+<b class="nc"><i>753</i>&nbsp;                  .addGap(16)</b>
+<b class="nc"><i>754</i>&nbsp;                  .addComponent(lblDeltaHeight))</b>
+<b class="nc"><i>755</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>756</i>&nbsp;                  .addGap(5)</b>
+<b class="nc"><i>757</i>&nbsp;                  .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>758</i>&nbsp;                    .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>759</i>&nbsp;                      .addGap(3)</b>
+<b class="nc"><i>760</i>&nbsp;                      .addComponent(lblMin7))</b>
+<b class="nc"><i>761</i>&nbsp;                    .addComponent(spinnerMinDeltaWidth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>762</i>&nbsp;                  .addGap(10)</b>
+<b class="nc"><i>763</i>&nbsp;                  .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>764</i>&nbsp;                    .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>765</i>&nbsp;                      .addGap(3)</b>
+<b class="nc"><i>766</i>&nbsp;                      .addComponent(lblMin))</b>
+<b class="nc"><i>767</i>&nbsp;                    .addComponent(spinnerMinDeltaHeight, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))</b>
+<b class="nc"><i>768</i>&nbsp;              .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>769</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>770</i>&nbsp;                  .addPreferredGap(ComponentPlacement.UNRELATED)</b>
+<b class="nc"><i>771</i>&nbsp;                  .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>772</i>&nbsp;                    .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>773</i>&nbsp;                      .addGap(4)</b>
+<b class="nc"><i>774</i>&nbsp;                      .addComponent(lblParticleTtl))</b>
+<b class="nc"><i>775</i>&nbsp;                    .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>776</i>&nbsp;                      .addGap(4)</b>
+<b class="nc"><i>777</i>&nbsp;                      .addComponent(labelMinParticleTtl))</b>
+<b class="nc"><i>778</i>&nbsp;                    .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>779</i>&nbsp;                      .addGap(1)</b>
+<b class="nc"><i>780</i>&nbsp;                      .addComponent(spinnerMinParticleTTL, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>781</i>&nbsp;                    .addComponent(rdbtnLockParticleTTL, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>782</i>&nbsp;                    .addComponent(rdbtnRandomParticleTTL, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)))</b>
+<b class="nc"><i>783</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>784</i>&nbsp;                  .addGap(8)</b>
+<b class="nc"><i>785</i>&nbsp;                  .addComponent(spinnerMaxParticleTTL, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>786</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>787</i>&nbsp;                  .addGap(11)</b>
+<b class="nc"><i>788</i>&nbsp;                  .addComponent(lblMaxParticleTtl)))</b>
+<b class="nc"><i>789</i>&nbsp;              .addPreferredGap(ComponentPlacement.UNRELATED)</b>
+<b class="nc"><i>790</i>&nbsp;              .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>791</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>792</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>793</i>&nbsp;                  .addComponent(lblStartX))</b>
+<b class="nc"><i>794</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>795</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>796</i>&nbsp;                  .addComponent(label8))</b>
+<b class="nc"><i>797</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>798</i>&nbsp;                  .addGap(1)</b>
+<b class="nc"><i>799</i>&nbsp;                  .addComponent(spinnerMinStartX, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>800</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>801</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>802</i>&nbsp;                  .addComponent(label9))</b>
+<b class="nc"><i>803</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>804</i>&nbsp;                  .addGap(1)</b>
+<b class="nc"><i>805</i>&nbsp;                  .addComponent(spinnerMaxStartX, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>806</i>&nbsp;                .addComponent(rdbtnLockStartX, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>807</i>&nbsp;                .addComponent(rdbtnRandomStartX, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>808</i>&nbsp;              .addPreferredGap(ComponentPlacement.UNRELATED)</b>
+<b class="nc"><i>809</i>&nbsp;              .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)</b>
+<b class="nc"><i>810</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>811</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>812</i>&nbsp;                  .addComponent(lblStartY))</b>
+<b class="nc"><i>813</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>814</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>815</i>&nbsp;                  .addComponent(label10))</b>
+<b class="nc"><i>816</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>817</i>&nbsp;                  .addGap(1)</b>
+<b class="nc"><i>818</i>&nbsp;                  .addComponent(spinnerMinStartY, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>819</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>820</i>&nbsp;                  .addGap(4)</b>
+<b class="nc"><i>821</i>&nbsp;                  .addComponent(label11))</b>
+<b class="nc"><i>822</i>&nbsp;                .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>823</i>&nbsp;                  .addGap(1)</b>
+<b class="nc"><i>824</i>&nbsp;                  .addComponent(spinnerMaxStartY, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>825</i>&nbsp;                .addComponent(rdbtnLockStartY, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>826</i>&nbsp;                .addComponent(rdbtnRandomStartY, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>827</i>&nbsp;              .addPreferredGap(ComponentPlacement.UNRELATED)</b>
+<b class="nc"><i>828</i>&nbsp;              .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)</b>
+<b class="nc"><i>829</i>&nbsp;                .addComponent(comboBoxCollisionType, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>830</i>&nbsp;                .addComponent(lblStaticPhysics)</b>
+<b class="nc"><i>831</i>&nbsp;                .addComponent(checkBoxFade))</b>
+<b class="nc"><i>832</i>&nbsp;              .addGap(12)</b>
+<b class="nc"><i>833</i>&nbsp;              .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)</b>
+<b class="nc"><i>834</i>&nbsp;                .addComponent(txt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>835</i>&nbsp;                .addComponent(lblText)))</b>
+<b class="nc"><i>836</i>&nbsp;            .addComponent(tabbedPanel, GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE))</b>
+<b class="nc"><i>837</i>&nbsp;          .addContainerGap())</b>
+<i>838</i>&nbsp;    );
+<b class="nc"><i>839</i>&nbsp;    setLayout(groupLayout);</b>
+<b class="nc"><i>840</i>&nbsp;    this.setupChangedListeners();</b>
+<i>841</i>&nbsp;  }
+<i>842</i>&nbsp;
+<i>843</i>&nbsp;  private void initRadioButtons() {
+<b class="nc"><i>844</i>&nbsp;    this.buttonGroupDeltaX.add(this.rdbtnLockDeltaX);</b>
+<b class="nc"><i>845</i>&nbsp;    this.buttonGroupDeltaX.add(this.rdbtnRandomDeltaX);</b>
+<i>846</i>&nbsp;
+<b class="nc"><i>847</i>&nbsp;    this.buttonGroupDeltaY.add(this.rdbtnLockDeltaY);</b>
+<b class="nc"><i>848</i>&nbsp;    this.buttonGroupDeltaY.add(this.rdbtnRandomDeltaY);</b>
+<i>849</i>&nbsp;
+<b class="nc"><i>850</i>&nbsp;    this.buttonGroupGravityX.add(this.rdbtnLockGravityX);</b>
+<b class="nc"><i>851</i>&nbsp;    this.buttonGroupGravityX.add(this.rdbtnRandomGravityX);</b>
+<i>852</i>&nbsp;
+<b class="nc"><i>853</i>&nbsp;    this.buttonGroupGravityY.add(this.rdbtnLockGravityY);</b>
+<b class="nc"><i>854</i>&nbsp;    this.buttonGroupGravityY.add(this.rdbtnRandomGravityY);</b>
+<i>855</i>&nbsp;
+<b class="nc"><i>856</i>&nbsp;    this.buttonGroupStartWidth.add(this.rdbtnLockStartWidth);</b>
+<b class="nc"><i>857</i>&nbsp;    this.buttonGroupStartWidth.add(this.rdbtnRandomStartWidth);</b>
+<i>858</i>&nbsp;
+<b class="nc"><i>859</i>&nbsp;    this.buttonGroupStartHeight.add(this.rdbtnLockStartHeight);</b>
+<b class="nc"><i>860</i>&nbsp;    this.buttonGroupStartHeight.add(this.rdbtnRandomStartHeight);</b>
+<i>861</i>&nbsp;
+<b class="nc"><i>862</i>&nbsp;    this.buttonGroupDeltaWidth.add(this.rdbtnLockDeltaWidth);</b>
+<b class="nc"><i>863</i>&nbsp;    this.buttonGroupDeltaWidth.add(this.rdbtnRandomDeltaWidth);</b>
+<i>864</i>&nbsp;
+<b class="nc"><i>865</i>&nbsp;    this.buttonGroupDeltaHeight.add(this.rdbtnLockDeltaHeight);</b>
+<b class="nc"><i>866</i>&nbsp;    this.buttonGroupDeltaHeight.add(this.rdbtnRandomDeltaHeight);</b>
+<i>867</i>&nbsp;
+<b class="nc"><i>868</i>&nbsp;    this.buttonGroupParticleTTL.add(this.rdbtnLockParticleTTL);</b>
+<b class="nc"><i>869</i>&nbsp;    this.buttonGroupParticleTTL.add(this.rdbtnRandomParticleTTL);</b>
+<i>870</i>&nbsp;    
+<b class="nc"><i>871</i>&nbsp;    this.buttonGroupStartX.add(this.rdbtnLockStartX);</b>
+<b class="nc"><i>872</i>&nbsp;    this.buttonGroupStartX.add(this.rdbtnRandomStartX);</b>
+<i>873</i>&nbsp;    
+<b class="nc"><i>874</i>&nbsp;    this.buttonGroupStartY.add(this.rdbtnLockStartY);</b>
+<b class="nc"><i>875</i>&nbsp;    this.buttonGroupStartY.add(this.rdbtnRandomStartY);</b>
+<i>876</i>&nbsp;    
+<b class="nc"><i>877</i>&nbsp;    this.rdbtnLockDeltaX.addItemListener(new ParticleRadioButtonListener(MapObjectProperty.Particle.DELTAX_RANDOM, this.rdbtnLockDeltaX, this.spinnerMaxDeltaX));</b>
+<b class="nc"><i>878</i>&nbsp;    this.rdbtnLockDeltaY.addItemListener(new ParticleRadioButtonListener(MapObjectProperty.Particle.DELTAY_RANDOM, this.rdbtnLockDeltaY, this.spinnerMaxDeltaY));</b>
+<b class="nc"><i>879</i>&nbsp;    this.rdbtnLockGravityX.addItemListener(new ParticleRadioButtonListener(MapObjectProperty.Particle.GRAVITYX_RANDOM, this.rdbtnLockGravityX, this.spinnerMaxGravityX));</b>
+<b class="nc"><i>880</i>&nbsp;    this.rdbtnLockGravityY.addItemListener(new ParticleRadioButtonListener(MapObjectProperty.Particle.GRAVITYY_RANDOM, this.rdbtnLockGravityY, this.spinnerMaxGravityY));</b>
+<b class="nc"><i>881</i>&nbsp;    this.rdbtnLockStartWidth.addItemListener(new ParticleRadioButtonListener(MapObjectProperty.Particle.STARTWIDTH_RANDOM, this.rdbtnLockStartWidth, this.spinnerMaxStartWidth));</b>
+<b class="nc"><i>882</i>&nbsp;    this.rdbtnLockStartHeight.addItemListener(new ParticleRadioButtonListener(MapObjectProperty.Particle.STARTHEIGHT_RANDOM, this.rdbtnLockStartHeight, this.spinnerMaxStartHeight));</b>
+<b class="nc"><i>883</i>&nbsp;    this.rdbtnLockDeltaWidth.addItemListener(new ParticleRadioButtonListener(MapObjectProperty.Particle.DELTAWIDTH_RANDOM, this.rdbtnLockDeltaWidth, this.spinnerMaxDeltaWidth));</b>
+<b class="nc"><i>884</i>&nbsp;    this.rdbtnLockDeltaHeight.addItemListener(new ParticleRadioButtonListener(MapObjectProperty.Particle.DELTAHEIGHT_RANDOM, this.rdbtnLockDeltaHeight, this.spinnerMaxDeltaHeight));</b>
+<b class="nc"><i>885</i>&nbsp;    this.rdbtnLockParticleTTL.addItemListener(new ParticleRadioButtonListener(MapObjectProperty.Particle.TTL_RANDOM, this.rdbtnLockParticleTTL, this.spinnerMaxParticleTTL));</b>
+<i>886</i>&nbsp;    
+<b class="nc"><i>887</i>&nbsp;    this.rdbtnLockStartX.addItemListener(new ParticleRadioButtonListener(MapObjectProperty.Particle.DELTAX_RANDOM, this.rdbtnLockStartX, this.spinnerMaxStartX));</b>
+<b class="nc"><i>888</i>&nbsp;    this.rdbtnLockStartY.addItemListener(new ParticleRadioButtonListener(MapObjectProperty.Particle.DELTAY_RANDOM, this.rdbtnLockStartY, this.spinnerMaxStartY));</b>
+<i>889</i>&nbsp;    
+<b class="nc"><i>890</i>&nbsp;    this.rdbtnRandomDeltaX.setSelected(true);</b>
+<b class="nc"><i>891</i>&nbsp;    this.rdbtnRandomDeltaY.setSelected(true);</b>
+<i>892</i>&nbsp;
+<b class="nc"><i>893</i>&nbsp;    this.rdbtnLockGravityX.setSelected(true);</b>
+<b class="nc"><i>894</i>&nbsp;    this.rdbtnLockGravityY.setSelected(true);</b>
+<b class="nc"><i>895</i>&nbsp;    this.rdbtnLockStartWidth.setSelected(true);</b>
+<b class="nc"><i>896</i>&nbsp;    this.rdbtnLockStartHeight.setSelected(true);</b>
+<b class="nc"><i>897</i>&nbsp;    this.rdbtnLockDeltaWidth.setSelected(true);</b>
+<b class="nc"><i>898</i>&nbsp;    this.rdbtnLockDeltaHeight.setSelected(true);</b>
+<b class="nc"><i>899</i>&nbsp;    this.rdbtnLockParticleTTL.setSelected(true);</b>
+<i>900</i>&nbsp;    
+<b class="nc"><i>901</i>&nbsp;    this.rdbtnLockStartX.setSelected(true);</b>
+<b class="nc"><i>902</i>&nbsp;    this.rdbtnLockStartY.setSelected(true);</b>
+<i>903</i>&nbsp;  }
+<i>904</i>&nbsp;
+<i>905</i>&nbsp;  public void discardChanges() {
+<b class="nc"><i>906</i>&nbsp;    this.bind(this.backupMapObject);</b>
+<i>907</i>&nbsp;  }
+<i>908</i>&nbsp;
+<i>909</i>&nbsp;  private void setupChangedListeners() {
+<b class="nc"><i>910</i>&nbsp;    this.btnSelectColor.addActionListener(a -&gt; {</b>
+<b class="nc"><i>911</i>&nbsp;      if (table.getSelectedRow() == -1) {</b>
+<i>912</i>&nbsp;        return;
+<i>913</i>&nbsp;      }
+<i>914</i>&nbsp;
+<b class="nc"><i>915</i>&nbsp;      ParticleColor color = colors.get(table.getSelectedRow());</b>
+<b class="nc"><i>916</i>&nbsp;      Color result = JColorChooser.showDialog(null, Resources.strings().get(&quot;panel_selectEmitterColor&quot;), color.toColor());</b>
+<b class="nc"><i>917</i>&nbsp;      if (result == null) {</b>
+<i>918</i>&nbsp;        return;
+<i>919</i>&nbsp;      }
+<i>920</i>&nbsp;
+<b class="nc"><i>921</i>&nbsp;      ParticleColor c = new ParticleColor(result);</b>
+<b class="nc"><i>922</i>&nbsp;      colors.set(table.getSelectedRow(), c);</b>
+<b class="nc"><i>923</i>&nbsp;      model.setValueAt(c, table.getSelectedRow(), 1);</b>
+<b class="nc"><i>924</i>&nbsp;      if (getDataSource() != null) {</b>
+<b class="nc"><i>925</i>&nbsp;        String commaSeperated = ArrayUtilities.join(colors);</b>
+<b class="nc"><i>926</i>&nbsp;        this.getDataSource().setValue(MapObjectProperty.Emitter.COLORS, commaSeperated);</b>
+<i>927</i>&nbsp;      }
+<i>928</i>&nbsp;    });
+<i>929</i>&nbsp;
+<b class="nc"><i>930</i>&nbsp;    this.btnRemoveColor.addActionListener(a -&gt; {</b>
+<b class="nc"><i>931</i>&nbsp;      for (int removeIndex = 0; removeIndex &lt; colors.size(); removeIndex++) {</b>
+<b class="nc"><i>932</i>&nbsp;        if (removeIndex == table.getSelectedRow()) {</b>
+<b class="nc"><i>933</i>&nbsp;          colors.remove(removeIndex);</b>
+<b class="nc"><i>934</i>&nbsp;          break;</b>
+<i>935</i>&nbsp;        }
+<i>936</i>&nbsp;      }
+<i>937</i>&nbsp;
+<b class="nc"><i>938</i>&nbsp;      if (table.getSelectedRow() != -1) {</b>
+<b class="nc"><i>939</i>&nbsp;        model.removeRow(table.getSelectedRow());</b>
+<i>940</i>&nbsp;      }
+<i>941</i>&nbsp;    });
+<i>942</i>&nbsp;
+<b class="nc"><i>943</i>&nbsp;    this.btnAddColor.addActionListener(a -&gt; {</b>
+<b class="nc"><i>944</i>&nbsp;      ParticleColor c = new ParticleColor();</b>
+<b class="nc"><i>945</i>&nbsp;      colors.add(c);</b>
+<b class="nc"><i>946</i>&nbsp;      model.addRow(new Object[] { null, c.toString() });</b>
+<i>947</i>&nbsp;    });
+<i>948</i>&nbsp;
+<b class="nc"><i>949</i>&nbsp;    this.comboBoxParticleType.addActionListener(new MapObjectPropertyActionListener(m -&gt; {</b>
+<b class="nc"><i>950</i>&nbsp;      ParticleType particleType = (ParticleType) this.comboBoxParticleType.getSelectedItem();</b>
+<b class="nc"><i>951</i>&nbsp;      this.updateTabbedGroup();</b>
+<i>952</i>&nbsp;
+<b class="nc"><i>953</i>&nbsp;      this.txt.setEnabled(particleType == ParticleType.TEXT);</b>
+<b class="nc"><i>954</i>&nbsp;      m.setValue(MapObjectProperty.Emitter.PARTICLETYPE, particleType);</b>
+<i>955</i>&nbsp;    }));
+<i>956</i>&nbsp;    
+<b class="nc"><i>957</i>&nbsp;    this.comboBoxCollisionType.addActionListener(new MapObjectPropertyActionListener(m -&gt; </b>
+<b class="nc"><i>958</i>&nbsp;      m.setValue(MapObjectProperty.Particle.COLLISIONTYPE, this.comboBoxCollisionType.getSelectedItem().toString())</b>
+<i>959</i>&nbsp;    ));
+<i>960</i>&nbsp;    
+<b class="nc"><i>961</i>&nbsp;    this.comboBoxSprite.addActionListener(new MapObjectPropertyActionListener(m -&gt; {</b>
+<b class="nc"><i>962</i>&nbsp;      String sprite = this.comboBoxSprite.getSelectedItem().toString();</b>
+<b class="nc"><i>963</i>&nbsp;      m.setValue(MapObjectProperty.Particle.SPRITE, sprite);</b>
+<i>964</i>&nbsp;    }));
+<i>965</i>&nbsp;    
+<b class="nc"><i>966</i>&nbsp;    this.comboBoxAlign.addActionListener(new MapObjectPropertyActionListener(m -&gt; </b>
+<b class="nc"><i>967</i>&nbsp;      m.setValue(MapObjectProperty.Emitter.ORIGIN_ALIGN, this.comboBoxAlign.getSelectedItem().toString())</b>
+<i>968</i>&nbsp;    ));
+<i>969</i>&nbsp;    
+<b class="nc"><i>970</i>&nbsp;    this.comboBoxValign.addActionListener(new MapObjectPropertyActionListener(m -&gt; </b>
+<b class="nc"><i>971</i>&nbsp;      m.setValue(MapObjectProperty.Emitter.ORIGIN_VALIGN, this.comboBoxValign.getSelectedItem().toString())</b>
+<i>972</i>&nbsp;    ));
+<i>973</i>&nbsp;    
+<b class="nc"><i>974</i>&nbsp;    this.spinnerSpawnRate.addChangeListener(new SpinnerListener(MapObjectProperty.Emitter.SPAWNRATE, this.spinnerSpawnRate));</b>
+<b class="nc"><i>975</i>&nbsp;    this.spinnerSpawnAmount.addChangeListener(new SpinnerListener(MapObjectProperty.Emitter.SPAWNAMOUNT, this.spinnerSpawnAmount));</b>
+<b class="nc"><i>976</i>&nbsp;    this.spinnerUpdateRate.addChangeListener(new SpinnerListener(MapObjectProperty.Emitter.UPDATERATE, this.spinnerUpdateRate));</b>
+<b class="nc"><i>977</i>&nbsp;    this.spinnerTTL.addChangeListener(new SpinnerListener(MapObjectProperty.Emitter.TIMETOLIVE, this.spinnerTTL));</b>
+<b class="nc"><i>978</i>&nbsp;    this.spinnerMaxParticles.addChangeListener(new SpinnerListener(MapObjectProperty.Emitter.MAXPARTICLES, this.spinnerMaxParticles));</b>
+<i>979</i>&nbsp;
+<b class="nc"><i>980</i>&nbsp;    this.spinnerMinDeltaX.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MINDELTAX, this.spinnerMinDeltaX));</b>
+<b class="nc"><i>981</i>&nbsp;    this.spinnerMaxDeltaX.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MAXDELTAX, this.spinnerMaxDeltaX));</b>
+<b class="nc"><i>982</i>&nbsp;    this.spinnerMinDeltaY.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MINDELTAY, this.spinnerMinDeltaY));</b>
+<b class="nc"><i>983</i>&nbsp;    this.spinnerMaxDeltaY.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MAXDELTAY, this.spinnerMaxDeltaY));</b>
+<i>984</i>&nbsp;
+<b class="nc"><i>985</i>&nbsp;    this.spinnerMinGravityX.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MINGRAVITYX, this.spinnerMinGravityX));</b>
+<b class="nc"><i>986</i>&nbsp;    this.spinnerMaxGravityX.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MAXGRAVITYX, this.spinnerMaxGravityX));</b>
+<b class="nc"><i>987</i>&nbsp;    this.spinnerMinGravityY.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MINGRAVITYY, this.spinnerMinGravityY));</b>
+<b class="nc"><i>988</i>&nbsp;    this.spinnerMaxGravityY.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MAXGRAVITYY, this.spinnerMaxGravityY));</b>
+<i>989</i>&nbsp;
+<b class="nc"><i>990</i>&nbsp;    this.spinnerMinStartWidth.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MINSTARTWIDTH, this.spinnerMinStartWidth));</b>
+<b class="nc"><i>991</i>&nbsp;    this.spinnerMaxStartWidth.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MAXSTARTWIDTH, this.spinnerMaxStartWidth));</b>
+<b class="nc"><i>992</i>&nbsp;    this.spinnerMinStartHeight.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MINSTARTHEIGHT, this.spinnerMinStartHeight));</b>
+<b class="nc"><i>993</i>&nbsp;    this.spinnerMaxStartHeight.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MAXSTARTHEIGHT, this.spinnerMaxStartHeight));</b>
+<i>994</i>&nbsp;
+<b class="nc"><i>995</i>&nbsp;    this.spinnerMinDeltaWidth.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MINDELTAWIDTH, this.spinnerMinDeltaWidth));</b>
+<b class="nc"><i>996</i>&nbsp;    this.spinnerMaxDeltaWidth.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MAXDELTAWIDTH, this.spinnerMaxDeltaWidth));</b>
+<b class="nc"><i>997</i>&nbsp;    this.spinnerMinDeltaHeight.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MINDELTAHEIGHT, this.spinnerMinDeltaHeight));</b>
+<b class="nc"><i>998</i>&nbsp;    this.spinnerMaxDeltaHeight.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MAXDELTAHEIGHT, this.spinnerMaxDeltaHeight));</b>
+<b class="nc"><i>999</i>&nbsp;    this.spinnerMinParticleTTL.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MINTTL, this.spinnerMinParticleTTL));</b>
+<b class="nc"><i>1000</i>&nbsp;    this.spinnerMaxParticleTTL.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MAXTTL, this.spinnerMaxParticleTTL));</b>
+<i>1001</i>&nbsp;
+<b class="nc"><i>1002</i>&nbsp;    this.spinnerMinStartX.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MINX, this.spinnerMinStartX));</b>
+<b class="nc"><i>1003</i>&nbsp;    this.spinnerMaxStartX.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MAXX, this.spinnerMaxStartX));</b>
+<b class="nc"><i>1004</i>&nbsp;    this.spinnerMinStartY.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MINY, this.spinnerMinStartY));</b>
+<b class="nc"><i>1005</i>&nbsp;    this.spinnerMaxStartY.addChangeListener(new SpinnerListener(MapObjectProperty.Particle.MAXY, this.spinnerMaxStartY));</b>
+<i>1006</i>&nbsp;    
+<b class="nc"><i>1007</i>&nbsp;    this.spinnerColorDeviation.addChangeListener(new SpinnerListener(MapObjectProperty.Emitter.COLORDEVIATION, this.spinnerColorDeviation));</b>
+<b class="nc"><i>1008</i>&nbsp;    this.spinnerAlphaDeviation.addChangeListener(new SpinnerListener(MapObjectProperty.Emitter.ALPHADEVIATION, this.spinnerAlphaDeviation));</b>
+<i>1009</i>&nbsp;
+<b class="nc"><i>1010</i>&nbsp;    this.txt.addActionListener(new MapObjectPropertyActionListener(m -&gt; m.setValue(MapObjectProperty.Particle.TEXT, this.txt.getText())));</b>
+<i>1011</i>&nbsp;    
+<b class="nc"><i>1012</i>&nbsp;    this.checkBoxFade.addActionListener(new MapObjectPropertyActionListener(m -&gt; m.setValue(MapObjectProperty.Particle.FADE, this.checkBoxFade.isSelected())));</b>
+<i>1013</i>&nbsp;  }
+<i>1014</i>&nbsp;  
+<i>1015</i>&nbsp;  private void updateTabbedGroup() {
+<b class="nc"><i>1016</i>&nbsp;    if (this.comboBoxParticleType.getSelectedItem() == ParticleType.SPRITE) {</b>
+<b class="nc"><i>1017</i>&nbsp;      this.tabbedPanel.setSelectedIndex(1);</b>
+<b class="nc"><i>1018</i>&nbsp;      tabbedPanel.setEnabledAt(0, false);</b>
+<b class="nc"><i>1019</i>&nbsp;      tabbedPanel.setEnabledAt(1, true);</b>
+<i>1020</i>&nbsp;    } else {
+<b class="nc"><i>1021</i>&nbsp;      this.tabbedPanel.setSelectedIndex(0);</b>
+<b class="nc"><i>1022</i>&nbsp;      tabbedPanel.setEnabledAt(0, true);</b>
+<b class="nc"><i>1023</i>&nbsp;      tabbedPanel.setEnabledAt(1, false);</b>
+<i>1024</i>&nbsp;    }
+<i>1025</i>&nbsp;  }
+<i>1026</i>&nbsp;
+<i>1027</i>&nbsp;  @Override
+<i>1028</i>&nbsp;  protected void clearControls() {
+<b class="nc"><i>1029</i>&nbsp;    this.comboBoxParticleType.setSelectedItem(ParticleType.RECTANGLE);</b>
+<b class="nc"><i>1030</i>&nbsp;    this.comboBoxSprite.setSelectedItem(null);</b>
+<b class="nc"><i>1031</i>&nbsp;    this.comboBoxSpriteType.setSelectedIndex(0);</b>
+<b class="nc"><i>1032</i>&nbsp;    this.comboBoxCollisionType.setSelectedIndex(0);</b>
+<b class="nc"><i>1033</i>&nbsp;    this.comboBoxAlign.setSelectedIndex(0);</b>
+<b class="nc"><i>1034</i>&nbsp;    this.comboBoxValign.setSelectedIndex(0);</b>
+<i>1035</i>&nbsp;    
+<b class="nc"><i>1036</i>&nbsp;    this.spinnerSpawnRate.setValue(0);</b>
+<b class="nc"><i>1037</i>&nbsp;    this.spinnerSpawnAmount.setValue(Emitter.DEFAULT_SPAWNAMOUNT);</b>
+<b class="nc"><i>1038</i>&nbsp;    this.spinnerUpdateRate.setValue(0);</b>
+<b class="nc"><i>1039</i>&nbsp;    this.spinnerTTL.setValue(0);</b>
+<b class="nc"><i>1040</i>&nbsp;    this.spinnerMaxParticles.setValue(Emitter.DEFAULT_MAXPARTICLES);</b>
+<i>1041</i>&nbsp;
+<b class="nc"><i>1042</i>&nbsp;    this.spinnerMinDeltaX.setValue(-PARTICLEDELTA_DEFAULT_VALUE);</b>
+<b class="nc"><i>1043</i>&nbsp;    this.spinnerMaxDeltaX.setValue(PARTICLEDELTA_DEFAULT_VALUE);</b>
+<b class="nc"><i>1044</i>&nbsp;    this.spinnerMinDeltaY.setValue(-PARTICLEDELTA_DEFAULT_VALUE);</b>
+<b class="nc"><i>1045</i>&nbsp;    this.spinnerMaxDeltaY.setValue(PARTICLEDELTA_DEFAULT_VALUE);</b>
+<i>1046</i>&nbsp;
+<b class="nc"><i>1047</i>&nbsp;    this.spinnerMinGravityX.setValue(0);</b>
+<b class="nc"><i>1048</i>&nbsp;    this.spinnerMaxGravityX.setValue(0);</b>
+<b class="nc"><i>1049</i>&nbsp;    this.spinnerMinGravityY.setValue(0);</b>
+<b class="nc"><i>1050</i>&nbsp;    this.spinnerMaxGravityY.setValue(0);</b>
+<i>1051</i>&nbsp;
+<b class="nc"><i>1052</i>&nbsp;    this.spinnerMinStartWidth.setValue(1);</b>
+<b class="nc"><i>1053</i>&nbsp;    this.spinnerMaxStartWidth.setValue(1);</b>
+<b class="nc"><i>1054</i>&nbsp;    this.spinnerMinStartHeight.setValue(1);</b>
+<b class="nc"><i>1055</i>&nbsp;    this.spinnerMaxStartHeight.setValue(1);</b>
+<i>1056</i>&nbsp;
+<b class="nc"><i>1057</i>&nbsp;    this.spinnerMinDeltaWidth.setValue(0);</b>
+<b class="nc"><i>1058</i>&nbsp;    this.spinnerMaxDeltaWidth.setValue(0);</b>
+<b class="nc"><i>1059</i>&nbsp;    this.spinnerMinDeltaHeight.setValue(0);</b>
+<b class="nc"><i>1060</i>&nbsp;    this.spinnerMaxDeltaHeight.setValue(0);</b>
+<i>1061</i>&nbsp;    
+<b class="nc"><i>1062</i>&nbsp;    this.spinnerMinStartX.setValue(0);</b>
+<b class="nc"><i>1063</i>&nbsp;    this.spinnerMaxStartX.setValue(0);</b>
+<i>1064</i>&nbsp;    
+<b class="nc"><i>1065</i>&nbsp;    this.spinnerMinStartY.setValue(0);</b>
+<b class="nc"><i>1066</i>&nbsp;    this.spinnerMaxStartY.setValue(0);</b>
+<i>1067</i>&nbsp;
+<b class="nc"><i>1068</i>&nbsp;    this.spinnerMinParticleTTL.setValue(PARTICLEMINTTL_DEFAULT_VALUE);</b>
+<b class="nc"><i>1069</i>&nbsp;    this.spinnerMaxParticleTTL.setValue(0);</b>
+<i>1070</i>&nbsp;
+<b class="nc"><i>1071</i>&nbsp;    this.spinnerColorDeviation.setValue(0);</b>
+<b class="nc"><i>1072</i>&nbsp;    this.spinnerAlphaDeviation.setValue(0);</b>
+<i>1073</i>&nbsp;
+<b class="nc"><i>1074</i>&nbsp;    this.txt.setText(&quot;&quot;);</b>
+<i>1075</i>&nbsp;
+<b class="nc"><i>1076</i>&nbsp;    this.rdbtnRandomDeltaX.setSelected(true);</b>
+<b class="nc"><i>1077</i>&nbsp;    this.rdbtnRandomDeltaY.setSelected(true);</b>
+<i>1078</i>&nbsp;
+<b class="nc"><i>1079</i>&nbsp;    this.rdbtnLockGravityX.setSelected(true);</b>
+<b class="nc"><i>1080</i>&nbsp;    this.rdbtnLockGravityY.setSelected(true);</b>
+<b class="nc"><i>1081</i>&nbsp;    this.rdbtnLockStartWidth.setSelected(true);</b>
+<b class="nc"><i>1082</i>&nbsp;    this.rdbtnLockStartHeight.setSelected(true);</b>
+<b class="nc"><i>1083</i>&nbsp;    this.rdbtnLockDeltaWidth.setSelected(true);</b>
+<b class="nc"><i>1084</i>&nbsp;    this.rdbtnLockDeltaHeight.setSelected(true);</b>
+<b class="nc"><i>1085</i>&nbsp;    this.rdbtnLockParticleTTL.setSelected(true);</b>
+<b class="nc"><i>1086</i>&nbsp;    this.rdbtnLockStartX.setSelected(true);</b>
+<b class="nc"><i>1087</i>&nbsp;    this.rdbtnLockStartY.setSelected(true);</b>
+<b class="nc"><i>1088</i>&nbsp;    this.model.setRowCount(0);</b>
+<b class="nc"><i>1089</i>&nbsp;    this.colors.clear();</b>
+<i>1090</i>&nbsp;    
+<b class="nc"><i>1091</i>&nbsp;    this.checkBoxFade.setSelected(true);</b>
+<i>1092</i>&nbsp;  }
+<i>1093</i>&nbsp;
+<i>1094</i>&nbsp;  @Override
+<i>1095</i>&nbsp;  protected void setControlValues(IMapObject mapObject) {
+<b class="nc"><i>1096</i>&nbsp;    ParticleType type = mapObject.getEnumValue(MapObjectProperty.Emitter.PARTICLETYPE, ParticleType.class, ParticleType.RECTANGLE);</b>
+<b class="nc"><i>1097</i>&nbsp;    this.comboBoxParticleType.setSelectedItem(type);</b>
+<b class="nc"><i>1098</i>&nbsp;    this.updateTabbedGroup();</b>
+<b class="nc"><i>1099</i>&nbsp;    this.comboBoxSprite.setSelectedItem(mapObject.getStringValue(MapObjectProperty.Particle.SPRITE));</b>
+<b class="nc"><i>1100</i>&nbsp;    this.comboBoxCollisionType.setSelectedItem(mapObject.getEnumValue(MapObjectProperty.Particle.COLLISIONTYPE, CollisionType.class, CollisionType.NONE));</b>
+<b class="nc"><i>1101</i>&nbsp;    this.comboBoxAlign.setSelectedItem(mapObject.getEnumValue(MapObjectProperty.Emitter.ORIGIN_ALIGN, Align.class, Align.CENTER));</b>
+<b class="nc"><i>1102</i>&nbsp;    this.comboBoxValign.setSelectedItem(mapObject.getEnumValue(MapObjectProperty.Emitter.ORIGIN_VALIGN, Valign.class, Valign.MIDDLE));</b>
+<i>1103</i>&nbsp;    
+<b class="nc"><i>1104</i>&nbsp;    this.comboBoxSpriteType.setSelectedIndex(0);</b>
+<i>1105</i>&nbsp;
+<b class="nc"><i>1106</i>&nbsp;    this.spinnerSpawnRate.setValue(mapObject.getIntValue(MapObjectProperty.Emitter.SPAWNRATE));</b>
+<b class="nc"><i>1107</i>&nbsp;    this.spinnerSpawnAmount.setValue(mapObject.getIntValue(MapObjectProperty.Emitter.SPAWNAMOUNT, Emitter.DEFAULT_SPAWNAMOUNT));</b>
+<b class="nc"><i>1108</i>&nbsp;    this.spinnerUpdateRate.setValue(mapObject.getIntValue(MapObjectProperty.Emitter.UPDATERATE));</b>
+<b class="nc"><i>1109</i>&nbsp;    this.spinnerTTL.setValue(mapObject.getIntValue(MapObjectProperty.Emitter.TIMETOLIVE));</b>
+<b class="nc"><i>1110</i>&nbsp;    this.spinnerMaxParticles.setValue(mapObject.getIntValue(MapObjectProperty.Emitter.MAXPARTICLES, Emitter.DEFAULT_MAXPARTICLES));</b>
+<i>1111</i>&nbsp;
+<b class="nc"><i>1112</i>&nbsp;    this.spinnerColorDeviation.setValue(mapObject.getDoubleValue(MapObjectProperty.Emitter.COLORDEVIATION));</b>
+<b class="nc"><i>1113</i>&nbsp;    this.spinnerAlphaDeviation.setValue(mapObject.getDoubleValue(MapObjectProperty.Emitter.ALPHADEVIATION));</b>
+<i>1114</i>&nbsp;
+<b class="nc"><i>1115</i>&nbsp;    this.spinnerMinDeltaX.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MINDELTAX, -PARTICLEDELTA_DEFAULT_VALUE));</b>
+<b class="nc"><i>1116</i>&nbsp;    this.spinnerMaxDeltaX.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MAXDELTAX, PARTICLEDELTA_DEFAULT_VALUE));</b>
+<b class="nc"><i>1117</i>&nbsp;    this.spinnerMinDeltaY.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MINDELTAY, -PARTICLEDELTA_DEFAULT_VALUE));</b>
+<b class="nc"><i>1118</i>&nbsp;    this.spinnerMaxDeltaY.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MAXDELTAY, PARTICLEDELTA_DEFAULT_VALUE));</b>
+<i>1119</i>&nbsp;
+<b class="nc"><i>1120</i>&nbsp;    this.spinnerMinGravityX.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MINGRAVITYX));</b>
+<b class="nc"><i>1121</i>&nbsp;    this.spinnerMaxGravityX.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MAXGRAVITYX));</b>
+<b class="nc"><i>1122</i>&nbsp;    this.spinnerMinGravityY.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MINGRAVITYY));</b>
+<b class="nc"><i>1123</i>&nbsp;    this.spinnerMaxGravityY.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MAXGRAVITYY));</b>
+<i>1124</i>&nbsp;
+<b class="nc"><i>1125</i>&nbsp;    this.spinnerMinStartWidth.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MINSTARTWIDTH, 1));</b>
+<b class="nc"><i>1126</i>&nbsp;    this.spinnerMaxStartWidth.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MAXSTARTWIDTH, 1));</b>
+<b class="nc"><i>1127</i>&nbsp;    this.spinnerMinStartHeight.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MINSTARTHEIGHT, 1));</b>
+<b class="nc"><i>1128</i>&nbsp;    this.spinnerMaxStartHeight.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MAXSTARTHEIGHT, 1));</b>
+<i>1129</i>&nbsp;
+<b class="nc"><i>1130</i>&nbsp;    this.spinnerMinDeltaWidth.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MINDELTAWIDTH));</b>
+<b class="nc"><i>1131</i>&nbsp;    this.spinnerMaxDeltaWidth.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MAXDELTAWIDTH));</b>
+<b class="nc"><i>1132</i>&nbsp;    this.spinnerMinDeltaHeight.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MINDELTAHEIGHT));</b>
+<b class="nc"><i>1133</i>&nbsp;    this.spinnerMaxDeltaHeight.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MAXDELTAHEIGHT));</b>
+<i>1134</i>&nbsp;
+<b class="nc"><i>1135</i>&nbsp;    this.spinnerMinParticleTTL.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MINTTL, PARTICLEMINTTL_DEFAULT_VALUE));</b>
+<b class="nc"><i>1136</i>&nbsp;    this.spinnerMaxParticleTTL.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MAXTTL));</b>
+<i>1137</i>&nbsp;
+<b class="nc"><i>1138</i>&nbsp;    this.spinnerMinStartX.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MINX));</b>
+<b class="nc"><i>1139</i>&nbsp;    this.spinnerMaxStartX.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MAXX));</b>
+<i>1140</i>&nbsp;    
+<b class="nc"><i>1141</i>&nbsp;    this.spinnerMinStartY.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MINY));</b>
+<b class="nc"><i>1142</i>&nbsp;    this.spinnerMaxStartY.setValue(mapObject.getDoubleValue(MapObjectProperty.Particle.MAXY));</b>
+<i>1143</i>&nbsp;    
+<b class="nc"><i>1144</i>&nbsp;    this.txt.setText(mapObject.getStringValue(MapObjectProperty.Particle.TEXT));</b>
+<i>1145</i>&nbsp;
+<b class="nc"><i>1146</i>&nbsp;    this.rdbtnRandomDeltaX.setSelected(mapObject.getBoolValue(MapObjectProperty.Particle.DELTAX_RANDOM, true));</b>
+<b class="nc"><i>1147</i>&nbsp;    this.rdbtnRandomDeltaY.setSelected(mapObject.getBoolValue(MapObjectProperty.Particle.DELTAY_RANDOM, true));</b>
+<i>1148</i>&nbsp;
+<b class="nc"><i>1149</i>&nbsp;    this.rdbtnRandomGravityX.setSelected(mapObject.getBoolValue(MapObjectProperty.Particle.GRAVITYX_RANDOM));</b>
+<b class="nc"><i>1150</i>&nbsp;    this.rdbtnRandomGravityY.setSelected(mapObject.getBoolValue(MapObjectProperty.Particle.GRAVITYY_RANDOM));</b>
+<b class="nc"><i>1151</i>&nbsp;    this.rdbtnRandomStartWidth.setSelected(mapObject.getBoolValue(MapObjectProperty.Particle.STARTWIDTH_RANDOM));</b>
+<b class="nc"><i>1152</i>&nbsp;    this.rdbtnRandomStartHeight.setSelected(mapObject.getBoolValue(MapObjectProperty.Particle.STARTHEIGHT_RANDOM));</b>
+<b class="nc"><i>1153</i>&nbsp;    this.rdbtnRandomDeltaWidth.setSelected(mapObject.getBoolValue(MapObjectProperty.Particle.DELTAWIDTH_RANDOM));</b>
+<b class="nc"><i>1154</i>&nbsp;    this.rdbtnRandomDeltaHeight.setSelected(mapObject.getBoolValue(MapObjectProperty.Particle.DELTAHEIGHT_RANDOM));</b>
+<b class="nc"><i>1155</i>&nbsp;    this.rdbtnRandomParticleTTL.setSelected(mapObject.getBoolValue(MapObjectProperty.Particle.TTL_RANDOM));</b>
+<i>1156</i>&nbsp;    
+<b class="nc"><i>1157</i>&nbsp;    this.rdbtnRandomStartX.setSelected(mapObject.getBoolValue(MapObjectProperty.Particle.X_RANDOM));</b>
+<b class="nc"><i>1158</i>&nbsp;    this.rdbtnRandomStartY.setSelected(mapObject.getBoolValue(MapObjectProperty.Particle.Y_RANDOM));</b>
+<i>1159</i>&nbsp;
+<b class="nc"><i>1160</i>&nbsp;    this.model.setRowCount(0);</b>
+<b class="nc"><i>1161</i>&nbsp;    for (ParticleColor color : EmitterMapObjectLoader.getColors(mapObject)) {</b>
+<b class="nc"><i>1162</i>&nbsp;      this.colors.add(color);</b>
+<b class="nc"><i>1163</i>&nbsp;      this.model.addRow(new Object[] { null, color.toString() });</b>
+<b class="nc"><i>1164</i>&nbsp;    }</b>
+<i>1165</i>&nbsp;    
+<b class="nc"><i>1166</i>&nbsp;    this.checkBoxFade.setSelected(mapObject.getBoolValue(MapObjectProperty.Particle.FADE, true));</b>
+<i>1167</i>&nbsp;  }
+<i>1168</i>&nbsp;
+<i>1169</i>&nbsp;  private static SpinnerNumberModel getParticleMinModel() {
+<b class="nc"><i>1170</i>&nbsp;    return new SpinnerNumberModel(-PARTICLEDELTA_DEFAULT_VALUE, -PARTICLESPINNER_MAX_VALUE, PARTICLESPINNER_MAX_VALUE, 0.1);</b>
+<i>1171</i>&nbsp;  }
+<i>1172</i>&nbsp;
+<i>1173</i>&nbsp;  private static SpinnerNumberModel getParticleMaxModel() {
+<b class="nc"><i>1174</i>&nbsp;    return new SpinnerNumberModel(PARTICLEDELTA_DEFAULT_VALUE, -PARTICLESPINNER_MAX_VALUE, PARTICLESPINNER_MAX_VALUE, 0.1);</b>
+<i>1175</i>&nbsp;  }
+<i>1176</i>&nbsp;  
+<i>1177</i>&nbsp;  private static SpinnerNumberModel getLocationModel() {
+<b class="nc"><i>1178</i>&nbsp;    return new SpinnerNumberModel(0.0, -PARTICLESPINNER_MAX_VALUE, PARTICLESPINNER_MAX_VALUE, 0.1);</b>
+<i>1179</i>&nbsp;  }
+<i>1180</i>&nbsp;
+<i>1181</i>&nbsp;  private static SpinnerNumberModel getDeltaModel() {
+<b class="nc"><i>1182</i>&nbsp;    return new SpinnerNumberModel(0.0, -PARTICLEDELTA_MAX_VALUE, PARTICLEDELTA_MAX_VALUE, 0.01);</b>
+<i>1183</i>&nbsp;  }
+<i>1184</i>&nbsp;
+<i>1185</i>&nbsp;  private static SpinnerNumberModel getParticleDimensionModel() {
+<b class="nc"><i>1186</i>&nbsp;    return new SpinnerNumberModel(1.0, 0.0, PARTICLESPINNER_MAX_VALUE, 1.0);</b>
+<i>1187</i>&nbsp;  }
+<i>1188</i>&nbsp;
+<i>1189</i>&nbsp;  private static SpinnerNumberModel getPercentModel() {
+<b class="nc"><i>1190</i>&nbsp;    return new SpinnerNumberModel(0.0, 0.0, 1.0, 0.01);</b>
+<i>1191</i>&nbsp;  }
+<i>1192</i>&nbsp;
+<i>1193</i>&nbsp;  private class ParticleRadioButtonListener extends MapObjectPropertyItemListener {
+<i>1194</i>&nbsp;    private final JSpinner max;
+<i>1195</i>&nbsp;
+<b class="nc"><i>1196</i>&nbsp;    public ParticleRadioButtonListener(String mapObjectPropery, JRadioButton button, JSpinner max) {</b>
+<b class="nc"><i>1197</i>&nbsp;      super(m -&gt; m.setValue(mapObjectPropery, button.isSelected()));</b>
+<b class="nc"><i>1198</i>&nbsp;      this.max = max;</b>
+<i>1199</i>&nbsp;    }
+<i>1200</i>&nbsp;
+<i>1201</i>&nbsp;    @Override
+<i>1202</i>&nbsp;    public void itemStateChanged(ItemEvent e) {
+<b class="nc"><i>1203</i>&nbsp;      this.max.setEnabled(e.getStateChange() != ItemEvent.SELECTED);</b>
+<i>1204</i>&nbsp;    }
+<i>1205</i>&nbsp;  }
+<i>1206</i>&nbsp;
+<b class="nc"><i>1207</i>&nbsp;  private class ParticleColorCellRenderer extends DefaultTableCellRenderer {</b>
+<i>1208</i>&nbsp;    @Override
+<i>1209</i>&nbsp;    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+<i>1210</i>&nbsp;
+<i>1211</i>&nbsp;      // Cells are by default rendered as a JLabel.
+<b class="nc"><i>1212</i>&nbsp;      JLabel l = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);</b>
+<i>1213</i>&nbsp;
+<b class="nc"><i>1214</i>&nbsp;      if (colors.size() - 1 &lt; row) {</b>
+<b class="nc"><i>1215</i>&nbsp;        return l;</b>
+<i>1216</i>&nbsp;      }
+<i>1217</i>&nbsp;
+<b class="nc"><i>1218</i>&nbsp;      Color bg = colors.get(row).toColor();</b>
+<b class="nc"><i>1219</i>&nbsp;      l.setBackground(bg);</b>
+<b class="nc"><i>1220</i>&nbsp;      l.setForeground(bg.getAlpha() &gt; 100 ? Color.WHITE : Color.BLACK);</b>
+<i>1221</i>&nbsp;
+<i>1222</i>&nbsp;      // Return the JLabel which renders the cell.
+<b class="nc"><i>1223</i>&nbsp;      return l;</b>
+<i>1224</i>&nbsp;    }
+<i>1225</i>&nbsp;  }
+<i>1226</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,183 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: SpritesheetResource</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.resources</a> ]
+</div>
+
+<h1>Coverage Summary for Class: SpritesheetResource (de.gurkenlabs.litiengine.resources)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SpritesheetResource</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 22)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.resources;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.image.BufferedImage;
+<i>4</i>&nbsp;import java.io.Serializable;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import javax.xml.bind.Marshaller;
+<i>7</i>&nbsp;import javax.xml.bind.annotation.XmlAttribute;
+<i>8</i>&nbsp;import javax.xml.bind.annotation.XmlElement;
+<i>9</i>&nbsp;import javax.xml.bind.annotation.XmlRootElement;
+<i>10</i>&nbsp;import javax.xml.bind.annotation.XmlTransient;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import de.gurkenlabs.litiengine.graphics.Spritesheet;
+<i>13</i>&nbsp;import de.gurkenlabs.litiengine.util.ArrayUtilities;
+<i>14</i>&nbsp;import de.gurkenlabs.litiengine.util.io.Codec;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;@XmlRootElement(name = &quot;sprite&quot;)
+<i>17</i>&nbsp;public class SpritesheetResource extends NamedResource implements Serializable {
+<i>18</i>&nbsp;  public static final String PLAIN_TEXT_FILE_EXTENSION = &quot;info&quot;;
+<i>19</i>&nbsp;  private static final long serialVersionUID = 3864637034834813554L;
+<i>20</i>&nbsp;  @XmlAttribute(name = &quot;width&quot;)
+<i>21</i>&nbsp;  private int width;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;  @XmlAttribute(name = &quot;height&quot;)
+<i>24</i>&nbsp;  private int height;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;  @XmlElement(required = false)
+<i>27</i>&nbsp;  private String image;
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;  @XmlElement(required = false)
+<i>30</i>&nbsp;  private String keyframes;
+<i>31</i>&nbsp;
+<b class="nc"><i>32</i>&nbsp;  public SpritesheetResource() {</b>
+<i>33</i>&nbsp;    // keep empty constructor for serialization
+<i>34</i>&nbsp;  }
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;  public SpritesheetResource(final Spritesheet sprite) {
+<b class="nc"><i>37</i>&nbsp;    this(sprite.getSpriteWidth(), sprite.getSpriteHeight(), sprite.getName());</b>
+<b class="nc"><i>38</i>&nbsp;    this.setImage(Codec.encode(sprite.getImage(), sprite.getImageFormat()));</b>
+<b class="nc"><i>39</i>&nbsp;    this.setKeyframes(Resources.spritesheets().getCustomKeyFrameDurations(sprite));</b>
+<i>40</i>&nbsp;  }
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;  public SpritesheetResource(final BufferedImage image, String name, final int width, final int height) {
+<b class="nc"><i>43</i>&nbsp;    this(width, height, name);</b>
+<b class="nc"><i>44</i>&nbsp;    this.setImage(Codec.encode(image));</b>
+<i>45</i>&nbsp;  }
+<i>46</i>&nbsp;
+<b class="nc"><i>47</i>&nbsp;  private SpritesheetResource(int width, int height, String name) {</b>
+<b class="nc"><i>48</i>&nbsp;    this.setWidth(width);</b>
+<b class="nc"><i>49</i>&nbsp;    this.setHeight(height);</b>
+<b class="nc"><i>50</i>&nbsp;    this.setName(name);</b>
+<i>51</i>&nbsp;  }
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;  @XmlTransient
+<i>54</i>&nbsp;  public int getHeight() {
+<b class="nc"><i>55</i>&nbsp;    return this.height;</b>
+<i>56</i>&nbsp;  }
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;  @XmlTransient
+<i>59</i>&nbsp;  public String getImage() {
+<b class="nc"><i>60</i>&nbsp;    return this.image;</b>
+<i>61</i>&nbsp;  }
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;  @XmlTransient
+<i>65</i>&nbsp;  public int getWidth() {
+<b class="nc"><i>66</i>&nbsp;    return this.width;</b>
+<i>67</i>&nbsp;  }
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;  @XmlTransient
+<i>70</i>&nbsp;  public int[] getKeyframes() {
+<b class="nc"><i>71</i>&nbsp;    if (this.keyframes == null || this.keyframes.isEmpty()) {</b>
+<b class="nc"><i>72</i>&nbsp;      return new int[0];</b>
+<i>73</i>&nbsp;    }
+<i>74</i>&nbsp;
+<b class="nc"><i>75</i>&nbsp;    return ArrayUtilities.getIntegerArray(this.keyframes);</b>
+<i>76</i>&nbsp;  }
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;  public void setHeight(final int h) {
+<b class="nc"><i>79</i>&nbsp;    this.height = h;</b>
+<i>80</i>&nbsp;  }
+<i>81</i>&nbsp;
+<i>82</i>&nbsp;  public void setImage(final String image) {
+<b class="nc"><i>83</i>&nbsp;    this.image = image;</b>
+<i>84</i>&nbsp;  }
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;  public void setWidth(final int w) {
+<b class="nc"><i>87</i>&nbsp;    this.width = w;</b>
+<i>88</i>&nbsp;  }
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;  public void setKeyframes(int[] keyframes) {
+<b class="nc"><i>91</i>&nbsp;    this.keyframes = ArrayUtilities.join(keyframes);</b>
+<i>92</i>&nbsp;  }
+<i>93</i>&nbsp;
+<i>94</i>&nbsp;  @SuppressWarnings(&quot;unused&quot;)
+<i>95</i>&nbsp;  private void beforeMarshal(Marshaller m) {
+<b class="nc"><i>96</i>&nbsp;    if (this.keyframes != null &amp;&amp; this.keyframes.isEmpty()) {</b>
+<b class="nc"><i>97</i>&nbsp;      this.keyframes = null;</b>
+<i>98</i>&nbsp;    }
+<i>99</i>&nbsp;  }
+<i>100</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

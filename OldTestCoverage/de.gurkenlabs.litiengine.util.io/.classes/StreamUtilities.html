@@ -1,0 +1,175 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: StreamUtilities</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.util.io</a> ]
+</div>
+
+<h1>Coverage Summary for Class: StreamUtilities (de.gurkenlabs.litiengine.util.io)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">StreamUtilities</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 38)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.util.io;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.io.ByteArrayInputStream;
+<i>4</i>&nbsp;import java.io.ByteArrayOutputStream;
+<i>5</i>&nbsp;import java.io.File;
+<i>6</i>&nbsp;import java.io.FileInputStream;
+<i>7</i>&nbsp;import java.io.FileOutputStream;
+<i>8</i>&nbsp;import java.io.IOException;
+<i>9</i>&nbsp;import java.io.InputStream;
+<i>10</i>&nbsp;import java.io.OutputStream;
+<i>11</i>&nbsp;import java.util.logging.Level;
+<i>12</i>&nbsp;import java.util.logging.Logger;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;public final class StreamUtilities {
+<b class="nc"><i>15</i>&nbsp;  private static final Logger log = Logger.getLogger(StreamUtilities.class.getName());</b>
+<i>16</i>&nbsp;
+<b class="nc"><i>17</i>&nbsp;  private StreamUtilities() {</b>
+<b class="nc"><i>18</i>&nbsp;    throw new UnsupportedOperationException();</b>
+<i>19</i>&nbsp;  }
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;  public static void copy(final File file, final OutputStream out) throws IOException {
+<b class="nc"><i>22</i>&nbsp;    final InputStream in = new FileInputStream(file);</b>
+<i>23</i>&nbsp;    try {
+<b class="nc"><i>24</i>&nbsp;      copy(in, out);</b>
+<i>25</i>&nbsp;    } finally {
+<b class="nc"><i>26</i>&nbsp;      in.close();</b>
+<b class="nc"><i>27</i>&nbsp;    }</b>
+<i>28</i>&nbsp;  }
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;  public static void copy(final InputStream in, final File file) throws IOException {
+<b class="nc"><i>31</i>&nbsp;    final OutputStream out = new FileOutputStream(file);</b>
+<i>32</i>&nbsp;    try {
+<b class="nc"><i>33</i>&nbsp;      copy(in, out);</b>
+<i>34</i>&nbsp;    } finally {
+<b class="nc"><i>35</i>&nbsp;      out.close();</b>
+<b class="nc"><i>36</i>&nbsp;    }</b>
+<i>37</i>&nbsp;  }
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;  public static void copy(final InputStream in, final OutputStream out) throws IOException {
+<b class="nc"><i>40</i>&nbsp;    final byte[] buffer = new byte[1024];</b>
+<i>41</i>&nbsp;
+<b class="nc"><i>42</i>&nbsp;    if (in.markSupported()) {</b>
+<b class="nc"><i>43</i>&nbsp;      in.mark(Integer.MAX_VALUE);</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;    
+<i>46</i>&nbsp;    while (true) {
+<b class="nc"><i>47</i>&nbsp;      final int readCount = in.read(buffer);</b>
+<b class="nc"><i>48</i>&nbsp;      if (readCount &lt; 0) {</b>
+<b class="nc"><i>49</i>&nbsp;        break;</b>
+<i>50</i>&nbsp;      }
+<b class="nc"><i>51</i>&nbsp;      out.write(buffer, 0, readCount);</b>
+<b class="nc"><i>52</i>&nbsp;    }</b>
+<i>53</i>&nbsp;    
+<b class="nc"><i>54</i>&nbsp;    if (in.markSupported()) {</b>
+<b class="nc"><i>55</i>&nbsp;      in.reset();</b>
+<i>56</i>&nbsp;    }
+<i>57</i>&nbsp;  }
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;  public static byte[] getByte(final InputStream is) throws IOException {
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;    int len;
+<b class="nc"><i>62</i>&nbsp;    int size = 1024;</b>
+<i>63</i>&nbsp;    byte[] buf;
+<i>64</i>&nbsp;
+<b class="nc"><i>65</i>&nbsp;    if (is instanceof ByteArrayInputStream) {</b>
+<b class="nc"><i>66</i>&nbsp;      size = is.available();</b>
+<b class="nc"><i>67</i>&nbsp;      buf = new byte[size];</b>
+<b class="nc"><i>68</i>&nbsp;      is.read(buf, 0, size);</b>
+<i>69</i>&nbsp;    } else {
+<b class="nc"><i>70</i>&nbsp;      final ByteArrayOutputStream bos = new ByteArrayOutputStream();</b>
+<b class="nc"><i>71</i>&nbsp;      buf = new byte[size];</b>
+<b class="nc"><i>72</i>&nbsp;      while ((len = is.read(buf, 0, size)) != -1) {</b>
+<b class="nc"><i>73</i>&nbsp;        bos.write(buf, 0, len);</b>
+<i>74</i>&nbsp;      }
+<b class="nc"><i>75</i>&nbsp;      buf = bos.toByteArray();</b>
+<i>76</i>&nbsp;    }
+<b class="nc"><i>77</i>&nbsp;    return buf;</b>
+<i>78</i>&nbsp;  }
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;  public static byte[] getBytes(final InputStream in) {
+<b class="nc"><i>81</i>&nbsp;    final ByteArrayOutputStream buffer = new ByteArrayOutputStream();</b>
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;    try {
+<b class="nc"><i>84</i>&nbsp;      StreamUtilities.copy(in, buffer);</b>
+<b class="nc"><i>85</i>&nbsp;      return buffer.toByteArray();</b>
+<b class="nc"><i>86</i>&nbsp;    } catch (final IOException e) {</b>
+<b class="nc"><i>87</i>&nbsp;      log.log(Level.SEVERE, e.getMessage(), e);</b>
+<i>88</i>&nbsp;    }
+<i>89</i>&nbsp;
+<b class="nc"><i>90</i>&nbsp;    return new byte[0];</b>
+<i>91</i>&nbsp;  }
+<i>92</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

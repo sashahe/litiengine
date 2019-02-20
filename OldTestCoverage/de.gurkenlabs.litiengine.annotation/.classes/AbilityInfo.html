@@ -1,0 +1,88 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: AbilityInfo</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.annotation</a> ]
+</div>
+
+<h1>Coverage Summary for Class: AbilityInfo (de.gurkenlabs.litiengine.annotation)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">AbilityInfo</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.annotation;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.lang.annotation.ElementType;
+<i>4</i>&nbsp;import java.lang.annotation.Inherited;
+<i>5</i>&nbsp;import java.lang.annotation.Retention;
+<i>6</i>&nbsp;import java.lang.annotation.RetentionPolicy;
+<i>7</i>&nbsp;import java.lang.annotation.Target;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import de.gurkenlabs.litiengine.abilities.AbilityOrigin;
+<i>10</i>&nbsp;import de.gurkenlabs.litiengine.abilities.CastType;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;/**
+<i>13</i>&nbsp; * This attribute provides initial values for entity attributes.
+<i>14</i>&nbsp; */
+<i>15</i>&nbsp;@Target(ElementType.TYPE)
+<i>16</i>&nbsp;@Retention(RetentionPolicy.RUNTIME)
+<i>17</i>&nbsp;@Inherited
+<i>18</i>&nbsp;public @interface AbilityInfo {
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;  CastType castType() default CastType.INSTANT;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;  int cooldown() default 0;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;  String description() default &quot;&quot;;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;  int duration() default 0;
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;  int impact() default 0;
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;  int impactAngle() default 360;
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;  boolean multiTarget() default false;
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;  String name() default &quot;&quot;;
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;  AbilityOrigin origin() default AbilityOrigin.COLLISIONBOX_CENTER;
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;  int range() default 0;
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;  int value() default 0;
+<i>41</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

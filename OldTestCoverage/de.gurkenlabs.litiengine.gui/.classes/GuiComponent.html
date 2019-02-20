@@ -1,0 +1,1285 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GuiComponent</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.gui</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GuiComponent (de.gurkenlabs.litiengine.gui)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GuiComponent</td>
+<td class="coverageStat">
+  <span class="percent">
+    41.7%
+  </span>
+  <span class="absValue">
+    (40/ 96)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    36%
+  </span>
+  <span class="absValue">
+    (117/ 325)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GuiComponent$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    41.2%
+  </span>
+  <span class="absValue">
+    (40/ 97)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    35.9%
+  </span>
+  <span class="absValue">
+    (117/ 326)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.gui;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Color;
+<i>4</i>&nbsp;import java.awt.Font;
+<i>5</i>&nbsp;import java.awt.FontMetrics;
+<i>6</i>&nbsp;import java.awt.Graphics2D;
+<i>7</i>&nbsp;import java.awt.event.MouseEvent;
+<i>8</i>&nbsp;import java.awt.event.MouseListener;
+<i>9</i>&nbsp;import java.awt.event.MouseMotionListener;
+<i>10</i>&nbsp;import java.awt.event.MouseWheelEvent;
+<i>11</i>&nbsp;import java.awt.event.MouseWheelListener;
+<i>12</i>&nbsp;import java.awt.geom.Point2D;
+<i>13</i>&nbsp;import java.awt.geom.Rectangle2D;
+<i>14</i>&nbsp;import java.util.List;
+<i>15</i>&nbsp;import java.util.concurrent.CopyOnWriteArrayList;
+<i>16</i>&nbsp;import java.util.function.Consumer;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;import de.gurkenlabs.litiengine.Align;
+<i>19</i>&nbsp;import de.gurkenlabs.litiengine.Game;
+<i>20</i>&nbsp;import de.gurkenlabs.litiengine.graphics.IRenderable;
+<i>21</i>&nbsp;import de.gurkenlabs.litiengine.graphics.ShapeRenderer;
+<i>22</i>&nbsp;import de.gurkenlabs.litiengine.graphics.TextRenderer;
+<i>23</i>&nbsp;import de.gurkenlabs.litiengine.input.Input;
+<i>24</i>&nbsp;import de.gurkenlabs.litiengine.resources.Resources;
+<i>25</i>&nbsp;import de.gurkenlabs.litiengine.sound.Sound;
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;/**
+<i>28</i>&nbsp; * The abstract Class GuiComponent provides all properties and methods needed for screens, built-in, and custom GUI components such as buttons,
+<i>29</i>&nbsp; * sliders, etc... It includes mouse event handling, different hovering states and appearances, and texts to be rendered.
+<i>30</i>&nbsp; */
+<i>31</i>&nbsp;public abstract class GuiComponent implements MouseListener, MouseMotionListener, MouseWheelListener, IRenderable {
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;  protected static final Font ICON_FONT;
+<b class="fc"><i>34</i>&nbsp;  private static int id = 0;</b>
+<i>35</i>&nbsp;  static {
+<b class="fc"><i>36</i>&nbsp;    final Font icon = Resources.fonts().get(&quot;fontello.ttf&quot;);</b>
+<b class="fc"><i>37</i>&nbsp;    ICON_FONT = icon != null ? icon.deriveFont(16f) : null;</b>
+<b class="fc"><i>38</i>&nbsp;  }</b>
+<i>39</i>&nbsp;  private final Appearance appearance;
+<i>40</i>&nbsp;  private final List&lt;Consumer&lt;ComponentMouseEvent&gt;&gt; clickConsumer;
+<i>41</i>&nbsp;  private final List&lt;GuiComponent&gt; components;
+<i>42</i>&nbsp;  private final Appearance disabledAppearance;
+<i>43</i>&nbsp;
+<b class="fc"><i>44</i>&nbsp;  private boolean drawTextShadow = false;</b>
+<i>45</i>&nbsp;  private boolean enabled;
+<i>46</i>&nbsp;  private Font font;
+<b class="fc"><i>47</i>&nbsp;  private boolean forwardMouseEvents = true;</b>
+<i>48</i>&nbsp;  private double height;
+<i>49</i>&nbsp;  private final List&lt;Consumer&lt;ComponentMouseEvent&gt;&gt; hoverConsumer;
+<i>50</i>&nbsp;  private final Appearance hoveredAppearance;
+<i>51</i>&nbsp;  private Sound hoverSound;
+<i>52</i>&nbsp;  private final int componentId;
+<i>53</i>&nbsp;  private boolean isHovered;
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;  private boolean isPressed;
+<i>56</i>&nbsp;  private boolean isSelected;
+<i>57</i>&nbsp;  private final List&lt;Consumer&lt;ComponentMouseEvent&gt;&gt; mouseDraggedConsumer;
+<i>58</i>&nbsp;  private final List&lt;Consumer&lt;ComponentMouseEvent&gt;&gt; mouseEnterConsumer;
+<i>59</i>&nbsp;  private final List&lt;Consumer&lt;ComponentMouseEvent&gt;&gt; mouseLeaveConsumer;
+<i>60</i>&nbsp;  private final List&lt;Consumer&lt;ComponentMouseEvent&gt;&gt; mouseMovedConsumer;
+<i>61</i>&nbsp;  private final List&lt;Consumer&lt;ComponentMouseEvent&gt;&gt; mousePressedConsumer;
+<i>62</i>&nbsp;  private final List&lt;Consumer&lt;ComponentMouseEvent&gt;&gt; mouseReleasedConsumer;
+<i>63</i>&nbsp;  private final List&lt;Consumer&lt;ComponentMouseWheelEvent&gt;&gt; mouseWheelConsumer;
+<i>64</i>&nbsp;  private String name;
+<i>65</i>&nbsp;  private boolean suspended;
+<i>66</i>&nbsp;  private Object tag;
+<i>67</i>&nbsp;  private String text;
+<b class="fc"><i>68</i>&nbsp;  private Align textAlignment = Align.CENTER;</b>
+<b class="fc"><i>69</i>&nbsp;  private int textAngle = 0;</b>
+<i>70</i>&nbsp;  private final List&lt;Consumer&lt;String&gt;&gt; textChangedConsumer;
+<i>71</i>&nbsp;  private Color textShadowColor;
+<i>72</i>&nbsp;  private double textX;
+<i>73</i>&nbsp;  private double textY;
+<i>74</i>&nbsp;  private boolean visible;
+<i>75</i>&nbsp;  private double width;
+<i>76</i>&nbsp;  private double x;
+<i>77</i>&nbsp;  private double xMargin;
+<i>78</i>&nbsp;  private double y;
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;  /**
+<i>81</i>&nbsp;   * Instantiates a new gui component with the dimension (0,0) at the given location.
+<i>82</i>&nbsp;   *
+<i>83</i>&nbsp;   * @param x
+<i>84</i>&nbsp;   *          the x
+<i>85</i>&nbsp;   * @param y
+<i>86</i>&nbsp;   *          the y
+<i>87</i>&nbsp;   */
+<i>88</i>&nbsp;  protected GuiComponent(final double x, final double y) {
+<b class="nc"><i>89</i>&nbsp;    this(x, y, 0, 0);</b>
+<b class="nc"><i>90</i>&nbsp;  }</b>
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;  /**
+<i>93</i>&nbsp;   * Instantiates a new gui component at the point (x,y) with the dimension (width,height).
+<i>94</i>&nbsp;   *
+<i>95</i>&nbsp;   * @param x
+<i>96</i>&nbsp;   *          the x
+<i>97</i>&nbsp;   * @param y
+<i>98</i>&nbsp;   *          the y
+<i>99</i>&nbsp;   * @param width
+<i>100</i>&nbsp;   *          the width
+<i>101</i>&nbsp;   * @param height
+<i>102</i>&nbsp;   *          the height
+<i>103</i>&nbsp;   */
+<b class="fc"><i>104</i>&nbsp;  protected GuiComponent(final double x, final double y, final double width, final double height) {</b>
+<b class="fc"><i>105</i>&nbsp;    this.components = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>106</i>&nbsp;    this.clickConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>107</i>&nbsp;    this.hoverConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>108</i>&nbsp;    this.mousePressedConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>109</i>&nbsp;    this.mouseDraggedConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>110</i>&nbsp;    this.mouseEnterConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>111</i>&nbsp;    this.mouseLeaveConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>112</i>&nbsp;    this.mouseReleasedConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>113</i>&nbsp;    this.mouseWheelConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>114</i>&nbsp;    this.mouseMovedConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>115</i>&nbsp;    this.textChangedConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<i>116</i>&nbsp;
+<b class="fc"><i>117</i>&nbsp;    this.appearance = new Appearance();</b>
+<b class="fc"><i>118</i>&nbsp;    this.appearance.update(GuiProperties.getDefaultAppearance());</b>
+<b class="fc"><i>119</i>&nbsp;    this.appearance.onChange(app -&gt; {</b>
+<b class="nc"><i>120</i>&nbsp;      for (final GuiComponent child : this.getComponents()) {</b>
+<b class="nc"><i>121</i>&nbsp;        child.getAppearance().update(this.getAppearance());</b>
+<b class="nc"><i>122</i>&nbsp;      }</b>
+<b class="nc"><i>123</i>&nbsp;    });</b>
+<i>124</i>&nbsp;
+<b class="fc"><i>125</i>&nbsp;    this.hoveredAppearance = new Appearance();</b>
+<b class="fc"><i>126</i>&nbsp;    this.hoveredAppearance.update(GuiProperties.getDefaultAppearanceHovered());</b>
+<b class="fc"><i>127</i>&nbsp;    this.hoveredAppearance.onChange(app -&gt; {</b>
+<b class="nc"><i>128</i>&nbsp;      for (final GuiComponent child : this.getComponents()) {</b>
+<b class="nc"><i>129</i>&nbsp;        child.getAppearanceHovered().update(this.getAppearanceHovered());</b>
+<b class="nc"><i>130</i>&nbsp;      }</b>
+<b class="nc"><i>131</i>&nbsp;    });</b>
+<i>132</i>&nbsp;
+<b class="fc"><i>133</i>&nbsp;    this.disabledAppearance = new Appearance();</b>
+<b class="fc"><i>134</i>&nbsp;    this.disabledAppearance.update(GuiProperties.getDefaultAppearanceDisabled());</b>
+<b class="fc"><i>135</i>&nbsp;    this.disabledAppearance.onChange(app -&gt; {</b>
+<b class="nc"><i>136</i>&nbsp;      for (final GuiComponent child : this.getComponents()) {</b>
+<b class="nc"><i>137</i>&nbsp;        child.getAppearanceDisabled().update(this.getAppearanceDisabled());</b>
+<b class="nc"><i>138</i>&nbsp;      }</b>
+<b class="nc"><i>139</i>&nbsp;    });</b>
+<b class="fc"><i>140</i>&nbsp;    this.componentId = ++id;</b>
+<i>141</i>&nbsp;
+<b class="fc"><i>142</i>&nbsp;    this.setLocation(x, y);</b>
+<b class="fc"><i>143</i>&nbsp;    this.setDimension(width, height);</b>
+<i>144</i>&nbsp;
+<b class="fc"><i>145</i>&nbsp;    this.setHorizontalTextMargin(this.getWidth() / 16);</b>
+<b class="fc"><i>146</i>&nbsp;    this.setFont(GuiProperties.getDefaultFont());</b>
+<b class="fc"><i>147</i>&nbsp;    this.setSelected(false);</b>
+<b class="fc"><i>148</i>&nbsp;    this.setEnabled(true);</b>
+<b class="fc"><i>149</i>&nbsp;    this.initializeComponents();</b>
+<b class="fc"><i>150</i>&nbsp;  }</b>
+<i>151</i>&nbsp;
+<i>152</i>&nbsp;  /**
+<i>153</i>&nbsp;   * Draw text shadow.
+<i>154</i>&nbsp;   *
+<i>155</i>&nbsp;   * @return true, if successful
+<i>156</i>&nbsp;   */
+<i>157</i>&nbsp;  public boolean drawTextShadow() {
+<b class="nc"><i>158</i>&nbsp;    return this.drawTextShadow;</b>
+<i>159</i>&nbsp;  }
+<i>160</i>&nbsp;
+<i>161</i>&nbsp;  /**
+<i>162</i>&nbsp;   * Gets the default appearance object for this GuiComponent.
+<i>163</i>&nbsp;   *
+<i>164</i>&nbsp;   * @return the appearance
+<i>165</i>&nbsp;   */
+<i>166</i>&nbsp;  public Appearance getAppearance() {
+<b class="fc"><i>167</i>&nbsp;    return this.appearance;</b>
+<i>168</i>&nbsp;  }
+<i>169</i>&nbsp;
+<i>170</i>&nbsp;  /**
+<i>171</i>&nbsp;   * Gets the appearance object for this GuiComponent while disabled.
+<i>172</i>&nbsp;   *
+<i>173</i>&nbsp;   * @return the appearance disabled
+<i>174</i>&nbsp;   */
+<i>175</i>&nbsp;  public Appearance getAppearanceDisabled() {
+<b class="fc"><i>176</i>&nbsp;    return this.disabledAppearance;</b>
+<i>177</i>&nbsp;  }
+<i>178</i>&nbsp;
+<i>179</i>&nbsp;  /**
+<i>180</i>&nbsp;   * Gets the appearance object for this GuiComponent while hovered.
+<i>181</i>&nbsp;   *
+<i>182</i>&nbsp;   * @return the hovered appearance
+<i>183</i>&nbsp;   */
+<i>184</i>&nbsp;  public Appearance getAppearanceHovered() {
+<b class="fc"><i>185</i>&nbsp;    return this.hoveredAppearance;</b>
+<i>186</i>&nbsp;  }
+<i>187</i>&nbsp;
+<i>188</i>&nbsp;  /**
+<i>189</i>&nbsp;   * Gets the bounding box of this GuiComponent.
+<i>190</i>&nbsp;   *
+<i>191</i>&nbsp;   * @return the bounding box
+<i>192</i>&nbsp;   */
+<i>193</i>&nbsp;  public Rectangle2D getBoundingBox() {
+<b class="fc"><i>194</i>&nbsp;    return new Rectangle2D.Double(this.x, this.y, this.width, this.height);</b>
+<i>195</i>&nbsp;  }
+<i>196</i>&nbsp;
+<i>197</i>&nbsp;  /**
+<i>198</i>&nbsp;   * Gets the component id of this GuiComponent.
+<i>199</i>&nbsp;   *
+<i>200</i>&nbsp;   * @return the component id
+<i>201</i>&nbsp;   */
+<i>202</i>&nbsp;  public int getComponentId() {
+<b class="nc"><i>203</i>&nbsp;    return this.componentId;</b>
+<i>204</i>&nbsp;  }
+<i>205</i>&nbsp;
+<i>206</i>&nbsp;  /**
+<i>207</i>&nbsp;   * Gets the child components of this GuiComponent.
+<i>208</i>&nbsp;   *
+<i>209</i>&nbsp;   * @return the child components
+<i>210</i>&nbsp;   */
+<i>211</i>&nbsp;  public List&lt;GuiComponent&gt; getComponents() {
+<b class="fc"><i>212</i>&nbsp;    return this.components;</b>
+<i>213</i>&nbsp;  }
+<i>214</i>&nbsp;
+<i>215</i>&nbsp;  /**
+<i>216</i>&nbsp;   * Gets the font of this GuiComponent&#39;s text.
+<i>217</i>&nbsp;   *
+<i>218</i>&nbsp;   * @return the GuiComponent&#39;s font
+<i>219</i>&nbsp;   */
+<i>220</i>&nbsp;  public Font getFont() {
+<b class="nc"><i>221</i>&nbsp;    return this.font;</b>
+<i>222</i>&nbsp;  }
+<i>223</i>&nbsp;
+<i>224</i>&nbsp;  /**
+<i>225</i>&nbsp;   * Gets the height of this GuiComponent.
+<i>226</i>&nbsp;   *
+<i>227</i>&nbsp;   * @return the height
+<i>228</i>&nbsp;   */
+<i>229</i>&nbsp;  public double getHeight() {
+<b class="fc"><i>230</i>&nbsp;    return this.height;</b>
+<i>231</i>&nbsp;  }
+<i>232</i>&nbsp;
+<i>233</i>&nbsp;  /**
+<i>234</i>&nbsp;   * Gets the margin size between the GuiComponent&#39;s left and right border and the Text bounds.
+<i>235</i>&nbsp;   *
+<i>236</i>&nbsp;   * @return the horizontal text margin
+<i>237</i>&nbsp;   */
+<i>238</i>&nbsp;  public double getHorizontalTextMargin() {
+<b class="nc"><i>239</i>&nbsp;    return this.xMargin;</b>
+<i>240</i>&nbsp;  }
+<i>241</i>&nbsp;
+<i>242</i>&nbsp;  /**
+<i>243</i>&nbsp;   * Gets the sound that is played when hovering the GuiComponent.
+<i>244</i>&nbsp;   *
+<i>245</i>&nbsp;   * @return the hover sound
+<i>246</i>&nbsp;   */
+<i>247</i>&nbsp;  public Sound getHoverSound() {
+<b class="nc"><i>248</i>&nbsp;    return this.hoverSound;</b>
+<i>249</i>&nbsp;  }
+<i>250</i>&nbsp;
+<i>251</i>&nbsp;  /**
+<i>252</i>&nbsp;   * Gets the screen location of this GuiComponent.
+<i>253</i>&nbsp;   *
+<i>254</i>&nbsp;   * @return the screen location
+<i>255</i>&nbsp;   */
+<i>256</i>&nbsp;  public Point2D getLocation() {
+<b class="nc"><i>257</i>&nbsp;    return new Point2D.Double(this.getX(), this.getY());</b>
+<i>258</i>&nbsp;  }
+<i>259</i>&nbsp;
+<i>260</i>&nbsp;  /**
+<i>261</i>&nbsp;   * Gets the name of this GuiComponent.
+<i>262</i>&nbsp;   *
+<i>263</i>&nbsp;   * @return the name
+<i>264</i>&nbsp;   */
+<i>265</i>&nbsp;  public String getName() {
+<b class="nc"><i>266</i>&nbsp;    return this.name;</b>
+<i>267</i>&nbsp;  }
+<i>268</i>&nbsp;
+<i>269</i>&nbsp;  /**
+<i>270</i>&nbsp;   * Gets the tag.
+<i>271</i>&nbsp;   *
+<i>272</i>&nbsp;   * @return the tag
+<i>273</i>&nbsp;   */
+<i>274</i>&nbsp;  public Object getTag() {
+<b class="fc"><i>275</i>&nbsp;    return this.tag;</b>
+<i>276</i>&nbsp;  }
+<i>277</i>&nbsp;
+<i>278</i>&nbsp;  /**
+<i>279</i>&nbsp;   * Gets the entire Text associated with this GuiComponent. Parts of the Text may get cropped and can therefore be invisible.
+<i>280</i>&nbsp;   * To retrieve only the visible part of the text, use &lt;code&gt;GuiComponent.getTextToRender(Graphics2D g)&lt;/code&gt;.
+<i>281</i>&nbsp;   *
+<i>282</i>&nbsp;   * @return the entire text on this GuiComponent
+<i>283</i>&nbsp;   */
+<i>284</i>&nbsp;  public String getText() {
+<b class="nc"><i>285</i>&nbsp;    return this.text;</b>
+<i>286</i>&nbsp;  }
+<i>287</i>&nbsp;
+<i>288</i>&nbsp;  /**
+<i>289</i>&nbsp;   * Gets the horizontal text alignment.
+<i>290</i>&nbsp;   *
+<i>291</i>&nbsp;   * @return the horizontal text alignment
+<i>292</i>&nbsp;   */
+<i>293</i>&nbsp;  public Align getTextAlign() {
+<b class="nc"><i>294</i>&nbsp;    return this.textAlignment;</b>
+<i>295</i>&nbsp;  }
+<i>296</i>&nbsp;
+<i>297</i>&nbsp;  /**
+<i>298</i>&nbsp;   * Gets the text angle.
+<i>299</i>&nbsp;   *
+<i>300</i>&nbsp;   * @return the text angle
+<i>301</i>&nbsp;   */
+<i>302</i>&nbsp;  public int getTextAngle() {
+<b class="nc"><i>303</i>&nbsp;    return this.textAngle;</b>
+<i>304</i>&nbsp;  }
+<i>305</i>&nbsp;
+<i>306</i>&nbsp;  /**
+<i>307</i>&nbsp;   * Gets the text shadow color.
+<i>308</i>&nbsp;   *
+<i>309</i>&nbsp;   * @return the text shadow color
+<i>310</i>&nbsp;   */
+<i>311</i>&nbsp;  public Color getTextShadowColor() {
+<b class="nc"><i>312</i>&nbsp;    return this.textShadowColor;</b>
+<i>313</i>&nbsp;  }
+<i>314</i>&nbsp;
+<i>315</i>&nbsp;  /**
+<i>316</i>&nbsp;   * Gets only the non-cropped bits of Text visible on this GuiComponent.m
+<i>317</i>&nbsp;   * To retrieve only the entire text associated with this GuiComponent, use &lt;code&gt;GuiComponent.getText()&lt;/code&gt;.
+<i>318</i>&nbsp;   *
+<i>319</i>&nbsp;   * @param g
+<i>320</i>&nbsp;   *          The graphics object to render on.
+<i>321</i>&nbsp;   * @return the text to render
+<i>322</i>&nbsp;   */
+<i>323</i>&nbsp;  public String getTextToRender(final Graphics2D g) {
+<b class="nc"><i>324</i>&nbsp;    if (this.getText() == null) {</b>
+<b class="nc"><i>325</i>&nbsp;      return &quot;&quot;;</b>
+<i>326</i>&nbsp;    }
+<b class="nc"><i>327</i>&nbsp;    final FontMetrics fm = g.getFontMetrics();</b>
+<b class="nc"><i>328</i>&nbsp;    String newText = this.getText();</b>
+<i>329</i>&nbsp;
+<b class="nc"><i>330</i>&nbsp;    while (newText.length() &gt; 1 &amp;&amp; fm.stringWidth(newText) &gt;= this.getWidth() - this.getHorizontalTextMargin()) {</b>
+<b class="nc"><i>331</i>&nbsp;      newText = newText.substring(1, newText.length());</b>
+<i>332</i>&nbsp;    }
+<b class="nc"><i>333</i>&nbsp;    return newText;</b>
+<i>334</i>&nbsp;
+<i>335</i>&nbsp;  }
+<i>336</i>&nbsp;
+<i>337</i>&nbsp;  /**
+<i>338</i>&nbsp;   * Gets the text X coordinate.
+<i>339</i>&nbsp;   *
+<i>340</i>&nbsp;   * @return the text X
+<i>341</i>&nbsp;   */
+<i>342</i>&nbsp;  public double getTextX() {
+<b class="nc"><i>343</i>&nbsp;    return this.textX;</b>
+<i>344</i>&nbsp;  }
+<i>345</i>&nbsp;
+<i>346</i>&nbsp;  /**
+<i>347</i>&nbsp;   * Gets the text Y coordinate.
+<i>348</i>&nbsp;   *
+<i>349</i>&nbsp;   * @return the text Y
+<i>350</i>&nbsp;   */
+<i>351</i>&nbsp;  public double getTextY() {
+<b class="nc"><i>352</i>&nbsp;    return this.textY;</b>
+<i>353</i>&nbsp;  }
+<i>354</i>&nbsp;
+<i>355</i>&nbsp;  /**
+<i>356</i>&nbsp;   * Gets the width of this GuiComponent.
+<i>357</i>&nbsp;   *
+<i>358</i>&nbsp;   * @return the width
+<i>359</i>&nbsp;   */
+<i>360</i>&nbsp;  public double getWidth() {
+<b class="fc"><i>361</i>&nbsp;    return this.width;</b>
+<i>362</i>&nbsp;  }
+<i>363</i>&nbsp;
+<i>364</i>&nbsp;  /**
+<i>365</i>&nbsp;   * Gets the x coordinate of this GuiComponent.
+<i>366</i>&nbsp;   *
+<i>367</i>&nbsp;   * @return the x coordinate
+<i>368</i>&nbsp;   */
+<i>369</i>&nbsp;  public double getX() {
+<b class="fc"><i>370</i>&nbsp;    return this.x;</b>
+<i>371</i>&nbsp;  }
+<i>372</i>&nbsp;
+<i>373</i>&nbsp;  /**
+<i>374</i>&nbsp;   * Gets the y coordinate of this GuiComponent.
+<i>375</i>&nbsp;   *
+<i>376</i>&nbsp;   * @return the y coordinate
+<i>377</i>&nbsp;   */
+<i>378</i>&nbsp;  public double getY() {
+<b class="fc"><i>379</i>&nbsp;    return this.y;</b>
+<i>380</i>&nbsp;  }
+<i>381</i>&nbsp;
+<i>382</i>&nbsp;  /**
+<i>383</i>&nbsp;   * Checks if the GuiComponent is enabled.
+<i>384</i>&nbsp;   *
+<i>385</i>&nbsp;   * @return true, if is enabled
+<i>386</i>&nbsp;   */
+<i>387</i>&nbsp;  public boolean isEnabled() {
+<b class="fc"><i>388</i>&nbsp;    return this.enabled;</b>
+<i>389</i>&nbsp;  }
+<i>390</i>&nbsp;
+<i>391</i>&nbsp;  /**
+<i>392</i>&nbsp;   * Checks if mouse events are being forwarded by this GuiComponent.
+<i>393</i>&nbsp;   *
+<i>394</i>&nbsp;   * @return true, the GuiComponent forwards mouse events
+<i>395</i>&nbsp;   */
+<i>396</i>&nbsp;  public boolean isForwardMouseEvents() {
+<b class="fc"><i>397</i>&nbsp;    return this.forwardMouseEvents;</b>
+<i>398</i>&nbsp;  }
+<i>399</i>&nbsp;
+<i>400</i>&nbsp;  /**
+<i>401</i>&nbsp;   * Checks if the cursor bounding box intersects with this GuiCOmponent&#39;s bounding box.
+<i>402</i>&nbsp;   *
+<i>403</i>&nbsp;   * @return true, if the GuiComponent is hovered
+<i>404</i>&nbsp;   */
+<i>405</i>&nbsp;  public boolean isHovered() {
+<b class="fc"><i>406</i>&nbsp;    return this.isHovered;</b>
+<i>407</i>&nbsp;  }
+<i>408</i>&nbsp;
+<i>409</i>&nbsp;  /**
+<i>410</i>&nbsp;   * Checks if the mouse button is currently being pressed on this GuiComponent.
+<i>411</i>&nbsp;   *
+<i>412</i>&nbsp;   * @return true, if the mouse is currently pressed on the GuiComponent
+<i>413</i>&nbsp;   */
+<i>414</i>&nbsp;  public boolean isPressed() {
+<b class="fc"><i>415</i>&nbsp;    return this.isPressed;</b>
+<i>416</i>&nbsp;  }
+<i>417</i>&nbsp;
+<i>418</i>&nbsp;  /**
+<i>419</i>&nbsp;   * Checks if the GuiComponent is currently selected.
+<i>420</i>&nbsp;   *
+<i>421</i>&nbsp;   * @return true, if the GuiComponent is selected
+<i>422</i>&nbsp;   */
+<i>423</i>&nbsp;  public boolean isSelected() {
+<b class="fc"><i>424</i>&nbsp;    return this.isSelected;</b>
+<i>425</i>&nbsp;  }
+<i>426</i>&nbsp;
+<i>427</i>&nbsp;  /**
+<i>428</i>&nbsp;   * Checks if the GuiComponent is currently suspended.
+<i>429</i>&nbsp;   *
+<i>430</i>&nbsp;   * @return true, if the GuiComponent is suspended
+<i>431</i>&nbsp;   */
+<i>432</i>&nbsp;  public boolean isSuspended() {
+<b class="fc"><i>433</i>&nbsp;    return this.suspended;</b>
+<i>434</i>&nbsp;  }
+<i>435</i>&nbsp;
+<i>436</i>&nbsp;  /**
+<i>437</i>&nbsp;   * Checks if the GuiComponent is currently visible.
+<i>438</i>&nbsp;   *
+<i>439</i>&nbsp;   * @return true, if the GuiComponent is visible
+<i>440</i>&nbsp;   */
+<i>441</i>&nbsp;  public boolean isVisible() {
+<b class="fc"><i>442</i>&nbsp;    return this.visible;</b>
+<i>443</i>&nbsp;  }
+<i>444</i>&nbsp;
+<i>445</i>&nbsp;  @Override
+<i>446</i>&nbsp;  public void mouseClicked(final MouseEvent e) {
+<b class="fc"><i>447</i>&nbsp;    if (!this.mouseEventShouldBeForwarded(e)) {</b>
+<b class="fc"><i>448</i>&nbsp;      return;</b>
+<i>449</i>&nbsp;    }
+<i>450</i>&nbsp;
+<b class="fc"><i>451</i>&nbsp;    if (this.isPressed) {</b>
+<b class="fc"><i>452</i>&nbsp;      final ComponentMouseEvent event = new ComponentMouseEvent(e, this);</b>
+<b class="fc"><i>453</i>&nbsp;      this.getClickConsumer().forEach(consumer -&gt; consumer.accept(event));</b>
+<b class="fc"><i>454</i>&nbsp;      this.isPressed = false;</b>
+<i>455</i>&nbsp;    }
+<b class="fc"><i>456</i>&nbsp;  }</b>
+<i>457</i>&nbsp;
+<i>458</i>&nbsp;  @Override
+<i>459</i>&nbsp;  public void mouseDragged(final MouseEvent e) {
+<b class="nc"><i>460</i>&nbsp;    if (!this.mouseEventShouldBeForwarded(e)) {</b>
+<b class="nc"><i>461</i>&nbsp;      return;</b>
+<i>462</i>&nbsp;    }
+<i>463</i>&nbsp;
+<b class="nc"><i>464</i>&nbsp;    final ComponentMouseEvent event = new ComponentMouseEvent(e, this);</b>
+<b class="nc"><i>465</i>&nbsp;    this.getMouseDraggedConsumer().forEach(consumer -&gt; consumer.accept(event));</b>
+<b class="nc"><i>466</i>&nbsp;  }</b>
+<i>467</i>&nbsp;
+<i>468</i>&nbsp;  @Override
+<i>469</i>&nbsp;  public void mouseEntered(final MouseEvent e) {
+<b class="nc"><i>470</i>&nbsp;    if (!this.isForwardMouseEvents()) {</b>
+<b class="nc"><i>471</i>&nbsp;      return;</b>
+<i>472</i>&nbsp;    }
+<i>473</i>&nbsp;
+<b class="nc"><i>474</i>&nbsp;    if (!this.mouseEventShouldBeForwarded(e)) {</b>
+<b class="nc"><i>475</i>&nbsp;      this.isHovered = false;</b>
+<b class="nc"><i>476</i>&nbsp;      return;</b>
+<i>477</i>&nbsp;    }
+<i>478</i>&nbsp;
+<b class="nc"><i>479</i>&nbsp;    this.isHovered = true;</b>
+<b class="nc"><i>480</i>&nbsp;    final ComponentMouseEvent event = new ComponentMouseEvent(e, this);</b>
+<b class="nc"><i>481</i>&nbsp;    this.getHoverConsumer().forEach(consumer -&gt; consumer.accept(event));</b>
+<b class="nc"><i>482</i>&nbsp;    if (this.getHoverSound() != null) {</b>
+<b class="nc"><i>483</i>&nbsp;      Game.audio().playSound(this.getHoverSound());</b>
+<i>484</i>&nbsp;    }
+<i>485</i>&nbsp;
+<b class="nc"><i>486</i>&nbsp;    this.getMouseEnterConsumer().forEach(consumer -&gt; consumer.accept(event));</b>
+<b class="nc"><i>487</i>&nbsp;  }</b>
+<i>488</i>&nbsp;
+<i>489</i>&nbsp;  @Override
+<i>490</i>&nbsp;  public void mouseExited(final MouseEvent e) {
+<b class="nc"><i>491</i>&nbsp;    if (!this.isForwardMouseEvents()) {</b>
+<b class="nc"><i>492</i>&nbsp;      return;</b>
+<i>493</i>&nbsp;    }
+<i>494</i>&nbsp;
+<b class="nc"><i>495</i>&nbsp;    this.isHovered = false;</b>
+<b class="nc"><i>496</i>&nbsp;    this.isPressed = false;</b>
+<b class="nc"><i>497</i>&nbsp;    final ComponentMouseEvent event = new ComponentMouseEvent(e, this);</b>
+<b class="nc"><i>498</i>&nbsp;    this.getMouseLeaveConsumer().forEach(consumer -&gt; consumer.accept(event));</b>
+<b class="nc"><i>499</i>&nbsp;  }</b>
+<i>500</i>&nbsp;
+<i>501</i>&nbsp;  @Override
+<i>502</i>&nbsp;  public void mouseMoved(final MouseEvent e) {
+<b class="nc"><i>503</i>&nbsp;    if (!this.mouseEventShouldBeForwarded(e) &amp;&amp; this.isHovered()) {</b>
+<b class="nc"><i>504</i>&nbsp;      this.mouseExited(e);</b>
+<b class="nc"><i>505</i>&nbsp;      return;</b>
+<i>506</i>&nbsp;    }
+<i>507</i>&nbsp;
+<i>508</i>&nbsp;    // also throw enter event if the mouse did not hover the component
+<i>509</i>&nbsp;    // before
+<b class="nc"><i>510</i>&nbsp;    if (!this.isHovered()) {</b>
+<b class="nc"><i>511</i>&nbsp;      this.mouseEntered(e);</b>
+<i>512</i>&nbsp;    }
+<i>513</i>&nbsp;
+<b class="nc"><i>514</i>&nbsp;    final ComponentMouseEvent event = new ComponentMouseEvent(e, this);</b>
+<b class="nc"><i>515</i>&nbsp;    this.getMouseMovedConsumer().forEach(consumer -&gt; consumer.accept(event));</b>
+<b class="nc"><i>516</i>&nbsp;  }</b>
+<i>517</i>&nbsp;
+<i>518</i>&nbsp;  @Override
+<i>519</i>&nbsp;  public void mousePressed(final MouseEvent e) {
+<b class="fc"><i>520</i>&nbsp;    if (!this.mouseEventShouldBeForwarded(e)) {</b>
+<b class="fc"><i>521</i>&nbsp;      return;</b>
+<i>522</i>&nbsp;    }
+<i>523</i>&nbsp;
+<b class="fc"><i>524</i>&nbsp;    this.isPressed = true;</b>
+<b class="fc"><i>525</i>&nbsp;    final ComponentMouseEvent event = new ComponentMouseEvent(e, this);</b>
+<b class="fc"><i>526</i>&nbsp;    this.getMousePressedConsumer().forEach(consumer -&gt; consumer.accept(event));</b>
+<b class="fc"><i>527</i>&nbsp;  }</b>
+<i>528</i>&nbsp;
+<i>529</i>&nbsp;  @Override
+<i>530</i>&nbsp;  public void mouseReleased(final MouseEvent e) {
+<b class="fc"><i>531</i>&nbsp;    if (!this.mouseEventShouldBeForwarded(e)) {</b>
+<b class="fc"><i>532</i>&nbsp;      return;</b>
+<i>533</i>&nbsp;    }
+<i>534</i>&nbsp;
+<b class="fc"><i>535</i>&nbsp;    this.isPressed = false;</b>
+<i>536</i>&nbsp;
+<b class="fc"><i>537</i>&nbsp;    final ComponentMouseEvent event = new ComponentMouseEvent(e, this);</b>
+<i>538</i>&nbsp;
+<i>539</i>&nbsp;    // TODO: check if this should really call the clicked consumers...
+<b class="fc"><i>540</i>&nbsp;    this.getClickConsumer().forEach(consumer -&gt; consumer.accept(event));</b>
+<b class="fc"><i>541</i>&nbsp;    this.getMouseReleasedConsumer().forEach(consumer -&gt; consumer.accept(event));</b>
+<b class="fc"><i>542</i>&nbsp;  }</b>
+<i>543</i>&nbsp;
+<i>544</i>&nbsp;  @Override
+<i>545</i>&nbsp;  public void mouseWheelMoved(final MouseWheelEvent e) {
+<b class="nc"><i>546</i>&nbsp;    this.getMouseWheelConsumer().forEach(consumer -&gt; consumer.accept(new ComponentMouseWheelEvent(e, this)));</b>
+<b class="nc"><i>547</i>&nbsp;  }</b>
+<i>548</i>&nbsp;
+<i>549</i>&nbsp;  /**
+<i>550</i>&nbsp;   * Add a callback that is being executed if this GuiComponent is clicked once.
+<i>551</i>&nbsp;   *
+<i>552</i>&nbsp;   * @param callback
+<i>553</i>&nbsp;   *          the callback
+<i>554</i>&nbsp;   */
+<i>555</i>&nbsp;  public void onClicked(final Consumer&lt;ComponentMouseEvent&gt; callback) {
+<b class="fc"><i>556</i>&nbsp;    if (!this.getClickConsumer().contains(callback)) {</b>
+<b class="fc"><i>557</i>&nbsp;      this.getClickConsumer().add(callback);</b>
+<i>558</i>&nbsp;    }
+<b class="fc"><i>559</i>&nbsp;  }</b>
+<i>560</i>&nbsp;
+<i>561</i>&nbsp;  /**
+<i>562</i>&nbsp;   * Add a callback that is being executed if this GuiComponent is hovered with the mouse.
+<i>563</i>&nbsp;   *
+<i>564</i>&nbsp;   * @param callback
+<i>565</i>&nbsp;   *          the callback
+<i>566</i>&nbsp;   */
+<i>567</i>&nbsp;  public void onHovered(final Consumer&lt;ComponentMouseEvent&gt; callback) {
+<b class="nc"><i>568</i>&nbsp;    if (!this.getHoverConsumer().contains(callback)) {</b>
+<b class="nc"><i>569</i>&nbsp;      this.getHoverConsumer().add(callback);</b>
+<i>570</i>&nbsp;    }
+<b class="nc"><i>571</i>&nbsp;  }</b>
+<i>572</i>&nbsp;
+<i>573</i>&nbsp;  /**
+<i>574</i>&nbsp;   * Add a callback that is being executed if the mouse is pressed and moving around while within the bounds of this GuiComponent.
+<i>575</i>&nbsp;   *
+<i>576</i>&nbsp;   * @param callback
+<i>577</i>&nbsp;   *          the callback
+<i>578</i>&nbsp;   */
+<i>579</i>&nbsp;  public void onMouseDragged(final Consumer&lt;ComponentMouseEvent&gt; callback) {
+<b class="nc"><i>580</i>&nbsp;    if (!this.getMouseDraggedConsumer().contains(callback)) {</b>
+<b class="nc"><i>581</i>&nbsp;      this.getMouseDraggedConsumer().add(callback);</b>
+<i>582</i>&nbsp;    }
+<b class="nc"><i>583</i>&nbsp;  }</b>
+<i>584</i>&nbsp;
+<i>585</i>&nbsp;  /**
+<i>586</i>&nbsp;   * Add a callback that is being executed if the mouse enters the bounds of this GuiComponent.
+<i>587</i>&nbsp;   *
+<i>588</i>&nbsp;   * @param callback
+<i>589</i>&nbsp;   *          the callback
+<i>590</i>&nbsp;   */
+<i>591</i>&nbsp;  public void onMouseEnter(final Consumer&lt;ComponentMouseEvent&gt; callback) {
+<b class="nc"><i>592</i>&nbsp;    if (!this.getMouseEnterConsumer().contains(callback)) {</b>
+<b class="nc"><i>593</i>&nbsp;      this.getMouseEnterConsumer().add(callback);</b>
+<i>594</i>&nbsp;    }
+<b class="nc"><i>595</i>&nbsp;  }</b>
+<i>596</i>&nbsp;
+<i>597</i>&nbsp;  /**
+<i>598</i>&nbsp;   * Add a callback that is being executed if the mouse leaves the bounds of this GuiComponent.
+<i>599</i>&nbsp;   *
+<i>600</i>&nbsp;   * @param callback
+<i>601</i>&nbsp;   *          the callback
+<i>602</i>&nbsp;   */
+<i>603</i>&nbsp;  public void onMouseLeave(final Consumer&lt;ComponentMouseEvent&gt; callback) {
+<b class="nc"><i>604</i>&nbsp;    if (!this.getMouseLeaveConsumer().contains(callback)) {</b>
+<b class="nc"><i>605</i>&nbsp;      this.getMouseLeaveConsumer().add(callback);</b>
+<i>606</i>&nbsp;    }
+<b class="nc"><i>607</i>&nbsp;  }</b>
+<i>608</i>&nbsp;
+<i>609</i>&nbsp;  /**
+<i>610</i>&nbsp;   * Add a callback that is being executed if the mouse is moving around while within the bounds of this GuiComponent.
+<i>611</i>&nbsp;   *
+<i>612</i>&nbsp;   * @param callback
+<i>613</i>&nbsp;   *          the callback
+<i>614</i>&nbsp;   */
+<i>615</i>&nbsp;  public void onMouseMoved(final Consumer&lt;ComponentMouseEvent&gt; callback) {
+<b class="nc"><i>616</i>&nbsp;    if (!this.getMouseMovedConsumer().contains(callback)) {</b>
+<b class="nc"><i>617</i>&nbsp;      this.getMouseMovedConsumer().add(callback);</b>
+<i>618</i>&nbsp;    }
+<b class="nc"><i>619</i>&nbsp;  }</b>
+<i>620</i>&nbsp;
+<i>621</i>&nbsp;  /**
+<i>622</i>&nbsp;   * Add a callback that is being executed if the mouse is continually pressed while within the bounds of this GuiComponent.
+<i>623</i>&nbsp;   *
+<i>624</i>&nbsp;   * @param callback
+<i>625</i>&nbsp;   *          the callback
+<i>626</i>&nbsp;   */
+<i>627</i>&nbsp;  public void onMousePressed(final Consumer&lt;ComponentMouseEvent&gt; callback) {
+<b class="fc"><i>628</i>&nbsp;    if (!this.getMousePressedConsumer().contains(callback)) {</b>
+<b class="fc"><i>629</i>&nbsp;      this.getMousePressedConsumer().add(callback);</b>
+<i>630</i>&nbsp;    }
+<b class="fc"><i>631</i>&nbsp;  }</b>
+<i>632</i>&nbsp;
+<i>633</i>&nbsp;  /**
+<i>634</i>&nbsp;   * Add a callback that is being executed if the mouse button is released while within the bounds of this GuiComponent.
+<i>635</i>&nbsp;   *
+<i>636</i>&nbsp;   * @param callback
+<i>637</i>&nbsp;   *          the callback
+<i>638</i>&nbsp;   */
+<i>639</i>&nbsp;  public void onMouseReleased(final Consumer&lt;ComponentMouseEvent&gt; callback) {
+<b class="fc"><i>640</i>&nbsp;    if (!this.getMouseReleasedConsumer().contains(callback)) {</b>
+<b class="fc"><i>641</i>&nbsp;      this.getMouseReleasedConsumer().add(callback);</b>
+<i>642</i>&nbsp;    }
+<b class="fc"><i>643</i>&nbsp;  }</b>
+<i>644</i>&nbsp;
+<i>645</i>&nbsp;  /**
+<i>646</i>&nbsp;   * Add a callback that is being executed if the mouse wheel is scrolled while within the bounds of this GuiComponent.
+<i>647</i>&nbsp;   *
+<i>648</i>&nbsp;   * @param callback
+<i>649</i>&nbsp;   *          the callback
+<i>650</i>&nbsp;   */
+<i>651</i>&nbsp;  public void onMouseWheelScrolled(final Consumer&lt;ComponentMouseWheelEvent&gt; callback) {
+<b class="nc"><i>652</i>&nbsp;    if (!this.getMouseWheelConsumer().contains(callback)) {</b>
+<b class="nc"><i>653</i>&nbsp;      this.getMouseWheelConsumer().add(callback);</b>
+<i>654</i>&nbsp;    }
+<b class="nc"><i>655</i>&nbsp;  }</b>
+<i>656</i>&nbsp;
+<i>657</i>&nbsp;  /**
+<i>658</i>&nbsp;   * Add a callback that is being executed if the text on this GuiComponent changes.
+<i>659</i>&nbsp;   *
+<i>660</i>&nbsp;   * @param cons
+<i>661</i>&nbsp;   *          the cons
+<i>662</i>&nbsp;   */
+<i>663</i>&nbsp;  public void onTextChanged(final Consumer&lt;String&gt; cons) {
+<b class="nc"><i>664</i>&nbsp;    this.textChangedConsumer.add(cons);</b>
+<b class="nc"><i>665</i>&nbsp;  }</b>
+<i>666</i>&nbsp;
+<i>667</i>&nbsp;  /**
+<i>668</i>&nbsp;   * Prepare the GuiComponent and all its child Components (Makes the GuiComponent visible and adds mouse listeners.).
+<i>669</i>&nbsp;   * This is, for example, done right before switching to a new screen.
+<i>670</i>&nbsp;   *
+<i>671</i>&nbsp;   */
+<i>672</i>&nbsp;  public void prepare() {
+<b class="nc"><i>673</i>&nbsp;    this.suspended = false;</b>
+<b class="nc"><i>674</i>&nbsp;    this.visible = true;</b>
+<b class="nc"><i>675</i>&nbsp;    Input.mouse().addMouseListener(this);</b>
+<b class="nc"><i>676</i>&nbsp;    Input.mouse().addMouseWheelListener(this);</b>
+<b class="nc"><i>677</i>&nbsp;    Input.mouse().addMouseMotionListener(this);</b>
+<b class="nc"><i>678</i>&nbsp;    for (final GuiComponent component : this.getComponents()) {</b>
+<b class="nc"><i>679</i>&nbsp;      component.prepare();</b>
+<b class="nc"><i>680</i>&nbsp;    }</b>
+<b class="nc"><i>681</i>&nbsp;  }</b>
+<i>682</i>&nbsp;
+<i>683</i>&nbsp;  @Override
+<i>684</i>&nbsp;  public void render(final Graphics2D g) {
+<b class="nc"><i>685</i>&nbsp;    if (this.isSuspended() || !this.isVisible()) {</b>
+<b class="nc"><i>686</i>&nbsp;      return;</b>
+<i>687</i>&nbsp;    }
+<i>688</i>&nbsp;
+<b class="nc"><i>689</i>&nbsp;    Appearance currentAppearance = this.getAppearance();</b>
+<b class="nc"><i>690</i>&nbsp;    if (this.isHovered()) {</b>
+<b class="nc"><i>691</i>&nbsp;      currentAppearance = this.getAppearanceHovered();</b>
+<i>692</i>&nbsp;    }
+<i>693</i>&nbsp;
+<b class="nc"><i>694</i>&nbsp;    if (!this.isEnabled()) {</b>
+<b class="nc"><i>695</i>&nbsp;      currentAppearance = this.getAppearanceDisabled();</b>
+<i>696</i>&nbsp;    }
+<i>697</i>&nbsp;
+<b class="nc"><i>698</i>&nbsp;    if (!currentAppearance.isTransparentBackground()) {</b>
+<b class="nc"><i>699</i>&nbsp;      g.setPaint(currentAppearance.getBackgroundPaint(this.getWidth(), this.getHeight()));</b>
+<b class="nc"><i>700</i>&nbsp;      g.fill(this.getBoundingBox());</b>
+<i>701</i>&nbsp;    }
+<i>702</i>&nbsp;
+<b class="nc"><i>703</i>&nbsp;    g.setColor(currentAppearance.getForeColor());</b>
+<b class="nc"><i>704</i>&nbsp;    g.setFont(this.getFont());</b>
+<i>705</i>&nbsp;
+<b class="nc"><i>706</i>&nbsp;    this.renderText(g);</b>
+<i>707</i>&nbsp;
+<b class="nc"><i>708</i>&nbsp;    for (final GuiComponent component : this.getComponents()) {</b>
+<b class="nc"><i>709</i>&nbsp;      if (!component.isVisible() || component.isSuspended()) {</b>
+<b class="nc"><i>710</i>&nbsp;        continue;</b>
+<i>711</i>&nbsp;      }
+<i>712</i>&nbsp;
+<b class="nc"><i>713</i>&nbsp;      component.render(g);</b>
+<b class="nc"><i>714</i>&nbsp;    }</b>
+<i>715</i>&nbsp;
+<b class="nc"><i>716</i>&nbsp;    if (Game.config().debug().renderGuiComponentBoundingBoxes()) {</b>
+<b class="nc"><i>717</i>&nbsp;      g.setColor(Color.RED);</b>
+<b class="nc"><i>718</i>&nbsp;      ShapeRenderer.renderOutline(g, this.getBoundingBox());</b>
+<i>719</i>&nbsp;    }
+<b class="nc"><i>720</i>&nbsp;  }</b>
+<i>721</i>&nbsp;
+<i>722</i>&nbsp;  /**
+<i>723</i>&nbsp;   * Sets the width and height of this GuiComponent.
+<i>724</i>&nbsp;   *
+<i>725</i>&nbsp;   * @param width
+<i>726</i>&nbsp;   *          the width
+<i>727</i>&nbsp;   * @param height
+<i>728</i>&nbsp;   *          the height
+<i>729</i>&nbsp;   */
+<i>730</i>&nbsp;  public void setDimension(final double width, final double height) {
+<b class="fc"><i>731</i>&nbsp;    this.width = width;</b>
+<b class="fc"><i>732</i>&nbsp;    this.height = height;</b>
+<b class="fc"><i>733</i>&nbsp;  }</b>
+<i>734</i>&nbsp;
+<i>735</i>&nbsp;  /**
+<i>736</i>&nbsp;   * Sets the &quot;enabled&quot; property on this GuiComponent and its child components.
+<i>737</i>&nbsp;   *
+<i>738</i>&nbsp;   * @param enabled
+<i>739</i>&nbsp;   *          the new enabled property
+<i>740</i>&nbsp;   */
+<i>741</i>&nbsp;  public void setEnabled(final boolean enabled) {
+<b class="fc"><i>742</i>&nbsp;    this.enabled = enabled;</b>
+<b class="fc"><i>743</i>&nbsp;    for (final GuiComponent comp : this.getComponents()) {</b>
+<b class="nc"><i>744</i>&nbsp;      comp.setEnabled(this.isEnabled());</b>
+<b class="nc"><i>745</i>&nbsp;    }</b>
+<b class="fc"><i>746</i>&nbsp;  }</b>
+<i>747</i>&nbsp;
+<i>748</i>&nbsp;  /**
+<i>749</i>&nbsp;   * Sets the font for this GuiComponent&#39;s text.
+<i>750</i>&nbsp;   *
+<i>751</i>&nbsp;   * @param font
+<i>752</i>&nbsp;   *          the new font
+<i>753</i>&nbsp;   */
+<i>754</i>&nbsp;  public void setFont(final Font font) {
+<b class="fc"><i>755</i>&nbsp;    this.font = font;</b>
+<b class="fc"><i>756</i>&nbsp;  }</b>
+<i>757</i>&nbsp;
+<i>758</i>&nbsp;  /**
+<i>759</i>&nbsp;   * Sets the font size for this GuiComponent&#39;s text.
+<i>760</i>&nbsp;   *
+<i>761</i>&nbsp;   * @param size
+<i>762</i>&nbsp;   *          the new font size
+<i>763</i>&nbsp;   */
+<i>764</i>&nbsp;  public void setFontSize(final float size) {
+<b class="nc"><i>765</i>&nbsp;    this.font = this.font.deriveFont(size);</b>
+<b class="nc"><i>766</i>&nbsp;  }</b>
+<i>767</i>&nbsp;
+<i>768</i>&nbsp;  /**
+<i>769</i>&nbsp;   * Enable or disable forwarding mouse events by this GuiComponent.
+<i>770</i>&nbsp;   *
+<i>771</i>&nbsp;   * @param forwardMouseEvents
+<i>772</i>&nbsp;   *          the new forward mouse events
+<i>773</i>&nbsp;   */
+<i>774</i>&nbsp;  public void setForwardMouseEvents(final boolean forwardMouseEvents) {
+<b class="nc"><i>775</i>&nbsp;    this.forwardMouseEvents = forwardMouseEvents;</b>
+<b class="nc"><i>776</i>&nbsp;  }</b>
+<i>777</i>&nbsp;
+<i>778</i>&nbsp;  /**
+<i>779</i>&nbsp;   * Sets the GuiComponent&#39;s height.
+<i>780</i>&nbsp;   *
+<i>781</i>&nbsp;   * @param height
+<i>782</i>&nbsp;   *          the new height
+<i>783</i>&nbsp;   */
+<i>784</i>&nbsp;  public void setHeight(final double height) {
+<b class="nc"><i>785</i>&nbsp;    this.height = height;</b>
+<b class="nc"><i>786</i>&nbsp;  }</b>
+<i>787</i>&nbsp;
+<i>788</i>&nbsp;  /**
+<i>789</i>&nbsp;   * Sets the margin size between the GuiComponent&#39;s left and right border and the Text bounds.
+<i>790</i>&nbsp;   *
+<i>791</i>&nbsp;   * @param xMargin
+<i>792</i>&nbsp;   *          the new text X margin
+<i>793</i>&nbsp;   */
+<i>794</i>&nbsp;  public void setHorizontalTextMargin(final double xMargin) {
+<b class="fc"><i>795</i>&nbsp;    this.xMargin = xMargin;</b>
+<b class="fc"><i>796</i>&nbsp;  }</b>
+<i>797</i>&nbsp;
+<i>798</i>&nbsp;  /**
+<i>799</i>&nbsp;   * Sets the &quot;enabled&quot; property on this GuiComponent.
+<i>800</i>&nbsp;   *
+<i>801</i>&nbsp;   * @param hovered
+<i>802</i>&nbsp;   *          the new hovered
+<i>803</i>&nbsp;   */
+<i>804</i>&nbsp;  public void setHovered(final boolean hovered) {
+<b class="nc"><i>805</i>&nbsp;    this.isHovered = hovered;</b>
+<b class="nc"><i>806</i>&nbsp;  }</b>
+<i>807</i>&nbsp;
+<i>808</i>&nbsp;  /**
+<i>809</i>&nbsp;   * Sets the hover sound.
+<i>810</i>&nbsp;   *
+<i>811</i>&nbsp;   * @param hoverSound
+<i>812</i>&nbsp;   *          the new hover sound
+<i>813</i>&nbsp;   */
+<i>814</i>&nbsp;  public void setHoverSound(final Sound hoverSound) {
+<b class="nc"><i>815</i>&nbsp;    this.hoverSound = hoverSound;</b>
+<b class="nc"><i>816</i>&nbsp;  }</b>
+<i>817</i>&nbsp;
+<i>818</i>&nbsp;  /**
+<i>819</i>&nbsp;   * Sets this GuiComponent&#39;s location.
+<i>820</i>&nbsp;   *
+<i>821</i>&nbsp;   * @param x
+<i>822</i>&nbsp;   *          the new x coordinate
+<i>823</i>&nbsp;   * @param y
+<i>824</i>&nbsp;   *          the new y coordinate
+<i>825</i>&nbsp;   */
+<i>826</i>&nbsp;  public void setLocation(final double x, final double y) {
+<b class="fc"><i>827</i>&nbsp;    this.setX(x);</b>
+<b class="fc"><i>828</i>&nbsp;    this.setY(y);</b>
+<b class="fc"><i>829</i>&nbsp;  }</b>
+<i>830</i>&nbsp;
+<i>831</i>&nbsp;  /**
+<i>832</i>&nbsp;   * Sets this GuiComponent&#39;s location.
+<i>833</i>&nbsp;   *
+<i>834</i>&nbsp;   * @param location
+<i>835</i>&nbsp;   *          the new location
+<i>836</i>&nbsp;   */
+<i>837</i>&nbsp;  public void setLocation(final Point2D location) {
+<b class="nc"><i>838</i>&nbsp;    this.setLocation(location.getX(), location.getY());</b>
+<b class="nc"><i>839</i>&nbsp;  }</b>
+<i>840</i>&nbsp;
+<i>841</i>&nbsp;  /**
+<i>842</i>&nbsp;   * Sets this GuiComponent&#39;s name.
+<i>843</i>&nbsp;   *
+<i>844</i>&nbsp;   * @param name
+<i>845</i>&nbsp;   *          the new name
+<i>846</i>&nbsp;   */
+<i>847</i>&nbsp;  public void setName(final String name) {
+<b class="nc"><i>848</i>&nbsp;    this.name = name;</b>
+<b class="nc"><i>849</i>&nbsp;  }</b>
+<i>850</i>&nbsp;
+<i>851</i>&nbsp;  /**
+<i>852</i>&nbsp;   * Sets the &quot;selected&quot; property on this GuiComponent.
+<i>853</i>&nbsp;   *
+<i>854</i>&nbsp;   * @param bool
+<i>855</i>&nbsp;   *          the new selected
+<i>856</i>&nbsp;   */
+<i>857</i>&nbsp;  public void setSelected(final boolean bool) {
+<b class="fc"><i>858</i>&nbsp;    this.isSelected = bool;</b>
+<b class="fc"><i>859</i>&nbsp;  }</b>
+<i>860</i>&nbsp;
+<i>861</i>&nbsp;  /**
+<i>862</i>&nbsp;   * Sets the tag.
+<i>863</i>&nbsp;   *
+<i>864</i>&nbsp;   * @param tag
+<i>865</i>&nbsp;   *          the new tag
+<i>866</i>&nbsp;   */
+<i>867</i>&nbsp;  public void setTag(final Object tag) {
+<b class="fc"><i>868</i>&nbsp;    this.tag = tag;</b>
+<b class="fc"><i>869</i>&nbsp;  }</b>
+<i>870</i>&nbsp;
+<i>871</i>&nbsp;  /**
+<i>872</i>&nbsp;   * Sets the text.
+<i>873</i>&nbsp;   *
+<i>874</i>&nbsp;   * @param text
+<i>875</i>&nbsp;   *          the new text
+<i>876</i>&nbsp;   */
+<i>877</i>&nbsp;  public void setText(final String text) {
+<b class="nc"><i>878</i>&nbsp;    this.text = text;</b>
+<b class="nc"><i>879</i>&nbsp;    for (final Consumer&lt;String&gt; cons : this.textChangedConsumer) {</b>
+<b class="nc"><i>880</i>&nbsp;      cons.accept(this.getText());</b>
+<b class="nc"><i>881</i>&nbsp;    }</b>
+<b class="nc"><i>882</i>&nbsp;    this.setTextX(0);</b>
+<b class="nc"><i>883</i>&nbsp;  }</b>
+<i>884</i>&nbsp;
+<i>885</i>&nbsp;  /**
+<i>886</i>&nbsp;   * Sets the horizontal text alignment.
+<i>887</i>&nbsp;   *
+<i>888</i>&nbsp;   * @param textAlignment
+<i>889</i>&nbsp;   *          the new text align
+<i>890</i>&nbsp;   */
+<i>891</i>&nbsp;  public void setTextAlign(final Align textAlignment) {
+<b class="nc"><i>892</i>&nbsp;    this.textAlignment = textAlignment;</b>
+<b class="nc"><i>893</i>&nbsp;  }</b>
+<i>894</i>&nbsp;
+<i>895</i>&nbsp;  /**
+<i>896</i>&nbsp;   * Sets the text angle in degrees.
+<i>897</i>&nbsp;   *
+<i>898</i>&nbsp;   * @param textAngle
+<i>899</i>&nbsp;   *          the new text angle in degrees
+<i>900</i>&nbsp;   */
+<i>901</i>&nbsp;  public void setTextAngle(final int textAngle) {
+<b class="nc"><i>902</i>&nbsp;    this.textAngle = textAngle;</b>
+<b class="nc"><i>903</i>&nbsp;  }</b>
+<i>904</i>&nbsp;
+<i>905</i>&nbsp;  /**
+<i>906</i>&nbsp;   * Enable or disable the shadow being drawn below the text
+<i>907</i>&nbsp;   *
+<i>908</i>&nbsp;   * @param drawTextShadow
+<i>909</i>&nbsp;   *          the boolean determining if a text shadow should be drawn
+<i>910</i>&nbsp;   */
+<i>911</i>&nbsp;  public void setTextShadow(final boolean drawTextShadow) {
+<b class="nc"><i>912</i>&nbsp;    this.drawTextShadow = drawTextShadow;</b>
+<b class="nc"><i>913</i>&nbsp;    for (final GuiComponent comp : this.getComponents()) {</b>
+<b class="nc"><i>914</i>&nbsp;      comp.setTextShadow(drawTextShadow);</b>
+<b class="nc"><i>915</i>&nbsp;    }</b>
+<b class="nc"><i>916</i>&nbsp;  }</b>
+<i>917</i>&nbsp;
+<i>918</i>&nbsp;  /**
+<i>919</i>&nbsp;   * Sets the text shadow color.
+<i>920</i>&nbsp;   *
+<i>921</i>&nbsp;   * @param textShadowColor
+<i>922</i>&nbsp;   *          the new text shadow color
+<i>923</i>&nbsp;   */
+<i>924</i>&nbsp;  public void setTextShadowColor(final Color textShadowColor) {
+<b class="nc"><i>925</i>&nbsp;    this.textShadowColor = textShadowColor;</b>
+<b class="nc"><i>926</i>&nbsp;  }</b>
+<i>927</i>&nbsp;
+<i>928</i>&nbsp;  /**
+<i>929</i>&nbsp;   * Sets the text X coordinate.
+<i>930</i>&nbsp;   *
+<i>931</i>&nbsp;   * @param x
+<i>932</i>&nbsp;   *          the new text X
+<i>933</i>&nbsp;   */
+<i>934</i>&nbsp;  public void setTextX(final double x) {
+<b class="nc"><i>935</i>&nbsp;    this.textX = x;</b>
+<b class="nc"><i>936</i>&nbsp;  }</b>
+<i>937</i>&nbsp;
+<i>938</i>&nbsp;  /**
+<i>939</i>&nbsp;   * Sets the text Y coordinate.
+<i>940</i>&nbsp;   *
+<i>941</i>&nbsp;   * @param y
+<i>942</i>&nbsp;   *          the new text Y
+<i>943</i>&nbsp;   */
+<i>944</i>&nbsp;  public void setTextY(final double y) {
+<b class="nc"><i>945</i>&nbsp;    this.textY = y;</b>
+<b class="nc"><i>946</i>&nbsp;  }</b>
+<i>947</i>&nbsp;
+<i>948</i>&nbsp;  /**
+<i>949</i>&nbsp;   * Sets the &quot;visible&quot; property on this GuiComponent.
+<i>950</i>&nbsp;   *
+<i>951</i>&nbsp;   * @param visible
+<i>952</i>&nbsp;   *          the new visible
+<i>953</i>&nbsp;   */
+<i>954</i>&nbsp;  public void setVisible(final boolean visible) {
+<b class="fc"><i>955</i>&nbsp;    this.visible = visible;</b>
+<b class="fc"><i>956</i>&nbsp;    for (final GuiComponent component : this.getComponents()) {</b>
+<b class="nc"><i>957</i>&nbsp;      component.setVisible(visible);</b>
+<b class="nc"><i>958</i>&nbsp;    }</b>
+<b class="fc"><i>959</i>&nbsp;  }</b>
+<i>960</i>&nbsp;
+<i>961</i>&nbsp;  /**
+<i>962</i>&nbsp;   * Sets the GuiComponent&#39;s width.
+<i>963</i>&nbsp;   *
+<i>964</i>&nbsp;   * @param width
+<i>965</i>&nbsp;   *          the new width
+<i>966</i>&nbsp;   */
+<i>967</i>&nbsp;  public void setWidth(final double width) {
+<b class="nc"><i>968</i>&nbsp;    this.width = width;</b>
+<b class="nc"><i>969</i>&nbsp;  }</b>
+<i>970</i>&nbsp;
+<i>971</i>&nbsp;  /**
+<i>972</i>&nbsp;   * Sets the GuiComponent&#39;s x coordinate.
+<i>973</i>&nbsp;   *
+<i>974</i>&nbsp;   * @param x
+<i>975</i>&nbsp;   *          the new x coordinate
+<i>976</i>&nbsp;   */
+<i>977</i>&nbsp;  public void setX(final double x) {
+<b class="fc"><i>978</i>&nbsp;    final double delta = x - this.x;</b>
+<b class="fc"><i>979</i>&nbsp;    this.x = x;</b>
+<i>980</i>&nbsp;
+<b class="fc"><i>981</i>&nbsp;    for (final GuiComponent component : this.getComponents()) {</b>
+<b class="nc"><i>982</i>&nbsp;      component.setX(component.getX() + delta);</b>
+<b class="nc"><i>983</i>&nbsp;    }</b>
+<b class="fc"><i>984</i>&nbsp;  }</b>
+<i>985</i>&nbsp;
+<i>986</i>&nbsp;  /**
+<i>987</i>&nbsp;   * Sets the GuiComponent&#39;s y coordinate.
+<i>988</i>&nbsp;   *
+<i>989</i>&nbsp;   * @param y
+<i>990</i>&nbsp;   *          the new y coordinate
+<i>991</i>&nbsp;   */
+<i>992</i>&nbsp;  public void setY(final double y) {
+<b class="fc"><i>993</i>&nbsp;    final double delta = y - this.y;</b>
+<b class="fc"><i>994</i>&nbsp;    this.y = y;</b>
+<b class="fc"><i>995</i>&nbsp;    for (final GuiComponent component : this.getComponents()) {</b>
+<b class="nc"><i>996</i>&nbsp;      component.setY(component.getY() + delta);</b>
+<b class="nc"><i>997</i>&nbsp;    }</b>
+<b class="fc"><i>998</i>&nbsp;  }</b>
+<i>999</i>&nbsp;
+<i>1000</i>&nbsp;  /**
+<i>1001</i>&nbsp;   * Suspend the GuiComponent and all its child Components (Makes the GuiComponent invisible and removes mouse listeners.).
+<i>1002</i>&nbsp;   *
+<i>1003</i>&nbsp;   */
+<i>1004</i>&nbsp;  public void suspend() {
+<b class="nc"><i>1005</i>&nbsp;    Input.mouse().removeMouseListener(this);</b>
+<b class="nc"><i>1006</i>&nbsp;    Input.mouse().removeMouseWheelListener(this);</b>
+<b class="nc"><i>1007</i>&nbsp;    Input.mouse().removeMouseMotionListener(this);</b>
+<b class="nc"><i>1008</i>&nbsp;    this.suspended = true;</b>
+<b class="nc"><i>1009</i>&nbsp;    this.visible = false;</b>
+<b class="nc"><i>1010</i>&nbsp;    for (final GuiComponent childComp : this.getComponents()) {</b>
+<b class="nc"><i>1011</i>&nbsp;      childComp.suspend();</b>
+<b class="nc"><i>1012</i>&nbsp;    }</b>
+<b class="nc"><i>1013</i>&nbsp;  }</b>
+<i>1014</i>&nbsp;
+<i>1015</i>&nbsp;  /**
+<i>1016</i>&nbsp;   * Toggle this GuiComponent&#39;s selection.
+<i>1017</i>&nbsp;   */
+<i>1018</i>&nbsp;  public void toggleSelection() {
+<b class="nc"><i>1019</i>&nbsp;    this.setSelected(!this.isSelected);</b>
+<b class="nc"><i>1020</i>&nbsp;  }</b>
+<i>1021</i>&nbsp;
+<i>1022</i>&nbsp;  /**
+<i>1023</i>&nbsp;   * Gets the click consumer list.
+<i>1024</i>&nbsp;   *
+<i>1025</i>&nbsp;   * @return the click consumer list
+<i>1026</i>&nbsp;   */
+<i>1027</i>&nbsp;  protected List&lt;Consumer&lt;ComponentMouseEvent&gt;&gt; getClickConsumer() {
+<b class="fc"><i>1028</i>&nbsp;    return this.clickConsumer;</b>
+<i>1029</i>&nbsp;  }
+<i>1030</i>&nbsp;
+<i>1031</i>&nbsp;  /**
+<i>1032</i>&nbsp;   * Gets the hover consumer list.
+<i>1033</i>&nbsp;   *
+<i>1034</i>&nbsp;   * @return the hover consumer list
+<i>1035</i>&nbsp;   */
+<i>1036</i>&nbsp;  protected List&lt;Consumer&lt;ComponentMouseEvent&gt;&gt; getHoverConsumer() {
+<b class="nc"><i>1037</i>&nbsp;    return this.hoverConsumer;</b>
+<i>1038</i>&nbsp;  }
+<i>1039</i>&nbsp;
+<i>1040</i>&nbsp;  /**
+<i>1041</i>&nbsp;   * Gets the mouse dragged consumer list.
+<i>1042</i>&nbsp;   *
+<i>1043</i>&nbsp;   * @return the mouse dragged consumer list
+<i>1044</i>&nbsp;   */
+<i>1045</i>&nbsp;  protected List&lt;Consumer&lt;ComponentMouseEvent&gt;&gt; getMouseDraggedConsumer() {
+<b class="nc"><i>1046</i>&nbsp;    return this.mouseDraggedConsumer;</b>
+<i>1047</i>&nbsp;  }
+<i>1048</i>&nbsp;
+<i>1049</i>&nbsp;  /**
+<i>1050</i>&nbsp;   * Gets the mouse enter consumer list.
+<i>1051</i>&nbsp;   *
+<i>1052</i>&nbsp;   * @return the mouse enter consumer list
+<i>1053</i>&nbsp;   */
+<i>1054</i>&nbsp;  protected List&lt;Consumer&lt;ComponentMouseEvent&gt;&gt; getMouseEnterConsumer() {
+<b class="nc"><i>1055</i>&nbsp;    return this.mouseEnterConsumer;</b>
+<i>1056</i>&nbsp;  }
+<i>1057</i>&nbsp;
+<i>1058</i>&nbsp;  /**
+<i>1059</i>&nbsp;   * Gets the mouse leave consumer list.
+<i>1060</i>&nbsp;   *
+<i>1061</i>&nbsp;   * @return the mouse leave consumer list
+<i>1062</i>&nbsp;   */
+<i>1063</i>&nbsp;  protected List&lt;Consumer&lt;ComponentMouseEvent&gt;&gt; getMouseLeaveConsumer() {
+<b class="nc"><i>1064</i>&nbsp;    return this.mouseLeaveConsumer;</b>
+<i>1065</i>&nbsp;  }
+<i>1066</i>&nbsp;
+<i>1067</i>&nbsp;  /**
+<i>1068</i>&nbsp;   * Gets the mouse moved consumer list.
+<i>1069</i>&nbsp;   *
+<i>1070</i>&nbsp;   * @return the mouse moved consumer list
+<i>1071</i>&nbsp;   */
+<i>1072</i>&nbsp;  protected List&lt;Consumer&lt;ComponentMouseEvent&gt;&gt; getMouseMovedConsumer() {
+<b class="nc"><i>1073</i>&nbsp;    return this.mouseMovedConsumer;</b>
+<i>1074</i>&nbsp;  }
+<i>1075</i>&nbsp;
+<i>1076</i>&nbsp;  /**
+<i>1077</i>&nbsp;   * Gets the mouse pressed consumer list.
+<i>1078</i>&nbsp;   *
+<i>1079</i>&nbsp;   * @return the mouse pressed consumer list
+<i>1080</i>&nbsp;   */
+<i>1081</i>&nbsp;  protected List&lt;Consumer&lt;ComponentMouseEvent&gt;&gt; getMousePressedConsumer() {
+<b class="fc"><i>1082</i>&nbsp;    return this.mousePressedConsumer;</b>
+<i>1083</i>&nbsp;  }
+<i>1084</i>&nbsp;
+<i>1085</i>&nbsp;  /**
+<i>1086</i>&nbsp;   * Gets the mouse released consumer list.
+<i>1087</i>&nbsp;   *
+<i>1088</i>&nbsp;   * @return the mouse released consumer list
+<i>1089</i>&nbsp;   */
+<i>1090</i>&nbsp;  protected List&lt;Consumer&lt;ComponentMouseEvent&gt;&gt; getMouseReleasedConsumer() {
+<b class="fc"><i>1091</i>&nbsp;    return this.mouseReleasedConsumer;</b>
+<i>1092</i>&nbsp;  }
+<i>1093</i>&nbsp;
+<i>1094</i>&nbsp;  /**
+<i>1095</i>&nbsp;   * Gets the mouse wheel consumer list.
+<i>1096</i>&nbsp;   *
+<i>1097</i>&nbsp;   * @return the mouse wheel consumer list
+<i>1098</i>&nbsp;   */
+<i>1099</i>&nbsp;  protected List&lt;Consumer&lt;ComponentMouseWheelEvent&gt;&gt; getMouseWheelConsumer() {
+<b class="nc"><i>1100</i>&nbsp;    return this.mouseWheelConsumer;</b>
+<i>1101</i>&nbsp;  }
+<i>1102</i>&nbsp;
+<i>1103</i>&nbsp;  /**
+<i>1104</i>&nbsp;   * Initialize child components.
+<i>1105</i>&nbsp;   */
+<i>1106</i>&nbsp;  protected void initializeComponents() {
+<i>1107</i>&nbsp;    // nothing to do in the base class
+<b class="fc"><i>1108</i>&nbsp;  }</b>
+<i>1109</i>&nbsp;
+<i>1110</i>&nbsp;  /**
+<i>1111</i>&nbsp;   * Check if a Mouse event should be forwarded.
+<i>1112</i>&nbsp;   *
+<i>1113</i>&nbsp;   * @param e
+<i>1114</i>&nbsp;   *          the mouse event
+<i>1115</i>&nbsp;   * @return true, if the Mouse event should be forwarded
+<i>1116</i>&nbsp;   */
+<i>1117</i>&nbsp;  protected boolean mouseEventShouldBeForwarded(final MouseEvent e) {
+<b class="fc"><i>1118</i>&nbsp;    return this.isForwardMouseEvents() &amp;&amp; this.isVisible() &amp;&amp; this.isEnabled() &amp;&amp; !this.isSuspended() &amp;&amp; e != null &amp;&amp; this.getBoundingBox().contains(e.getPoint());</b>
+<i>1119</i>&nbsp;  }
+<i>1120</i>&nbsp;
+<i>1121</i>&nbsp;  /**
+<i>1122</i>&nbsp;   * Render this GuiComponent&#39;s text.
+<i>1123</i>&nbsp;   *
+<i>1124</i>&nbsp;   * @param g
+<i>1125</i>&nbsp;   *          the &lt;code&gt;Graphics2D&lt;/code&gt; object used for drawing
+<i>1126</i>&nbsp;   */
+<i>1127</i>&nbsp;  private void renderText(final Graphics2D g) {
+<b class="nc"><i>1128</i>&nbsp;    if (this.getText() == null || this.getText().isEmpty()) {</b>
+<b class="nc"><i>1129</i>&nbsp;      return;</b>
+<i>1130</i>&nbsp;    }
+<i>1131</i>&nbsp;
+<b class="nc"><i>1132</i>&nbsp;    final FontMetrics fm = g.getFontMetrics();</b>
+<i>1133</i>&nbsp;
+<i>1134</i>&nbsp;    double defaultTextX;
+<b class="nc"><i>1135</i>&nbsp;    final double defaultTextY = fm.getAscent() + (this.getHeight() - (fm.getAscent() + fm.getDescent())) / 2;</b>
+<b class="nc"><i>1136</i>&nbsp;    switch (this.getTextAlign()) {</b>
+<i>1137</i>&nbsp;    case LEFT:
+<b class="nc"><i>1138</i>&nbsp;      defaultTextX = this.getHorizontalTextMargin();</b>
+<b class="nc"><i>1139</i>&nbsp;      break;</b>
+<i>1140</i>&nbsp;    case RIGHT:
+<b class="nc"><i>1141</i>&nbsp;      defaultTextX = this.getWidth() - this.getHorizontalTextMargin() - fm.stringWidth(this.getTextToRender(g));</b>
+<b class="nc"><i>1142</i>&nbsp;      break;</b>
+<i>1143</i>&nbsp;    case CENTER:
+<i>1144</i>&nbsp;    default:
+<b class="nc"><i>1145</i>&nbsp;      defaultTextX = this.getWidth() / 2 - fm.stringWidth(this.getTextToRender(g)) / 2.0;</b>
+<i>1146</i>&nbsp;      break;
+<i>1147</i>&nbsp;    }
+<b class="nc"><i>1148</i>&nbsp;    if (this.getTextY() == 0) {</b>
+<b class="nc"><i>1149</i>&nbsp;      this.setTextY(defaultTextY);</b>
+<i>1150</i>&nbsp;    }
+<i>1151</i>&nbsp;
+<b class="nc"><i>1152</i>&nbsp;    if (this.getTextX() == 0) {</b>
+<b class="nc"><i>1153</i>&nbsp;      this.setTextX(defaultTextX);</b>
+<i>1154</i>&nbsp;    }
+<i>1155</i>&nbsp;
+<b class="nc"><i>1156</i>&nbsp;    Object antialiasing = this.getAppearance().getTextAntialiasing();</b>
+<b class="nc"><i>1157</i>&nbsp;    if (this.isHovered()) {</b>
+<b class="nc"><i>1158</i>&nbsp;      antialiasing = this.getAppearanceHovered().getTextAntialiasing();</b>
+<i>1159</i>&nbsp;    }
+<b class="nc"><i>1160</i>&nbsp;    if (!this.isEnabled()) {</b>
+<b class="nc"><i>1161</i>&nbsp;      antialiasing = this.getAppearanceDisabled().getTextAntialiasing();</b>
+<i>1162</i>&nbsp;    }
+<i>1163</i>&nbsp;
+<b class="nc"><i>1164</i>&nbsp;    if (this.getTextAngle() == 0) {</b>
+<b class="nc"><i>1165</i>&nbsp;      if (this.drawTextShadow()) {</b>
+<b class="nc"><i>1166</i>&nbsp;        TextRenderer.renderWithOutline(g, this.getTextToRender(g), this.getX() + this.getTextX(), this.getY() + this.getTextY(), this.getTextShadowColor(), antialiasing);</b>
+<i>1167</i>&nbsp;      } else {
+<b class="nc"><i>1168</i>&nbsp;        TextRenderer.render(g, this.getTextToRender(g), this.getX() + this.getTextX(), this.getY() + this.getTextY(), antialiasing);</b>
+<i>1169</i>&nbsp;      }
+<b class="nc"><i>1170</i>&nbsp;    } else if (this.getTextAngle() == 90) {</b>
+<b class="nc"><i>1171</i>&nbsp;      TextRenderer.renderRotated(g, this.getTextToRender(g), this.getX() + this.getTextX(), this.getY() + this.getTextY() - fm.stringWidth(this.getTextToRender(g)), this.getTextAngle(), antialiasing);</b>
+<i>1172</i>&nbsp;    } else {
+<b class="nc"><i>1173</i>&nbsp;      TextRenderer.renderRotated(g, this.getTextToRender(g), this.getX() + this.getTextX(), this.getY() + this.getTextY(), this.getTextAngle(), antialiasing);</b>
+<i>1174</i>&nbsp;    }
+<b class="nc"><i>1175</i>&nbsp;  }</b>
+<i>1176</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

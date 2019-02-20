@@ -1,0 +1,190 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MobileEntity</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.entities</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MobileEntity (de.gurkenlabs.litiengine.entities)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MobileEntity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 20)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.entities;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.geom.Point2D;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import de.gurkenlabs.litiengine.Game;
+<i>6</i>&nbsp;import de.gurkenlabs.litiengine.GameLoop;
+<i>7</i>&nbsp;import de.gurkenlabs.litiengine.annotation.MovementInfo;
+<i>8</i>&nbsp;import de.gurkenlabs.litiengine.attributes.Attribute;
+<i>9</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.MapObjectProperty;
+<i>10</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.TmxProperty;
+<i>11</i>&nbsp;import de.gurkenlabs.litiengine.physics.IMovementController;
+<i>12</i>&nbsp;import de.gurkenlabs.litiengine.util.geom.GeometricUtilities;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;@MovementInfo
+<i>15</i>&nbsp;public class MobileEntity extends CollisionEntity implements IMobileEntity {
+<i>16</i>&nbsp;  @TmxProperty(name = MapObjectProperty.MOVEMENT_ACCELERATION)
+<i>17</i>&nbsp;  private int acceleration;
+<i>18</i>&nbsp;  
+<i>19</i>&nbsp;  @TmxProperty(name = MapObjectProperty.MOVEMENT_DECELERATION)
+<i>20</i>&nbsp;  private int deceleration;
+<i>21</i>&nbsp;  
+<i>22</i>&nbsp;  @TmxProperty(name = MapObjectProperty.MOVEMENT_TURNONMOVE)
+<i>23</i>&nbsp;  private boolean turnOnMove;
+<i>24</i>&nbsp;  
+<i>25</i>&nbsp;  @TmxProperty(name = MapObjectProperty.MOVEMENT_VELOCITY)
+<i>26</i>&nbsp;  private Attribute&lt;Float&gt; velocity;
+<i>27</i>&nbsp;  
+<i>28</i>&nbsp;  private Point2D moveDestination;
+<i>29</i>&nbsp;
+<b class="nc"><i>30</i>&nbsp;  public MobileEntity() {</b>
+<b class="nc"><i>31</i>&nbsp;    final MovementInfo info = this.getClass().getAnnotation(MovementInfo.class);</b>
+<b class="nc"><i>32</i>&nbsp;    this.velocity = new Attribute&lt;&gt;(info.velocity());</b>
+<b class="nc"><i>33</i>&nbsp;    this.acceleration = info.acceleration();</b>
+<b class="nc"><i>34</i>&nbsp;    this.deceleration = info.deceleration();</b>
+<b class="nc"><i>35</i>&nbsp;    this.setTurnOnMove(info.turnOnMove());</b>
+<i>36</i>&nbsp;  }
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;  @Override
+<i>39</i>&nbsp;  public int getAcceleration() {
+<b class="nc"><i>40</i>&nbsp;    return this.acceleration;</b>
+<i>41</i>&nbsp;  }
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;  @Override
+<i>44</i>&nbsp;  public int getDeceleration() {
+<b class="nc"><i>45</i>&nbsp;    return this.deceleration;</b>
+<i>46</i>&nbsp;  }
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;  @Override
+<i>49</i>&nbsp;  public Point2D getMoveDestination() {
+<b class="nc"><i>50</i>&nbsp;    return this.moveDestination;</b>
+<i>51</i>&nbsp;  }
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;  @Override
+<i>54</i>&nbsp;  public float getTickVelocity() {
+<b class="nc"><i>55</i>&nbsp;    return getTickVelocity(this);</b>
+<i>56</i>&nbsp;  }
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;  @Override
+<i>59</i>&nbsp;  public Attribute&lt;Float&gt; getVelocity() {
+<b class="nc"><i>60</i>&nbsp;    return this.velocity;</b>
+<i>61</i>&nbsp;  }
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;  @Override
+<i>64</i>&nbsp;  public IMovementController getMovementController() {
+<b class="nc"><i>65</i>&nbsp;    return this.getController(IMovementController.class);</b>
+<i>66</i>&nbsp;  }
+<i>67</i>&nbsp;
+<i>68</i>&nbsp;  @Override
+<i>69</i>&nbsp;  public void setAcceleration(final int acceleration) {
+<b class="nc"><i>70</i>&nbsp;    this.acceleration = acceleration;</b>
+<i>71</i>&nbsp;  }
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;  @Override
+<i>74</i>&nbsp;  public void setDeceleration(final int deceleration) {
+<b class="nc"><i>75</i>&nbsp;    this.deceleration = deceleration;</b>
+<i>76</i>&nbsp;  }
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;  @Override
+<i>79</i>&nbsp;  public void setLocation(final Point2D position) {
+<b class="nc"><i>80</i>&nbsp;    if (position == null || GeometricUtilities.equals(position, this.getLocation(), 0.001)) {</b>
+<i>81</i>&nbsp;      return;
+<i>82</i>&nbsp;    }
+<i>83</i>&nbsp;
+<b class="nc"><i>84</i>&nbsp;    super.setLocation(position);</b>
+<i>85</i>&nbsp;  }
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;  @Override
+<i>88</i>&nbsp;  public void setMoveDestination(final Point2D dest) {
+<b class="nc"><i>89</i>&nbsp;    this.moveDestination = dest;</b>
+<i>90</i>&nbsp;  }
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;  @Override
+<i>93</i>&nbsp;  public void setTurnOnMove(final boolean turn) {
+<b class="nc"><i>94</i>&nbsp;    this.turnOnMove = turn;</b>
+<i>95</i>&nbsp;  }
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;  @Override
+<i>98</i>&nbsp;  public boolean turnOnMove() {
+<b class="nc"><i>99</i>&nbsp;    return this.turnOnMove;</b>
+<i>100</i>&nbsp;  }
+<i>101</i>&nbsp;
+<i>102</i>&nbsp;  protected static float getTickVelocity(IMobileEntity entity) {
+<i>103</i>&nbsp;    // pixels per ms multiplied by the passed ms
+<i>104</i>&nbsp;    // ensure that entities don&#39;t travel too far in case of lag
+<b class="nc"><i>105</i>&nbsp;    return Math.min(Game.loop().getDeltaTime(), GameLoop.TICK_DELTATIME_LAG) * 0.001F * entity.getVelocity().getCurrentValue() * Game.loop().getTimeScale();</b>
+<i>106</i>&nbsp;  }
+<i>107</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

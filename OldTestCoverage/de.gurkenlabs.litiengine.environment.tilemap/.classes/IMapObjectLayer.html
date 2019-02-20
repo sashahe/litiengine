@@ -1,0 +1,77 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IMapObjectLayer</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment.tilemap</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IMapObjectLayer (de.gurkenlabs.litiengine.environment.tilemap)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">IMapObjectLayer</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment.tilemap;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Color;
+<i>4</i>&nbsp;import java.util.Collection;
+<i>5</i>&nbsp;import java.util.List;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;/**
+<i>8</i>&nbsp; * The Interface IMapObjectLayer.
+<i>9</i>&nbsp; */
+<i>10</i>&nbsp;public interface IMapObjectLayer extends ILayer {
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;  /**
+<i>13</i>&nbsp;   * Gets the shapes.
+<i>14</i>&nbsp;   *
+<i>15</i>&nbsp;   * @return the shapes
+<i>16</i>&nbsp;   */
+<i>17</i>&nbsp;  public List&lt;IMapObject&gt; getMapObjects();
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;  public void addMapObject(IMapObject mapObject);
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;  public void removeMapObject(IMapObject mapObject);
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;  public Color getColor();
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;  public String getColorHexString();
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;  public void setColor(String colorHexString);
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;  public Collection&lt;IMapObject&gt; getMapObjects(String... type);
+<i>30</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

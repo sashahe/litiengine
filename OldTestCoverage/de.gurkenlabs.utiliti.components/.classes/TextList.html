@@ -1,0 +1,225 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TextList</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.utiliti.components</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TextList (de.gurkenlabs.utiliti.components)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TextList</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 53)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">TextList$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 56)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.utiliti.components;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.event.ActionListener;
+<i>4</i>&nbsp;import java.util.ArrayList;
+<i>5</i>&nbsp;import java.util.List;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import javax.swing.GroupLayout;
+<i>8</i>&nbsp;import javax.swing.GroupLayout.Alignment;
+<i>9</i>&nbsp;import javax.swing.JButton;
+<i>10</i>&nbsp;import javax.swing.JPanel;
+<i>11</i>&nbsp;import javax.swing.JScrollPane;
+<i>12</i>&nbsp;import javax.swing.JTable;
+<i>13</i>&nbsp;import javax.swing.LayoutStyle.ComponentPlacement;
+<i>14</i>&nbsp;import javax.swing.table.DefaultTableModel;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;import de.gurkenlabs.litiengine.util.ArrayUtilities;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;public class TextList extends JPanel {
+<i>19</i>&nbsp;  private final List&lt;ActionListener&gt; listeners;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;  private final DefaultTableModel model;
+<i>22</i>&nbsp;  private final JTable table;
+<i>23</i>&nbsp;
+<b class="nc"><i>24</i>&nbsp;  public TextList(String columnName) {</b>
+<b class="nc"><i>25</i>&nbsp;    this.listeners = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>26</i>&nbsp;    this.table = new JTable();</b>
+<b class="nc"><i>27</i>&nbsp;    this.table.getTableHeader().setReorderingAllowed(false);</b>
+<b class="nc"><i>28</i>&nbsp;    this.table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { columnName }) {</b>
+<b class="nc"><i>29</i>&nbsp;      Class&lt;?&gt;[] columnTypes = new Class&lt;?&gt;[] { Integer.class };</b>
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;      @Override
+<i>32</i>&nbsp;      public Class&lt;?&gt; getColumnClass(int columnIndex) {
+<b class="nc"><i>33</i>&nbsp;        return columnTypes[columnIndex];</b>
+<i>34</i>&nbsp;      }
+<i>35</i>&nbsp;    });
+<b class="nc"><i>36</i>&nbsp;    this.table.getColumnModel().getColumn(0).setResizable(false);</b>
+<b class="nc"><i>37</i>&nbsp;    this.model = (DefaultTableModel) this.table.getModel();</b>
+<b class="nc"><i>38</i>&nbsp;    this.model.addTableModelListener(t -&gt; {</b>
+<b class="nc"><i>39</i>&nbsp;      for (ActionListener listener : this.listeners) {</b>
+<b class="nc"><i>40</i>&nbsp;        listener.actionPerformed(null);</b>
+<b class="nc"><i>41</i>&nbsp;      }</b>
+<i>42</i>&nbsp;    });
+<i>43</i>&nbsp;
+<b class="nc"><i>44</i>&nbsp;    JScrollPane scrollPane = new JScrollPane();</b>
+<b class="nc"><i>45</i>&nbsp;    scrollPane.setViewportView(table);</b>
+<i>46</i>&nbsp;
+<b class="nc"><i>47</i>&nbsp;    JButton buttonMinus = new JButton(&quot;-&quot;);</b>
+<b class="nc"><i>48</i>&nbsp;    buttonMinus.addActionListener(a -&gt; {</b>
+<b class="nc"><i>49</i>&nbsp;      int[] rows = table.getSelectedRows();</b>
+<b class="nc"><i>50</i>&nbsp;      for (int i = 0; i &lt; rows.length; i++) {</b>
+<b class="nc"><i>51</i>&nbsp;        model.removeRow(rows[i] - i);</b>
+<i>52</i>&nbsp;      }
+<i>53</i>&nbsp;    });
+<i>54</i>&nbsp;
+<b class="nc"><i>55</i>&nbsp;    JButton buttonPlus = new JButton(&quot;+&quot;);</b>
+<b class="nc"><i>56</i>&nbsp;    buttonPlus.addActionListener(a -&gt; model.addRow(new Object[] { 0 }));</b>
+<i>57</i>&nbsp;
+<b class="nc"><i>58</i>&nbsp;    GroupLayout groupLayout = new GroupLayout(this);</b>
+<b class="nc"><i>59</i>&nbsp;    groupLayout.setHorizontalGroup(</b>
+<b class="nc"><i>60</i>&nbsp;      groupLayout.createParallelGroup(Alignment.TRAILING)</b>
+<b class="nc"><i>61</i>&nbsp;        .addGroup(groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>62</i>&nbsp;          .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)</b>
+<b class="nc"><i>63</i>&nbsp;          .addPreferredGap(ComponentPlacement.RELATED)</b>
+<b class="nc"><i>64</i>&nbsp;          .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)</b>
+<b class="nc"><i>65</i>&nbsp;            .addComponent(buttonPlus, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>66</i>&nbsp;            .addComponent(buttonMinus, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE))</b>
+<b class="nc"><i>67</i>&nbsp;          .addGap(0))</b>
+<i>68</i>&nbsp;    );
+<b class="nc"><i>69</i>&nbsp;    groupLayout.setVerticalGroup(</b>
+<b class="nc"><i>70</i>&nbsp;      groupLayout.createParallelGroup(Alignment.TRAILING)</b>
+<b class="nc"><i>71</i>&nbsp;        .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)</b>
+<b class="nc"><i>72</i>&nbsp;          .addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)</b>
+<b class="nc"><i>73</i>&nbsp;          .addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()</b>
+<b class="nc"><i>74</i>&nbsp;            .addComponent(buttonPlus, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>75</i>&nbsp;            .addPreferredGap(ComponentPlacement.RELATED)</b>
+<b class="nc"><i>76</i>&nbsp;            .addComponent(buttonMinus, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>77</i>&nbsp;            .addContainerGap()))</b>
+<i>78</i>&nbsp;    );
+<b class="nc"><i>79</i>&nbsp;    setLayout(groupLayout);</b>
+<i>80</i>&nbsp;  }
+<i>81</i>&nbsp;
+<i>82</i>&nbsp;  public void addActionListener(ActionListener listener) {
+<b class="nc"><i>83</i>&nbsp;    this.listeners.add(listener);</b>
+<i>84</i>&nbsp;  }
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;  public void removeActionListener(ActionListener listener) {
+<b class="nc"><i>87</i>&nbsp;    this.listeners.remove(listener);</b>
+<i>88</i>&nbsp;  }
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;  public void clear() {
+<b class="nc"><i>91</i>&nbsp;    this.model.setRowCount(0);</b>
+<i>92</i>&nbsp;  }
+<i>93</i>&nbsp;
+<i>94</i>&nbsp;  public void add(Object row) {
+<b class="nc"><i>95</i>&nbsp;    this.model.addRow(new Object[] { row });</b>
+<i>96</i>&nbsp;  }
+<i>97</i>&nbsp;
+<i>98</i>&nbsp;  public String getJoinedString() {
+<b class="nc"><i>99</i>&nbsp;    List&lt;String&gt; rows = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>100</i>&nbsp;    for (int row = 0; row &lt; model.getRowCount(); row++) {</b>
+<b class="nc"><i>101</i>&nbsp;      Object activator = model.getValueAt(row, 0);</b>
+<b class="nc"><i>102</i>&nbsp;      if (activator != null) {</b>
+<b class="nc"><i>103</i>&nbsp;        rows.add(activator.toString());</b>
+<i>104</i>&nbsp;      }
+<i>105</i>&nbsp;    }
+<i>106</i>&nbsp;
+<b class="nc"><i>107</i>&nbsp;    return String.join(&quot;,&quot;, rows);</b>
+<i>108</i>&nbsp;  }
+<i>109</i>&nbsp;
+<i>110</i>&nbsp;  public void setJoinedString(String rows) {
+<b class="nc"><i>111</i>&nbsp;    this.model.setRowCount(0);</b>
+<b class="nc"><i>112</i>&nbsp;    for (int target : ArrayUtilities.getIntegerArray(rows)) {</b>
+<b class="nc"><i>113</i>&nbsp;      this.model.addRow(new Object[] { target });</b>
+<i>114</i>&nbsp;    }
+<i>115</i>&nbsp;  }
+<i>116</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

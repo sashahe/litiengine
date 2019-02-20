@@ -1,0 +1,110 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Screen</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.gui.screens</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Screen (de.gurkenlabs.litiengine.gui.screens)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Screen</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.gui.screens;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import de.gurkenlabs.litiengine.gui.GuiComponent;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * Screens are the containers that allow you to organize the visible contents of your game. They render the game’s Environment and are considered the
+<i>7</i>&nbsp; * parent of all GUI components you want to display in a particular state of your game. The screen itself inherits from GuiComponent and thereby
+<i>8</i>&nbsp; * provides support to define an Appearance and listen to all kinds of Input events (e.g. &lt;code&gt;onMouseMoved(…)&lt;/code&gt;). Everything that should be visible to the
+<i>9</i>&nbsp; * player needs to be rendered to the currently active screen.
+<i>10</i>&nbsp; * 
+<i>11</i>&nbsp; */
+<i>12</i>&nbsp;public abstract class Screen extends GuiComponent {
+<i>13</i>&nbsp;  protected Screen(final String screenName) {
+<b class="nc"><i>14</i>&nbsp;    super(0, 0);</b>
+<b class="nc"><i>15</i>&nbsp;    this.setName(screenName);</b>
+<i>16</i>&nbsp;  }
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;  @Override
+<i>19</i>&nbsp;  public void setX(final double x) {
+<i>20</i>&nbsp;    // do nothing because screens always start at 0/0
+<i>21</i>&nbsp;  }
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;  @Override
+<i>24</i>&nbsp;  public void setY(final double y) {
+<i>25</i>&nbsp;    // do nothing because screens always start at 0/0
+<i>26</i>&nbsp;  }
+<i>27</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

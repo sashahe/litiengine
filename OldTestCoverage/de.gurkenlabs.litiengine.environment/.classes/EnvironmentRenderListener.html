@@ -1,0 +1,79 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: EnvironmentRenderListener</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment</a> ]
+</div>
+
+<h1>Coverage Summary for Class: EnvironmentRenderListener (de.gurkenlabs.litiengine.environment)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">EnvironmentRenderListener$MockitoMock$332467503</td>
+  </tr>
+  <tr>
+    <td class="name">EnvironmentRenderListener$MockitoMock$332467503$auxiliary$gG24urtd</td>
+  </tr>
+  <tr>
+    <td class="name">EnvironmentRenderListener$MockitoMock$332467503$auxiliary$jyBotrGZ</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Graphics2D;
+<i>4</i>&nbsp;import java.util.EventListener;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import de.gurkenlabs.litiengine.graphics.RenderType;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;/**
+<i>9</i>&nbsp; * This listener provides call backs for different points during rendering an &lt;code&gt;Environment&lt;/code&gt;.
+<i>10</i>&nbsp; * 
+<i>11</i>&nbsp; * @see Environment#render(Graphics2D)
+<i>12</i>&nbsp; */
+<i>13</i>&nbsp;public interface EnvironmentRenderListener extends EventListener {
+<i>14</i>&nbsp;  /**
+<i>15</i>&nbsp;   * This method is called after the &lt;code&gt;Environment&lt;/code&gt; rendered everything of the specified &lt;code&gt;RenderType&lt;/code&gt;.
+<i>16</i>&nbsp;   * 
+<i>17</i>&nbsp;   * @param g
+<i>18</i>&nbsp;   *          The graphics object that is being rendered to.
+<i>19</i>&nbsp;   * @param type
+<i>20</i>&nbsp;   *          The render type for which all instances were just rendered.
+<i>21</i>&nbsp;   */
+<i>22</i>&nbsp;  public void rendered(Graphics2D g, RenderType type);
+<i>23</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,231 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Appearance</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.gui</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Appearance (de.gurkenlabs.litiengine.gui)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Appearance</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90.5%
+  </span>
+  <span class="absValue">
+    (19/ 21)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    73.8%
+  </span>
+  <span class="absValue">
+    (45/ 61)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.gui;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Color;
+<i>4</i>&nbsp;import java.awt.GradientPaint;
+<i>5</i>&nbsp;import java.awt.Paint;
+<i>6</i>&nbsp;import java.awt.RenderingHints;
+<i>7</i>&nbsp;import java.util.List;
+<i>8</i>&nbsp;import java.util.Objects;
+<i>9</i>&nbsp;import java.util.concurrent.CopyOnWriteArrayList;
+<i>10</i>&nbsp;import java.util.function.Consumer;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;public class Appearance {
+<i>13</i>&nbsp;  private final List&lt;Consumer&lt;Appearance&gt;&gt; changedConsumer;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;  private Color foreColor;
+<i>16</i>&nbsp;  private Color backgroundColor1;
+<i>17</i>&nbsp;  private Color backgroundColor2;
+<i>18</i>&nbsp;  private boolean horizontalBackgroundGradient;
+<i>19</i>&nbsp;  private boolean transparentBackground;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;  private Object textAntialiasing;
+<i>22</i>&nbsp;
+<b class="fc"><i>23</i>&nbsp;  public Appearance() {</b>
+<b class="fc"><i>24</i>&nbsp;    this.changedConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>25</i>&nbsp;    this.textAntialiasing = RenderingHints.VALUE_TEXT_ANTIALIAS_OFF;</b>
+<b class="fc"><i>26</i>&nbsp;  }</b>
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;  public Appearance(Color foreColor) {
+<b class="fc"><i>29</i>&nbsp;    this();</b>
+<b class="fc"><i>30</i>&nbsp;    this.foreColor = foreColor;</b>
+<b class="fc"><i>31</i>&nbsp;    this.setTransparentBackground(true);</b>
+<b class="fc"><i>32</i>&nbsp;  }</b>
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;  public Appearance(Color foreColor, Color backColor) {
+<b class="nc"><i>35</i>&nbsp;    this();</b>
+<b class="nc"><i>36</i>&nbsp;    this.foreColor = foreColor;</b>
+<b class="nc"><i>37</i>&nbsp;    this.backgroundColor1 = backColor;</b>
+<b class="nc"><i>38</i>&nbsp;  }</b>
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;  @Override
+<i>41</i>&nbsp;  public boolean equals(Object obj) {
+<b class="fc"><i>42</i>&nbsp;    if (obj instanceof Appearance) {</b>
+<b class="fc"><i>43</i>&nbsp;      return this.hashCode() == obj.hashCode();</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;
+<b class="nc"><i>46</i>&nbsp;    return super.equals(obj);</b>
+<i>47</i>&nbsp;  }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;  @Override
+<i>50</i>&nbsp;  public int hashCode() {
+<b class="fc"><i>51</i>&nbsp;    return Objects.hash(this.getForeColor(), this.getBackgroundColor1(), this.getBackgroundColor2(), this.isHorizontalBackgroundGradient(), this.isTransparentBackground());</b>
+<i>52</i>&nbsp;  }
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;  public Color getForeColor() {
+<b class="fc"><i>55</i>&nbsp;    return this.foreColor;</b>
+<i>56</i>&nbsp;  }
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;  public Color getBackgroundColor1() {
+<b class="fc"><i>59</i>&nbsp;    return this.backgroundColor1;</b>
+<i>60</i>&nbsp;  }
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;  public Color getBackgroundColor2() {
+<b class="fc"><i>63</i>&nbsp;    return this.backgroundColor2;</b>
+<i>64</i>&nbsp;  }
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;  public Paint getBackgroundPaint(double width, double height) {
+<b class="nc"><i>67</i>&nbsp;    if (this.isTransparentBackground()) {</b>
+<b class="nc"><i>68</i>&nbsp;      return null;</b>
+<i>69</i>&nbsp;    }
+<b class="nc"><i>70</i>&nbsp;    if (this.backgroundColor1 == null) {</b>
+<b class="nc"><i>71</i>&nbsp;      return this.backgroundColor2;</b>
+<b class="nc"><i>72</i>&nbsp;    } else if (this.backgroundColor2 == null) {</b>
+<b class="nc"><i>73</i>&nbsp;      return this.backgroundColor1;</b>
+<i>74</i>&nbsp;    }
+<i>75</i>&nbsp;
+<b class="nc"><i>76</i>&nbsp;    if (this.horizontalBackgroundGradient) {</b>
+<b class="nc"><i>77</i>&nbsp;      return new GradientPaint(0, 0, this.backgroundColor1, (float) (width / 2.0), 0, this.backgroundColor2);</b>
+<i>78</i>&nbsp;    } else {
+<b class="nc"><i>79</i>&nbsp;      return new GradientPaint(0, 0, this.backgroundColor1, 0, (float) (height / 2.0), this.backgroundColor2);</b>
+<i>80</i>&nbsp;    }
+<i>81</i>&nbsp;  }
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;  public Object getTextAntialiasing() {
+<b class="fc"><i>84</i>&nbsp;    return this.textAntialiasing;</b>
+<i>85</i>&nbsp;  }
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;  public boolean isHorizontalBackgroundGradient() {
+<b class="fc"><i>88</i>&nbsp;    return this.horizontalBackgroundGradient;</b>
+<i>89</i>&nbsp;  }
+<i>90</i>&nbsp;
+<i>91</i>&nbsp;  public boolean isTransparentBackground() {
+<b class="fc"><i>92</i>&nbsp;    return transparentBackground;</b>
+<i>93</i>&nbsp;  }
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;  public void setForeColor(Color foreColor) {
+<b class="fc"><i>96</i>&nbsp;    this.foreColor = foreColor;</b>
+<b class="fc"><i>97</i>&nbsp;    this.fireOnChangeEvent();</b>
+<b class="fc"><i>98</i>&nbsp;  }</b>
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;  public void setBackgroundColor1(Color backColor1) {
+<b class="fc"><i>101</i>&nbsp;    this.backgroundColor1 = backColor1;</b>
+<b class="fc"><i>102</i>&nbsp;    this.fireOnChangeEvent();</b>
+<b class="fc"><i>103</i>&nbsp;  }</b>
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;  public void setBackgroundColor2(Color backColor2) {
+<b class="fc"><i>106</i>&nbsp;    this.backgroundColor2 = backColor2;</b>
+<b class="fc"><i>107</i>&nbsp;    this.fireOnChangeEvent();</b>
+<b class="fc"><i>108</i>&nbsp;  }</b>
+<i>109</i>&nbsp;
+<i>110</i>&nbsp;  public void setHorizontalBackgroundGradient(boolean horizontal) {
+<b class="fc"><i>111</i>&nbsp;    this.horizontalBackgroundGradient = horizontal;</b>
+<b class="fc"><i>112</i>&nbsp;    this.fireOnChangeEvent();</b>
+<b class="fc"><i>113</i>&nbsp;  }</b>
+<i>114</i>&nbsp;
+<i>115</i>&nbsp;  public void setTransparentBackground(boolean transparentBackground) {
+<b class="fc"><i>116</i>&nbsp;    this.transparentBackground = transparentBackground;</b>
+<b class="fc"><i>117</i>&nbsp;    this.fireOnChangeEvent();</b>
+<b class="fc"><i>118</i>&nbsp;  }</b>
+<i>119</i>&nbsp;
+<i>120</i>&nbsp;  /**
+<i>121</i>&nbsp;   * Sets the {@link RenderingHints#KEY_TEXT_ANTIALIASING} settings for the rendered text.
+<i>122</i>&nbsp;   * 
+<i>123</i>&nbsp;   * @param antialiasing
+<i>124</i>&nbsp;   *          Either {@link RenderingHints#VALUE_TEXT_ANTIALIAS_ON} or {@link RenderingHints#VALUE_TEXT_ANTIALIAS_OFF}
+<i>125</i>&nbsp;   */
+<i>126</i>&nbsp;  public void setTextAntialiasing(Object antialiasing) {
+<b class="fc"><i>127</i>&nbsp;    this.textAntialiasing = antialiasing;</b>
+<b class="fc"><i>128</i>&nbsp;  }</b>
+<i>129</i>&nbsp;
+<i>130</i>&nbsp;  public void onChange(Consumer&lt;Appearance&gt; cons) {
+<b class="fc"><i>131</i>&nbsp;    this.changedConsumer.add(cons);</b>
+<b class="fc"><i>132</i>&nbsp;  }</b>
+<i>133</i>&nbsp;
+<i>134</i>&nbsp;  public void update(Appearance updateAppearance) {
+<b class="fc"><i>135</i>&nbsp;    this.setBackgroundColor1(updateAppearance.getBackgroundColor1());</b>
+<b class="fc"><i>136</i>&nbsp;    this.setBackgroundColor2(updateAppearance.getBackgroundColor2());</b>
+<b class="fc"><i>137</i>&nbsp;    this.setForeColor(updateAppearance.getForeColor());</b>
+<b class="fc"><i>138</i>&nbsp;    this.setHorizontalBackgroundGradient(updateAppearance.isHorizontalBackgroundGradient());</b>
+<b class="fc"><i>139</i>&nbsp;    this.setTransparentBackground(updateAppearance.isTransparentBackground());</b>
+<b class="fc"><i>140</i>&nbsp;    this.setTextAntialiasing(updateAppearance.getTextAntialiasing());</b>
+<b class="fc"><i>141</i>&nbsp;  }</b>
+<i>142</i>&nbsp;
+<i>143</i>&nbsp;  protected void fireOnChangeEvent() {
+<b class="fc"><i>144</i>&nbsp;    for (Consumer&lt;Appearance&gt; cons : this.changedConsumer) {</b>
+<b class="nc"><i>145</i>&nbsp;      cons.accept(this);</b>
+<b class="nc"><i>146</i>&nbsp;    }</b>
+<b class="fc"><i>147</i>&nbsp;  }</b>
+<i>148</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>
