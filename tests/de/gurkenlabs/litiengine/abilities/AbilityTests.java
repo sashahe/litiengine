@@ -114,5 +114,4 @@ public class AbilityTests {
     assertTrue(a.getCurrentExecution().getExecutionTicks() == 0);
     assertTrue(a.canCast());
   }
-}
-;
+};
