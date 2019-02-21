@@ -14,10 +14,6 @@ import de.gurkenlabs.litiengine.abilities.effects.Effect;
 import de.gurkenlabs.litiengine.abilities.effects.EffectTarget;
 import de.gurkenlabs.litiengine.annotation.AbilityInfo;
 import de.gurkenlabs.litiengine.entities.Creature;
-import de.gurkenlabs.litiengine.IGameLoop;
-import de.gurkenlabs.litiengine.Game;
-import de.gurkenlabs.litiengine.attributes.Attribute;
-
 
 public class AbilityTests {
 
