@@ -56,7 +56,7 @@ An ability is initialized with an executor. In the current state this executor m
   <tr>
     <td>getOrigin()</td>
     <td>Implements getCollisionBox(), getCenter(), getX(), getY(), getLocation()</td>
-    <td>Returns executors collisionbox center when originbox is COLLISIONBOX_CENTER<br><br>Returns executors center when originbox is DIMENSION_CENTER<br><br>Returns executors x,y coords incremented with origins x,y coords when origintype is CUSTOM</td>
+    <td>Returns executors collisionbox center when the origin of the ability is set to COLLISIONBOX_CENTER<br><br>Returns executors center when the origin of the ability is set to DIMENSION_CENTER<br><br>Returns executors x,y coords incremented with origins x,y coords when the origin of the ability is set to CUSTOM<br>Returns executor’s location on the map either by default or when the origin of the ability is set to LOCATION.<br></td>
   </tr>
   <tr>
     <td>getRemainingCooldownInSeconds()</td>
