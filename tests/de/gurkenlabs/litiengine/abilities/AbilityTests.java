@@ -47,45 +47,50 @@ public class AbilityTests {
   }
 
   /*
-   * Test the function getOrigin() with both default and valid inputs.
+   * Test the function getOrigin() with valid inputs when AbilityOrigin = LOCATION.
    */
   @Test
-  public void testGetOrigin() {
+  public void testGetOriginLocation () {
     Point2D point1 = new Point2D.Double(0,0);
     Point2D point2 = new Point2D.Double(1,1);
-    Point2D point3 = new Point2D.Double(16, 16);
-    Point2D point4 = new Point2D.Double(16,25.6);
-    Point2D point5 = new Point2D.Double(2,2);
-    Rectangle2D shape1 = new Rectangle2D.Double(9.6, 19.2, 12.8, 12.8);
 
     /*
      * If AbilityOrigin = LOCATION; (default) mapLocation = Point2D.Double(0,0)
      *    --> return Point2D.Double(0,0)
      */
+    Creature entity = mock(Creature.class);
+    when(entity.getLocation()).thenReturn(point1);
 
-    Creature entity1 = mock(Creature.class);
-    when(entity1.getLocation()).thenReturn(point1);
-
-    TestOriginLocation abilityLocation = new TestOriginLocation(entity1);
+    TestOriginLocation abilityLocation = new TestOriginLocation(entity);
     assertEquals(point1, abilityLocation.getOrigin());
 
     /*
      * If AbilityOrigin = LOCATION; mapLocation = Point2D.Double(1,1)
      *    --> return Point2D.Double(1,1)
      */
-    when(entity1.getLocation()).thenReturn(point2);
+    when(entity.getLocation()).thenReturn(point2);
     assertEquals(point2, abilityLocation.getOrigin());
+  }
+
+  /*
+   * Test the function getOrigin() with valid inputs when AbilityOrigin = CUSTOM.
+   */
+  @Test
+  pulic void testGetOriginCustom() {
+    Point2D point1 = new Point2D.Double(0,0);
+    Point2D point2 = new Point2D.Double(1,1);
+    Point2D point3 = new Point2D.Double(2,2);
 
     /*
      * If AbilityOrigin = CUSTOM; origin = null; (default) mapLocation = Point2D.Double(0,0)
      *    --> return Point2D.Double(0,0)
      */
-    Creature entity2 = mock(Creature.class);
-    when(entity2.getLocation()).thenReturn(point1);
-    when(entity2.getX()).thenReturn((double) 1);
-    when(entity2.getY()).thenReturn((double) 1);
+    Creature entity = mock(Creature.class);
+    when(entity.getLocation()).thenReturn(point1);
+    when(entity.getX()).thenReturn((double) 1);
+    when(entity.getY()).thenReturn((double) 1);
 
-    TestOriginCustom abilityCustom = new TestOriginCustom(entity2);
+    TestOriginCustom abilityCustom = new TestOriginCustom(entity);
     assertEquals(point1, abilityCustom.getOrigin());
 
     /*
@@ -93,18 +98,36 @@ public class AbilityTests {
      *    --> return Point2D.Double(2,2).
      */
     abilityCustom.setOrigin(point2);
-    assertEquals(point5, abilityCustom.getOrigin());
+    assertEquals(point3, abilityCustom.getOrigin());
+  }
+
+  /*
+   * Test the function getOrigin() with valid inputs when AbilityOrigin = DIMENSION_CENTER.
+   */
+  @Test
+  public void testGetOriginDimension() {
+    Point2D point1 = new Point2D.Double(16, 16);
 
     /*
      * If AbilityOrigin = DIMENSION_CENTER; (default) mapLocation =  Point2D.Double(0,0); (default) height = 32; (default) width = 32
      *    --> return Point2D.Double(16,16)
      */
 
-    Creature entity3 = mock(Creature.class);
-    when(entity3.getCenter()).thenReturn(point3);
+    Creature entity = mock(Creature.class);
+    when(entity.getCenter()).thenReturn(point1);
 
-    TestOriginDimension abilityDimension = new TestOriginDimension(entity3);
-    assertEquals(point3, abilityDimension.getOrigin());
+    TestOriginDimension abilityDimension = new TestOriginDimension(entity);
+    assertEquals(point1, abilityDimension.getOrigin());
+  }
+
+  /*
+   * Test the function getOrigin() with valid inputs when AbilityOrigin = COLLISIONBOX_CENTER.
+   */
+
+  @Test
+  public void testGetOriginCollisionBox() {
+    Point2D point1 = new Point2D.Double(16,25.6);
+    Rectangle2D shape1 = new Rectangle2D.Double(9.6, 19.2, 12.8, 12.8);
 
     /*
      * If AbilityOrigin = COLLISIONBOX_CENTER; (default) mapLocation = Point2D.Double(0,0); (default) height = 32; (default) width = 32;
@@ -112,11 +135,11 @@ public class AbilityTests {
      *    --> return Point2D(16, 25.6)
      */
 
-    Creature entity4 = mock(Creature.class);
-    when(entity4.getCollisionBox()).thenReturn(shape1);
+    Creature entity = mock(Creature.class);
+    when(entity.getCollisionBox()).thenReturn(shape1);
 
-    TestOriginCollisionBox abilityCollision = new TestOriginCollisionBox(entity4);
-    assertEquals(point4, abilityCollision.getOrigin());
+    TestOriginCollisionBox abilityCollision = new TestOriginCollisionBox(entity);
+    assertEquals(point1, abilityCollision.getOrigin());
 
   }
 
