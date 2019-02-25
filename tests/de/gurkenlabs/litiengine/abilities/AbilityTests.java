@@ -76,7 +76,7 @@ public class AbilityTests {
    * Test the function getOrigin() with valid inputs when AbilityOrigin = CUSTOM.
    */
   @Test
-  pulic void testGetOriginCustom() {
+  public void testGetOriginCustom() {
     Point2D point1 = new Point2D.Double(0,0);
     Point2D point2 = new Point2D.Double(1,1);
     Point2D point3 = new Point2D.Double(2,2);
