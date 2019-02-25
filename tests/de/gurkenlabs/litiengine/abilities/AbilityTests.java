@@ -9,6 +9,7 @@ import de.gurkenlabs.litiengine.abilities.effects.Effect;
 import de.gurkenlabs.litiengine.abilities.effects.EffectTarget;
 import de.gurkenlabs.litiengine.annotation.AbilityInfo;
 import de.gurkenlabs.litiengine.entities.Creature;
+import org.mockito.Mock;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -54,24 +55,17 @@ public class AbilityTests {
     Point2D point2 = new Point2D.Double(1,1);
     Point2D point3 = new Point2D.Double(16, 16);
     Point2D point4 = new Point2D.Double(16,25.6);
+    Point2D point5 = new Point2D.Double(2,2);
     Rectangle2D shape1 = new Rectangle2D.Double(9.6, 19.2, 12.8, 12.8);
-
-    Creature entity1 = mock(Creature.class);
-    when(entity1.getLocation()).thenReturn(point1);
-
-    Creature entity2 = mock(Creature.class);
-    when(entity2.getLocation()).thenReturn(point1);
-
-    Creature entity3 = mock(Creature.class);
-    when(entity3.getCenter()).thenReturn(point3);
-
-    Creature entity4 = mock(Creature.class);
-    when(entity4.getCollisionBox()).thenReturn(shape1);
 
     /*
      * If AbilityOrigin = LOCATION; (default) mapLocation = Point2D.Double(0,0)
      *    --> return Point2D.Double(0,0)
      */
+
+    Creature entity1 = mock(Creature.class);
+    when(entity1.getLocation()).thenReturn(point1);
+
     TestOriginLocation abilityLocation = new TestOriginLocation(entity1);
     assertEquals(point1, abilityLocation.getOrigin());
 
@@ -83,23 +77,32 @@ public class AbilityTests {
     assertEquals(point2, abilityLocation.getOrigin());
 
     /*
-     * If AbilityOrigin = CUSTOM; origin = Point2D.Double(0,0); (default) mapLocation = Point2D.Double(0,0)
+     * If AbilityOrigin = CUSTOM; origin = null; (default) mapLocation = Point2D.Double(0,0)
      *    --> return Point2D.Double(0,0)
      */
+    Creature entity2 = mock(Creature.class);
+    when(entity2.getLocation()).thenReturn(point1);
+    when(entity2.getX()).thenReturn((double) 1);
+    when(entity2.getY()).thenReturn((double) 1);
+
     TestOriginCustom abilityCustom = new TestOriginCustom(entity2);
     assertEquals(point1, abilityCustom.getOrigin());
 
     /*
-     * If AbilityOrigin = CUSTOM; origin = Point2D.Double(0,0); mapLocation = Point2D.Double(1,1)
-     *    --> return Point2D.Double(1,1).
+     * If AbilityOrigin = CUSTOM; origin = Point2D.Double(1,1); mapLocation = Point2D.Double(1,1)
+     *    --> return Point2D.Double(2,2).
      */
-    when(entity2.getLocation()).thenReturn(point2);
-    assertEquals(point2, abilityCustom.getOrigin());
+    abilityCustom.setOrigin(point2);
+    assertEquals(point5, abilityCustom.getOrigin());
 
     /*
      * If AbilityOrigin = DIMENSION_CENTER; (default) mapLocation =  Point2D.Double(0,0); (default) height = 32; (default) width = 32
      *    --> return Point2D.Double(16,16)
      */
+
+    Creature entity3 = mock(Creature.class);
+    when(entity3.getCenter()).thenReturn(point3);
+
     TestOriginDimension abilityDimension = new TestOriginDimension(entity3);
     assertEquals(point3, abilityDimension.getOrigin());
 
@@ -108,6 +111,10 @@ public class AbilityTests {
      * (default) Valign = DOWN; (default) Align = CENTER; (default) collisionBoxHeight = -1; (default) collisionBoxwidth = -1
      *    --> return Point2D(16, 25.6)
      */
+
+    Creature entity4 = mock(Creature.class);
+    when(entity4.getCollisionBox()).thenReturn(shape1);
+
     TestOriginCollisionBox abilityCollision = new TestOriginCollisionBox(entity4);
     assertEquals(point4, abilityCollision.getOrigin());
 
