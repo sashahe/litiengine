@@ -58,7 +58,7 @@ public class AbilityTests {
     }
   }
 
-  @AbilityInfo(castType = CastType.ONCONFIRM, name = "I do somethin", description = "does somethin", cooldown = 333, duration = 222, impact = 0, impactAngle = 99, multiTarget = true, origin = AbilityOrigin.COLLISIONBOX_CENTER, range = 444, value = 999)
+  @AbilityInfo(impact = 0)
   private class TestAbilityNoImpact extends Ability {
 
     protected TestAbilityNoImpact(Creature executor) {
@@ -76,7 +76,7 @@ public class AbilityTests {
   * Test getPotentialCollisionBox when the collision box of the entity is the zero rectangle
   * and the impact of the of the ability is zero.
   * 
-  * Expected potential impact area is an ellipse with a center in the origin 
+  * Expected: potentialImpactArea() is an ellipse with a center in the origin 
   * and a zero width and height.
   */
   @Test
@@ -95,7 +95,7 @@ public class AbilityTests {
   * Test getPotentialCollisionBox when the collision box of the entity is non-zero
   * and the impact of the of the ability is zero.
   * 
-  * Expected potential impact area is an ellipse with a center 
+  * Expected: potentialImpactArea() is an ellipse with a center 
   * corresponding to the collisionbox and a zero width and height.
   */
   @Test
@@ -114,7 +114,7 @@ public class AbilityTests {
   * Test getPotentialCollisionBox when the collision box of the entity is the zero rectangle,
   * and the impact of the of the ability is non-zero.
   * 
-  * Expected potential impact area is an ellipse with a center 
+  * Expected: potentialImpactArea() is an ellipse with a center 
   * shifted by half of the negative impact from the origin,
   * and a width and height corresponding to the impact.
   */
@@ -134,7 +134,7 @@ public class AbilityTests {
   * Test getPotentialCollisionBox when the collision box of the entity is non-zero,
   * and the impact of the of the ability is non-zero.
   * 
-  * Expected potential impact area is an ellipse with a center 
+  * Expected: potentialImpactArea() is an ellipse with a center 
   * corresponding to the collisionbox shifted by half of the negative impact,
   * and a width and height corresponding to the impact.
   */
