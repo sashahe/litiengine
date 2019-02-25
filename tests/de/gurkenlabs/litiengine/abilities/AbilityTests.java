@@ -62,7 +62,8 @@ public class AbilityTests {
   }
 
   /**
-  * If the executor is dead it is not possible to cast
+  * If the executor is dead it is not possible to cast.
+  * Expected: canCast() is false.
   */
   @Test
   public void testCanCastWhenDead() {
@@ -76,8 +77,9 @@ public class AbilityTests {
   }
 
   /**
-  * If the executor is alive, and
-  * If the ability has no current execution it is possible to cast
+  * If the executor is alive and the ability has no current execution,
+  * it is possible to cast.
+  * Expected: canCast() is true.
   */
   @Test
   public void testCanCastWhenNoExecution() {
@@ -94,8 +96,9 @@ public class AbilityTests {
   }
 
   /**
-  * If the executor is alive, and
-  * If the execution has no execution ticks left it is possible to cast
+  * If the executor is alive and the execution has no execution ticks left,
+  * it is possible to cast.
+  * Expected: canCast() is true.
   */
   @Test
   public void testCanCastWhenNoExecutionticks() {
