@@ -3,15 +3,46 @@ package de.gurkenlabs.litiengine.abilities;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.spy;
 
 import org.junit.jupiter.api.Test;
 
+import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.abilities.effects.Effect;
 import de.gurkenlabs.litiengine.abilities.effects.EffectTarget;
 import de.gurkenlabs.litiengine.annotation.AbilityInfo;
 import de.gurkenlabs.litiengine.entities.Creature;
 
 public class AbilityTests {
+  @Test
+  public void testGetRemainingCooldownInSeconds() {
+    Game.init();
+    Creature creature = new Creature();
+    TestAbility ability = new TestAbility(creature);
+    ability.cast();
+    float actual = ability.getRemainingCooldownInSeconds(Game.loop());
+    assertEquals(0, actual);
+  }
+
+  @Test
+  public void testGetRemainingCooldownInSeconds_noCast() {
+    Game.init();
+    Creature creature = new Creature();
+    TestAbility ability = new TestAbility(creature);
+    float actual = ability.getRemainingCooldownInSeconds(Game.loop());
+    assertEquals(0, actual);
+  }
+
+  @Test
+  public void testGetRemainingCooldownInSeconds_creatureIsDead() {
+    Game.init();
+    Creature creature = new Creature();
+    TestAbility ability = new TestAbility(creature);
+    ability.cast();
+    creature.die();
+    float actual = ability.getRemainingCooldownInSeconds(Game.loop());
+    assertEquals(0, actual);
+  }
 
   @Test
   public void testInitialization() {
