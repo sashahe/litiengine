@@ -17,6 +17,9 @@ public class Appearance {
   private Color backgroundColor2;
   private boolean horizontalBackgroundGradient;
   private boolean transparentBackground;
+  private Color borderColor = new Color(0, 0, 0);
+  private int borderThickness = 1;
+  private Boolean borderRounded = false;
 
   private Object textAntialiasing;
 
@@ -117,11 +120,35 @@ public class Appearance {
     this.fireOnChangeEvent();
   }
 
+  public void setBorderColor(Color color) {
+    this.borderColor = color;
+  }
+
+  public void setBorderThickness(int thickness) {
+    this.borderThickness = thickness;
+  }
+
+  public void setBorderRounded(Boolean rounded) {
+    this.borderRounded = rounded;
+  }
+
+  public Color getBorderColor() {
+    return this.borderColor;
+  }
+
+  public int getBorderThickness() {
+    return this.borderThickness;
+  }
+
+  public Boolean getBorderRounded() {
+    return this.borderRounded;
+  }
+
   /**
    * Sets the {@link RenderingHints#KEY_TEXT_ANTIALIASING} settings for the rendered text.
    * 
    * @param antialiasing
-   *          Either {@link RenderingHints#VALUE_TEXT_ANTIALIAS_ON} or {@link RenderingHints#VALUE_TEXT_ANTIALIAS_OFF}
+   *                       Either {@link RenderingHints#VALUE_TEXT_ANTIALIAS_ON} or {@link RenderingHints#VALUE_TEXT_ANTIALIAS_OFF}
    */
   public void setTextAntialiasing(Object antialiasing) {
     this.textAntialiasing = antialiasing;
