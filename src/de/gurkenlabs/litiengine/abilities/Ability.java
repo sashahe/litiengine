@@ -73,7 +73,15 @@ public abstract class Ability implements IRenderable {
   }
 
   public boolean canCast() {
-    return !this.getExecutor().isDead() && (this.getCurrentExecution() == null || this.getCurrentExecution().getExecutionTicks() == 0 || Game.loop().getDeltaTime(this.getCurrentExecution().getExecutionTicks()) >= this.getAttributes().getCooldown().getCurrentValue());
+    return !this.getExecutor().isDead() && !this.isCurrentlyExecuting() && !this.isColdownLeft();
+  }
+
+  private boolean isCurrentlyExecuting() {
+    return this.getCurrentExecution() != null && this.getCurrentExecution().getExecutionTicks() != 0;
+  }
+
+  private boolean isColdownLeft() {
+    return Game.loop().getDeltaTime(this.getCurrentExecution().getExecutionTicks()) < this.getAttributes().getCooldown().getCurrentValue();
   }
 
   /**
