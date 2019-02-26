@@ -113,6 +113,10 @@ public abstract class Ability implements IRenderable {
     return this.currentExecution;
   }
 
+  public void setCurrentExecution(AbilityExecution ae) {
+    this.currentExecution = ae;
+  }
+
   public String getDescription() {
     return this.description;
   }
