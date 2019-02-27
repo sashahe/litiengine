@@ -1,0 +1,452 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Trigger</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.entities</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Trigger (de.gurkenlabs.litiengine.entities)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Trigger</td>
+<td class="coverageStat">
+  <span class="percent">
+    57.1%
+  </span>
+  <span class="absValue">
+    (20/ 35)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    45.6%
+  </span>
+  <span class="absValue">
+    (67/ 147)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Trigger$TriggerActivation</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    59.5%
+  </span>
+  <span class="absValue">
+    (22/ 37)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    46.3%
+  </span>
+  <span class="absValue">
+    (69/ 149)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.entities;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.util.ArrayList;
+<i>4</i>&nbsp;import java.util.Collection;
+<i>5</i>&nbsp;import java.util.List;
+<i>6</i>&nbsp;import java.util.concurrent.CopyOnWriteArrayList;
+<i>7</i>&nbsp;import java.util.logging.Level;
+<i>8</i>&nbsp;import java.util.logging.Logger;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import de.gurkenlabs.litiengine.Game;
+<i>11</i>&nbsp;import de.gurkenlabs.litiengine.IUpdateable;
+<i>12</i>&nbsp;import de.gurkenlabs.litiengine.annotation.CollisionInfo;
+<i>13</i>&nbsp;import de.gurkenlabs.litiengine.annotation.EntityInfo;
+<i>14</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.ICustomPropertyProvider;
+<i>15</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.MapObjectProperty;
+<i>16</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.TmxProperty;
+<i>17</i>&nbsp;import de.gurkenlabs.litiengine.graphics.RenderType;
+<i>18</i>&nbsp;import de.gurkenlabs.litiengine.util.geom.GeometricUtilities;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;@CollisionInfo(collision = false)
+<i>21</i>&nbsp;@EntityInfo(renderType = RenderType.OVERLAY)
+<i>22</i>&nbsp;public class Trigger extends CollisionEntity implements IUpdateable {
+<b class="fc"><i>23</i>&nbsp;  public enum TriggerActivation {</b>
+<b class="fc"><i>24</i>&nbsp;    COLLISION, INTERACT</b>
+<i>25</i>&nbsp;  }
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;  public static final String INTERACT_MESSAGE = &quot;interact&quot;;
+<b class="fc"><i>28</i>&nbsp;  private static final Logger log = Logger.getLogger(Trigger.class.getName());</b>
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;  private List&lt;IEntity&gt; activated;
+<i>31</i>&nbsp;  private final Collection&lt;TriggerActivatedListener&gt; activatedListeners;
+<i>32</i>&nbsp;  private final Collection&lt;TriggerDeactivatedListener&gt; deactivatedListeners;
+<i>33</i>&nbsp;  private final Collection&lt;TriggerActivatingCondition&gt; activatingConditions;
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;  @TmxProperty(name = MapObjectProperty.TRIGGER_ACTIVATORS)
+<i>36</i>&nbsp;  private final List&lt;Integer&gt; activators;
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;  @TmxProperty(name = MapObjectProperty.TRIGGER_TARGETS)
+<i>39</i>&nbsp;  private final List&lt;Integer&gt; targets;
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;  @TmxProperty(name = MapObjectProperty.TRIGGER_ACTIVATION)
+<i>42</i>&nbsp;  private final TriggerActivation activationType;
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;  @TmxProperty(name = MapObjectProperty.TRIGGER_ONETIME)
+<i>45</i>&nbsp;  private final boolean isOneTimeTrigger;
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;  @TmxProperty(name = MapObjectProperty.TRIGGER_MESSAGE)
+<i>48</i>&nbsp;  private String message;
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;  @TmxProperty(name = MapObjectProperty.TRIGGER_COOLDOWN)
+<i>51</i>&nbsp;  private int cooldown;
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;  private long lastActivation;
+<i>54</i>&nbsp;  private boolean isActivated;
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;  public Trigger(final TriggerActivation activation, final String message) {
+<b class="nc"><i>57</i>&nbsp;    this(activation, null, message);</b>
+<b class="nc"><i>58</i>&nbsp;  }</b>
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;  public Trigger(final TriggerActivation activation, final String name, final String message) {
+<b class="fc"><i>61</i>&nbsp;    this(activation, name, message, false, null);</b>
+<b class="fc"><i>62</i>&nbsp;  }</b>
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;  public Trigger(final TriggerActivation activation, final String message, final boolean isOneTime, ICustomPropertyProvider customProperties) {
+<b class="fc"><i>65</i>&nbsp;    super();</b>
+<b class="fc"><i>66</i>&nbsp;    this.activatingConditions = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>67</i>&nbsp;    this.activatedListeners = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>68</i>&nbsp;    this.deactivatedListeners = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>69</i>&nbsp;    this.activators = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>70</i>&nbsp;    this.targets = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>71</i>&nbsp;    this.activated = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>72</i>&nbsp;    this.message = message;</b>
+<b class="fc"><i>73</i>&nbsp;    this.isOneTimeTrigger = isOneTime;</b>
+<b class="fc"><i>74</i>&nbsp;    this.activationType = activation;</b>
+<b class="fc"><i>75</i>&nbsp;    this.setProperties(customProperties);</b>
+<b class="fc"><i>76</i>&nbsp;  }</b>
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;  public Trigger(final TriggerActivation activation, final String name, final String message, final boolean isOneTime, ICustomPropertyProvider customProperties) {
+<b class="fc"><i>79</i>&nbsp;    this(activation, message, isOneTime, customProperties);</b>
+<b class="fc"><i>80</i>&nbsp;    this.setName(name);</b>
+<b class="fc"><i>81</i>&nbsp;  }</b>
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;  public Trigger(final TriggerActivation activation, final String message, final boolean isOneTime, final int cooldown, ICustomPropertyProvider customProperties) {
+<b class="fc"><i>84</i>&nbsp;    this(activation, message, isOneTime, customProperties);</b>
+<b class="fc"><i>85</i>&nbsp;    this.setCooldown(cooldown);</b>
+<b class="fc"><i>86</i>&nbsp;  }</b>
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;  public void addTriggerListener(TriggerListener listener) {
+<b class="nc"><i>89</i>&nbsp;    this.activatedListeners.add(listener);</b>
+<b class="nc"><i>90</i>&nbsp;    this.activatingConditions.add(listener);</b>
+<b class="nc"><i>91</i>&nbsp;    this.deactivatedListeners.add(listener);</b>
+<b class="nc"><i>92</i>&nbsp;  }</b>
+<i>93</i>&nbsp;
+<i>94</i>&nbsp;  public void removeTriggerListener(TriggerListener listener) {
+<b class="nc"><i>95</i>&nbsp;    this.activatedListeners.remove(listener);</b>
+<b class="nc"><i>96</i>&nbsp;    this.activatingConditions.remove(listener);</b>
+<b class="nc"><i>97</i>&nbsp;    this.deactivatedListeners.remove(listener);</b>
+<b class="nc"><i>98</i>&nbsp;  }</b>
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;  public void addActivatedListener(TriggerActivatedListener listener) {
+<b class="nc"><i>101</i>&nbsp;    this.activatedListeners.add(listener);</b>
+<b class="nc"><i>102</i>&nbsp;  }</b>
+<i>103</i>&nbsp;
+<i>104</i>&nbsp;  public void removeActivatedListener(TriggerActivatedListener listener) {
+<b class="nc"><i>105</i>&nbsp;    this.activatedListeners.remove(listener);</b>
+<b class="nc"><i>106</i>&nbsp;  }</b>
+<i>107</i>&nbsp;
+<i>108</i>&nbsp;  public void addActivatingCondition(TriggerActivatingCondition condition) {
+<b class="nc"><i>109</i>&nbsp;    this.activatingConditions.add(condition);</b>
+<b class="nc"><i>110</i>&nbsp;  }</b>
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;  public void removeActivatingCondition(TriggerActivatingCondition condition) {
+<b class="nc"><i>113</i>&nbsp;    this.activatingConditions.remove(condition);</b>
+<b class="nc"><i>114</i>&nbsp;  }</b>
+<i>115</i>&nbsp;
+<i>116</i>&nbsp;  public void addDeactivatedListener(TriggerDeactivatedListener listener) {
+<b class="nc"><i>117</i>&nbsp;    this.deactivatedListeners.add(listener);</b>
+<b class="nc"><i>118</i>&nbsp;  }</b>
+<i>119</i>&nbsp;
+<i>120</i>&nbsp;  public void removeDeactivatedListener(TriggerDeactivatedListener listener) {
+<b class="nc"><i>121</i>&nbsp;    this.deactivatedListeners.remove(listener);</b>
+<b class="nc"><i>122</i>&nbsp;  }</b>
+<i>123</i>&nbsp;
+<i>124</i>&nbsp;  public void addActivator(final int mapId) {
+<b class="fc"><i>125</i>&nbsp;    this.activators.add(mapId);</b>
+<b class="fc"><i>126</i>&nbsp;  }</b>
+<i>127</i>&nbsp;
+<i>128</i>&nbsp;  public void addTarget(final int mapId) {
+<b class="fc"><i>129</i>&nbsp;    this.targets.add(mapId);</b>
+<b class="fc"><i>130</i>&nbsp;  }</b>
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;  public TriggerActivation getActivationType() {
+<b class="fc"><i>133</i>&nbsp;    return this.activationType;</b>
+<i>134</i>&nbsp;  }
+<i>135</i>&nbsp;
+<i>136</i>&nbsp;  public List&lt;Integer&gt; getActivators() {
+<b class="fc"><i>137</i>&nbsp;    return this.activators;</b>
+<i>138</i>&nbsp;  }
+<i>139</i>&nbsp;
+<i>140</i>&nbsp;  public String getMessage() {
+<b class="fc"><i>141</i>&nbsp;    return this.message;</b>
+<i>142</i>&nbsp;  }
+<i>143</i>&nbsp;
+<i>144</i>&nbsp;  public List&lt;Integer&gt; getTargets() {
+<b class="fc"><i>145</i>&nbsp;    return this.targets;</b>
+<i>146</i>&nbsp;  }
+<i>147</i>&nbsp;
+<i>148</i>&nbsp;  public int getCooldown() {
+<b class="nc"><i>149</i>&nbsp;    return this.cooldown;</b>
+<i>150</i>&nbsp;  }
+<i>151</i>&nbsp;
+<i>152</i>&nbsp;  /**
+<i>153</i>&nbsp;   * Checks whether the specified entity can interact with this trigger.
+<i>154</i>&nbsp;   * 
+<i>155</i>&nbsp;   * @param entity
+<i>156</i>&nbsp;   *          The entity.
+<i>157</i>&nbsp;   * @return True if the entity can interact with the trigger; otherwise false.
+<i>158</i>&nbsp;   */
+<i>159</i>&nbsp;  public boolean canTrigger(ICollisionEntity entity) {
+<b class="nc"><i>160</i>&nbsp;    return entity.canCollideWith(this) &amp;&amp; GeometricUtilities.intersects(this.getCollisionBox(), entity.getCollisionBox());</b>
+<i>161</i>&nbsp;  }
+<i>162</i>&nbsp;
+<i>163</i>&nbsp;  public boolean isOneTimeTrigger() {
+<b class="fc"><i>164</i>&nbsp;    return this.isOneTimeTrigger;</b>
+<i>165</i>&nbsp;  }
+<i>166</i>&nbsp;
+<i>167</i>&nbsp;  public boolean isActivated() {
+<b class="fc"><i>168</i>&nbsp;    return this.isActivated;</b>
+<i>169</i>&nbsp;  }
+<i>170</i>&nbsp;
+<i>171</i>&nbsp;  @Override
+<i>172</i>&nbsp;  public String sendMessage(final Object sender, final String message) {
+<b class="fc"><i>173</i>&nbsp;    if (this.activationType == TriggerActivation.COLLISION &amp;&amp; sender != null &amp;&amp; sender instanceof IEntity || message == null || message.isEmpty()) {</b>
+<b class="nc"><i>174</i>&nbsp;      return Boolean.toString(false);</b>
+<i>175</i>&nbsp;    }
+<i>176</i>&nbsp;
+<b class="fc"><i>177</i>&nbsp;    if (!message.equals(INTERACT_MESSAGE)) {</b>
+<b class="nc"><i>178</i>&nbsp;      return Boolean.toString(false);</b>
+<i>179</i>&nbsp;    }
+<i>180</i>&nbsp;
+<b class="fc"><i>181</i>&nbsp;    if (sender instanceof IEntity) {</b>
+<b class="fc"><i>182</i>&nbsp;      final IEntity ent = (IEntity) sender;</b>
+<i>183</i>&nbsp;
+<b class="fc"><i>184</i>&nbsp;      if (this.activators.isEmpty() || this.activators.contains(ent.getMapId())) {</b>
+<b class="fc"><i>185</i>&nbsp;        this.activate(ent, ent.getMapId());</b>
+<b class="fc"><i>186</i>&nbsp;        return Boolean.toString(true);</b>
+<i>187</i>&nbsp;      } else {
+<b class="nc"><i>188</i>&nbsp;        log.log(Level.INFO, &quot;[{1}] tried to activate trigger [{0}] but was not allowed so because it was not on the list of activators&quot;, new Object[] { this.getName(), ent.getMapId() });</b>
+<b class="nc"><i>189</i>&nbsp;        return Boolean.toString(false);</b>
+<i>190</i>&nbsp;      }
+<i>191</i>&nbsp;    }
+<i>192</i>&nbsp;
+<b class="nc"><i>193</i>&nbsp;    return super.sendMessage(sender, message);</b>
+<i>194</i>&nbsp;  }
+<i>195</i>&nbsp;
+<i>196</i>&nbsp;  public void setMessage(final String message) {
+<b class="nc"><i>197</i>&nbsp;    this.message = message;</b>
+<b class="nc"><i>198</i>&nbsp;  }</b>
+<i>199</i>&nbsp;
+<i>200</i>&nbsp;  @Override
+<i>201</i>&nbsp;  public void setHeight(final float height) {
+<b class="fc"><i>202</i>&nbsp;    this.setCollisionBoxHeight(height);</b>
+<b class="fc"><i>203</i>&nbsp;    super.setHeight(height);</b>
+<b class="fc"><i>204</i>&nbsp;  }</b>
+<i>205</i>&nbsp;
+<i>206</i>&nbsp;  @Override
+<i>207</i>&nbsp;  public void setWidth(final float width) {
+<b class="fc"><i>208</i>&nbsp;    this.setCollisionBoxWidth(width);</b>
+<b class="fc"><i>209</i>&nbsp;    super.setWidth(width);</b>
+<b class="fc"><i>210</i>&nbsp;  }</b>
+<i>211</i>&nbsp;
+<i>212</i>&nbsp;  @Override
+<i>213</i>&nbsp;  public void setSize(final float width, final float height) {
+<b class="nc"><i>214</i>&nbsp;    this.setCollisionBoxWidth(width);</b>
+<b class="nc"><i>215</i>&nbsp;    this.setCollisionBoxHeight(height);</b>
+<b class="nc"><i>216</i>&nbsp;    super.setSize(width, height);</b>
+<b class="nc"><i>217</i>&nbsp;  }</b>
+<i>218</i>&nbsp;
+<i>219</i>&nbsp;  public void setCooldown(int cooldown) {
+<b class="fc"><i>220</i>&nbsp;    this.cooldown = cooldown;</b>
+<b class="fc"><i>221</i>&nbsp;  }</b>
+<i>222</i>&nbsp;
+<i>223</i>&nbsp;  @Override
+<i>224</i>&nbsp;  public void update() {
+<b class="nc"><i>225</i>&nbsp;    if (Game.world().environment() == null || this.activationType != TriggerActivation.COLLISION) {</b>
+<b class="nc"><i>226</i>&nbsp;      return;</b>
+<i>227</i>&nbsp;    }
+<i>228</i>&nbsp;
+<b class="nc"><i>229</i>&nbsp;    final List&lt;IEntity&gt; collEntities = this.getEntitiesInCollisionBox();</b>
+<b class="nc"><i>230</i>&nbsp;    for (final IEntity ent : collEntities) {</b>
+<b class="nc"><i>231</i>&nbsp;      if (this.activated.contains(ent)) {</b>
+<b class="nc"><i>232</i>&nbsp;        continue;</b>
+<i>233</i>&nbsp;      }
+<i>234</i>&nbsp;
+<b class="nc"><i>235</i>&nbsp;      this.activate(ent, ent.getMapId());</b>
+<b class="nc"><i>236</i>&nbsp;    }</b>
+<i>237</i>&nbsp;
+<i>238</i>&nbsp;    // send deactivation event
+<b class="nc"><i>239</i>&nbsp;    for (final IEntity ent : this.activated) {</b>
+<b class="nc"><i>240</i>&nbsp;      if (!collEntities.contains(ent)) {</b>
+<b class="nc"><i>241</i>&nbsp;        List&lt;Integer&gt; triggerTargets = this.getTargets();</b>
+<b class="nc"><i>242</i>&nbsp;        if (triggerTargets.isEmpty()) {</b>
+<b class="nc"><i>243</i>&nbsp;          triggerTargets = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>244</i>&nbsp;          triggerTargets.add(ent.getMapId());</b>
+<i>245</i>&nbsp;        }
+<i>246</i>&nbsp;
+<b class="nc"><i>247</i>&nbsp;        final TriggerEvent event = new TriggerEvent(this, ent, triggerTargets);</b>
+<b class="nc"><i>248</i>&nbsp;        for (final TriggerDeactivatedListener listener : this.deactivatedListeners) {</b>
+<b class="nc"><i>249</i>&nbsp;          listener.deactivated(event);</b>
+<b class="nc"><i>250</i>&nbsp;        }</b>
+<i>251</i>&nbsp;      }
+<b class="nc"><i>252</i>&nbsp;    }</b>
+<i>253</i>&nbsp;
+<b class="nc"><i>254</i>&nbsp;    this.activated = collEntities;</b>
+<b class="nc"><i>255</i>&nbsp;  }</b>
+<i>256</i>&nbsp;
+<i>257</i>&nbsp;  private boolean activate(final IEntity activator, final int tar) {
+<b class="fc"><i>258</i>&nbsp;    if (this.isOneTimeTrigger &amp;&amp; this.isActivated || this.getActivationType() == TriggerActivation.COLLISION &amp;&amp; activator != null &amp;&amp; this.activated.contains(activator)) {</b>
+<b class="nc"><i>259</i>&nbsp;      return false;</b>
+<i>260</i>&nbsp;    }
+<i>261</i>&nbsp;
+<b class="fc"><i>262</i>&nbsp;    if (this.cooldown &gt; 0 &amp;&amp; Game.loop().getDeltaTime(this.lastActivation) &lt; this.cooldown) {</b>
+<b class="nc"><i>263</i>&nbsp;      return false;</b>
+<i>264</i>&nbsp;    }
+<i>265</i>&nbsp;
+<b class="fc"><i>266</i>&nbsp;    List&lt;Integer&gt; triggerTargets = this.getTargets(tar);</b>
+<i>267</i>&nbsp;
+<b class="fc"><i>268</i>&nbsp;    final TriggerEvent te = new TriggerEvent(this, activator, triggerTargets);</b>
+<i>269</i>&nbsp;
+<b class="fc"><i>270</i>&nbsp;    if (!this.checkActivationPredicates(te)) {</b>
+<b class="nc"><i>271</i>&nbsp;      return false;</b>
+<i>272</i>&nbsp;    }
+<i>273</i>&nbsp;
+<b class="fc"><i>274</i>&nbsp;    this.isActivated = true;</b>
+<i>275</i>&nbsp;
+<i>276</i>&nbsp;    // if we actually have a trigger target, we send the message to the target
+<b class="fc"><i>277</i>&nbsp;    for (final int target : triggerTargets) {</b>
+<b class="fc"><i>278</i>&nbsp;      final IEntity entity = Game.world().environment().get(target);</b>
+<b class="fc"><i>279</i>&nbsp;      if (entity == null) {</b>
+<b class="nc"><i>280</i>&nbsp;        log.log(Level.WARNING, &quot;trigger [{0}] was activated, but the trigger target [{1}] could not be found on the environment&quot;, new Object[] { this.getName(), target });</b>
+<b class="nc"><i>281</i>&nbsp;        continue;</b>
+<i>282</i>&nbsp;      }
+<i>283</i>&nbsp;
+<b class="fc"><i>284</i>&nbsp;      entity.sendMessage(this, this.message);</b>
+<b class="fc"><i>285</i>&nbsp;      this.activated.add(activator);</b>
+<b class="fc"><i>286</i>&nbsp;    }</b>
+<i>287</i>&nbsp;
+<i>288</i>&nbsp;    // also send the trigger event to all registered consumers
+<b class="fc"><i>289</i>&nbsp;    for (final TriggerActivatedListener listener : this.activatedListeners) {</b>
+<b class="nc"><i>290</i>&nbsp;      listener.activated(te);</b>
+<b class="nc"><i>291</i>&nbsp;    }</b>
+<i>292</i>&nbsp;
+<b class="fc"><i>293</i>&nbsp;    if (this.isOneTimeTrigger &amp;&amp; this.isActivated) {</b>
+<b class="nc"><i>294</i>&nbsp;      Game.world().environment().remove(this);</b>
+<i>295</i>&nbsp;    }
+<i>296</i>&nbsp;
+<b class="fc"><i>297</i>&nbsp;    this.lastActivation = Game.loop().getTicks();</b>
+<b class="fc"><i>298</i>&nbsp;    return true;</b>
+<i>299</i>&nbsp;  }
+<i>300</i>&nbsp;
+<i>301</i>&nbsp;  private boolean checkActivationPredicates(TriggerEvent te) {
+<i>302</i>&nbsp;    // check if the trigger is allowed to be activated
+<b class="fc"><i>303</i>&nbsp;    for (TriggerActivatingCondition condition : this.activatingConditions) {</b>
+<b class="nc"><i>304</i>&nbsp;      String result = condition.canActivate(te);</b>
+<b class="nc"><i>305</i>&nbsp;      if (result != null &amp;&amp; !result.isEmpty()) {</b>
+<b class="nc"><i>306</i>&nbsp;        te.getEntity().sendMessage(this, result);</b>
+<b class="nc"><i>307</i>&nbsp;        return false;</b>
+<i>308</i>&nbsp;      }
+<b class="nc"><i>309</i>&nbsp;    }</b>
+<i>310</i>&nbsp;
+<b class="fc"><i>311</i>&nbsp;    return true;</b>
+<i>312</i>&nbsp;  }
+<i>313</i>&nbsp;
+<i>314</i>&nbsp;  private List&lt;IEntity&gt; getEntitiesInCollisionBox() {
+<b class="nc"><i>315</i>&nbsp;    final List&lt;IEntity&gt; collEntities = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="nc"><i>316</i>&nbsp;    for (final ICollisionEntity coll : Game.physics().getCollisionEntities()) {</b>
+<b class="nc"><i>317</i>&nbsp;      if (coll == this || !this.activators.isEmpty() &amp;&amp; !this.activators.contains(coll.getMapId())) {</b>
+<b class="nc"><i>318</i>&nbsp;        continue;</b>
+<i>319</i>&nbsp;      }
+<i>320</i>&nbsp;
+<b class="nc"><i>321</i>&nbsp;      if (coll.getCollisionBox().intersects(this.getCollisionBox())) {</b>
+<b class="nc"><i>322</i>&nbsp;        collEntities.add(coll);</b>
+<i>323</i>&nbsp;      }
+<b class="nc"><i>324</i>&nbsp;    }</b>
+<i>325</i>&nbsp;
+<b class="nc"><i>326</i>&nbsp;    return collEntities;</b>
+<i>327</i>&nbsp;  }
+<i>328</i>&nbsp;
+<i>329</i>&nbsp;  private List&lt;Integer&gt; getTargets(int optionalTarget) {
+<i>330</i>&nbsp;    // always take local targets if there are any
+<b class="fc"><i>331</i>&nbsp;    List&lt;Integer&gt; localTargets = this.getTargets();</b>
+<b class="fc"><i>332</i>&nbsp;    if (localTargets.isEmpty()) {</b>
+<i>333</i>&nbsp;
+<i>334</i>&nbsp;      // as a fall back send the message to the tar
+<b class="nc"><i>335</i>&nbsp;      localTargets = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>336</i>&nbsp;      if (optionalTarget &gt; 0) {</b>
+<b class="nc"><i>337</i>&nbsp;        localTargets.add(optionalTarget);</b>
+<i>338</i>&nbsp;      }
+<i>339</i>&nbsp;    }
+<i>340</i>&nbsp;
+<b class="fc"><i>341</i>&nbsp;    return localTargets;</b>
+<i>342</i>&nbsp;  }
+<i>343</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

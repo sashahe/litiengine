@@ -1,0 +1,116 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: SpritesheetEmitter</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.graphics.emitters</a> ]
+</div>
+
+<h1>Coverage Summary for Class: SpritesheetEmitter (de.gurkenlabs.litiengine.graphics.emitters)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SpritesheetEmitter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (2/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    71.4%
+  </span>
+  <span class="absValue">
+    (5/ 7)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.graphics.emitters;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Image;
+<i>4</i>&nbsp;import java.awt.geom.Point2D;
+<i>5</i>&nbsp;import java.util.Random;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import de.gurkenlabs.litiengine.graphics.Spritesheet;
+<i>8</i>&nbsp;import de.gurkenlabs.litiengine.graphics.emitters.particles.Particle;
+<i>9</i>&nbsp;import de.gurkenlabs.litiengine.graphics.emitters.particles.SpriteParticle;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;public abstract class SpritesheetEmitter extends Emitter {
+<i>12</i>&nbsp;  private final Spritesheet spriteSheet;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;  public SpritesheetEmitter(final Spritesheet spriteSheet, final Point2D origin) {
+<b class="fc"><i>15</i>&nbsp;    super(origin);</b>
+<b class="fc"><i>16</i>&nbsp;    this.spriteSheet = spriteSheet;</b>
+<b class="fc"><i>17</i>&nbsp;    this.setSize(this.getSpritesheet().getSpriteWidth(), this.getSpritesheet().getSpriteHeight());</b>
+<i>18</i>&nbsp;
+<b class="fc"><i>19</i>&nbsp;  }</b>
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;  public Spritesheet getSpritesheet() {
+<b class="fc"><i>22</i>&nbsp;    return this.spriteSheet;</b>
+<i>23</i>&nbsp;  }
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;  protected Image getRandomSprite() {
+<b class="nc"><i>26</i>&nbsp;    return this.getSpritesheet().getSprite(new Random().nextInt(this.getSpritesheet().getTotalNumberOfSprites()));</b>
+<i>27</i>&nbsp;  }
+<i>28</i>&nbsp;  
+<i>29</i>&nbsp;  @Override
+<i>30</i>&nbsp;  protected Particle createNewParticle() {
+<b class="nc"><i>31</i>&nbsp;    return new SpriteParticle(this.getRandomSprite(), this.getRandomParticleTTL());</b>
+<i>32</i>&nbsp;  }
+<i>33</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

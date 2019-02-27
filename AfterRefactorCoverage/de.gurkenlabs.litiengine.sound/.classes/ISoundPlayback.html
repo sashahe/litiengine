@@ -1,0 +1,80 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ISoundPlayback</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.sound</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ISoundPlayback (de.gurkenlabs.litiengine.sound)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ISoundPlayback</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.sound;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;public interface ISoundPlayback {
+<i>4</i>&nbsp;  /**
+<i>5</i>&nbsp;   * Adds a &lt;code&gt;SoundPlaybackListener&lt;/code&gt; to this instance.
+<i>6</i>&nbsp;   *
+<i>7</i>&nbsp;   * @param listener
+<i>8</i>&nbsp;   *          The &lt;code&gt;SoundPlaybackListener&lt;/code&gt; to be added.
+<i>9</i>&nbsp;   */
+<i>10</i>&nbsp;  public void addSoundPlaybackListener(SoundPlaybackListener listener);
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;  /**
+<i>13</i>&nbsp;   * Removes a &lt;code&gt;SoundPlaybackListener&lt;/code&gt; to this instance.
+<i>14</i>&nbsp;   *
+<i>15</i>&nbsp;   * @param listener
+<i>16</i>&nbsp;   *          The &lt;code&gt;SoundPlaybackListener&lt;/code&gt; to be removed.
+<i>17</i>&nbsp;   */
+<i>18</i>&nbsp;  public void removeSoundPlaybackListener(SoundPlaybackListener listener);
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;  public void pausePlayback();
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;  public void resumePlayback();
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;  public boolean isPaused();
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;  public boolean isPlaying();
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;  public void cancel();
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;  public float getGain();
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;  public void setGain(float gain);
+<i>33</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

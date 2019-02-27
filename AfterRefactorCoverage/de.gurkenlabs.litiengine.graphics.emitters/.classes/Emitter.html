@@ -1,0 +1,606 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Emitter</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.graphics.emitters</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Emitter (de.gurkenlabs.litiengine.graphics.emitters)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Emitter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    57.6%
+  </span>
+  <span class="absValue">
+    (34/ 59)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    51.5%
+  </span>
+  <span class="absValue">
+    (88/ 171)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.graphics.emitters;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Color;
+<i>4</i>&nbsp;import java.awt.Graphics2D;
+<i>5</i>&nbsp;import java.awt.geom.Point2D;
+<i>6</i>&nbsp;import java.awt.geom.Rectangle2D;
+<i>7</i>&nbsp;import java.util.ArrayList;
+<i>8</i>&nbsp;import java.util.Arrays;
+<i>9</i>&nbsp;import java.util.List;
+<i>10</i>&nbsp;import java.util.Map;
+<i>11</i>&nbsp;import java.util.Random;
+<i>12</i>&nbsp;import java.util.concurrent.ConcurrentHashMap;
+<i>13</i>&nbsp;import java.util.concurrent.CopyOnWriteArrayList;
+<i>14</i>&nbsp;import java.util.function.Consumer;
+<i>15</i>&nbsp;import java.util.stream.Collectors;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;import de.gurkenlabs.litiengine.Align;
+<i>18</i>&nbsp;import de.gurkenlabs.litiengine.Game;
+<i>19</i>&nbsp;import de.gurkenlabs.litiengine.ITimeToLive;
+<i>20</i>&nbsp;import de.gurkenlabs.litiengine.IUpdateable;
+<i>21</i>&nbsp;import de.gurkenlabs.litiengine.Valign;
+<i>22</i>&nbsp;import de.gurkenlabs.litiengine.annotation.CollisionInfo;
+<i>23</i>&nbsp;import de.gurkenlabs.litiengine.annotation.EmitterInfo;
+<i>24</i>&nbsp;import de.gurkenlabs.litiengine.configuration.Quality;
+<i>25</i>&nbsp;import de.gurkenlabs.litiengine.entities.CombatEntity;
+<i>26</i>&nbsp;import de.gurkenlabs.litiengine.graphics.DebugRenderer;
+<i>27</i>&nbsp;import de.gurkenlabs.litiengine.graphics.IRenderable;
+<i>28</i>&nbsp;import de.gurkenlabs.litiengine.graphics.RenderType;
+<i>29</i>&nbsp;import de.gurkenlabs.litiengine.graphics.emitters.particles.Particle;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;/**
+<i>32</i>&nbsp; * An abstract implementation for emitters that provide a particle effect.
+<i>33</i>&nbsp; */
+<i>34</i>&nbsp;@CollisionInfo(collision = false)
+<i>35</i>&nbsp;@EmitterInfo
+<i>36</i>&nbsp;public abstract class Emitter extends CombatEntity implements IUpdateable, ITimeToLive, IRenderable {
+<b class="fc"><i>37</i>&nbsp;  public static final Color DEFAULT_PARTICLE_COLOR = new Color(255, 255, 255, 150);</b>
+<i>38</i>&nbsp;  public static final int DEFAULT_UPDATERATE = 30;
+<i>39</i>&nbsp;  public static final int DEFAULT_SPAWNAMOUNT = 1;
+<i>40</i>&nbsp;  public static final int DEFAULT_MAXPARTICLES = 100;
+<i>41</i>&nbsp;
+<b class="fc"><i>42</i>&nbsp;  private static final Random RANDOM = new Random();</b>
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;  private final List&lt;Consumer&lt;Emitter&gt;&gt; finishedConsumer;
+<i>45</i>&nbsp;  private final CopyOnWriteArrayList&lt;Particle&gt; particles;
+<i>46</i>&nbsp;  private final List&lt;Color&gt; colors;
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;  private Quality requiredQuality;
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;  private boolean activateOnInit;
+<i>51</i>&nbsp;  private boolean activated;
+<i>52</i>&nbsp;  private boolean paused;
+<i>53</i>&nbsp;  private boolean stopped;
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;  private long activationTick;
+<i>56</i>&nbsp;  private long aliveTime;
+<i>57</i>&nbsp;  private long lastSpawn;
+<i>58</i>&nbsp;  private int maxParticles;
+<i>59</i>&nbsp;  private int particleMaxTTL;
+<i>60</i>&nbsp;  private int particleMinTTL;
+<i>61</i>&nbsp;  private int particleUpdateDelay;
+<i>62</i>&nbsp;  private int spawnAmount;
+<i>63</i>&nbsp;  private int spawnRate;
+<i>64</i>&nbsp;  private int timeToLive;
+<i>65</i>&nbsp;  private Valign originValign;
+<i>66</i>&nbsp;  private Align originAlign;
+<i>67</i>&nbsp;
+<i>68</i>&nbsp;  private Map&lt;RenderType, IRenderable&gt; renderables;
+<i>69</i>&nbsp;
+<b class="fc"><i>70</i>&nbsp;  public Emitter() {</b>
+<b class="fc"><i>71</i>&nbsp;    this.colors = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>72</i>&nbsp;    this.finishedConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>73</i>&nbsp;    this.particles = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>74</i>&nbsp;    this.renderables = new ConcurrentHashMap&lt;&gt;();</b>
+<i>75</i>&nbsp;
+<b class="fc"><i>76</i>&nbsp;    for (RenderType type : RenderType.values()) {</b>
+<b class="fc"><i>77</i>&nbsp;      if (type == RenderType.NONE) {</b>
+<b class="fc"><i>78</i>&nbsp;        continue;</b>
+<i>79</i>&nbsp;      }
+<i>80</i>&nbsp;
+<b class="fc"><i>81</i>&nbsp;      this.renderables.put(type, g -&gt; renderParticles(g, type));</b>
+<i>82</i>&nbsp;    }
+<i>83</i>&nbsp;
+<b class="fc"><i>84</i>&nbsp;    final EmitterInfo info = this.getClass().getAnnotation(EmitterInfo.class);</b>
+<b class="fc"><i>85</i>&nbsp;    if (info != null) {</b>
+<b class="fc"><i>86</i>&nbsp;      this.requiredQuality = info.requiredQuality();</b>
+<b class="fc"><i>87</i>&nbsp;      this.maxParticles = info.maxParticles();</b>
+<b class="fc"><i>88</i>&nbsp;      this.spawnAmount = info.spawnAmount();</b>
+<b class="fc"><i>89</i>&nbsp;      this.spawnRate = info.spawnRate();</b>
+<b class="fc"><i>90</i>&nbsp;      this.timeToLive = info.emitterTTL();</b>
+<b class="fc"><i>91</i>&nbsp;      this.particleMinTTL = info.particleMinTTL();</b>
+<b class="fc"><i>92</i>&nbsp;      this.particleMaxTTL = info.particleMaxTTL();</b>
+<b class="fc"><i>93</i>&nbsp;      this.particleUpdateDelay = info.particleUpdateRate();</b>
+<b class="fc"><i>94</i>&nbsp;      this.activateOnInit = info.activateOnInit();</b>
+<b class="fc"><i>95</i>&nbsp;      this.originAlign = info.originAlign();</b>
+<b class="fc"><i>96</i>&nbsp;      this.originValign = info.originVAlign();</b>
+<i>97</i>&nbsp;    }
+<b class="fc"><i>98</i>&nbsp;  }</b>
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;  public Emitter(final double originX, final double originY) {
+<b class="fc"><i>101</i>&nbsp;    this(new Point2D.Double(originX, originY));</b>
+<b class="fc"><i>102</i>&nbsp;  }</b>
+<i>103</i>&nbsp;
+<i>104</i>&nbsp;  public Emitter(final Point2D origin) {
+<b class="fc"><i>105</i>&nbsp;    this();</b>
+<b class="fc"><i>106</i>&nbsp;    this.setLocation(origin);</b>
+<b class="fc"><i>107</i>&nbsp;  }</b>
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;  public void activate() {
+<b class="fc"><i>110</i>&nbsp;    if (this.activated) {</b>
+<b class="nc"><i>111</i>&nbsp;      return;</b>
+<i>112</i>&nbsp;    }
+<i>113</i>&nbsp;
+<b class="fc"><i>114</i>&nbsp;    this.activated = true;</b>
+<b class="fc"><i>115</i>&nbsp;    this.activationTick = Game.loop().getTicks();</b>
+<b class="fc"><i>116</i>&nbsp;    Game.loop().attach(this);</b>
+<b class="fc"><i>117</i>&nbsp;  }</b>
+<i>118</i>&nbsp;
+<i>119</i>&nbsp;  /**
+<i>120</i>&nbsp;   * Sets all of the data of the specified particle to the new data provided.
+<i>121</i>&nbsp;   *
+<i>122</i>&nbsp;   * @param particle
+<i>123</i>&nbsp;   *                   the particle
+<i>124</i>&nbsp;   */
+<i>125</i>&nbsp;  public void addParticle(final Particle particle) {
+<b class="nc"><i>126</i>&nbsp;    if (this.isStopped()) {</b>
+<b class="nc"><i>127</i>&nbsp;      return;</b>
+<i>128</i>&nbsp;    }
+<b class="nc"><i>129</i>&nbsp;    this.particles.add(particle);</b>
+<b class="nc"><i>130</i>&nbsp;  }</b>
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;  /**
+<i>133</i>&nbsp;   * Deactivate.
+<i>134</i>&nbsp;   */
+<i>135</i>&nbsp;  public void deactivate() {
+<b class="fc"><i>136</i>&nbsp;    if (!this.activated) {</b>
+<b class="fc"><i>137</i>&nbsp;      return;</b>
+<i>138</i>&nbsp;    }
+<i>139</i>&nbsp;
+<b class="fc"><i>140</i>&nbsp;    this.activated = false;</b>
+<b class="fc"><i>141</i>&nbsp;    this.getParticles().clear();</b>
+<b class="fc"><i>142</i>&nbsp;    this.aliveTime = 0;</b>
+<b class="fc"><i>143</i>&nbsp;    this.activationTick = 0;</b>
+<b class="fc"><i>144</i>&nbsp;    this.lastSpawn = 0;</b>
+<b class="fc"><i>145</i>&nbsp;    Game.loop().detach(this);</b>
+<b class="fc"><i>146</i>&nbsp;  }</b>
+<i>147</i>&nbsp;
+<i>148</i>&nbsp;  public void delete() {
+<b class="nc"><i>149</i>&nbsp;    this.deactivate();</b>
+<b class="nc"><i>150</i>&nbsp;    if (Game.world().environment() != null) {</b>
+<b class="nc"><i>151</i>&nbsp;      Game.world().environment().remove(this);</b>
+<i>152</i>&nbsp;    }
+<b class="nc"><i>153</i>&nbsp;  }</b>
+<i>154</i>&nbsp;
+<i>155</i>&nbsp;  /**
+<i>156</i>&nbsp;   * Gets the alive time.
+<i>157</i>&nbsp;   *
+<i>158</i>&nbsp;   * @return the alive time
+<i>159</i>&nbsp;   */
+<i>160</i>&nbsp;  @Override
+<i>161</i>&nbsp;  public long getAliveTime() {
+<b class="nc"><i>162</i>&nbsp;    return this.aliveTime;</b>
+<i>163</i>&nbsp;  }
+<i>164</i>&nbsp;
+<i>165</i>&nbsp;  public List&lt;Color&gt; getColors() {
+<b class="nc"><i>166</i>&nbsp;    return this.colors;</b>
+<i>167</i>&nbsp;  }
+<i>168</i>&nbsp;
+<i>169</i>&nbsp;  public Point2D getOrigin() {
+<b class="fc"><i>170</i>&nbsp;    return new Point2D.Double(this.getX() + this.getOriginAlign().getValue(this.getWidth()), this.getY() + this.getOriginValign().getValue(this.getHeight()));</b>
+<i>171</i>&nbsp;  }
+<i>172</i>&nbsp;
+<i>173</i>&nbsp;  public Align getOriginAlign() {
+<b class="fc"><i>174</i>&nbsp;    return this.originAlign;</b>
+<i>175</i>&nbsp;  }
+<i>176</i>&nbsp;
+<i>177</i>&nbsp;  public Valign getOriginValign() {
+<b class="fc"><i>178</i>&nbsp;    return this.originValign;</b>
+<i>179</i>&nbsp;  }
+<i>180</i>&nbsp;
+<i>181</i>&nbsp;  public IRenderable getRenderable(RenderType type) {
+<b class="fc"><i>182</i>&nbsp;    if (type == RenderType.NONE) {</b>
+<b class="nc"><i>183</i>&nbsp;      return null;</b>
+<i>184</i>&nbsp;    }
+<i>185</i>&nbsp;
+<b class="fc"><i>186</i>&nbsp;    return this.renderables.get(type);</b>
+<i>187</i>&nbsp;  }
+<i>188</i>&nbsp;
+<i>189</i>&nbsp;  /**
+<i>190</i>&nbsp;   * Gets the max particles.
+<i>191</i>&nbsp;   *
+<i>192</i>&nbsp;   * @return the max particles
+<i>193</i>&nbsp;   */
+<i>194</i>&nbsp;  public int getMaxParticles() {
+<b class="fc"><i>195</i>&nbsp;    return this.maxParticles;</b>
+<i>196</i>&nbsp;  }
+<i>197</i>&nbsp;
+<i>198</i>&nbsp;  public int getParticleMaxTTL() {
+<b class="fc"><i>199</i>&nbsp;    return this.particleMaxTTL;</b>
+<i>200</i>&nbsp;  }
+<i>201</i>&nbsp;
+<i>202</i>&nbsp;  public int getParticleMinTTL() {
+<b class="fc"><i>203</i>&nbsp;    return this.particleMinTTL;</b>
+<i>204</i>&nbsp;  }
+<i>205</i>&nbsp;
+<i>206</i>&nbsp;  public void getParticleMinTTL(final int minTTL) {
+<b class="nc"><i>207</i>&nbsp;    this.particleMinTTL = minTTL;</b>
+<b class="nc"><i>208</i>&nbsp;  }</b>
+<i>209</i>&nbsp;
+<i>210</i>&nbsp;  /**
+<i>211</i>&nbsp;   * Gets the particles.
+<i>212</i>&nbsp;   *
+<i>213</i>&nbsp;   * @return the particles
+<i>214</i>&nbsp;   */
+<i>215</i>&nbsp;  public List&lt;Particle&gt; getParticles() {
+<b class="fc"><i>216</i>&nbsp;    return this.particles;</b>
+<i>217</i>&nbsp;  }
+<i>218</i>&nbsp;
+<i>219</i>&nbsp;  public int getParticleUpdateRate() {
+<b class="fc"><i>220</i>&nbsp;    return this.particleUpdateDelay;</b>
+<i>221</i>&nbsp;  }
+<i>222</i>&nbsp;
+<i>223</i>&nbsp;  public Quality getRequiredQuality() {
+<b class="fc"><i>224</i>&nbsp;    return this.requiredQuality;</b>
+<i>225</i>&nbsp;  }
+<i>226</i>&nbsp;
+<i>227</i>&nbsp;  public int getSpawnAmount() {
+<b class="fc"><i>228</i>&nbsp;    return this.spawnAmount;</b>
+<i>229</i>&nbsp;  }
+<i>230</i>&nbsp;
+<i>231</i>&nbsp;  /**
+<i>232</i>&nbsp;   * Gets the spawn rate in milliseconds.
+<i>233</i>&nbsp;   *
+<i>234</i>&nbsp;   * @return the spawn rate
+<i>235</i>&nbsp;   */
+<i>236</i>&nbsp;  public int getSpawnRate() {
+<b class="fc"><i>237</i>&nbsp;    return this.spawnRate;</b>
+<i>238</i>&nbsp;  }
+<i>239</i>&nbsp;
+<i>240</i>&nbsp;  /**
+<i>241</i>&nbsp;   * Gets the time to live.
+<i>242</i>&nbsp;   *
+<i>243</i>&nbsp;   * @return the time to live
+<i>244</i>&nbsp;   */
+<i>245</i>&nbsp;  @Override
+<i>246</i>&nbsp;  public int getTimeToLive() {
+<b class="fc"><i>247</i>&nbsp;    return this.timeToLive;</b>
+<i>248</i>&nbsp;  }
+<i>249</i>&nbsp;
+<i>250</i>&nbsp;  public boolean isActivateOnInit() {
+<b class="fc"><i>251</i>&nbsp;    return this.activateOnInit;</b>
+<i>252</i>&nbsp;  }
+<i>253</i>&nbsp;
+<i>254</i>&nbsp;  public boolean isActivated() {
+<b class="fc"><i>255</i>&nbsp;    return this.activated;</b>
+<i>256</i>&nbsp;  }
+<i>257</i>&nbsp;
+<i>258</i>&nbsp;  /**
+<i>259</i>&nbsp;   * Checks if is finished.
+<i>260</i>&nbsp;   *
+<i>261</i>&nbsp;   * @return true, if is finished
+<i>262</i>&nbsp;   */
+<i>263</i>&nbsp;  public boolean isFinished() {
+<i>264</i>&nbsp;    // if a time to live is set and reached or ir the emitter has been started
+<i>265</i>&nbsp;    // and no particles are left
+<b class="nc"><i>266</i>&nbsp;    return this.getTimeToLive() &gt; 0 &amp;&amp; this.timeToLiveReached() || this.activated &amp;&amp; this.lastSpawn &gt; 0 &amp;&amp; this.getParticles().isEmpty();</b>
+<i>267</i>&nbsp;  }
+<i>268</i>&nbsp;
+<i>269</i>&nbsp;  /**
+<i>270</i>&nbsp;   * Checks if is paused.
+<i>271</i>&nbsp;   *
+<i>272</i>&nbsp;   * @return true, if is paused
+<i>273</i>&nbsp;   */
+<i>274</i>&nbsp;  public boolean isPaused() {
+<b class="fc"><i>275</i>&nbsp;    return this.paused;</b>
+<i>276</i>&nbsp;  }
+<i>277</i>&nbsp;
+<i>278</i>&nbsp;  public boolean isStopped() {
+<b class="nc"><i>279</i>&nbsp;    return this.stopped;</b>
+<i>280</i>&nbsp;  }
+<i>281</i>&nbsp;
+<i>282</i>&nbsp;  public void onFinished(Consumer&lt;Emitter&gt; cons) {
+<b class="nc"><i>283</i>&nbsp;    this.finishedConsumer.add(cons);</b>
+<b class="nc"><i>284</i>&nbsp;  }</b>
+<i>285</i>&nbsp;
+<i>286</i>&nbsp;  @Override
+<i>287</i>&nbsp;  public boolean isDead() {
+<b class="nc"><i>288</i>&nbsp;    return false;</b>
+<i>289</i>&nbsp;  }
+<i>290</i>&nbsp;
+<i>291</i>&nbsp;  @Override
+<i>292</i>&nbsp;  public Rectangle2D getCollisionBox() {
+<b class="nc"><i>293</i>&nbsp;    return new Rectangle2D.Double(this.getX(), this.getY(), this.getWidth(), this.getHeight());</b>
+<i>294</i>&nbsp;  }
+<i>295</i>&nbsp;
+<i>296</i>&nbsp;  @Override
+<i>297</i>&nbsp;  public void render(final Graphics2D g) {
+<b class="nc"><i>298</i>&nbsp;    this.renderParticles(g, RenderType.NONE);</b>
+<i>299</i>&nbsp;
+<b class="nc"><i>300</i>&nbsp;    if (Game.config().debug().renderHitBoxes()) {</b>
+<b class="nc"><i>301</i>&nbsp;      DebugRenderer.renderEntityDebugInfo(g, this);</b>
+<i>302</i>&nbsp;    }
+<b class="nc"><i>303</i>&nbsp;  }</b>
+<i>304</i>&nbsp;
+<i>305</i>&nbsp;  public void setColors(final Color... colors) {
+<b class="fc"><i>306</i>&nbsp;    this.colors.clear();</b>
+<b class="fc"><i>307</i>&nbsp;    this.colors.addAll(Arrays.asList(colors));</b>
+<b class="fc"><i>308</i>&nbsp;  }</b>
+<i>309</i>&nbsp;
+<i>310</i>&nbsp;  public void setMaxParticles(final int maxPart) {
+<b class="fc"><i>311</i>&nbsp;    this.maxParticles = maxPart;</b>
+<b class="fc"><i>312</i>&nbsp;  }</b>
+<i>313</i>&nbsp;
+<i>314</i>&nbsp;  public void setOriginAlign(Align align) {
+<b class="fc"><i>315</i>&nbsp;    this.originAlign = align;</b>
+<b class="fc"><i>316</i>&nbsp;  }</b>
+<i>317</i>&nbsp;
+<i>318</i>&nbsp;  public void setOriginValign(Valign valign) {
+<b class="fc"><i>319</i>&nbsp;    this.originValign = valign;</b>
+<b class="fc"><i>320</i>&nbsp;  }</b>
+<i>321</i>&nbsp;
+<i>322</i>&nbsp;  public void setParticleMaxTTL(final int maxTTL) {
+<b class="fc"><i>323</i>&nbsp;    this.particleMaxTTL = maxTTL;</b>
+<b class="fc"><i>324</i>&nbsp;  }</b>
+<i>325</i>&nbsp;
+<i>326</i>&nbsp;  public void setParticleMinTTL(final int minTTL) {
+<b class="fc"><i>327</i>&nbsp;    this.particleMinTTL = minTTL;</b>
+<b class="fc"><i>328</i>&nbsp;  }</b>
+<i>329</i>&nbsp;
+<i>330</i>&nbsp;  public void setParticleUpdateRate(final int delay) {
+<b class="fc"><i>331</i>&nbsp;    this.particleUpdateDelay = delay;</b>
+<b class="fc"><i>332</i>&nbsp;  }</b>
+<i>333</i>&nbsp;
+<i>334</i>&nbsp;  /**
+<i>335</i>&nbsp;   * Sets the paused.
+<i>336</i>&nbsp;   *
+<i>337</i>&nbsp;   * @param paused
+<i>338</i>&nbsp;   *                 the new paused
+<i>339</i>&nbsp;   */
+<i>340</i>&nbsp;  public void setPaused(final boolean paused) {
+<b class="nc"><i>341</i>&nbsp;    this.paused = paused;</b>
+<b class="nc"><i>342</i>&nbsp;  }</b>
+<i>343</i>&nbsp;
+<i>344</i>&nbsp;  public void setStopped(final boolean stopped) {
+<b class="nc"><i>345</i>&nbsp;    this.stopped = stopped;</b>
+<b class="nc"><i>346</i>&nbsp;  }</b>
+<i>347</i>&nbsp;
+<i>348</i>&nbsp;  public void setRequiredQuality(Quality requiredQuality) {
+<b class="nc"><i>349</i>&nbsp;    this.requiredQuality = requiredQuality;</b>
+<b class="nc"><i>350</i>&nbsp;  }</b>
+<i>351</i>&nbsp;
+<i>352</i>&nbsp;  public void setSpawnAmount(final int spawnAmount) {
+<b class="fc"><i>353</i>&nbsp;    this.spawnAmount = spawnAmount;</b>
+<b class="fc"><i>354</i>&nbsp;  }</b>
+<i>355</i>&nbsp;
+<i>356</i>&nbsp;  public void setSpawnRate(final int spawnRate) {
+<b class="fc"><i>357</i>&nbsp;    this.spawnRate = spawnRate;</b>
+<b class="fc"><i>358</i>&nbsp;  }</b>
+<i>359</i>&nbsp;
+<i>360</i>&nbsp;  public void setTimeToLive(final int ttl) {
+<b class="fc"><i>361</i>&nbsp;    this.timeToLive = ttl;</b>
+<b class="fc"><i>362</i>&nbsp;  }</b>
+<i>363</i>&nbsp;
+<i>364</i>&nbsp;  /**
+<i>365</i>&nbsp;   * Time to live reached.
+<i>366</i>&nbsp;   *
+<i>367</i>&nbsp;   * @return true, if successful
+<i>368</i>&nbsp;   */
+<i>369</i>&nbsp;  @Override
+<i>370</i>&nbsp;  public boolean timeToLiveReached() {
+<b class="nc"><i>371</i>&nbsp;    return this.activated &amp;&amp; this.getTimeToLive() &gt; 0 &amp;&amp; this.getAliveTime() &gt;= this.getTimeToLive();</b>
+<i>372</i>&nbsp;  }
+<i>373</i>&nbsp;
+<i>374</i>&nbsp;  public void togglePaused() {
+<b class="nc"><i>375</i>&nbsp;    this.paused = !this.paused;</b>
+<b class="nc"><i>376</i>&nbsp;  }</b>
+<i>377</i>&nbsp;
+<i>378</i>&nbsp;  public void toggleStopped() {
+<b class="nc"><i>379</i>&nbsp;    this.stopped = !this.stopped;</b>
+<b class="nc"><i>380</i>&nbsp;  }</b>
+<i>381</i>&nbsp;
+<i>382</i>&nbsp;  @Override
+<i>383</i>&nbsp;  public void update() {
+<b class="nc"><i>384</i>&nbsp;    if (this.isPaused()) {</b>
+<b class="nc"><i>385</i>&nbsp;      return;</b>
+<i>386</i>&nbsp;    }
+<i>387</i>&nbsp;
+<i>388</i>&nbsp;    // clear particles if the effect time to life is reached
+<b class="nc"><i>389</i>&nbsp;    if (this.isFinished()) {</b>
+<b class="nc"><i>390</i>&nbsp;      for (Consumer&lt;Emitter&gt; cons : this.finishedConsumer) {</b>
+<b class="nc"><i>391</i>&nbsp;        cons.accept(this);</b>
+<b class="nc"><i>392</i>&nbsp;      }</b>
+<i>393</i>&nbsp;
+<b class="nc"><i>394</i>&nbsp;      this.delete();</b>
+<b class="nc"><i>395</i>&nbsp;      return;</b>
+<i>396</i>&nbsp;    }
+<i>397</i>&nbsp;
+<b class="nc"><i>398</i>&nbsp;    final float updateRatio = (float) this.getParticleUpdateRate() / Game.loop().getUpdateRate();</b>
+<b class="nc"><i>399</i>&nbsp;    for (final Particle p : this.getParticles().stream().collect(Collectors.toList())) {</b>
+<b class="nc"><i>400</i>&nbsp;      if (this.particleCanBeRemoved(p)) {</b>
+<i>401</i>&nbsp;        // remove dead particles
+<b class="nc"><i>402</i>&nbsp;        this.particles.remove(p);</b>
+<b class="nc"><i>403</i>&nbsp;        continue;</b>
+<i>404</i>&nbsp;      }
+<i>405</i>&nbsp;
+<b class="nc"><i>406</i>&nbsp;      p.update(this.getOrigin(), updateRatio);</b>
+<b class="nc"><i>407</i>&nbsp;    }</b>
+<i>408</i>&nbsp;
+<b class="nc"><i>409</i>&nbsp;    this.aliveTime = Game.loop().getDeltaTime(this.activationTick);</b>
+<i>410</i>&nbsp;
+<b class="nc"><i>411</i>&nbsp;    if ((this.getSpawnRate() == 0 || Game.loop().getDeltaTime(this.lastSpawn) &gt;= this.getSpawnRate())) {</b>
+<b class="nc"><i>412</i>&nbsp;      this.spawnParticle();</b>
+<i>413</i>&nbsp;    }
+<b class="nc"><i>414</i>&nbsp;  }</b>
+<i>415</i>&nbsp;
+<i>416</i>&nbsp;  protected void addParticleColor(final Color... colors) {
+<b class="nc"><i>417</i>&nbsp;    for (final Color color : colors) {</b>
+<b class="nc"><i>418</i>&nbsp;      if (!this.colors.contains(color)) {</b>
+<b class="nc"><i>419</i>&nbsp;        this.colors.add(color);</b>
+<i>420</i>&nbsp;      }
+<i>421</i>&nbsp;    }
+<b class="nc"><i>422</i>&nbsp;  }</b>
+<i>423</i>&nbsp;
+<i>424</i>&nbsp;  /**
+<i>425</i>&nbsp;   * Can take new particles.
+<i>426</i>&nbsp;   *
+<i>427</i>&nbsp;   * @return Whether-or-not the effect can hold any more particles.
+<i>428</i>&nbsp;   */
+<i>429</i>&nbsp;  protected boolean canTakeNewParticles() {
+<b class="nc"><i>430</i>&nbsp;    return this.particles.size() &lt; this.maxParticles;</b>
+<i>431</i>&nbsp;  }
+<i>432</i>&nbsp;
+<i>433</i>&nbsp;  /**
+<i>434</i>&nbsp;   * Creates the new particle.
+<i>435</i>&nbsp;   *
+<i>436</i>&nbsp;   * @return the particle
+<i>437</i>&nbsp;   */
+<i>438</i>&nbsp;  protected abstract Particle createNewParticle();
+<i>439</i>&nbsp;
+<i>440</i>&nbsp;  protected Color getRandomParticleColor() {
+<b class="fc"><i>441</i>&nbsp;    if (this.colors.isEmpty()) {</b>
+<b class="nc"><i>442</i>&nbsp;      return DEFAULT_PARTICLE_COLOR;</b>
+<i>443</i>&nbsp;    }
+<i>444</i>&nbsp;
+<b class="fc"><i>445</i>&nbsp;    return this.colors.get(RANDOM.nextInt(this.colors.size()));</b>
+<i>446</i>&nbsp;  }
+<i>447</i>&nbsp;
+<i>448</i>&nbsp;  protected int getRandomParticleTTL() {
+<b class="fc"><i>449</i>&nbsp;    if (this.getParticleMaxTTL() == 0) {</b>
+<b class="nc"><i>450</i>&nbsp;      return this.getParticleMinTTL();</b>
+<i>451</i>&nbsp;    }
+<i>452</i>&nbsp;
+<b class="fc"><i>453</i>&nbsp;    final int ttlDiff = this.getParticleMaxTTL() - this.getParticleMinTTL();</b>
+<b class="fc"><i>454</i>&nbsp;    if (ttlDiff &lt;= 0) {</b>
+<b class="nc"><i>455</i>&nbsp;      return this.getParticleMaxTTL();</b>
+<i>456</i>&nbsp;    }
+<i>457</i>&nbsp;
+<b class="fc"><i>458</i>&nbsp;    return RANDOM.nextInt(this.getParticleMaxTTL() - this.getParticleMinTTL()) + this.getParticleMinTTL();</b>
+<i>459</i>&nbsp;  }
+<i>460</i>&nbsp;
+<i>461</i>&nbsp;  protected int getRandomParticleX() {
+<b class="nc"><i>462</i>&nbsp;    return RANDOM.nextInt((int) this.getWidth());</b>
+<i>463</i>&nbsp;  }
+<i>464</i>&nbsp;
+<i>465</i>&nbsp;  protected int getRandomParticleY() {
+<b class="nc"><i>466</i>&nbsp;    return RANDOM.nextInt((int) this.getHeight());</b>
+<i>467</i>&nbsp;  }
+<i>468</i>&nbsp;
+<i>469</i>&nbsp;  /**
+<i>470</i>&nbsp;   * Particle can be removed.
+<i>471</i>&nbsp;   *
+<i>472</i>&nbsp;   * @param particle
+<i>473</i>&nbsp;   *                   the particle
+<i>474</i>&nbsp;   * @return true, if successful
+<i>475</i>&nbsp;   */
+<i>476</i>&nbsp;  protected boolean particleCanBeRemoved(final Particle particle) {
+<b class="nc"><i>477</i>&nbsp;    return particle.timeToLiveReached();</b>
+<i>478</i>&nbsp;  }
+<i>479</i>&nbsp;
+<i>480</i>&nbsp;  /**
+<i>481</i>&nbsp;   * Render particles of this effect. The particles are always rendered
+<i>482</i>&nbsp;   * relatively to this effects render location. A particle doesn&#39;t have an own
+<i>483</i>&nbsp;   * map location. It is always relative to the effect it is assigned to.
+<i>484</i>&nbsp;   *
+<i>485</i>&nbsp;   * @param g
+<i>486</i>&nbsp;   *            the g
+<i>487</i>&nbsp;   * @param p
+<i>488</i>&nbsp;   *            the p
+<i>489</i>&nbsp;   */
+<i>490</i>&nbsp;  /**
+<i>491</i>&nbsp;   * Spawn particle.
+<i>492</i>&nbsp;   */
+<i>493</i>&nbsp;  protected void spawnParticle() {
+<b class="nc"><i>494</i>&nbsp;    for (short i = 0; i &lt; this.getSpawnAmount(); i++) {</b>
+<b class="nc"><i>495</i>&nbsp;      if (!this.canTakeNewParticles()) {</b>
+<b class="nc"><i>496</i>&nbsp;        return;</b>
+<i>497</i>&nbsp;      }
+<i>498</i>&nbsp;
+<b class="nc"><i>499</i>&nbsp;      Particle part = this.createNewParticle();</b>
+<b class="nc"><i>500</i>&nbsp;      if (part != null) {</b>
+<b class="nc"><i>501</i>&nbsp;        this.addParticle(part);</b>
+<i>502</i>&nbsp;      }
+<i>503</i>&nbsp;    }
+<b class="nc"><i>504</i>&nbsp;  }</b>
+<i>505</i>&nbsp;
+<i>506</i>&nbsp;  private void renderParticles(final Graphics2D g, final RenderType renderType) {
+<b class="nc"><i>507</i>&nbsp;    if (Game.config().graphics().getGraphicQuality().getValue() &lt; this.getRequiredQuality().getValue()) {</b>
+<b class="nc"><i>508</i>&nbsp;      return;</b>
+<i>509</i>&nbsp;    }
+<i>510</i>&nbsp;
+<b class="nc"><i>511</i>&nbsp;    if (Game.screens() != null &amp;&amp; Game.world().camera() != null &amp;&amp; !Game.world().camera().getViewport().intersects(this.getBoundingBox())) {</b>
+<b class="nc"><i>512</i>&nbsp;      return;</b>
+<i>513</i>&nbsp;    }
+<i>514</i>&nbsp;
+<b class="nc"><i>515</i>&nbsp;    final Point2D origin = this.getOrigin();</b>
+<b class="nc"><i>516</i>&nbsp;    for (Particle particle : this.particles) {</b>
+<b class="nc"><i>517</i>&nbsp;      if (!particle.usesCustomRenderType() &amp;&amp; renderType == RenderType.NONE</b>
+<b class="nc"><i>518</i>&nbsp;          || particle.usesCustomRenderType() &amp;&amp; particle.getCustomRenderType() == renderType) {</b>
+<b class="nc"><i>519</i>&nbsp;        particle.render(g, origin);</b>
+<i>520</i>&nbsp;      }
+<b class="nc"><i>521</i>&nbsp;    }</b>
+<b class="nc"><i>522</i>&nbsp;  }</b>
+<i>523</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

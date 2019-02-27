@@ -1,0 +1,97 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ITile</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment.tilemap</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ITile (de.gurkenlabs.litiengine.environment.tilemap)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ITile</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment.tilemap;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Point;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * The Interface ITile.
+<i>7</i>&nbsp; */
+<i>8</i>&nbsp;public interface ITile extends ICustomPropertyProvider {
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;  /**
+<i>11</i>&nbsp;   * Gets the grid id.
+<i>12</i>&nbsp;   *
+<i>13</i>&nbsp;   * @return the grid id
+<i>14</i>&nbsp;   */
+<i>15</i>&nbsp;  public int getGridId();
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;  /**
+<i>18</i>&nbsp;   * Gets the tile coordinate.
+<i>19</i>&nbsp;   *
+<i>20</i>&nbsp;   * @return the tile coordinate
+<i>21</i>&nbsp;   */
+<i>22</i>&nbsp;  public Point getTileCoordinate();
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;  public ITilesetEntry getTilesetEntry();
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;  public boolean isFlippedHorizontally();
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;  public boolean isFlippedVertically();
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;  public boolean isFlippedDiagonally();
+<i>31</i>&nbsp;  
+<i>32</i>&nbsp;  public boolean isFlipped();
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;  /**
+<i>35</i>&nbsp;   * Tests for equality between two tiles. Two tiles are &lt;i&gt;equal&lt;/i&gt;
+<i>36</i>&nbsp;   * if they have the same grid ID, flipped flags, and tileset entry.
+<i>37</i>&nbsp;   * @param anObject The tile to test equality for
+<i>38</i>&nbsp;   * @return Whether the provided tile is equal to this tile, or
+<i>39</i>&nbsp;   * {@code false} if {@code anObject} is not a tile
+<i>40</i>&nbsp;   */
+<i>41</i>&nbsp;  public boolean equals(Object anObject);
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;  /**
+<i>44</i>&nbsp;   * Computes a hash code for this tile. A tile&#39;s hash code is equal
+<i>45</i>&nbsp;   * to its stored grid ID, i.e. the gid bitmask, xor the tileset
+<i>46</i>&nbsp;   * entry&#39;s hash code.
+<i>47</i>&nbsp;   * @return The hash code for this tile
+<i>48</i>&nbsp;   */
+<i>49</i>&nbsp;  public int hashCode();
+<i>50</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

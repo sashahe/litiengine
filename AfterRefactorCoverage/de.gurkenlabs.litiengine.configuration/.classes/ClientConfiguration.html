@@ -1,0 +1,205 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ClientConfiguration</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.configuration</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ClientConfiguration (de.gurkenlabs.litiengine.configuration)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ClientConfiguration</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (12/ 14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    81.8%
+  </span>
+  <span class="absValue">
+    (27/ 33)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.configuration;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.util.Locale;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * The client configuration contains client specific configuration elements.
+<i>7</i>&nbsp; */
+<i>8</i>&nbsp;@ConfigurationGroupInfo(prefix = &quot;cl_&quot;)
+<i>9</i>&nbsp;public class ClientConfiguration extends ConfigurationGroup {
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;  private String country;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;  private String language;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;  private int maxFps;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;  private boolean showGameMetrics;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;  private int updaterate;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;  private boolean exitOnError;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;  /**
+<i>24</i>&nbsp;   * Instantiates a new client configuration.
+<i>25</i>&nbsp;   */
+<i>26</i>&nbsp;  public ClientConfiguration() {
+<b class="fc"><i>27</i>&nbsp;    super();</b>
+<b class="fc"><i>28</i>&nbsp;    this.setUpdaterate(60);</b>
+<b class="fc"><i>29</i>&nbsp;    this.setMaxFps(60);</b>
+<b class="fc"><i>30</i>&nbsp;    this.setShowGameMetrics(false);</b>
+<b class="fc"><i>31</i>&nbsp;    this.setExitOnError(false);</b>
+<i>32</i>&nbsp;
+<b class="fc"><i>33</i>&nbsp;    this.setLanguage(Locale.getDefault().getLanguage());</b>
+<b class="fc"><i>34</i>&nbsp;    this.setCountry(Locale.getDefault().getCountry());</b>
+<b class="fc"><i>35</i>&nbsp;  }</b>
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;  public String getCountry() {
+<b class="fc"><i>38</i>&nbsp;    return this.country;</b>
+<i>39</i>&nbsp;  }
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;  public String getLanguage() {
+<b class="fc"><i>42</i>&nbsp;    return this.language;</b>
+<i>43</i>&nbsp;  }
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;  public Locale getLocale() {
+<b class="nc"><i>46</i>&nbsp;    if (this.getCountry() == null || this.getCountry().isEmpty()) {</b>
+<b class="nc"><i>47</i>&nbsp;      return new Locale(this.getLanguage());</b>
+<i>48</i>&nbsp;    }
+<b class="nc"><i>49</i>&nbsp;    return new Locale(this.getLanguage(), this.getCountry());</b>
+<i>50</i>&nbsp;  }
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;  /**
+<i>53</i>&nbsp;   * Gets the max fps.
+<i>54</i>&nbsp;   *
+<i>55</i>&nbsp;   * @return the max fps
+<i>56</i>&nbsp;   */
+<i>57</i>&nbsp;  public int getMaxFps() {
+<b class="fc"><i>58</i>&nbsp;    return this.maxFps;</b>
+<i>59</i>&nbsp;  }
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;  /**
+<i>62</i>&nbsp;   * Gets the updaterate.
+<i>63</i>&nbsp;   *
+<i>64</i>&nbsp;   * @return the updaterate
+<i>65</i>&nbsp;   */
+<i>66</i>&nbsp;  public int getUpdaterate() {
+<b class="fc"><i>67</i>&nbsp;    return this.updaterate;</b>
+<i>68</i>&nbsp;  }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;  public void setCountry(final String country) {
+<b class="fc"><i>71</i>&nbsp;    this.country = country;</b>
+<b class="fc"><i>72</i>&nbsp;  }</b>
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;  public void setLanguage(final String language) {
+<b class="fc"><i>75</i>&nbsp;    this.language = language;</b>
+<b class="fc"><i>76</i>&nbsp;  }</b>
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;  /**
+<i>79</i>&nbsp;   * Sets the max fps.
+<i>80</i>&nbsp;   *
+<i>81</i>&nbsp;   * @param maxFps
+<i>82</i>&nbsp;   *          the new max fps
+<i>83</i>&nbsp;   */
+<i>84</i>&nbsp;  public void setMaxFps(final int maxFps) {
+<b class="fc"><i>85</i>&nbsp;    if (maxFps &lt; 1) {</b>
+<b class="nc"><i>86</i>&nbsp;      return;</b>
+<i>87</i>&nbsp;    }
+<i>88</i>&nbsp;
+<b class="fc"><i>89</i>&nbsp;    this.maxFps = maxFps;</b>
+<b class="fc"><i>90</i>&nbsp;  }</b>
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;  public void setShowGameMetrics(final boolean showGameMetrics) {
+<b class="fc"><i>93</i>&nbsp;    this.showGameMetrics = showGameMetrics;</b>
+<b class="fc"><i>94</i>&nbsp;  }</b>
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;  /**
+<i>97</i>&nbsp;   * Sets the updaterate. On a very good machine the max update rate is sth.
+<i>98</i>&nbsp;   * around 500 but such a high value will never be beneficial for the player.
+<i>99</i>&nbsp;   *
+<i>100</i>&nbsp;   * @param updaterate
+<i>101</i>&nbsp;   *          the new updaterate
+<i>102</i>&nbsp;   */
+<i>103</i>&nbsp;  public void setUpdaterate(final int updaterate) {
+<b class="fc"><i>104</i>&nbsp;    if (updaterate &lt; 1 || updaterate &gt; 500) {</b>
+<b class="nc"><i>105</i>&nbsp;      return;</b>
+<i>106</i>&nbsp;    }
+<i>107</i>&nbsp;
+<b class="fc"><i>108</i>&nbsp;    this.updaterate = updaterate;</b>
+<b class="fc"><i>109</i>&nbsp;  }</b>
+<i>110</i>&nbsp;
+<i>111</i>&nbsp;  public void setExitOnError(boolean exit) {
+<b class="fc"><i>112</i>&nbsp;    this.exitOnError = exit;</b>
+<b class="fc"><i>113</i>&nbsp;  }</b>
+<i>114</i>&nbsp;
+<i>115</i>&nbsp;  public boolean showGameMetrics() {
+<b class="nc"><i>116</i>&nbsp;    return this.showGameMetrics;</b>
+<i>117</i>&nbsp;  }
+<i>118</i>&nbsp;
+<i>119</i>&nbsp;  public boolean exitOnError() {
+<b class="fc"><i>120</i>&nbsp;    return this.exitOnError;</b>
+<i>121</i>&nbsp;  }
+<i>122</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

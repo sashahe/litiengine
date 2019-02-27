@@ -1,0 +1,190 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ConfigurationGroup</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.configuration</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ConfigurationGroup (de.gurkenlabs.litiengine.configuration)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ConfigurationGroup</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (6/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90.7%
+  </span>
+  <span class="absValue">
+    (39/ 43)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.configuration;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.lang.reflect.Field;
+<i>4</i>&nbsp;import java.util.Properties;
+<i>5</i>&nbsp;import java.util.logging.Level;
+<i>6</i>&nbsp;import java.util.logging.Logger;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import de.gurkenlabs.litiengine.util.ReflectionUtilities;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;/**
+<i>11</i>&nbsp; * This class contains some basic functionality for all setting groups. It gets
+<i>12</i>&nbsp; * the SettingsGroupInfo annotation and reads out the prefix that is used when
+<i>13</i>&nbsp; * reading/ writing the settings into a property file.
+<i>14</i>&nbsp; */
+<i>15</i>&nbsp;@ConfigurationGroupInfo
+<i>16</i>&nbsp;public abstract class ConfigurationGroup {
+<b class="fc"><i>17</i>&nbsp;  private static final Logger log = Logger.getLogger(ConfigurationGroup.class.getName());</b>
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;  private final String prefix;
+<i>20</i>&nbsp;  private boolean debug;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;  /**
+<i>23</i>&nbsp;   * Instantiates a new configuration group.
+<i>24</i>&nbsp;   */
+<b class="fc"><i>25</i>&nbsp;  public ConfigurationGroup() {</b>
+<b class="fc"><i>26</i>&nbsp;    final ConfigurationGroupInfo info = this.getClass().getAnnotation(ConfigurationGroupInfo.class);</b>
+<b class="fc"><i>27</i>&nbsp;    this.prefix = info.prefix();</b>
+<b class="fc"><i>28</i>&nbsp;    this.debug = info.debug();</b>
+<b class="fc"><i>29</i>&nbsp;  }</b>
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;  /**
+<i>32</i>&nbsp;   * Gets the prefix.
+<i>33</i>&nbsp;   *
+<i>34</i>&nbsp;   * @return the prefix
+<i>35</i>&nbsp;   */
+<i>36</i>&nbsp;  public String getPrefix() {
+<b class="fc"><i>37</i>&nbsp;    return this.prefix != null ? this.prefix : &quot;&quot;;</b>
+<i>38</i>&nbsp;  }
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;  /**
+<i>41</i>&nbsp;   * Initialize by property.
+<i>42</i>&nbsp;   *
+<i>43</i>&nbsp;   * @param key
+<i>44</i>&nbsp;   *          the key
+<i>45</i>&nbsp;   * @param value
+<i>46</i>&nbsp;   *          the value
+<i>47</i>&nbsp;   */
+<i>48</i>&nbsp;  protected void initializeByProperty(final String key, final String value) {
+<b class="fc"><i>49</i>&nbsp;    final String propertyName = key.substring(this.getPrefix().length());</b>
+<b class="fc"><i>50</i>&nbsp;    ReflectionUtilities.setFieldValue(this.getClass(), this, propertyName, value);</b>
+<b class="fc"><i>51</i>&nbsp;  }</b>
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;  /**
+<i>54</i>&nbsp;   * Store properties. By default, it is supported to store the following types:
+<i>55</i>&nbsp;   * boolean, int, double, float, String and enum values. If you need to store
+<i>56</i>&nbsp;   * any other object, you should overwrite this method as well as the
+<i>57</i>&nbsp;   * initializeProperty method and implement a custom approach.
+<i>58</i>&nbsp;   *
+<i>59</i>&nbsp;   *
+<i>60</i>&nbsp;   * @param properties
+<i>61</i>&nbsp;   *          the properties
+<i>62</i>&nbsp;   */
+<i>63</i>&nbsp;  protected void storeProperties(final Properties properties) {
+<i>64</i>&nbsp;    try {
+<b class="fc"><i>65</i>&nbsp;      for (final Field field : this.getClass().getDeclaredFields()) {</b>
+<b class="fc"><i>66</i>&nbsp;        if (!field.isAccessible()) {</b>
+<b class="fc"><i>67</i>&nbsp;          field.setAccessible(true);</b>
+<i>68</i>&nbsp;        }
+<i>69</i>&nbsp;        
+<b class="fc"><i>70</i>&nbsp;        final String propertyKey = this.getPrefix() + field.getName();</b>
+<b class="fc"><i>71</i>&nbsp;        if (field.getType().equals(boolean.class)) {</b>
+<b class="fc"><i>72</i>&nbsp;          properties.setProperty(propertyKey, Boolean.toString(field.getBoolean(this)));</b>
+<b class="fc"><i>73</i>&nbsp;        } else if (field.getType().equals(int.class)) {</b>
+<b class="fc"><i>74</i>&nbsp;          properties.setProperty(propertyKey, Integer.toString(field.getInt(this)));</b>
+<b class="fc"><i>75</i>&nbsp;        } else if (field.getType().equals(float.class)) {</b>
+<b class="fc"><i>76</i>&nbsp;          properties.setProperty(propertyKey, Float.toString(field.getFloat(this)));</b>
+<b class="fc"><i>77</i>&nbsp;        } else if (field.getType().equals(double.class)) {</b>
+<b class="fc"><i>78</i>&nbsp;          properties.setProperty(propertyKey, Double.toString(field.getDouble(this)));</b>
+<b class="fc"><i>79</i>&nbsp;        } else if (field.getType().equals(byte.class)) {</b>
+<b class="fc"><i>80</i>&nbsp;          properties.setProperty(propertyKey, Byte.toString(field.getByte(this)));</b>
+<b class="fc"><i>81</i>&nbsp;        } else if (field.getType().equals(short.class)) {</b>
+<b class="fc"><i>82</i>&nbsp;          properties.setProperty(propertyKey, Short.toString(field.getShort(this)));</b>
+<b class="fc"><i>83</i>&nbsp;        } else if (field.getType().equals(long.class)) {</b>
+<b class="fc"><i>84</i>&nbsp;          properties.setProperty(propertyKey, Long.toString(field.getLong(this)));</b>
+<b class="fc"><i>85</i>&nbsp;        } else if (field.getType().equals(String.class)) {</b>
+<b class="fc"><i>86</i>&nbsp;          properties.setProperty(propertyKey, field.get(this) != null ? (String) field.get(this) : &quot;&quot;);</b>
+<b class="fc"><i>87</i>&nbsp;        } else if (field.getType().equals(String[].class)) {</b>
+<b class="fc"><i>88</i>&nbsp;          properties.setProperty(propertyKey, field.get(this) != null ? String.join(&quot;,&quot;, (String[]) field.get(this)) : &quot;&quot;);</b>
+<b class="fc"><i>89</i>&nbsp;        } else if (field.getType().isEnum()) {</b>
+<b class="fc"><i>90</i>&nbsp;          Object val = field.get(this);</b>
+<b class="fc"><i>91</i>&nbsp;          final String value = val == null &amp;&amp; field.getType().getEnumConstants().length &gt; 0 ? field.getType().getEnumConstants()[0].toString() : &quot;&quot;;</b>
+<b class="fc"><i>92</i>&nbsp;          properties.setProperty(propertyKey, val != null ? val.toString() : value);</b>
+<i>93</i>&nbsp;        }
+<i>94</i>&nbsp;      }
+<b class="nc"><i>95</i>&nbsp;    } catch (final IllegalArgumentException | IllegalAccessException e) {</b>
+<b class="nc"><i>96</i>&nbsp;      log.log(Level.SEVERE, e.getMessage(), e);</b>
+<b class="fc"><i>97</i>&nbsp;    }</b>
+<b class="fc"><i>98</i>&nbsp;  }</b>
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;  public boolean isDebug() {
+<b class="fc"><i>101</i>&nbsp;    return debug;</b>
+<i>102</i>&nbsp;  }
+<i>103</i>&nbsp;
+<i>104</i>&nbsp;  public void setDebug(boolean debug) {
+<b class="nc"><i>105</i>&nbsp;    this.debug = debug;</b>
+<b class="nc"><i>106</i>&nbsp;  }</b>
+<i>107</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

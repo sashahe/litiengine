@@ -1,0 +1,84 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: EnvironmentListener</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment</a> ]
+</div>
+
+<h1>Coverage Summary for Class: EnvironmentListener (de.gurkenlabs.litiengine.environment)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">EnvironmentListener$MockitoMock$850357609</td>
+  </tr>
+  <tr>
+    <td class="name">EnvironmentListener$MockitoMock$850357609$auxiliary$otFj4kuK</td>
+  </tr>
+  <tr>
+    <td class="name">EnvironmentListener$MockitoMock$850357609$auxiliary$zNPNtizN</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;/**
+<i>4</i>&nbsp; * This listener provides callbacks for different points over the life cycle of an &lt;code&gt;IEnvironment&lt;/code&gt; (loaded/unloaded/cleared/initialized).
+<i>5</i>&nbsp; * 
+<i>6</i>&nbsp; * @see Environment#load()
+<i>7</i>&nbsp; * @see Environment#unload()
+<i>8</i>&nbsp; * @see Environment#clear()
+<i>9</i>&nbsp; * @see Environment#init()
+<i>10</i>&nbsp; */
+<i>11</i>&nbsp;public interface EnvironmentListener extends EnvironmentLoadedListener, EnvironmentUnloadedListener {
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;  /**
+<i>14</i>&nbsp;   * This method was called after the environment was cleared.
+<i>15</i>&nbsp;   * 
+<i>16</i>&nbsp;   * @param environment
+<i>17</i>&nbsp;   *          The environment that was cleared.
+<i>18</i>&nbsp;   */
+<i>19</i>&nbsp;  public void cleared(Environment environment);
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;  /**
+<i>22</i>&nbsp;   * This method was called after the environment was initialized.
+<i>23</i>&nbsp;   * 
+<i>24</i>&nbsp;   * @param environment
+<i>25</i>&nbsp;   *          The environment that was initialized.
+<i>26</i>&nbsp;   */
+<i>27</i>&nbsp;  public void initialized(Environment environment);
+<i>28</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

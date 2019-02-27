@@ -1,0 +1,205 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: PropAnimationController</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.graphics.animation</a> ]
+</div>
+
+<h1>Coverage Summary for Class: PropAnimationController (de.gurkenlabs.litiengine.graphics.animation)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PropAnimationController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (4/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    35.8%
+  </span>
+  <span class="absValue">
+    (19/ 53)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.graphics.animation;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.image.BufferedImage;
+<i>4</i>&nbsp;import java.util.Optional;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import de.gurkenlabs.litiengine.entities.Prop;
+<i>7</i>&nbsp;import de.gurkenlabs.litiengine.entities.PropState;
+<i>8</i>&nbsp;import de.gurkenlabs.litiengine.entities.Rotation;
+<i>9</i>&nbsp;import de.gurkenlabs.litiengine.graphics.Spritesheet;
+<i>10</i>&nbsp;import de.gurkenlabs.litiengine.resources.Resources;
+<i>11</i>&nbsp;import de.gurkenlabs.litiengine.util.Imaging;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;public class PropAnimationController&lt;T extends Prop&gt; extends EntityAnimationController&lt;T&gt; {
+<i>14</i>&nbsp;  public static final String PROP_IDENTIFIER = &quot;prop-&quot;;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;  public PropAnimationController(final T prop) {
+<b class="fc"><i>17</i>&nbsp;    super(prop);</b>
+<i>18</i>&nbsp;
+<b class="fc"><i>19</i>&nbsp;    this.setDefaultAnimation(this.createAnimation(this.getEntity(), PropState.INTACT));</b>
+<b class="fc"><i>20</i>&nbsp;    this.add(createAnimation(this.getEntity(), PropState.DAMAGED));</b>
+<b class="fc"><i>21</i>&nbsp;    this.add(createAnimation(this.getEntity(), PropState.DESTROYED));</b>
+<b class="fc"><i>22</i>&nbsp;  }</b>
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;  @Override
+<i>25</i>&nbsp;  public BufferedImage getCurrentSprite() {
+<i>26</i>&nbsp;    // get shadow from the cache or draw it dynamically and add it to the
+<i>27</i>&nbsp;    // cache
+<i>28</i>&nbsp;    // get complete image from the cache
+<b class="nc"><i>29</i>&nbsp;    final Animation animation = this.getCurrentAnimation();</b>
+<b class="nc"><i>30</i>&nbsp;    if (animation == null || animation.getSpritesheet() == null) {</b>
+<b class="nc"><i>31</i>&nbsp;      return null;</b>
+<i>32</i>&nbsp;    }
+<i>33</i>&nbsp;
+<b class="nc"><i>34</i>&nbsp;    String cacheKey = this.buildCurrentCacheKey();</b>
+<b class="nc"><i>35</i>&nbsp;    cacheKey += &quot;_&quot; + this.getEntity().isAddShadow();</b>
+<b class="nc"><i>36</i>&nbsp;    cacheKey += &quot;_&quot; + this.getEntity().getState();</b>
+<b class="nc"><i>37</i>&nbsp;    cacheKey += &quot;_&quot; + this.getEntity().getSpriteRotation();</b>
+<b class="nc"><i>38</i>&nbsp;    cacheKey += &quot;_&quot; + this.getEntity().flipHorizontally();</b>
+<b class="nc"><i>39</i>&nbsp;    cacheKey += &quot;_&quot; + this.getEntity().flipVertically();</b>
+<b class="nc"><i>40</i>&nbsp;    Optional&lt;BufferedImage&gt; opt = Resources.images().tryGet(cacheKey);</b>
+<b class="nc"><i>41</i>&nbsp;    if (opt.isPresent()) {</b>
+<b class="nc"><i>42</i>&nbsp;      return opt.get();</b>
+<i>43</i>&nbsp;    }
+<i>44</i>&nbsp;
+<b class="nc"><i>45</i>&nbsp;    BufferedImage currentImage = super.getCurrentSprite();</b>
+<b class="nc"><i>46</i>&nbsp;    if (currentImage == null) {</b>
+<b class="nc"><i>47</i>&nbsp;      return null;</b>
+<i>48</i>&nbsp;    }
+<i>49</i>&nbsp;
+<b class="nc"><i>50</i>&nbsp;    if (this.getEntity().getSpriteRotation() != Rotation.NONE) {</b>
+<b class="nc"><i>51</i>&nbsp;      currentImage = Imaging.rotate(currentImage, this.getEntity().getSpriteRotation());</b>
+<i>52</i>&nbsp;    }
+<i>53</i>&nbsp;
+<b class="nc"><i>54</i>&nbsp;    if (this.getEntity().flipHorizontally()) {</b>
+<b class="nc"><i>55</i>&nbsp;      currentImage = Imaging.horizontalFlip(currentImage);</b>
+<i>56</i>&nbsp;    }
+<i>57</i>&nbsp;
+<b class="nc"><i>58</i>&nbsp;    if (this.getEntity().flipVertically()) {</b>
+<b class="nc"><i>59</i>&nbsp;      currentImage = Imaging.verticalFlip(currentImage);</b>
+<i>60</i>&nbsp;    }
+<i>61</i>&nbsp;
+<b class="nc"><i>62</i>&nbsp;    if (!this.getEntity().isAddShadow()) {</b>
+<b class="nc"><i>63</i>&nbsp;      return currentImage;</b>
+<i>64</i>&nbsp;    }
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    // add a shadow at the lower end of the current sprite.
+<b class="nc"><i>67</i>&nbsp;    final int ShadowYOffset = currentImage.getHeight();</b>
+<b class="nc"><i>68</i>&nbsp;    final BufferedImage shadow = Imaging.addShadow(currentImage, 0, ShadowYOffset);</b>
+<b class="nc"><i>69</i>&nbsp;    Resources.images().add(cacheKey, shadow);</b>
+<i>70</i>&nbsp;
+<b class="nc"><i>71</i>&nbsp;    return shadow;</b>
+<i>72</i>&nbsp;  }
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;  @Override
+<i>75</i>&nbsp;  public void update() {
+<b class="nc"><i>76</i>&nbsp;    super.update();</b>
+<b class="nc"><i>77</i>&nbsp;    this.playAnimation(this.getEntity().getState().spriteString());</b>
+<b class="nc"><i>78</i>&nbsp;  }</b>
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;  @Override
+<i>81</i>&nbsp;  public boolean isAutoScaling() {
+<b class="nc"><i>82</i>&nbsp;    return this.getEntity().isScaling();</b>
+<i>83</i>&nbsp;  }
+<i>84</i>&nbsp;
+<i>85</i>&nbsp;  public static String getSpriteName(final Prop prop, boolean appendState) {
+<b class="nc"><i>86</i>&nbsp;    return getSpriteName(prop, prop.getState(), appendState);</b>
+<i>87</i>&nbsp;  }
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;  public static String getSpriteName(final Prop prop, PropState state, boolean appendState) {
+<b class="fc"><i>90</i>&nbsp;    StringBuilder sb = new StringBuilder(PROP_IDENTIFIER);</b>
+<b class="fc"><i>91</i>&nbsp;    sb.append(prop.getSpritesheetName());</b>
+<b class="fc"><i>92</i>&nbsp;    if (appendState) {</b>
+<b class="fc"><i>93</i>&nbsp;      sb.append(&quot;-&quot;);</b>
+<b class="fc"><i>94</i>&nbsp;      sb.append(state.spriteString());</b>
+<i>95</i>&nbsp;    }
+<i>96</i>&nbsp;
+<b class="fc"><i>97</i>&nbsp;    return sb.toString();</b>
+<i>98</i>&nbsp;  }
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;  private Animation createAnimation(final Prop prop, final PropState state) {
+<b class="fc"><i>101</i>&nbsp;    final Spritesheet spritesheet = this.findSpriteSheet(prop, state);</b>
+<b class="fc"><i>102</i>&nbsp;    if (spritesheet == null) {</b>
+<b class="fc"><i>103</i>&nbsp;      return null;</b>
+<i>104</i>&nbsp;    }
+<i>105</i>&nbsp;
+<b class="nc"><i>106</i>&nbsp;    return new Animation(state.name(), spritesheet, true, true, Resources.spritesheets().getCustomKeyFrameDurations(spritesheet.getName()));</b>
+<i>107</i>&nbsp;  }
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;  private Spritesheet findSpriteSheet(final Prop prop, final PropState state) {
+<b class="fc"><i>110</i>&nbsp;    if (prop == null || prop.getSpritesheetName() == null || prop.getSpritesheetName().isEmpty()) {</b>
+<b class="fc"><i>111</i>&nbsp;      return null;</b>
+<i>112</i>&nbsp;    }
+<i>113</i>&nbsp;
+<b class="fc"><i>114</i>&nbsp;    Optional&lt;Spritesheet&gt; opt = Resources.spritesheets().tryGet(getSpriteName(prop, state, true));</b>
+<i>115</i>&nbsp;
+<b class="fc"><i>116</i>&nbsp;    if (opt.isPresent()) {</b>
+<b class="nc"><i>117</i>&nbsp;      return opt.get();</b>
+<i>118</i>&nbsp;    }
+<i>119</i>&nbsp;
+<b class="fc"><i>120</i>&nbsp;    return Resources.spritesheets().get(getSpriteName(prop, state, false));</b>
+<i>121</i>&nbsp;  }
+<i>122</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

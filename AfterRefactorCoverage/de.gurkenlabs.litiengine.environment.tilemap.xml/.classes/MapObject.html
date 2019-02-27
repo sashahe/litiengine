@@ -1,0 +1,448 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MapObject</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment.tilemap.xml</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MapObject (de.gurkenlabs.litiengine.environment.tilemap.xml)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MapObject</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    53.8%
+  </span>
+  <span class="absValue">
+    (21/ 39)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    39.3%
+  </span>
+  <span class="absValue">
+    (44/ 112)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment.tilemap.xml;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.geom.Ellipse2D;
+<i>4</i>&nbsp;import java.awt.geom.Point2D;
+<i>5</i>&nbsp;import java.awt.geom.Rectangle2D;
+<i>6</i>&nbsp;import java.util.Arrays;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import javax.xml.bind.Unmarshaller;
+<i>9</i>&nbsp;import javax.xml.bind.annotation.XmlAttribute;
+<i>10</i>&nbsp;import javax.xml.bind.annotation.XmlElement;
+<i>11</i>&nbsp;import javax.xml.bind.annotation.XmlTransient;
+<i>12</i>&nbsp;import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;import de.gurkenlabs.litiengine.Game;
+<i>15</i>&nbsp;import de.gurkenlabs.litiengine.environment.IPolygon;
+<i>16</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.IMapObject;
+<i>17</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.IMapObjectLayer;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;/**
+<i>20</i>&nbsp; * The Class MapObject.
+<i>21</i>&nbsp; */
+<i>22</i>&nbsp;public class MapObject extends CustomPropertyProvider implements IMapObject {
+<i>23</i>&nbsp;  @XmlAttribute
+<i>24</i>&nbsp;  private int id;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;  @XmlAttribute
+<i>27</i>&nbsp;  private String name;
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;  @XmlAttribute
+<i>30</i>&nbsp;  private String type;
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;  @XmlAttribute
+<i>33</i>&nbsp;  @XmlJavaTypeAdapter(value = DecimalFloatAdapter.class)
+<i>34</i>&nbsp;  private Float x;
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;  @XmlAttribute
+<i>37</i>&nbsp;  @XmlJavaTypeAdapter(value = DecimalFloatAdapter.class)
+<i>38</i>&nbsp;  private Float y;
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;  @XmlAttribute
+<i>41</i>&nbsp;  @XmlJavaTypeAdapter(value = DecimalFloatAdapter.class)
+<i>42</i>&nbsp;  private Float width;
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;  @XmlAttribute
+<i>45</i>&nbsp;  @XmlJavaTypeAdapter(value = DecimalFloatAdapter.class)
+<i>46</i>&nbsp;  private Float height;
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;  @XmlAttribute
+<i>49</i>&nbsp;  private Integer gid;
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;  @XmlElement(name = &quot;polyline&quot;)
+<i>52</i>&nbsp;  private Polyline polyline;
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;  @XmlElement(name = &quot;polygon&quot;)
+<i>55</i>&nbsp;  private Polygon polygon;
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;  @XmlElement(name = &quot;point&quot;)
+<i>58</i>&nbsp;  private String pointElement;
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;  @XmlElement(name = &quot;ellipse&quot;)
+<i>61</i>&nbsp;  private String ellipseElement;
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;  private transient MapObjectLayer layer;
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;  public MapObject() {
+<b class="fc"><i>66</i>&nbsp;    super();</b>
+<b class="fc"><i>67</i>&nbsp;    this.setX(0f);</b>
+<b class="fc"><i>68</i>&nbsp;    this.setY(0f);</b>
+<b class="fc"><i>69</i>&nbsp;    this.setWidth(0f);</b>
+<b class="fc"><i>70</i>&nbsp;    this.setHeight(0f);</b>
+<b class="fc"><i>71</i>&nbsp;  }</b>
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;  /**
+<i>74</i>&nbsp;   * Copy Constructor for copying instances of MapObjects.
+<i>75</i>&nbsp;   * This variant of the constructor will assign an entirely new ID to the newly created MapObject.
+<i>76</i>&nbsp;   *
+<i>77</i>&nbsp;   * @param mapObjectToBeCopied
+<i>78</i>&nbsp;   *          the MapObject we want to copy
+<i>79</i>&nbsp;   */
+<i>80</i>&nbsp;  public MapObject(MapObject mapObjectToBeCopied) {
+<b class="nc"><i>81</i>&nbsp;    super(mapObjectToBeCopied);</b>
+<b class="nc"><i>82</i>&nbsp;    this.setName(mapObjectToBeCopied.getName());</b>
+<b class="nc"><i>83</i>&nbsp;    this.setId(Game.world().environment().getNextMapId());</b>
+<b class="nc"><i>84</i>&nbsp;    this.polyline = (mapObjectToBeCopied.getPolyline() != null &amp;&amp; !mapObjectToBeCopied.getPolyline().getPoints().isEmpty()) ? new Polyline(mapObjectToBeCopied.getPolyline()) : null;</b>
+<b class="nc"><i>85</i>&nbsp;    this.setType(mapObjectToBeCopied.getType());</b>
+<b class="nc"><i>86</i>&nbsp;    this.setX(mapObjectToBeCopied.getX());</b>
+<b class="nc"><i>87</i>&nbsp;    this.setY(mapObjectToBeCopied.getY());</b>
+<b class="nc"><i>88</i>&nbsp;    this.setWidth(mapObjectToBeCopied.getWidth());</b>
+<b class="nc"><i>89</i>&nbsp;    this.setHeight(mapObjectToBeCopied.getHeight());</b>
+<b class="nc"><i>90</i>&nbsp;  }</b>
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;  /**
+<i>93</i>&nbsp;   * Copy Constructor for copying instances of MapObjects.
+<i>94</i>&nbsp;   * This variant of the constructor lets you decide if the copy instance will get the same ID as the old MapObject or get a new ID.
+<i>95</i>&nbsp;   * 
+<i>96</i>&nbsp;   * @param mapObjectToBeCopied
+<i>97</i>&nbsp;   *          the MapObject we want to copy
+<i>98</i>&nbsp;   * @param keepID
+<i>99</i>&nbsp;   *          decide if the new instance will adopt the old MapObject&#39;s ID or get a new, unique one.
+<i>100</i>&nbsp;   */
+<i>101</i>&nbsp;  public MapObject(MapObject mapObjectToBeCopied, boolean keepID) {
+<b class="nc"><i>102</i>&nbsp;    this(mapObjectToBeCopied);</b>
+<b class="nc"><i>103</i>&nbsp;    if (keepID) {</b>
+<b class="nc"><i>104</i>&nbsp;      this.setId(mapObjectToBeCopied.getId());</b>
+<i>105</i>&nbsp;    }
+<b class="nc"><i>106</i>&nbsp;  }</b>
+<i>107</i>&nbsp;
+<i>108</i>&nbsp;  public static Rectangle2D getBounds2D(IMapObject... objects) {
+<b class="nc"><i>109</i>&nbsp;    return getBounds(objects);</b>
+<i>110</i>&nbsp;  }
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;  public static Rectangle2D getBounds2D(Iterable&lt;IMapObject&gt; objects) {
+<b class="nc"><i>113</i>&nbsp;    return getBounds(objects);</b>
+<i>114</i>&nbsp;  }
+<i>115</i>&nbsp;
+<i>116</i>&nbsp;  public static Rectangle2D getBounds(IMapObject... objects) {
+<b class="nc"><i>117</i>&nbsp;    return getBounds(Arrays.asList(objects));</b>
+<i>118</i>&nbsp;  }
+<i>119</i>&nbsp;
+<i>120</i>&nbsp;  public static Rectangle2D getBounds(Iterable&lt;IMapObject&gt; objects) {
+<b class="nc"><i>121</i>&nbsp;    float minX = -1;</b>
+<b class="nc"><i>122</i>&nbsp;    float minY = -1;</b>
+<b class="nc"><i>123</i>&nbsp;    float maxX = -1;</b>
+<b class="nc"><i>124</i>&nbsp;    float maxY = -1;</b>
+<b class="nc"><i>125</i>&nbsp;    for (IMapObject item : objects) {</b>
+<b class="nc"><i>126</i>&nbsp;      if (minX == -1 || item.getX() &lt; minX) {</b>
+<b class="nc"><i>127</i>&nbsp;        minX = item.getX();</b>
+<i>128</i>&nbsp;      }
+<i>129</i>&nbsp;
+<b class="nc"><i>130</i>&nbsp;      if (minY == -1 || item.getY() &lt; minY) {</b>
+<b class="nc"><i>131</i>&nbsp;        minY = item.getY();</b>
+<i>132</i>&nbsp;      }
+<i>133</i>&nbsp;
+<b class="nc"><i>134</i>&nbsp;      if (maxX == -1 || item.getBoundingBox().getMaxX() &gt; maxX) {</b>
+<b class="nc"><i>135</i>&nbsp;        maxX = (int) item.getBoundingBox().getMaxX();</b>
+<i>136</i>&nbsp;      }
+<i>137</i>&nbsp;
+<b class="nc"><i>138</i>&nbsp;      if (maxY == -1 || item.getBoundingBox().getMaxY() &gt; maxY) {</b>
+<b class="nc"><i>139</i>&nbsp;        maxY = (int) item.getBoundingBox().getMaxY();</b>
+<i>140</i>&nbsp;      }
+<b class="nc"><i>141</i>&nbsp;    }</b>
+<i>142</i>&nbsp;
+<b class="nc"><i>143</i>&nbsp;    return new Rectangle2D.Float(minX, minY, maxX - minX, maxY - minY);</b>
+<i>144</i>&nbsp;  }
+<i>145</i>&nbsp;
+<i>146</i>&nbsp;  @Override
+<i>147</i>&nbsp;  public int getGridId() {
+<b class="nc"><i>148</i>&nbsp;    if (this.gid == null) {</b>
+<b class="nc"><i>149</i>&nbsp;      return 0;</b>
+<i>150</i>&nbsp;    }
+<i>151</i>&nbsp;
+<b class="nc"><i>152</i>&nbsp;    return this.gid;</b>
+<i>153</i>&nbsp;  }
+<i>154</i>&nbsp;
+<i>155</i>&nbsp;  @Override
+<i>156</i>&nbsp;  public Rectangle2D getBoundingBox() {
+<b class="nc"><i>157</i>&nbsp;    return new Rectangle2D.Double(this.getX(), this.getY(), this.width, this.height);</b>
+<i>158</i>&nbsp;  }
+<i>159</i>&nbsp;
+<i>160</i>&nbsp;  @Override
+<i>161</i>&nbsp;  public int getId() {
+<b class="fc"><i>162</i>&nbsp;    return this.id;</b>
+<i>163</i>&nbsp;  }
+<i>164</i>&nbsp;
+<i>165</i>&nbsp;  @Override
+<i>166</i>&nbsp;  public Point2D getLocation() {
+<b class="fc"><i>167</i>&nbsp;    return new Point2D.Double(this.getX(), this.getY());</b>
+<i>168</i>&nbsp;  }
+<i>169</i>&nbsp;
+<i>170</i>&nbsp;  @Override
+<i>171</i>&nbsp;  public String getName() {
+<b class="fc"><i>172</i>&nbsp;    return this.name;</b>
+<i>173</i>&nbsp;  }
+<i>174</i>&nbsp;
+<i>175</i>&nbsp;  /**
+<i>176</i>&nbsp;   * Gets the type.
+<i>177</i>&nbsp;   *
+<i>178</i>&nbsp;   * @return the type
+<i>179</i>&nbsp;   */
+<i>180</i>&nbsp;  @Override
+<i>181</i>&nbsp;  public String getType() {
+<b class="fc"><i>182</i>&nbsp;    return this.type;</b>
+<i>183</i>&nbsp;  }
+<i>184</i>&nbsp;
+<i>185</i>&nbsp;  @Override
+<i>186</i>&nbsp;  public Polyline getPolyline() {
+<b class="nc"><i>187</i>&nbsp;    return this.polyline;</b>
+<i>188</i>&nbsp;  }
+<i>189</i>&nbsp;
+<i>190</i>&nbsp;  @Override
+<i>191</i>&nbsp;  public IPolygon getPolygon() {
+<b class="nc"><i>192</i>&nbsp;    return this.polygon;</b>
+<i>193</i>&nbsp;  }
+<i>194</i>&nbsp;
+<i>195</i>&nbsp;  @Override
+<i>196</i>&nbsp;  public Ellipse2D getEllipse() {
+<b class="nc"><i>197</i>&nbsp;    if (!this.isEllipse()) {</b>
+<b class="nc"><i>198</i>&nbsp;      return null;</b>
+<i>199</i>&nbsp;    }
+<i>200</i>&nbsp;
+<b class="nc"><i>201</i>&nbsp;    return new Ellipse2D.Double(this.getX(), this.getY(), this.getWidth(), this.getHeight());</b>
+<i>202</i>&nbsp;  }
+<i>203</i>&nbsp;
+<i>204</i>&nbsp;  @Override
+<i>205</i>&nbsp;  @XmlTransient
+<i>206</i>&nbsp;  public void setGridId(int gid) {
+<b class="nc"><i>207</i>&nbsp;    this.gid = gid;</b>
+<b class="nc"><i>208</i>&nbsp;  }</b>
+<i>209</i>&nbsp;
+<i>210</i>&nbsp;  @Override
+<i>211</i>&nbsp;  @XmlTransient
+<i>212</i>&nbsp;  public void setHeight(float height) {
+<b class="fc"><i>213</i>&nbsp;    this.height = height;</b>
+<b class="fc"><i>214</i>&nbsp;  }</b>
+<i>215</i>&nbsp;
+<i>216</i>&nbsp;  @Override
+<i>217</i>&nbsp;  @XmlTransient
+<i>218</i>&nbsp;  public void setId(int id) {
+<b class="fc"><i>219</i>&nbsp;    this.id = id;</b>
+<b class="fc"><i>220</i>&nbsp;  }</b>
+<i>221</i>&nbsp;
+<i>222</i>&nbsp;  @Override
+<i>223</i>&nbsp;  @XmlTransient
+<i>224</i>&nbsp;  public void setName(String name) {
+<b class="fc"><i>225</i>&nbsp;    if (name != null &amp;&amp; name.isEmpty()) {</b>
+<b class="nc"><i>226</i>&nbsp;      this.name = null;</b>
+<b class="nc"><i>227</i>&nbsp;      return;</b>
+<i>228</i>&nbsp;    }
+<i>229</i>&nbsp;
+<b class="fc"><i>230</i>&nbsp;    this.name = name;</b>
+<b class="fc"><i>231</i>&nbsp;  }</b>
+<i>232</i>&nbsp;
+<i>233</i>&nbsp;  @Override
+<i>234</i>&nbsp;  @XmlTransient
+<i>235</i>&nbsp;  public void setType(String type) {
+<b class="fc"><i>236</i>&nbsp;    this.type = type;</b>
+<b class="fc"><i>237</i>&nbsp;  }</b>
+<i>238</i>&nbsp;
+<i>239</i>&nbsp;  @Override
+<i>240</i>&nbsp;  @XmlTransient
+<i>241</i>&nbsp;  public void setWidth(float width) {
+<b class="fc"><i>242</i>&nbsp;    this.width = width;</b>
+<b class="fc"><i>243</i>&nbsp;  }</b>
+<i>244</i>&nbsp;
+<i>245</i>&nbsp;  @Override
+<i>246</i>&nbsp;  @XmlTransient
+<i>247</i>&nbsp;  public void setX(float x) {
+<b class="fc"><i>248</i>&nbsp;    if (this.isInfiniteMap()) {</b>
+<b class="nc"><i>249</i>&nbsp;      Map map = (Map) this.getLayer().getMap();</b>
+<b class="nc"><i>250</i>&nbsp;      this.x = x + map.getChunkOffsetX() * map.getTileWidth();</b>
+<b class="nc"><i>251</i>&nbsp;      return;</b>
+<i>252</i>&nbsp;    }
+<i>253</i>&nbsp;
+<b class="fc"><i>254</i>&nbsp;    this.x = x;</b>
+<b class="fc"><i>255</i>&nbsp;  }</b>
+<i>256</i>&nbsp;
+<i>257</i>&nbsp;  @Override
+<i>258</i>&nbsp;  @XmlTransient
+<i>259</i>&nbsp;  public void setY(float y) {
+<b class="fc"><i>260</i>&nbsp;    if (this.isInfiniteMap()) {</b>
+<b class="nc"><i>261</i>&nbsp;      Map map = (Map) this.getLayer().getMap();</b>
+<b class="nc"><i>262</i>&nbsp;      this.y = y + map.getChunkOffsetY() * map.getTileHeight();</b>
+<b class="nc"><i>263</i>&nbsp;      return;</b>
+<i>264</i>&nbsp;    }
+<i>265</i>&nbsp;
+<b class="fc"><i>266</i>&nbsp;    this.y = y;</b>
+<b class="fc"><i>267</i>&nbsp;  }</b>
+<i>268</i>&nbsp;
+<i>269</i>&nbsp;  @Override
+<i>270</i>&nbsp;  public void setLocation(Point2D location) {
+<b class="nc"><i>271</i>&nbsp;    if (location == null) {</b>
+<b class="nc"><i>272</i>&nbsp;      return;</b>
+<i>273</i>&nbsp;    }
+<i>274</i>&nbsp;
+<b class="nc"><i>275</i>&nbsp;    this.setLocation((float) location.getX(), (float) location.getY());</b>
+<b class="nc"><i>276</i>&nbsp;  }</b>
+<i>277</i>&nbsp;
+<i>278</i>&nbsp;  @Override
+<i>279</i>&nbsp;  public void setLocation(float x, float y) {
+<b class="fc"><i>280</i>&nbsp;    this.setX(x);</b>
+<b class="fc"><i>281</i>&nbsp;    this.setY(y);</b>
+<b class="fc"><i>282</i>&nbsp;  }</b>
+<i>283</i>&nbsp;
+<i>284</i>&nbsp;  @Override
+<i>285</i>&nbsp;  public float getX() {
+<b class="fc"><i>286</i>&nbsp;    if (this.isInfiniteMap()) {</b>
+<b class="nc"><i>287</i>&nbsp;      Map map = (Map) this.getLayer().getMap();</b>
+<b class="nc"><i>288</i>&nbsp;      return this.x - map.getChunkOffsetX() * map.getTileWidth();</b>
+<i>289</i>&nbsp;    }
+<i>290</i>&nbsp;
+<b class="fc"><i>291</i>&nbsp;    return this.x;</b>
+<i>292</i>&nbsp;  }
+<i>293</i>&nbsp;
+<i>294</i>&nbsp;  @Override
+<i>295</i>&nbsp;  public float getY() {
+<b class="fc"><i>296</i>&nbsp;    if (this.isInfiniteMap()) {</b>
+<b class="nc"><i>297</i>&nbsp;      Map map = (Map) this.getLayer().getMap();</b>
+<b class="nc"><i>298</i>&nbsp;      return this.y - map.getChunkOffsetY() * map.getTileHeight();</b>
+<i>299</i>&nbsp;    }
+<i>300</i>&nbsp;
+<b class="fc"><i>301</i>&nbsp;    return this.y;</b>
+<i>302</i>&nbsp;  }
+<i>303</i>&nbsp;
+<i>304</i>&nbsp;  @XmlTransient
+<i>305</i>&nbsp;  public void setPolyline(Polyline polyline) {
+<b class="nc"><i>306</i>&nbsp;    this.polyline = polyline;</b>
+<b class="nc"><i>307</i>&nbsp;  }</b>
+<i>308</i>&nbsp;
+<i>309</i>&nbsp;  @Override
+<i>310</i>&nbsp;  public float getWidth() {
+<b class="fc"><i>311</i>&nbsp;    return this.width;</b>
+<i>312</i>&nbsp;  }
+<i>313</i>&nbsp;
+<i>314</i>&nbsp;  @Override
+<i>315</i>&nbsp;  public float getHeight() {
+<b class="fc"><i>316</i>&nbsp;    return this.height;</b>
+<i>317</i>&nbsp;  }
+<i>318</i>&nbsp;
+<i>319</i>&nbsp;  @Override
+<i>320</i>&nbsp;  public IMapObjectLayer getLayer() {
+<b class="fc"><i>321</i>&nbsp;    return this.layer;</b>
+<i>322</i>&nbsp;  }
+<i>323</i>&nbsp;
+<i>324</i>&nbsp;  @Override
+<i>325</i>&nbsp;  public boolean isPolyline() {
+<b class="nc"><i>326</i>&nbsp;    return this.polyline != null;</b>
+<i>327</i>&nbsp;  }
+<i>328</i>&nbsp;
+<i>329</i>&nbsp;  @Override
+<i>330</i>&nbsp;  public boolean isPolygon() {
+<b class="nc"><i>331</i>&nbsp;    return this.polygon != null;</b>
+<i>332</i>&nbsp;  }
+<i>333</i>&nbsp;
+<i>334</i>&nbsp;  @Override
+<i>335</i>&nbsp;  public boolean isPoint() {
+<b class="nc"><i>336</i>&nbsp;    return this.pointElement != null;</b>
+<i>337</i>&nbsp;  }
+<i>338</i>&nbsp;
+<i>339</i>&nbsp;  @Override
+<i>340</i>&nbsp;  public boolean isEllipse() {
+<b class="nc"><i>341</i>&nbsp;    return this.ellipseElement != null;</b>
+<i>342</i>&nbsp;  }
+<i>343</i>&nbsp;
+<i>344</i>&nbsp;  void afterUnmarshal(Unmarshaller u, Object parent) {
+<b class="fc"><i>345</i>&nbsp;    if (this.gid != null &amp;&amp; this.gid == 0) {</b>
+<b class="nc"><i>346</i>&nbsp;      this.gid = null;</b>
+<i>347</i>&nbsp;    }
+<i>348</i>&nbsp;
+<b class="fc"><i>349</i>&nbsp;    if (this.name != null &amp;&amp; this.name.isEmpty()) {</b>
+<b class="nc"><i>350</i>&nbsp;      this.name = null;</b>
+<i>351</i>&nbsp;    }
+<i>352</i>&nbsp;
+<b class="fc"><i>353</i>&nbsp;    if (this.polyline != null &amp;&amp; this.polyline.getPoints().isEmpty()) {</b>
+<b class="nc"><i>354</i>&nbsp;      this.polyline = null;</b>
+<i>355</i>&nbsp;    }
+<b class="fc"><i>356</i>&nbsp;  }</b>
+<i>357</i>&nbsp;
+<i>358</i>&nbsp;  protected void setLayer(MapObjectLayer layer) {
+<b class="fc"><i>359</i>&nbsp;    this.layer = layer;</b>
+<b class="fc"><i>360</i>&nbsp;  }</b>
+<i>361</i>&nbsp;
+<i>362</i>&nbsp;  private boolean isInfiniteMap() {
+<b class="fc"><i>363</i>&nbsp;    return this.getLayer() != null &amp;&amp; this.getLayer().getMap() != null &amp;&amp; this.getLayer().getMap().isInfinite() &amp;&amp; this.getLayer().getMap() instanceof Map;</b>
+<i>364</i>&nbsp;  }
+<i>365</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

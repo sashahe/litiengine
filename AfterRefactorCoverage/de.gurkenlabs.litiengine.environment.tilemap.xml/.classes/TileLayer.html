@@ -1,0 +1,194 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TileLayer</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment.tilemap.xml</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TileLayer (de.gurkenlabs.litiengine.environment.tilemap.xml)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TileLayer</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88.9%
+  </span>
+  <span class="absValue">
+    (8/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (35/ 42)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment.tilemap.xml;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Point;
+<i>4</i>&nbsp;import java.awt.geom.Point2D;
+<i>5</i>&nbsp;import java.util.List;
+<i>6</i>&nbsp;import java.util.Optional;
+<i>7</i>&nbsp;import java.util.concurrent.CopyOnWriteArrayList;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import javax.xml.bind.annotation.XmlElement;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.ITile;
+<i>12</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.ITileLayer;
+<i>13</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.ITileset;
+<i>14</i>&nbsp;
+<b class="fc"><i>15</i>&nbsp;public class TileLayer extends Layer implements ITileLayer {</b>
+<i>16</i>&nbsp;  private static final long serialVersionUID = -6588787132358068892L;
+<i>17</i>&nbsp;
+<b class="fc"><i>18</i>&nbsp;  @XmlElement</b>
+<i>19</i>&nbsp;  private TileData data = null;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;  private transient List&lt;ITile&gt; tileList;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;  private transient Tile[][] tiles;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;  @Override
+<i>26</i>&nbsp;  public ITile getTileByLocation(final Point2D location) {
+<b class="nc"><i>27</i>&nbsp;    final Optional&lt;ITile&gt; tile = this.getTiles().stream().filter(x -&gt; x.getTileCoordinate().equals(location)).findFirst();</b>
+<b class="nc"><i>28</i>&nbsp;    return tile.isPresent() ? tile.get() : null;</b>
+<i>29</i>&nbsp;  }
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;  @Override
+<i>32</i>&nbsp;  public ITile getTile(int x, int y) {
+<b class="fc"><i>33</i>&nbsp;    this.getTiles();</b>
+<i>34</i>&nbsp;
+<b class="fc"><i>35</i>&nbsp;    if (this.tiles == null || this.tiles.length == 0) {</b>
+<b class="nc"><i>36</i>&nbsp;      return null;</b>
+<i>37</i>&nbsp;    }
+<i>38</i>&nbsp;
+<b class="fc"><i>39</i>&nbsp;    if (x &lt; 0 || y &lt; 0 || x &gt; this.tiles.length - 1 || y &gt; this.tiles[0].length - 1) {</b>
+<b class="nc"><i>40</i>&nbsp;      return null;</b>
+<i>41</i>&nbsp;    }
+<i>42</i>&nbsp;
+<b class="fc"><i>43</i>&nbsp;    return this.tiles[x][y];</b>
+<i>44</i>&nbsp;  }
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;  @Override
+<i>47</i>&nbsp;  public List&lt;ITile&gt; getTiles() {
+<b class="fc"><i>48</i>&nbsp;    if (this.tileList != null) {</b>
+<b class="fc"><i>49</i>&nbsp;      return this.tileList;</b>
+<i>50</i>&nbsp;    }
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    try {
+<b class="fc"><i>53</i>&nbsp;      this.tileList = new CopyOnWriteArrayList&lt;&gt;(this.getData());</b>
+<b class="fc"><i>54</i>&nbsp;      if (this.data == null) {</b>
+<b class="nc"><i>55</i>&nbsp;        return this.tileList;</b>
+<i>56</i>&nbsp;      }
+<i>57</i>&nbsp;
+<b class="fc"><i>58</i>&nbsp;      this.tiles = new Tile[this.getWidth()][this.getHeight()];</b>
+<b class="fc"><i>59</i>&nbsp;      for (int i = 0; i &lt; this.getData().size(); i++) {</b>
+<b class="fc"><i>60</i>&nbsp;        final int x = i % this.getWidth();</b>
+<b class="fc"><i>61</i>&nbsp;        final int y = i / this.getWidth();</b>
+<i>62</i>&nbsp;  
+<b class="fc"><i>63</i>&nbsp;        final Tile tile = this.getData().get(i);</b>
+<b class="fc"><i>64</i>&nbsp;        tile.setTileCoordinate(new Point(x, y));</b>
+<b class="fc"><i>65</i>&nbsp;        this.tileList.add(tile);</b>
+<b class="fc"><i>66</i>&nbsp;        this.tiles[x][y] = tile;</b>
+<i>67</i>&nbsp;      }
+<i>68</i>&nbsp;
+<b class="fc"><i>69</i>&nbsp;      return this.tileList;</b>
+<b class="nc"><i>70</i>&nbsp;    } catch (InvalidTileLayerException e) {</b>
+<b class="nc"><i>71</i>&nbsp;      throw new TmxError(e);</b>
+<i>72</i>&nbsp;    }
+<i>73</i>&nbsp;  }
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;  @Override
+<i>76</i>&nbsp;  public int getWidth() {
+<b class="fc"><i>77</i>&nbsp;    if (this.data != null &amp;&amp; this.data.isInfinite()) {</b>
+<b class="fc"><i>78</i>&nbsp;      return this.data.getWidth();</b>
+<i>79</i>&nbsp;    }
+<i>80</i>&nbsp;
+<b class="fc"><i>81</i>&nbsp;    return super.getWidth();</b>
+<i>82</i>&nbsp;  }
+<i>83</i>&nbsp;
+<i>84</i>&nbsp;  @Override
+<i>85</i>&nbsp;  public int getHeight() {
+<b class="fc"><i>86</i>&nbsp;    if (this.data != null &amp;&amp; this.data.isInfinite()) {</b>
+<b class="fc"><i>87</i>&nbsp;      return this.data.getHeight();</b>
+<i>88</i>&nbsp;    }
+<i>89</i>&nbsp;
+<b class="fc"><i>90</i>&nbsp;    return super.getHeight();</b>
+<i>91</i>&nbsp;  }
+<i>92</i>&nbsp;
+<i>93</i>&nbsp;  protected List&lt;Tile&gt; getData() throws InvalidTileLayerException {
+<b class="fc"><i>94</i>&nbsp;    return this.data.parseTiles();</b>
+<i>95</i>&nbsp;  }
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;  protected TileData getRawTileData() {
+<b class="fc"><i>98</i>&nbsp;    return this.data;</b>
+<i>99</i>&nbsp;  }
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;  public void setTilesetEntries(Map map) throws TmxException {
+<b class="fc"><i>102</i>&nbsp;    for (Tile tile : getData()) {</b>
+<b class="fc"><i>103</i>&nbsp;      for (ITileset tileset : map.getRawTilesets()) {</b>
+<b class="fc"><i>104</i>&nbsp;        if (tileset.containsTile(tile.getGridId())) {</b>
+<b class="fc"><i>105</i>&nbsp;          tile.setTilesetEntry(tileset.getTile(tile.getGridId() - tileset.getFirstGridId()));</b>
+<b class="fc"><i>106</i>&nbsp;          break;</b>
+<i>107</i>&nbsp;        }
+<b class="fc"><i>108</i>&nbsp;      }</b>
+<b class="fc"><i>109</i>&nbsp;    }</b>
+<b class="fc"><i>110</i>&nbsp;  }</b>
+<i>111</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

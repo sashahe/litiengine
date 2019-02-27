@@ -1,0 +1,115 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: LightParticle</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.graphics.emitters.particles</a> ]
+</div>
+
+<h1>Coverage Summary for Class: LightParticle (de.gurkenlabs.litiengine.graphics.emitters.particles)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">LightParticle</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (6/ 12)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.graphics.emitters.particles;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Color;
+<i>4</i>&nbsp;import java.awt.geom.Point2D;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;public class LightParticle extends RectangleFillParticle {
+<i>7</i>&nbsp;  private final float maxHeight;
+<i>8</i>&nbsp;  private final float maxWidth;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;  private final float minHeight;
+<i>11</i>&nbsp;  private final float minWidth;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;  public LightParticle(final float maxWidth, final float maxHeight, final float width, final float height, final Color color, final int life) {
+<b class="fc"><i>14</i>&nbsp;    super(width, height, color, life);</b>
+<b class="fc"><i>15</i>&nbsp;    this.maxWidth = maxWidth;</b>
+<b class="fc"><i>16</i>&nbsp;    this.maxHeight = maxHeight;</b>
+<b class="fc"><i>17</i>&nbsp;    this.minWidth = width;</b>
+<b class="fc"><i>18</i>&nbsp;    this.minHeight = height;</b>
+<b class="fc"><i>19</i>&nbsp;  }</b>
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;  @Override
+<i>22</i>&nbsp;  public void update(final Point2D origin, final float updateRatio) {
+<b class="nc"><i>23</i>&nbsp;    super.update(origin, updateRatio);</b>
+<b class="nc"><i>24</i>&nbsp;    if (Math.abs(this.maxWidth - this.getWidth()) &lt; 0.1 || Math.abs(this.getWidth() - this.minWidth) &lt; 0.1) {</b>
+<b class="nc"><i>25</i>&nbsp;      this.setDeltaWidth(-this.getDeltaWidth());</b>
+<i>26</i>&nbsp;    }
+<i>27</i>&nbsp;
+<b class="nc"><i>28</i>&nbsp;    if (Math.abs(this.maxHeight - this.getHeight()) &lt; 0.1 || Math.abs(this.getHeight() - this.minHeight) &lt; 0.1) {</b>
+<b class="nc"><i>29</i>&nbsp;      this.setDeltaHeight(-this.getDeltaHeight());</b>
+<i>30</i>&nbsp;    }
+<b class="nc"><i>31</i>&nbsp;  }</b>
+<i>32</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

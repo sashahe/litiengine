@@ -1,0 +1,150 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IMobileEntity</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.entities</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IMobileEntity (de.gurkenlabs.litiengine.entities)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">IMobileEntity$MockitoMock$765629175</td>
+  </tr>
+  <tr>
+    <td class="name">IMobileEntity$MockitoMock$765629175$auxiliary$hLUljiGm</td>
+  </tr>
+  <tr>
+    <td class="name">IMobileEntity$MockitoMock$765629175$auxiliary$qxCGyxif</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.entities;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.geom.Point2D;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import de.gurkenlabs.litiengine.attributes.Attribute;
+<i>6</i>&nbsp;import de.gurkenlabs.litiengine.physics.IMovementController;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;/**
+<i>9</i>&nbsp; * The Interface IMobileEntity.
+<i>10</i>&nbsp; */
+<i>11</i>&nbsp;public interface IMobileEntity extends ICollisionEntity {
+<i>12</i>&nbsp;  /**
+<i>13</i>&nbsp;   * Gets a value that defines how long it takes the entity to reach the full
+<i>14</i>&nbsp;   * velocity (in ms).
+<i>15</i>&nbsp;   * 
+<i>16</i>&nbsp;   * @return the acceleration value
+<i>17</i>&nbsp;   */
+<i>18</i>&nbsp;  public int getAcceleration();
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;  /**
+<i>21</i>&nbsp;   * Gets a value that defines how long it takes the entity to stop when slowing down from movements (in ms).
+<i>22</i>&nbsp;   * 
+<i>23</i>&nbsp;   * @return the deceleration value
+<i>24</i>&nbsp;   */
+<i>25</i>&nbsp;  public int getDeceleration();
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;  /**
+<i>28</i>&nbsp;   * Gets the move destination.
+<i>29</i>&nbsp;   *
+<i>30</i>&nbsp;   * @return the move destination
+<i>31</i>&nbsp;   */
+<i>32</i>&nbsp;  public Point2D getMoveDestination();
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;  /**
+<i>35</i>&nbsp;   * Gets the entity&#39;s velocity in PIXELS per Second.
+<i>36</i>&nbsp;   *
+<i>37</i>&nbsp;   * @return the velocity in pixel per second.
+<i>38</i>&nbsp;   */
+<i>39</i>&nbsp;  public Attribute&lt;Float&gt; getVelocity();
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;  /**
+<i>42</i>&nbsp;   * Gets the entity&#39;s velocity in PIXELS per tick.
+<i>43</i>&nbsp;   *
+<i>44</i>&nbsp;   * @return The velocity in pixel per tick.
+<i>45</i>&nbsp;   */
+<i>46</i>&nbsp;  public float getTickVelocity();
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;  /**
+<i>49</i>&nbsp;   * Gets the movement controller.
+<i>50</i>&nbsp;   *
+<i>51</i>&nbsp;   * @return the movement controller
+<i>52</i>&nbsp;   */
+<i>53</i>&nbsp;  public IMovementController getMovementController();
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;  /**
+<i>56</i>&nbsp;   * Sets the acceleration for this entity. Acceleration is a value that defines how long it takes the entity to reach the full
+<i>57</i>&nbsp;   * velocity when starting to move (in ms). *
+<i>58</i>&nbsp;   * 
+<i>59</i>&nbsp;   * @param acceleration
+<i>60</i>&nbsp;   *          the new acceleration
+<i>61</i>&nbsp;   */
+<i>62</i>&nbsp;  public void setAcceleration(int acceleration);
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;  /**
+<i>65</i>&nbsp;   * Sets the deceleration for this entity. deceleration is a value that defines how long it takes the entity to stop when slowing down from movements (in ms).
+<i>66</i>&nbsp;   *
+<i>67</i>&nbsp;   * @param deceleration
+<i>68</i>&nbsp;   *          the new deceleration
+<i>69</i>&nbsp;   */
+<i>70</i>&nbsp;  public void setDeceleration(int deceleration);
+<i>71</i>&nbsp;
+<i>72</i>&nbsp;  /**
+<i>73</i>&nbsp;   * Sets the point where the entity will be moved to.
+<i>74</i>&nbsp;   *
+<i>75</i>&nbsp;   * @param dest
+<i>76</i>&nbsp;   *          the destination point of the movement.
+<i>77</i>&nbsp;   */
+<i>78</i>&nbsp;  public void setMoveDestination(Point2D dest);
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;  /**
+<i>81</i>&nbsp;   * Sets the turn on move parameter for this entity. It specifies if the entity will change its angle to the direction of the move destination when moved.
+<i>82</i>&nbsp;   *
+<i>83</i>&nbsp;   * @param turn
+<i>84</i>&nbsp;   *          the new turn on move parameter.
+<i>85</i>&nbsp;   */
+<i>86</i>&nbsp;  public void setTurnOnMove(boolean turn);
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;  /**
+<i>89</i>&nbsp;   * Gets the turn on move parameter for this entity. It specifies if the entity will change its angle to the direction of the move destination when moved.
+<i>90</i>&nbsp;   *
+<i>91</i>&nbsp;   * @return true, if the entity will change its angle to the direction of the move destination when being moved
+<i>92</i>&nbsp;   */
+<i>93</i>&nbsp;  public boolean turnOnMove();
+<i>94</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

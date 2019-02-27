@@ -1,0 +1,116 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ICustomProperty</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment.tilemap</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ICustomProperty (de.gurkenlabs.litiengine.environment.tilemap)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ICustomProperty</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment.tilemap;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Color;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * Represents a custom property on a map element.
+<i>7</i>&nbsp; */
+<i>8</i>&nbsp;public interface ICustomProperty {
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;  public void setValue(String value);
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;  public void setValue(char value);
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;  public void setValue(Enum&lt;?&gt; value);
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;  public void setValue(long value);
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;  public void setValue(double value);
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;  // no methods for setting to byte, short, int, or float because they will already be accepted as a long or double
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;  public void setValue(boolean value);
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;  public void setValue(Color value);
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;  public String getAsString();
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;  public char getAsChar();
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;  public boolean getAsBool();
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;  public Color getAsColor();
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;  public float getAsFloat();
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;  public double getAsDouble();
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;  public byte getAsByte();
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;  public short getAsShort();
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;  public int getAsInt();
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;  public long getAsLong();
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;  public &lt;T extends Enum&lt;T&gt;&gt; T getAsEnum(Class&lt;T&gt; enumType);
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;  public String getType();
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;  public void setType(String type);
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;  /**
+<i>53</i>&nbsp;   * Tests for equality between two custom properties. Two custom
+<i>54</i>&nbsp;   * properties are &lt;i&gt;equal&lt;/i&gt; if they both have the same type
+<i>55</i>&nbsp;   * and string value.
+<i>56</i>&nbsp;   * @param anObject The custom property to test equality for
+<i>57</i>&nbsp;   * @return Whether the two custom properties are equal, or false
+<i>58</i>&nbsp;   *  if {@code anObject} is not a custom property
+<i>59</i>&nbsp;   */
+<i>60</i>&nbsp;  public boolean equals(Object anObject);
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;  /**
+<i>63</i>&nbsp;   * Returns the hash code for this custom property. The hash code
+<i>64</i>&nbsp;   * for a custom property is equal to its type&#39;s hash code times 31
+<i>65</i>&nbsp;   * plus its value&#39;s hash code.
+<i>66</i>&nbsp;   * @return The hash code for this custom property
+<i>67</i>&nbsp;   */
+<i>68</i>&nbsp;  public int hashCode();
+<i>69</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

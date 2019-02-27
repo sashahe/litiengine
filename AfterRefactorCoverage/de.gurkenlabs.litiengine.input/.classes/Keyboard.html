@@ -1,0 +1,462 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Keyboard</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.input</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Keyboard (de.gurkenlabs.litiengine.input)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Keyboard</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    16.7%
+  </span>
+  <span class="absValue">
+    (5/ 30)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    16.2%
+  </span>
+  <span class="absValue">
+    (27/ 167)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.input;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.KeyEventDispatcher;
+<i>4</i>&nbsp;import java.awt.KeyboardFocusManager;
+<i>5</i>&nbsp;import java.awt.Toolkit;
+<i>6</i>&nbsp;import java.awt.event.KeyEvent;
+<i>7</i>&nbsp;import java.awt.event.KeyListener;
+<i>8</i>&nbsp;import java.util.AbstractMap;
+<i>9</i>&nbsp;import java.util.List;
+<i>10</i>&nbsp;import java.util.Map;
+<i>11</i>&nbsp;import java.util.concurrent.CopyOnWriteArrayList;
+<i>12</i>&nbsp;import java.util.function.Consumer;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;import de.gurkenlabs.litiengine.Game;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;public class Keyboard implements KeyEventDispatcher, IKeyboard {
+<b class="fc"><i>17</i>&nbsp;  private final List&lt;KeyListener&gt; keyListeners = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>18</i>&nbsp;  private final List&lt;Map.Entry&lt;Integer, Consumer&lt;KeyEvent&gt;&gt;&gt; keySpecificPressedConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>19</i>&nbsp;  private final List&lt;Map.Entry&lt;Integer, Consumer&lt;KeyEvent&gt;&gt;&gt; keySpecificReleasedConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>20</i>&nbsp;  private final List&lt;Map.Entry&lt;Integer, Consumer&lt;KeyEvent&gt;&gt;&gt; keySpecificTypedConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>21</i>&nbsp;  private final List&lt;Consumer&lt;KeyEvent&gt;&gt; keyPressedConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>22</i>&nbsp;  private final List&lt;Consumer&lt;KeyEvent&gt;&gt; keyReleasedConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>23</i>&nbsp;  private final List&lt;Consumer&lt;KeyEvent&gt;&gt; keyTypedConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<i>24</i>&nbsp;
+<b class="fc"><i>25</i>&nbsp;  private final List&lt;KeyEvent&gt; pressedKeys = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>26</i>&nbsp;  private final List&lt;KeyEvent&gt; releasedKeys = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>27</i>&nbsp;  private final List&lt;KeyEvent&gt; typedKeys = new CopyOnWriteArrayList&lt;&gt;();</b>
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;  private boolean consumeAlt;
+<i>30</i>&nbsp;
+<b class="fc"><i>31</i>&nbsp;  protected Keyboard() {</b>
+<b class="fc"><i>32</i>&nbsp;    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);</b>
+<i>33</i>&nbsp;
+<b class="fc"><i>34</i>&nbsp;    Game.inputLoop().attach(this);</b>
+<b class="fc"><i>35</i>&nbsp;    this.consumeAlt = true;</b>
+<b class="fc"><i>36</i>&nbsp;  }</b>
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;  @Override
+<i>39</i>&nbsp;  public void consumeAlt(final boolean consume) {
+<b class="nc"><i>40</i>&nbsp;    this.consumeAlt = consume;</b>
+<b class="nc"><i>41</i>&nbsp;  }</b>
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;  @Override
+<i>44</i>&nbsp;  public boolean dispatchKeyEvent(final KeyEvent e) {
+<b class="nc"><i>45</i>&nbsp;    if (this.consumeAlt &amp;&amp; e.getKeyCode() == KeyEvent.VK_ALT) {</b>
+<b class="nc"><i>46</i>&nbsp;      e.consume();</b>
+<i>47</i>&nbsp;    }
+<b class="nc"><i>48</i>&nbsp;    final int eventId = e.getID();</b>
+<b class="nc"><i>49</i>&nbsp;    switch (eventId) {</b>
+<i>50</i>&nbsp;    case KeyEvent.KEY_PRESSED:
+<i>51</i>&nbsp;      // on an avg. win 10 machine, this event fires every ~33 ms when a key is
+<i>52</i>&nbsp;      // pressed down
+<b class="nc"><i>53</i>&nbsp;      this.addPressedKey(e);</b>
+<b class="nc"><i>54</i>&nbsp;      break;</b>
+<i>55</i>&nbsp;    case KeyEvent.KEY_RELEASED:
+<b class="nc"><i>56</i>&nbsp;      this.removePressedKey(e);</b>
+<b class="nc"><i>57</i>&nbsp;      this.addTypedKey(e);</b>
+<b class="nc"><i>58</i>&nbsp;      this.addReleasedKey(e);</b>
+<i>59</i>&nbsp;
+<b class="nc"><i>60</i>&nbsp;      break;</b>
+<i>61</i>&nbsp;    default:
+<i>62</i>&nbsp;      break;
+<i>63</i>&nbsp;    }
+<i>64</i>&nbsp;
+<b class="nc"><i>65</i>&nbsp;    return false;</b>
+<i>66</i>&nbsp;  }
+<i>67</i>&nbsp;
+<i>68</i>&nbsp;  @Override
+<i>69</i>&nbsp;  public String getText(final KeyEvent e) {
+<b class="nc"><i>70</i>&nbsp;    if (this.isPressed(KeyEvent.VK_SHIFT) || Toolkit.getDefaultToolkit().getLockingKeyState(KeyEvent.VK_CAPS_LOCK)) {</b>
+<b class="nc"><i>71</i>&nbsp;      return this.getShiftText(e);</b>
+<b class="nc"><i>72</i>&nbsp;    } else if (this.isPressed(KeyEvent.VK_ALT_GRAPH)) {</b>
+<b class="nc"><i>73</i>&nbsp;      return this.getAltText(e);</b>
+<i>74</i>&nbsp;    } else {
+<b class="nc"><i>75</i>&nbsp;      return this.getNormalText(e);</b>
+<i>76</i>&nbsp;    }
+<i>77</i>&nbsp;  }
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;  @Override
+<i>80</i>&nbsp;  public boolean isPressed(final int keyCode) {
+<b class="nc"><i>81</i>&nbsp;    for (final KeyEvent key : this.pressedKeys) {</b>
+<b class="nc"><i>82</i>&nbsp;      if (key.getKeyCode() == keyCode) {</b>
+<b class="nc"><i>83</i>&nbsp;        return true;</b>
+<i>84</i>&nbsp;      }
+<b class="nc"><i>85</i>&nbsp;    }</b>
+<i>86</i>&nbsp;
+<b class="nc"><i>87</i>&nbsp;    return false;</b>
+<i>88</i>&nbsp;  }
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;  @Override
+<i>91</i>&nbsp;  public void onKeyPressed(final int keyCode, final Consumer&lt;KeyEvent&gt; consumer) {
+<b class="nc"><i>92</i>&nbsp;    this.keySpecificPressedConsumer.add(new AbstractMap.SimpleEntry&lt;&gt;(keyCode, consumer));</b>
+<b class="nc"><i>93</i>&nbsp;  }</b>
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;  @Override
+<i>96</i>&nbsp;  public void onKeyReleased(final int keyCode, final Consumer&lt;KeyEvent&gt; consumer) {
+<b class="nc"><i>97</i>&nbsp;    this.keySpecificReleasedConsumer.add(new AbstractMap.SimpleEntry&lt;&gt;(keyCode, consumer));</b>
+<b class="nc"><i>98</i>&nbsp;  }</b>
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;  @Override
+<i>101</i>&nbsp;  public void onKeyTyped(final int keyCode, final Consumer&lt;KeyEvent&gt; consumer) {
+<b class="nc"><i>102</i>&nbsp;    this.keySpecificTypedConsumer.add(new AbstractMap.SimpleEntry&lt;&gt;(keyCode, consumer));</b>
+<b class="nc"><i>103</i>&nbsp;  }</b>
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;  @Override
+<i>106</i>&nbsp;  public void onKeyPressed(Consumer&lt;KeyEvent&gt; consumer) {
+<b class="nc"><i>107</i>&nbsp;    this.keyPressedConsumer.add(consumer);</b>
+<b class="nc"><i>108</i>&nbsp;  }</b>
+<i>109</i>&nbsp;
+<i>110</i>&nbsp;  @Override
+<i>111</i>&nbsp;  public void onKeyReleased(Consumer&lt;KeyEvent&gt; consumer) {
+<b class="nc"><i>112</i>&nbsp;    this.keyReleasedConsumer.add(consumer);</b>
+<b class="nc"><i>113</i>&nbsp;  }</b>
+<i>114</i>&nbsp;
+<i>115</i>&nbsp;  @Override
+<i>116</i>&nbsp;  public void onKeyTyped(Consumer&lt;KeyEvent&gt; consumer) {
+<b class="nc"><i>117</i>&nbsp;    this.keyTypedConsumer.add(consumer);</b>
+<b class="nc"><i>118</i>&nbsp;  }</b>
+<i>119</i>&nbsp;
+<i>120</i>&nbsp;  @Override
+<i>121</i>&nbsp;  public void addKeyListener(final KeyListener listener) {
+<b class="nc"><i>122</i>&nbsp;    if (this.keyListeners.contains(listener)) {</b>
+<b class="nc"><i>123</i>&nbsp;      return;</b>
+<i>124</i>&nbsp;    }
+<i>125</i>&nbsp;
+<b class="nc"><i>126</i>&nbsp;    this.keyListeners.add(listener);</b>
+<b class="nc"><i>127</i>&nbsp;  }</b>
+<i>128</i>&nbsp;
+<i>129</i>&nbsp;  @Override
+<i>130</i>&nbsp;  public void removeKeyListener(final KeyListener listener) {
+<b class="nc"><i>131</i>&nbsp;    this.keyListeners.remove(listener);</b>
+<b class="nc"><i>132</i>&nbsp;  }</b>
+<i>133</i>&nbsp;
+<i>134</i>&nbsp;  @Override
+<i>135</i>&nbsp;  public void update() {
+<b class="fc"><i>136</i>&nbsp;    this.executePressedKeys();</b>
+<b class="fc"><i>137</i>&nbsp;    this.executeReleasedKeys();</b>
+<b class="fc"><i>138</i>&nbsp;    this.executeTypedKeys();</b>
+<b class="fc"><i>139</i>&nbsp;  }</b>
+<i>140</i>&nbsp;
+<i>141</i>&nbsp;  /**
+<i>142</i>&nbsp;   * Adds the pressed key.
+<i>143</i>&nbsp;   *
+<i>144</i>&nbsp;   * @param keyCode
+<i>145</i>&nbsp;   *          the key code
+<i>146</i>&nbsp;   */
+<i>147</i>&nbsp;  private void addPressedKey(final KeyEvent keyCode) {
+<b class="nc"><i>148</i>&nbsp;    if (this.pressedKeys.stream().anyMatch(key -&gt; key.getKeyCode() == keyCode.getKeyCode())) {</b>
+<b class="nc"><i>149</i>&nbsp;      return;</b>
+<i>150</i>&nbsp;    }
+<i>151</i>&nbsp;
+<b class="nc"><i>152</i>&nbsp;    this.pressedKeys.add(keyCode);</b>
+<b class="nc"><i>153</i>&nbsp;  }</b>
+<i>154</i>&nbsp;
+<i>155</i>&nbsp;  /**
+<i>156</i>&nbsp;   * Adds the released key.
+<i>157</i>&nbsp;   *
+<i>158</i>&nbsp;   * @param keyCode
+<i>159</i>&nbsp;   *          the key code
+<i>160</i>&nbsp;   */
+<i>161</i>&nbsp;  private void addReleasedKey(final KeyEvent keyCode) {
+<b class="nc"><i>162</i>&nbsp;    if (this.releasedKeys.stream().anyMatch(key -&gt; key.getKeyCode() == keyCode.getKeyCode())) {</b>
+<b class="nc"><i>163</i>&nbsp;      return;</b>
+<i>164</i>&nbsp;    }
+<i>165</i>&nbsp;
+<b class="nc"><i>166</i>&nbsp;    this.releasedKeys.add(keyCode);</b>
+<b class="nc"><i>167</i>&nbsp;  }</b>
+<i>168</i>&nbsp;
+<i>169</i>&nbsp;  /**
+<i>170</i>&nbsp;   * Adds the typed key.
+<i>171</i>&nbsp;   *
+<i>172</i>&nbsp;   * @param keyCode
+<i>173</i>&nbsp;   *          the key code
+<i>174</i>&nbsp;   */
+<i>175</i>&nbsp;  private void addTypedKey(final KeyEvent keyCode) {
+<b class="nc"><i>176</i>&nbsp;    if (this.typedKeys.stream().anyMatch(key -&gt; key.getKeyCode() == keyCode.getKeyCode())) {</b>
+<b class="nc"><i>177</i>&nbsp;      return;</b>
+<i>178</i>&nbsp;    }
+<i>179</i>&nbsp;
+<b class="nc"><i>180</i>&nbsp;    this.typedKeys.add(keyCode);</b>
+<b class="nc"><i>181</i>&nbsp;  }</b>
+<i>182</i>&nbsp;
+<i>183</i>&nbsp;  /**
+<i>184</i>&nbsp;   * Execute pressed keys.
+<i>185</i>&nbsp;   */
+<i>186</i>&nbsp;  private void executePressedKeys() {
+<i>187</i>&nbsp;    // called at the rate of the updaterate
+<b class="fc"><i>188</i>&nbsp;    this.pressedKeys.forEach(key -&gt; {</b>
+<b class="nc"><i>189</i>&nbsp;      this.keySpecificPressedConsumer.forEach(consumer -&gt; {</b>
+<b class="nc"><i>190</i>&nbsp;        if (consumer.getKey().intValue() == key.getKeyCode()) {</b>
+<b class="nc"><i>191</i>&nbsp;          consumer.getValue().accept(key);</b>
+<i>192</i>&nbsp;        }
+<b class="nc"><i>193</i>&nbsp;      });</b>
+<i>194</i>&nbsp;
+<b class="nc"><i>195</i>&nbsp;      this.keyPressedConsumer.forEach(consumer -&gt; consumer.accept(key));</b>
+<b class="nc"><i>196</i>&nbsp;      this.keyListeners.forEach(listener -&gt; listener.keyPressed(key));</b>
+<b class="nc"><i>197</i>&nbsp;    });</b>
+<b class="fc"><i>198</i>&nbsp;  }</b>
+<i>199</i>&nbsp;
+<i>200</i>&nbsp;  /**
+<i>201</i>&nbsp;   * Execute released keys.
+<i>202</i>&nbsp;   */
+<i>203</i>&nbsp;  private void executeReleasedKeys() {
+<b class="fc"><i>204</i>&nbsp;    this.releasedKeys.forEach(key -&gt; {</b>
+<b class="nc"><i>205</i>&nbsp;      this.keySpecificReleasedConsumer.forEach(consumer -&gt; {</b>
+<b class="nc"><i>206</i>&nbsp;        if (consumer.getKey().intValue() == key.getKeyCode()) {</b>
+<b class="nc"><i>207</i>&nbsp;          consumer.getValue().accept(key);</b>
+<i>208</i>&nbsp;        }
+<b class="nc"><i>209</i>&nbsp;      });</b>
+<i>210</i>&nbsp;
+<b class="nc"><i>211</i>&nbsp;      this.keyReleasedConsumer.forEach(consumer -&gt; consumer.accept(key));</b>
+<b class="nc"><i>212</i>&nbsp;      this.keyListeners.forEach(listener -&gt; listener.keyReleased(key));</b>
+<b class="nc"><i>213</i>&nbsp;    });</b>
+<i>214</i>&nbsp;
+<b class="fc"><i>215</i>&nbsp;    this.releasedKeys.clear();</b>
+<b class="fc"><i>216</i>&nbsp;  }</b>
+<i>217</i>&nbsp;
+<i>218</i>&nbsp;  /**
+<i>219</i>&nbsp;   * Execute typed keys.
+<i>220</i>&nbsp;   */
+<i>221</i>&nbsp;  private void executeTypedKeys() {
+<b class="fc"><i>222</i>&nbsp;    this.typedKeys.forEach(key -&gt; {</b>
+<b class="nc"><i>223</i>&nbsp;      this.keySpecificTypedConsumer.forEach(consumer -&gt; {</b>
+<b class="nc"><i>224</i>&nbsp;        if (consumer.getKey().intValue() == key.getKeyCode()) {</b>
+<b class="nc"><i>225</i>&nbsp;          consumer.getValue().accept(key);</b>
+<i>226</i>&nbsp;        }
+<b class="nc"><i>227</i>&nbsp;      });</b>
+<i>228</i>&nbsp;
+<b class="nc"><i>229</i>&nbsp;      this.keyTypedConsumer.forEach(consumer -&gt; consumer.accept(key));</b>
+<b class="nc"><i>230</i>&nbsp;      this.keyListeners.forEach(listener -&gt; listener.keyTyped(key));</b>
+<b class="nc"><i>231</i>&nbsp;    });</b>
+<i>232</i>&nbsp;
+<b class="fc"><i>233</i>&nbsp;    this.typedKeys.clear();</b>
+<b class="fc"><i>234</i>&nbsp;  }</b>
+<i>235</i>&nbsp;
+<i>236</i>&nbsp;  /**
+<i>237</i>&nbsp;   * Removes the pressed key.
+<i>238</i>&nbsp;   *
+<i>239</i>&nbsp;   * @param keyCode
+<i>240</i>&nbsp;   *          the key code
+<i>241</i>&nbsp;   */
+<i>242</i>&nbsp;  private void removePressedKey(final KeyEvent keyCode) {
+<b class="nc"><i>243</i>&nbsp;    for (final KeyEvent removeKey : this.pressedKeys) {</b>
+<b class="nc"><i>244</i>&nbsp;      if (removeKey.getKeyCode() == keyCode.getKeyCode()) {</b>
+<b class="nc"><i>245</i>&nbsp;        this.pressedKeys.remove(removeKey);</b>
+<b class="nc"><i>246</i>&nbsp;        return;</b>
+<i>247</i>&nbsp;      }
+<b class="nc"><i>248</i>&nbsp;    }</b>
+<b class="nc"><i>249</i>&nbsp;  }</b>
+<i>250</i>&nbsp;
+<i>251</i>&nbsp;  private String getNormalText(KeyEvent e) {
+<b class="nc"><i>252</i>&nbsp;    if (e.getExtendedKeyCode() == KeyEvent.getExtendedKeyCodeForChar(&#39;ß&#39;)) {</b>
+<b class="nc"><i>253</i>&nbsp;      return &quot;ß&quot;;</b>
+<i>254</i>&nbsp;    }
+<i>255</i>&nbsp;
+<b class="nc"><i>256</i>&nbsp;    switch (e.getKeyCode()) {</b>
+<i>257</i>&nbsp;    case KeyEvent.VK_NUMPAD0:
+<b class="nc"><i>258</i>&nbsp;      return &quot;0&quot;;</b>
+<i>259</i>&nbsp;    case KeyEvent.VK_NUMPAD1:
+<b class="nc"><i>260</i>&nbsp;      return &quot;1&quot;;</b>
+<i>261</i>&nbsp;    case KeyEvent.VK_NUMPAD2:
+<b class="nc"><i>262</i>&nbsp;      return &quot;2&quot;;</b>
+<i>263</i>&nbsp;    case KeyEvent.VK_NUMPAD3:
+<b class="nc"><i>264</i>&nbsp;      return &quot;3&quot;;</b>
+<i>265</i>&nbsp;    case KeyEvent.VK_NUMPAD4:
+<b class="nc"><i>266</i>&nbsp;      return &quot;4&quot;;</b>
+<i>267</i>&nbsp;    case KeyEvent.VK_NUMPAD5:
+<b class="nc"><i>268</i>&nbsp;      return &quot;5&quot;;</b>
+<i>269</i>&nbsp;    case KeyEvent.VK_NUMPAD6:
+<b class="nc"><i>270</i>&nbsp;      return &quot;6&quot;;</b>
+<i>271</i>&nbsp;    case KeyEvent.VK_NUMPAD7:
+<b class="nc"><i>272</i>&nbsp;      return &quot;7&quot;;</b>
+<i>273</i>&nbsp;    case KeyEvent.VK_NUMPAD8:
+<b class="nc"><i>274</i>&nbsp;      return &quot;8&quot;;</b>
+<i>275</i>&nbsp;    case KeyEvent.VK_NUMPAD9:
+<b class="nc"><i>276</i>&nbsp;      return &quot;9&quot;;</b>
+<i>277</i>&nbsp;
+<i>278</i>&nbsp;    case KeyEvent.VK_NUMBER_SIGN:
+<b class="nc"><i>279</i>&nbsp;      return &quot;#&quot;;</b>
+<i>280</i>&nbsp;    case KeyEvent.VK_PERIOD:
+<b class="nc"><i>281</i>&nbsp;      return &quot;.&quot;;</b>
+<i>282</i>&nbsp;    case KeyEvent.VK_COMMA:
+<b class="nc"><i>283</i>&nbsp;      return &quot;,&quot;;</b>
+<i>284</i>&nbsp;    case KeyEvent.VK_PLUS:
+<i>285</i>&nbsp;    case KeyEvent.VK_ADD:
+<b class="nc"><i>286</i>&nbsp;      return &quot;+&quot;;</b>
+<i>287</i>&nbsp;    case KeyEvent.VK_MINUS:
+<i>288</i>&nbsp;    case KeyEvent.VK_SUBTRACT:
+<b class="nc"><i>289</i>&nbsp;      return &quot;-&quot;;</b>
+<i>290</i>&nbsp;    case KeyEvent.VK_MULTIPLY:
+<b class="nc"><i>291</i>&nbsp;      return &quot;*&quot;;</b>
+<i>292</i>&nbsp;    case KeyEvent.VK_DIVIDE:
+<b class="nc"><i>293</i>&nbsp;      return &quot;/&quot;;</b>
+<i>294</i>&nbsp;    default:
+<b class="nc"><i>295</i>&nbsp;      if (KeyEvent.getKeyText(e.getKeyCode()).length() == 1) {</b>
+<b class="nc"><i>296</i>&nbsp;        String text = Character.toString(e.getKeyChar());</b>
+<b class="nc"><i>297</i>&nbsp;        text = text.toLowerCase();</b>
+<b class="nc"><i>298</i>&nbsp;        return text;</b>
+<i>299</i>&nbsp;      } else {
+<b class="nc"><i>300</i>&nbsp;        return &quot;&quot;;</b>
+<i>301</i>&nbsp;      }
+<i>302</i>&nbsp;    }
+<i>303</i>&nbsp;  }
+<i>304</i>&nbsp;
+<i>305</i>&nbsp;  private String getAltText(KeyEvent e) {
+<b class="nc"><i>306</i>&nbsp;    if (e.getExtendedKeyCode() == KeyEvent.getExtendedKeyCodeForChar(&#39;ß&#39;)) {</b>
+<b class="nc"><i>307</i>&nbsp;      return &quot;\\&quot;;</b>
+<i>308</i>&nbsp;    }
+<b class="nc"><i>309</i>&nbsp;    switch (e.getKeyCode()) {</b>
+<i>310</i>&nbsp;    case KeyEvent.VK_0:
+<b class="nc"><i>311</i>&nbsp;      return &quot;}&quot;;</b>
+<i>312</i>&nbsp;    case KeyEvent.VK_2:
+<b class="nc"><i>313</i>&nbsp;      return &quot;²&quot;;</b>
+<i>314</i>&nbsp;    case KeyEvent.VK_3:
+<b class="nc"><i>315</i>&nbsp;      return &quot;³&quot;;</b>
+<i>316</i>&nbsp;    case KeyEvent.VK_7:
+<b class="nc"><i>317</i>&nbsp;      return &quot;{&quot;;</b>
+<i>318</i>&nbsp;    case KeyEvent.VK_8:
+<b class="nc"><i>319</i>&nbsp;      return &quot;[&quot;;</b>
+<i>320</i>&nbsp;    case KeyEvent.VK_9:
+<b class="nc"><i>321</i>&nbsp;      return &quot;]&quot;;</b>
+<i>322</i>&nbsp;    case KeyEvent.VK_E:
+<b class="nc"><i>323</i>&nbsp;      return &quot;€&quot;;</b>
+<i>324</i>&nbsp;    case KeyEvent.VK_Q:
+<b class="nc"><i>325</i>&nbsp;      return &quot;@&quot;;</b>
+<i>326</i>&nbsp;    case KeyEvent.VK_M:
+<b class="nc"><i>327</i>&nbsp;      return &quot;µ&quot;;</b>
+<i>328</i>&nbsp;    case KeyEvent.VK_PLUS:
+<b class="nc"><i>329</i>&nbsp;      return &quot;~&quot;;</b>
+<i>330</i>&nbsp;    default:
+<b class="nc"><i>331</i>&nbsp;      return &quot;&quot;;</b>
+<i>332</i>&nbsp;    }
+<i>333</i>&nbsp;  }
+<i>334</i>&nbsp;
+<i>335</i>&nbsp;  private String getShiftText(KeyEvent e) {
+<b class="nc"><i>336</i>&nbsp;    if (e.getExtendedKeyCode() == KeyEvent.getExtendedKeyCodeForChar(&#39;ß&#39;)) {</b>
+<b class="nc"><i>337</i>&nbsp;      return &quot;?&quot;;</b>
+<i>338</i>&nbsp;    }
+<i>339</i>&nbsp;
+<b class="nc"><i>340</i>&nbsp;    switch (e.getKeyCode()) {</b>
+<i>341</i>&nbsp;    case KeyEvent.VK_0:
+<b class="nc"><i>342</i>&nbsp;      return &quot;=&quot;;</b>
+<i>343</i>&nbsp;    case KeyEvent.VK_1:
+<b class="nc"><i>344</i>&nbsp;      return &quot;!&quot;;</b>
+<i>345</i>&nbsp;    case KeyEvent.VK_2:
+<b class="nc"><i>346</i>&nbsp;      return &quot;\&quot;&quot;;</b>
+<i>347</i>&nbsp;    case KeyEvent.VK_3:
+<b class="nc"><i>348</i>&nbsp;      return &quot;§&quot;;</b>
+<i>349</i>&nbsp;    case KeyEvent.VK_4:
+<b class="nc"><i>350</i>&nbsp;      return &quot;$&quot;;</b>
+<i>351</i>&nbsp;    case KeyEvent.VK_5:
+<b class="nc"><i>352</i>&nbsp;      return &quot;%&quot;;</b>
+<i>353</i>&nbsp;    case KeyEvent.VK_6:
+<b class="nc"><i>354</i>&nbsp;      return &quot;&amp;&quot;;</b>
+<i>355</i>&nbsp;    case KeyEvent.VK_7:
+<b class="nc"><i>356</i>&nbsp;      return &quot;/&quot;;</b>
+<i>357</i>&nbsp;    case KeyEvent.VK_8:
+<b class="nc"><i>358</i>&nbsp;      return &quot;(&quot;;</b>
+<i>359</i>&nbsp;    case KeyEvent.VK_9:
+<b class="nc"><i>360</i>&nbsp;      return &quot;)&quot;;</b>
+<i>361</i>&nbsp;    case KeyEvent.VK_NUMBER_SIGN:
+<b class="nc"><i>362</i>&nbsp;      return &quot;&#39;&quot;;</b>
+<i>363</i>&nbsp;    case KeyEvent.VK_PERIOD:
+<b class="nc"><i>364</i>&nbsp;      return &quot;:&quot;;</b>
+<i>365</i>&nbsp;    case KeyEvent.VK_COMMA:
+<b class="nc"><i>366</i>&nbsp;      return &quot;;&quot;;</b>
+<i>367</i>&nbsp;    case KeyEvent.VK_PLUS:
+<b class="nc"><i>368</i>&nbsp;      return &quot;*&quot;;</b>
+<i>369</i>&nbsp;    case KeyEvent.VK_MINUS:
+<b class="nc"><i>370</i>&nbsp;      return &quot;_&quot;;</b>
+<i>371</i>&nbsp;    default:
+<b class="nc"><i>372</i>&nbsp;      if (KeyEvent.getKeyText(e.getKeyCode()).length() == 1) {</b>
+<b class="nc"><i>373</i>&nbsp;        return Character.toString(e.getKeyChar());</b>
+<i>374</i>&nbsp;      }
+<i>375</i>&nbsp;
+<b class="nc"><i>376</i>&nbsp;      return &quot;&quot;;</b>
+<i>377</i>&nbsp;    }
+<i>378</i>&nbsp;  }
+<i>379</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>
