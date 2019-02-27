@@ -8,8 +8,6 @@ URL: https://github.com/gurkenlabs/litiengine
 
 The LITIEngine is an open source game engine for developing 2D games in Java.
 
-## Architectural overview (optional, as one item for P+)
-
 ## Selected issue(s)
 
 Title: Generalize Ability system #115 
@@ -23,6 +21,9 @@ Description: Make the ability class more general, as it is now it requires a cre
 
 ##### Did it build as documented?
 There are no clear guidelines regarding specifically how to build the project, however, there is a file describing how to contribute to the project. Since there is a gradle directory in the project, it can be assumed that gradle is used. Thus, building the project is in fact easy. Aside from downloading Gradle, no additional tools are need to build the software and no additional components were installed when building. The build included compilation as well as testing and no errors occurred during the build of the project, thus the tests are successful. The build was run with the command `gradle build`.
+
+## Refactoring plan
+The ability class shall extend a CombatEntity, and the constructior of Ablility will take a CombatEntity instead of a creature. Thus the ability class becomes more general and can be applied to anything that is a CombatEntity. The Emitter class will then extend CombatEntity and thus Emitters will have abilities.
 
 ## Requirements affected by functionality being refactored
 An ability is initialized with an executor. In the current state this executor must be a creature. The methods within the ability class that involve the executor are:
