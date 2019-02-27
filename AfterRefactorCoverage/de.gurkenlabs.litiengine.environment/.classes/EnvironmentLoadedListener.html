@@ -1,0 +1,66 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: EnvironmentLoadedListener</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment</a> ]
+</div>
+
+<h1>Coverage Summary for Class: EnvironmentLoadedListener (de.gurkenlabs.litiengine.environment)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">EnvironmentLoadedListener</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.util.EventListener;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * This listener provides callbacks for when an &lt;code&gt;Environment&lt;/code&gt; was loaded.
+<i>7</i>&nbsp; * 
+<i>8</i>&nbsp; * @see Environment#load()
+<i>9</i>&nbsp; */
+<i>10</i>&nbsp;public interface EnvironmentLoadedListener extends EventListener {
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;  /**
+<i>13</i>&nbsp;   * This method was called after the environment was loaded.
+<i>14</i>&nbsp;   * 
+<i>15</i>&nbsp;   * @param environment
+<i>16</i>&nbsp;   *          The environment that was loaded.
+<i>17</i>&nbsp;   */
+<i>18</i>&nbsp;  public void loaded(Environment environment);
+<i>19</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

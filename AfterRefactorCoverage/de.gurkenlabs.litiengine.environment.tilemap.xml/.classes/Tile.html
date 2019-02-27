@@ -1,0 +1,247 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Tile</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment.tilemap.xml</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Tile (de.gurkenlabs.litiengine.environment.tilemap.xml)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Tile</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    52.6%
+  </span>
+  <span class="absValue">
+    (10/ 19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    38.8%
+  </span>
+  <span class="absValue">
+    (19/ 49)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment.tilemap.xml;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Point;
+<i>4</i>&nbsp;import java.io.Serializable;
+<i>5</i>&nbsp;import java.util.Objects;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import javax.xml.bind.Marshaller;
+<i>8</i>&nbsp;import javax.xml.bind.annotation.XmlAccessType;
+<i>9</i>&nbsp;import javax.xml.bind.annotation.XmlAccessorType;
+<i>10</i>&nbsp;import javax.xml.bind.annotation.XmlAttribute;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.ICustomProperty;
+<i>13</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.ITile;
+<i>14</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.ITilesetEntry;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;@XmlAccessorType(XmlAccessType.FIELD)
+<i>17</i>&nbsp;public class Tile extends CustomPropertyProvider implements ITile, Serializable {
+<i>18</i>&nbsp;  public static final int NONE = 0;
+<b class="fc"><i>19</i>&nbsp;  public static final Tile EMPTY = new Tile(NONE);</b>
+<i>20</i>&nbsp;  protected static final int FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
+<i>21</i>&nbsp;  protected static final int FLIPPED_VERTICALLY_FLAG = 0x40000000;
+<i>22</i>&nbsp;  protected static final int FLIPPED_DIAGONALLY_FLAG = 0x20000000;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;  private static final long serialVersionUID = -7597673646108642906L;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;  @XmlAttribute
+<i>27</i>&nbsp;  private Integer gid;
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;  private transient Point tileCoordinate;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;  private transient ITilesetEntry tilesetEntry;
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;  private transient boolean flippedDiagonally;
+<i>34</i>&nbsp;  private transient boolean flippedHorizontally;
+<i>35</i>&nbsp;  private transient boolean flippedVertically;
+<i>36</i>&nbsp;  private transient boolean flipped;
+<i>37</i>&nbsp;
+<b class="nc"><i>38</i>&nbsp;  public Tile() {</b>
+<b class="nc"><i>39</i>&nbsp;  }</b>
+<i>40</i>&nbsp;
+<b class="fc"><i>41</i>&nbsp;  public Tile(int gidBitmask) {</b>
+<i>42</i>&nbsp;    // Clear the flags
+<b class="fc"><i>43</i>&nbsp;    this.flippedDiagonally = (gidBitmask &amp; FLIPPED_DIAGONALLY_FLAG) != 0;</b>
+<b class="fc"><i>44</i>&nbsp;    this.flippedHorizontally = (gidBitmask &amp; FLIPPED_HORIZONTALLY_FLAG) != 0;</b>
+<b class="fc"><i>45</i>&nbsp;    this.flippedVertically = (gidBitmask &amp; FLIPPED_VERTICALLY_FLAG) != 0;</b>
+<i>46</i>&nbsp;
+<b class="fc"><i>47</i>&nbsp;    this.flipped = this.isFlippedDiagonally() || this.isFlippedHorizontally() || this.isFlippedVertically();</b>
+<b class="fc"><i>48</i>&nbsp;    this.gid = gidBitmask &amp; ~(FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG);</b>
+<b class="fc"><i>49</i>&nbsp;  }</b>
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;  @Override
+<i>52</i>&nbsp;  public boolean hasCustomProperty(String name) {
+<b class="nc"><i>53</i>&nbsp;    return this.getTilesetEntry() == null ? super.hasCustomProperty(name) : this.getTilesetEntry().hasCustomProperty(name);</b>
+<i>54</i>&nbsp;  }
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;  @Override
+<i>57</i>&nbsp;  public java.util.Map&lt;String, ICustomProperty&gt; getProperties() {
+<b class="fc"><i>58</i>&nbsp;    return this.getTilesetEntry() == null ? super.getProperties() : this.getTilesetEntry().getProperties();</b>
+<i>59</i>&nbsp;  }
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;  @Override
+<i>62</i>&nbsp;  public void setProperties(java.util.Map&lt;String, ICustomProperty&gt; props) {
+<b class="nc"><i>63</i>&nbsp;    if (this.getTilesetEntry() == null) {</b>
+<b class="nc"><i>64</i>&nbsp;      super.setProperties(props);</b>
+<i>65</i>&nbsp;    } else {
+<b class="nc"><i>66</i>&nbsp;      this.getTilesetEntry().setProperties(props);</b>
+<i>67</i>&nbsp;    }
+<b class="nc"><i>68</i>&nbsp;  }</b>
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;  @Override
+<i>71</i>&nbsp;  public boolean isFlippedDiagonally() {
+<b class="fc"><i>72</i>&nbsp;    return this.flippedDiagonally;</b>
+<i>73</i>&nbsp;  }
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;  @Override
+<i>76</i>&nbsp;  public boolean isFlippedHorizontally() {
+<b class="fc"><i>77</i>&nbsp;    return this.flippedHorizontally;</b>
+<i>78</i>&nbsp;  }
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;  @Override
+<i>81</i>&nbsp;  public boolean isFlippedVertically() {
+<b class="fc"><i>82</i>&nbsp;    return this.flippedVertically;</b>
+<i>83</i>&nbsp;  }
+<i>84</i>&nbsp;
+<i>85</i>&nbsp;  @Override
+<i>86</i>&nbsp;  public boolean isFlipped() {
+<b class="nc"><i>87</i>&nbsp;    return this.flipped;</b>
+<i>88</i>&nbsp;  }
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;  @Override
+<i>91</i>&nbsp;  public int getGridId() {
+<b class="fc"><i>92</i>&nbsp;    if (this.gid == null) {</b>
+<b class="nc"><i>93</i>&nbsp;      return 0;</b>
+<i>94</i>&nbsp;    }
+<i>95</i>&nbsp;
+<b class="fc"><i>96</i>&nbsp;    return this.gid;</b>
+<i>97</i>&nbsp;  }
+<i>98</i>&nbsp;
+<i>99</i>&nbsp;  @Override
+<i>100</i>&nbsp;  public Point getTileCoordinate() {
+<b class="nc"><i>101</i>&nbsp;    return this.tileCoordinate;</b>
+<i>102</i>&nbsp;  }
+<i>103</i>&nbsp;
+<i>104</i>&nbsp;  /**
+<i>105</i>&nbsp;   * Sets the tile coordinate.
+<i>106</i>&nbsp;   *
+<i>107</i>&nbsp;   * @param tileCoordinate
+<i>108</i>&nbsp;   *          the new tile coordinate
+<i>109</i>&nbsp;   */
+<i>110</i>&nbsp;  public void setTileCoordinate(final Point tileCoordinate) {
+<b class="fc"><i>111</i>&nbsp;    this.tileCoordinate = tileCoordinate;</b>
+<b class="fc"><i>112</i>&nbsp;  }</b>
+<i>113</i>&nbsp;
+<i>114</i>&nbsp;  @Override
+<i>115</i>&nbsp;  public boolean equals(Object anObject) {
+<b class="nc"><i>116</i>&nbsp;    if (this == anObject) {</b>
+<b class="nc"><i>117</i>&nbsp;      return true;</b>
+<i>118</i>&nbsp;    }
+<b class="nc"><i>119</i>&nbsp;    if (!(anObject instanceof ITile)) {</b>
+<b class="nc"><i>120</i>&nbsp;      return false;</b>
+<i>121</i>&nbsp;    }
+<b class="nc"><i>122</i>&nbsp;    ITile other = (ITile) anObject;</b>
+<b class="nc"><i>123</i>&nbsp;    return this.getGridId() == other.getGridId() &amp;&amp; this.isFlippedDiagonally() == other.isFlippedDiagonally()</b>
+<b class="nc"><i>124</i>&nbsp;        &amp;&amp; this.isFlippedHorizontally() == other.isFlippedHorizontally() &amp;&amp; this.isFlippedVertically() == other.isFlippedVertically();</b>
+<i>125</i>&nbsp;  }
+<i>126</i>&nbsp;
+<i>127</i>&nbsp;  @Override
+<i>128</i>&nbsp;  public int hashCode() {
+<b class="nc"><i>129</i>&nbsp;    int hash = this.getGridId();</b>
+<b class="nc"><i>130</i>&nbsp;    if (this.isFlipped()) {</b>
+<b class="nc"><i>131</i>&nbsp;      if (this.isFlippedDiagonally()) {</b>
+<b class="nc"><i>132</i>&nbsp;        hash |= FLIPPED_DIAGONALLY_FLAG;</b>
+<i>133</i>&nbsp;      }
+<b class="nc"><i>134</i>&nbsp;      if (this.isFlippedHorizontally()) {</b>
+<b class="nc"><i>135</i>&nbsp;        hash |= FLIPPED_HORIZONTALLY_FLAG;</b>
+<i>136</i>&nbsp;      }
+<b class="nc"><i>137</i>&nbsp;      if (this.isFlippedVertically()) {</b>
+<b class="nc"><i>138</i>&nbsp;        hash |= FLIPPED_VERTICALLY_FLAG;</b>
+<i>139</i>&nbsp;      }
+<i>140</i>&nbsp;    }
+<b class="nc"><i>141</i>&nbsp;    return hash ^ Objects.hashCode(this.getTilesetEntry());</b>
+<i>142</i>&nbsp;  }
+<i>143</i>&nbsp;
+<i>144</i>&nbsp;  @Override
+<i>145</i>&nbsp;  public String toString() {
+<b class="nc"><i>146</i>&nbsp;    return this.getGridId() + String.valueOf(this.getTilesetEntry());</b>
+<i>147</i>&nbsp;  }
+<i>148</i>&nbsp;
+<i>149</i>&nbsp;  protected void setTilesetEntry(ITilesetEntry entry) {
+<b class="fc"><i>150</i>&nbsp;    this.tilesetEntry = entry;</b>
+<b class="fc"><i>151</i>&nbsp;  }</b>
+<i>152</i>&nbsp;
+<i>153</i>&nbsp;  @Override
+<i>154</i>&nbsp;  public ITilesetEntry getTilesetEntry() {
+<b class="fc"><i>155</i>&nbsp;    return this.tilesetEntry;</b>
+<i>156</i>&nbsp;  }
+<i>157</i>&nbsp;
+<i>158</i>&nbsp;  @SuppressWarnings(&quot;unused&quot;)
+<i>159</i>&nbsp;  private void beforeMarshal(Marshaller m) {
+<b class="nc"><i>160</i>&nbsp;    if (this.gid != null &amp;&amp; this.gid == 0) {</b>
+<b class="nc"><i>161</i>&nbsp;      this.gid = null;</b>
+<i>162</i>&nbsp;    }
+<b class="nc"><i>163</i>&nbsp;  }</b>
+<i>164</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

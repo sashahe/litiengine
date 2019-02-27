@@ -1,0 +1,564 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: EmitterData</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.graphics.emitters.xml</a> ]
+</div>
+
+<h1>Coverage Summary for Class: EmitterData (de.gurkenlabs.litiengine.graphics.emitters.xml)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EmitterData</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    64.7%
+  </span>
+  <span class="absValue">
+    (44/ 68)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    59.5%
+  </span>
+  <span class="absValue">
+    (94/ 158)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.graphics.emitters.xml;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Color;
+<i>4</i>&nbsp;import java.io.Serializable;
+<i>5</i>&nbsp;import java.util.ArrayList;
+<i>6</i>&nbsp;import java.util.List;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import javax.xml.bind.annotation.XmlAccessType;
+<i>9</i>&nbsp;import javax.xml.bind.annotation.XmlAccessorType;
+<i>10</i>&nbsp;import javax.xml.bind.annotation.XmlAttribute;
+<i>11</i>&nbsp;import javax.xml.bind.annotation.XmlElement;
+<i>12</i>&nbsp;import javax.xml.bind.annotation.XmlElementWrapper;
+<i>13</i>&nbsp;import javax.xml.bind.annotation.XmlRootElement;
+<i>14</i>&nbsp;import javax.xml.bind.annotation.XmlTransient;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;import de.gurkenlabs.litiengine.Align;
+<i>17</i>&nbsp;import de.gurkenlabs.litiengine.Valign;
+<i>18</i>&nbsp;import de.gurkenlabs.litiengine.graphics.emitters.Emitter;
+<i>19</i>&nbsp;import de.gurkenlabs.litiengine.graphics.emitters.particles.ParticleType;
+<i>20</i>&nbsp;import de.gurkenlabs.litiengine.physics.CollisionType;
+<i>21</i>&nbsp;import de.gurkenlabs.litiengine.resources.Resource;
+<i>22</i>&nbsp;import de.gurkenlabs.litiengine.util.ArrayUtilities;
+<i>23</i>&nbsp;import de.gurkenlabs.litiengine.util.MathUtilities;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;@XmlRootElement(name = &quot;emitter&quot;)
+<i>26</i>&nbsp;@XmlAccessorType(XmlAccessType.FIELD)
+<i>27</i>&nbsp;public class EmitterData implements Serializable, Resource {
+<i>28</i>&nbsp;  private static final long serialVersionUID = 50238884097993529L;
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;  @XmlElementWrapper(name = &quot;colors&quot;)
+<i>31</i>&nbsp;  @XmlElement(name = &quot;color&quot;)
+<i>32</i>&nbsp;  private List&lt;ParticleColor&gt; colors;
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;  @XmlElement
+<i>35</i>&nbsp;  private ParticleParameter deltaHeight;
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;  @XmlElement
+<i>38</i>&nbsp;  private ParticleParameter deltaWidth;
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;  @XmlElement
+<i>41</i>&nbsp;  private ParticleParameter deltaX;
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;  @XmlElement
+<i>44</i>&nbsp;  private ParticleParameter deltaY;
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;  @XmlAttribute
+<i>47</i>&nbsp;  private int emitterTTL;
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;  @XmlElement
+<i>50</i>&nbsp;  private ParticleParameter gravityX;
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;  @XmlElement
+<i>53</i>&nbsp;  private ParticleParameter gravityY;
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;  @XmlAttribute
+<i>56</i>&nbsp;  private float height;
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;  @XmlAttribute
+<i>59</i>&nbsp;  private int maxParticles;
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;  @XmlAttribute
+<i>62</i>&nbsp;  private String name;
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;  @XmlElement
+<i>65</i>&nbsp;  private ParticleParameter particleHeight;
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;  @XmlAttribute
+<i>68</i>&nbsp;  private int particleMaxTTL;
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;  @XmlAttribute
+<i>71</i>&nbsp;  private int particleMinTTL;
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;  @XmlElement
+<i>74</i>&nbsp;  private String particleText;
+<i>75</i>&nbsp;
+<i>76</i>&nbsp;  @XmlAttribute
+<i>77</i>&nbsp;  private ParticleType particleType;
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;  @XmlElement
+<i>80</i>&nbsp;  private ParticleParameter particleWidth;
+<i>81</i>&nbsp;
+<i>82</i>&nbsp;  @XmlAttribute
+<i>83</i>&nbsp;  private int spawnAmount;
+<i>84</i>&nbsp;
+<i>85</i>&nbsp;  @XmlAttribute
+<i>86</i>&nbsp;  private int spawnRate;
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;  @XmlAttribute
+<i>89</i>&nbsp;  private int updateRate;
+<i>90</i>&nbsp;
+<i>91</i>&nbsp;  @XmlAttribute
+<i>92</i>&nbsp;  private float width;
+<i>93</i>&nbsp;
+<i>94</i>&nbsp;  @XmlElement
+<i>95</i>&nbsp;  private float colorDeviation;
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;  @XmlElement
+<i>98</i>&nbsp;  private float alphaDeviation;
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;  @XmlElement
+<i>101</i>&nbsp;  private ParticleParameter x;
+<i>102</i>&nbsp;
+<i>103</i>&nbsp;  @XmlElement
+<i>104</i>&nbsp;  private ParticleParameter y;
+<i>105</i>&nbsp;
+<i>106</i>&nbsp;  @XmlElement
+<i>107</i>&nbsp;  private boolean animateSprite;
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;  @XmlElement
+<i>110</i>&nbsp;  private String spritesheet;
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;  @XmlElement
+<i>113</i>&nbsp;  private String colorProbabilities;
+<i>114</i>&nbsp;
+<i>115</i>&nbsp;  @XmlElement
+<i>116</i>&nbsp;  private Align originAlign;
+<i>117</i>&nbsp;
+<i>118</i>&nbsp;  @XmlElement
+<i>119</i>&nbsp;  private Valign originValign;
+<i>120</i>&nbsp;
+<i>121</i>&nbsp;  @XmlElement
+<i>122</i>&nbsp;  private CollisionType collisionType;
+<i>123</i>&nbsp;
+<i>124</i>&nbsp;  @XmlElement
+<i>125</i>&nbsp;  private boolean fade;
+<i>126</i>&nbsp;
+<b class="fc"><i>127</i>&nbsp;  public EmitterData() {</b>
+<b class="fc"><i>128</i>&nbsp;    this.colors = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>129</i>&nbsp;    this.x = new ParticleParameter();</b>
+<b class="fc"><i>130</i>&nbsp;    this.y = new ParticleParameter();</b>
+<b class="fc"><i>131</i>&nbsp;    this.deltaX = new ParticleParameter();</b>
+<b class="fc"><i>132</i>&nbsp;    this.deltaY = new ParticleParameter();</b>
+<b class="fc"><i>133</i>&nbsp;    this.gravityX = new ParticleParameter();</b>
+<b class="fc"><i>134</i>&nbsp;    this.gravityY = new ParticleParameter();</b>
+<b class="fc"><i>135</i>&nbsp;    this.particleWidth = new ParticleParameter();</b>
+<b class="fc"><i>136</i>&nbsp;    this.particleHeight = new ParticleParameter();</b>
+<b class="fc"><i>137</i>&nbsp;    this.deltaWidth = new ParticleParameter();</b>
+<b class="fc"><i>138</i>&nbsp;    this.deltaHeight = new ParticleParameter();</b>
+<b class="fc"><i>139</i>&nbsp;    this.colorDeviation = 0;</b>
+<b class="fc"><i>140</i>&nbsp;    this.alphaDeviation = 0;</b>
+<b class="fc"><i>141</i>&nbsp;    this.collisionType = CollisionType.NONE;</b>
+<b class="fc"><i>142</i>&nbsp;    this.updateRate = Emitter.DEFAULT_UPDATERATE;</b>
+<b class="fc"><i>143</i>&nbsp;    this.originValign = Valign.TOP;</b>
+<b class="fc"><i>144</i>&nbsp;    this.originAlign = Align.LEFT;</b>
+<b class="fc"><i>145</i>&nbsp;    this.fade = true;</b>
+<b class="fc"><i>146</i>&nbsp;  }</b>
+<i>147</i>&nbsp;
+<b class="nc"><i>148</i>&nbsp;  public EmitterData(EmitterData data) {</b>
+<b class="nc"><i>149</i>&nbsp;    this.colors = data.colors;</b>
+<b class="nc"><i>150</i>&nbsp;    this.colorProbabilities = data.colorProbabilities;</b>
+<b class="nc"><i>151</i>&nbsp;    this.x = data.x;</b>
+<b class="nc"><i>152</i>&nbsp;    this.y = data.y;</b>
+<b class="nc"><i>153</i>&nbsp;    this.deltaHeight = data.deltaHeight;</b>
+<b class="nc"><i>154</i>&nbsp;    this.deltaWidth = data.deltaWidth;</b>
+<b class="nc"><i>155</i>&nbsp;    this.deltaX = data.deltaX;</b>
+<b class="nc"><i>156</i>&nbsp;    this.deltaY = data.deltaY;</b>
+<b class="nc"><i>157</i>&nbsp;    this.emitterTTL = data.emitterTTL;</b>
+<b class="nc"><i>158</i>&nbsp;    this.gravityX = data.gravityX;</b>
+<b class="nc"><i>159</i>&nbsp;    this.gravityY = data.gravityY;</b>
+<b class="nc"><i>160</i>&nbsp;    this.width = data.width;</b>
+<b class="nc"><i>161</i>&nbsp;    this.height = data.height;</b>
+<b class="nc"><i>162</i>&nbsp;    this.particleWidth = data.particleWidth;</b>
+<b class="nc"><i>163</i>&nbsp;    this.particleHeight = data.particleHeight;</b>
+<b class="nc"><i>164</i>&nbsp;    this.colorDeviation = data.colorDeviation;</b>
+<b class="nc"><i>165</i>&nbsp;    this.alphaDeviation = data.alphaDeviation;</b>
+<b class="nc"><i>166</i>&nbsp;    this.updateRate = data.updateRate;</b>
+<b class="nc"><i>167</i>&nbsp;    this.collisionType = data.collisionType;</b>
+<b class="nc"><i>168</i>&nbsp;    this.maxParticles = data.maxParticles;</b>
+<b class="nc"><i>169</i>&nbsp;    this.name = data.name;</b>
+<b class="nc"><i>170</i>&nbsp;    this.particleMinTTL = data.particleMinTTL;</b>
+<b class="nc"><i>171</i>&nbsp;    this.particleMaxTTL = data.particleMaxTTL;</b>
+<b class="nc"><i>172</i>&nbsp;    this.particleText = data.particleText;</b>
+<b class="nc"><i>173</i>&nbsp;    this.particleType = data.particleType;</b>
+<b class="nc"><i>174</i>&nbsp;    this.spawnAmount = data.spawnAmount;</b>
+<b class="nc"><i>175</i>&nbsp;    this.spawnRate = data.spawnRate;</b>
+<b class="nc"><i>176</i>&nbsp;    this.animateSprite = data.animateSprite;</b>
+<b class="nc"><i>177</i>&nbsp;    this.spritesheet = data.spritesheet;</b>
+<b class="nc"><i>178</i>&nbsp;    this.originValign = data.getOriginValign();</b>
+<b class="nc"><i>179</i>&nbsp;    this.originAlign = data.getOriginAlign();</b>
+<b class="nc"><i>180</i>&nbsp;    this.fade = data.fade;</b>
+<b class="nc"><i>181</i>&nbsp;  }</b>
+<i>182</i>&nbsp;
+<i>183</i>&nbsp;  @XmlTransient
+<i>184</i>&nbsp;  public float getColorDeviation() {
+<b class="nc"><i>185</i>&nbsp;    return colorDeviation;</b>
+<i>186</i>&nbsp;  }
+<i>187</i>&nbsp;
+<i>188</i>&nbsp;  @XmlTransient
+<i>189</i>&nbsp;  public float getAlphaDeviation() {
+<b class="nc"><i>190</i>&nbsp;    return alphaDeviation;</b>
+<i>191</i>&nbsp;  }
+<i>192</i>&nbsp;
+<i>193</i>&nbsp;  @XmlTransient
+<i>194</i>&nbsp;  public List&lt;ParticleColor&gt; getColors() {
+<b class="fc"><i>195</i>&nbsp;    return this.colors;</b>
+<i>196</i>&nbsp;  }
+<i>197</i>&nbsp;
+<i>198</i>&nbsp;  @XmlTransient
+<i>199</i>&nbsp;  public ParticleParameter getDeltaHeight() {
+<b class="nc"><i>200</i>&nbsp;    return this.deltaHeight;</b>
+<i>201</i>&nbsp;  }
+<i>202</i>&nbsp;
+<i>203</i>&nbsp;  @XmlTransient
+<i>204</i>&nbsp;  public ParticleParameter getDeltaWidth() {
+<b class="nc"><i>205</i>&nbsp;    return this.deltaWidth;</b>
+<i>206</i>&nbsp;  }
+<i>207</i>&nbsp;
+<i>208</i>&nbsp;  @XmlTransient
+<i>209</i>&nbsp;  public ParticleParameter getDeltaX() {
+<b class="nc"><i>210</i>&nbsp;    return this.deltaX;</b>
+<i>211</i>&nbsp;  }
+<i>212</i>&nbsp;
+<i>213</i>&nbsp;  @XmlTransient
+<i>214</i>&nbsp;  public ParticleParameter getDeltaY() {
+<b class="nc"><i>215</i>&nbsp;    return this.deltaY;</b>
+<i>216</i>&nbsp;  }
+<i>217</i>&nbsp;
+<i>218</i>&nbsp;  @XmlTransient
+<i>219</i>&nbsp;  public int getEmitterTTL() {
+<b class="fc"><i>220</i>&nbsp;    return this.emitterTTL;</b>
+<i>221</i>&nbsp;  }
+<i>222</i>&nbsp;
+<i>223</i>&nbsp;  @XmlTransient
+<i>224</i>&nbsp;  public ParticleParameter getGravityX() {
+<b class="nc"><i>225</i>&nbsp;    return this.gravityX;</b>
+<i>226</i>&nbsp;  }
+<i>227</i>&nbsp;
+<i>228</i>&nbsp;  @XmlTransient
+<i>229</i>&nbsp;  public ParticleParameter getGravityY() {
+<b class="nc"><i>230</i>&nbsp;    return this.gravityY;</b>
+<i>231</i>&nbsp;  }
+<i>232</i>&nbsp;
+<i>233</i>&nbsp;  @XmlTransient
+<i>234</i>&nbsp;  public float getHeight() {
+<b class="fc"><i>235</i>&nbsp;    return this.height;</b>
+<i>236</i>&nbsp;  }
+<i>237</i>&nbsp;
+<i>238</i>&nbsp;  @XmlTransient
+<i>239</i>&nbsp;  public int getMaxParticles() {
+<b class="fc"><i>240</i>&nbsp;    return this.maxParticles;</b>
+<i>241</i>&nbsp;  }
+<i>242</i>&nbsp;
+<i>243</i>&nbsp;  @XmlTransient
+<i>244</i>&nbsp;  public String getName() {
+<b class="nc"><i>245</i>&nbsp;    return this.name;</b>
+<i>246</i>&nbsp;  }
+<i>247</i>&nbsp;
+<i>248</i>&nbsp;  @XmlTransient
+<i>249</i>&nbsp;  public Align getOriginAlign() {
+<b class="fc"><i>250</i>&nbsp;    return this.originAlign;</b>
+<i>251</i>&nbsp;  }
+<i>252</i>&nbsp;
+<i>253</i>&nbsp;  public Valign getOriginValign() {
+<b class="fc"><i>254</i>&nbsp;    return this.originValign;</b>
+<i>255</i>&nbsp;  }
+<i>256</i>&nbsp;
+<i>257</i>&nbsp;  @XmlTransient
+<i>258</i>&nbsp;  public ParticleParameter getParticleHeight() {
+<b class="nc"><i>259</i>&nbsp;    return this.particleHeight;</b>
+<i>260</i>&nbsp;  }
+<i>261</i>&nbsp;
+<i>262</i>&nbsp;  @XmlTransient
+<i>263</i>&nbsp;  public int getParticleMaxTTL() {
+<b class="fc"><i>264</i>&nbsp;    return this.particleMaxTTL;</b>
+<i>265</i>&nbsp;  }
+<i>266</i>&nbsp;
+<i>267</i>&nbsp;  @XmlTransient
+<i>268</i>&nbsp;  public int getParticleMinTTL() {
+<b class="fc"><i>269</i>&nbsp;    return this.particleMinTTL;</b>
+<i>270</i>&nbsp;  }
+<i>271</i>&nbsp;
+<i>272</i>&nbsp;  @XmlTransient
+<i>273</i>&nbsp;  public String getParticleText() {
+<b class="nc"><i>274</i>&nbsp;    return this.particleText;</b>
+<i>275</i>&nbsp;  }
+<i>276</i>&nbsp;
+<i>277</i>&nbsp;  @XmlTransient
+<i>278</i>&nbsp;  public ParticleType getParticleType() {
+<b class="nc"><i>279</i>&nbsp;    return this.particleType;</b>
+<i>280</i>&nbsp;  }
+<i>281</i>&nbsp;
+<i>282</i>&nbsp;  @XmlTransient
+<i>283</i>&nbsp;  public ParticleParameter getParticleWidth() {
+<b class="nc"><i>284</i>&nbsp;    return this.particleWidth;</b>
+<i>285</i>&nbsp;  }
+<i>286</i>&nbsp;
+<i>287</i>&nbsp;  @XmlTransient
+<i>288</i>&nbsp;  public ParticleParameter getParticleX() {
+<b class="nc"><i>289</i>&nbsp;    return this.x;</b>
+<i>290</i>&nbsp;  }
+<i>291</i>&nbsp;
+<i>292</i>&nbsp;  @XmlTransient
+<i>293</i>&nbsp;  public ParticleParameter getParticleY() {
+<b class="nc"><i>294</i>&nbsp;    return this.y;</b>
+<i>295</i>&nbsp;  }
+<i>296</i>&nbsp;
+<i>297</i>&nbsp;  @XmlTransient
+<i>298</i>&nbsp;  public int getSpawnAmount() {
+<b class="fc"><i>299</i>&nbsp;    return this.spawnAmount;</b>
+<i>300</i>&nbsp;  }
+<i>301</i>&nbsp;
+<i>302</i>&nbsp;  @XmlTransient
+<i>303</i>&nbsp;  public CollisionType getCollisionType() {
+<b class="nc"><i>304</i>&nbsp;    return this.collisionType;</b>
+<i>305</i>&nbsp;  }
+<i>306</i>&nbsp;
+<i>307</i>&nbsp;  @XmlTransient
+<i>308</i>&nbsp;  public int getSpawnRate() {
+<b class="fc"><i>309</i>&nbsp;    return this.spawnRate;</b>
+<i>310</i>&nbsp;  }
+<i>311</i>&nbsp;
+<i>312</i>&nbsp;  public boolean isAnimateSprite() {
+<b class="nc"><i>313</i>&nbsp;    return animateSprite;</b>
+<i>314</i>&nbsp;  }
+<i>315</i>&nbsp;
+<i>316</i>&nbsp;  public boolean isFading() {
+<b class="nc"><i>317</i>&nbsp;    return this.fade;</b>
+<i>318</i>&nbsp;  }
+<i>319</i>&nbsp;
+<i>320</i>&nbsp;  public void setAnimateSprite(boolean animateSprite) {
+<b class="fc"><i>321</i>&nbsp;    this.animateSprite = animateSprite;</b>
+<b class="fc"><i>322</i>&nbsp;  }</b>
+<i>323</i>&nbsp;
+<i>324</i>&nbsp;  @XmlTransient
+<i>325</i>&nbsp;  public String getSpritesheet() {
+<b class="nc"><i>326</i>&nbsp;    return spritesheet;</b>
+<i>327</i>&nbsp;  }
+<i>328</i>&nbsp;
+<i>329</i>&nbsp;  public void setSpritesheet(String spritesheet) {
+<b class="fc"><i>330</i>&nbsp;    this.spritesheet = spritesheet;</b>
+<b class="fc"><i>331</i>&nbsp;  }</b>
+<i>332</i>&nbsp;
+<i>333</i>&nbsp;  @XmlTransient
+<i>334</i>&nbsp;  public int getUpdateRate() {
+<b class="fc"><i>335</i>&nbsp;    return this.updateRate;</b>
+<i>336</i>&nbsp;  }
+<i>337</i>&nbsp;
+<i>338</i>&nbsp;  @XmlTransient
+<i>339</i>&nbsp;  public float getWidth() {
+<b class="fc"><i>340</i>&nbsp;    return this.width;</b>
+<i>341</i>&nbsp;  }
+<i>342</i>&nbsp;
+<i>343</i>&nbsp;  @XmlTransient
+<i>344</i>&nbsp;  public double[] getColorProbabilities() {
+<b class="nc"><i>345</i>&nbsp;    return ArrayUtilities.getDoubleArray(this.colorProbabilities);</b>
+<i>346</i>&nbsp;  }
+<i>347</i>&nbsp;
+<i>348</i>&nbsp;  public void setColorProbabilities(double[] colorProbabilities) {
+<b class="nc"><i>349</i>&nbsp;    this.colorProbabilities = ArrayUtilities.join(colorProbabilities);</b>
+<b class="nc"><i>350</i>&nbsp;  }</b>
+<i>351</i>&nbsp;
+<i>352</i>&nbsp;  public void setColorProbabilities(String colorProbabilities) {
+<b class="fc"><i>353</i>&nbsp;    this.colorProbabilities = colorProbabilities;</b>
+<b class="fc"><i>354</i>&nbsp;  }</b>
+<i>355</i>&nbsp;
+<i>356</i>&nbsp;  public void setColors(final List&lt;ParticleColor&gt; colors) {
+<b class="fc"><i>357</i>&nbsp;    this.colors = colors;</b>
+<b class="fc"><i>358</i>&nbsp;  }</b>
+<i>359</i>&nbsp;
+<i>360</i>&nbsp;  public void setColor(Color color) {
+<b class="nc"><i>361</i>&nbsp;    List&lt;ParticleColor&gt; tmpList = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>362</i>&nbsp;    tmpList.add(new ParticleColor(color));</b>
+<b class="nc"><i>363</i>&nbsp;    this.colors = tmpList;</b>
+<b class="nc"><i>364</i>&nbsp;  }</b>
+<i>365</i>&nbsp;
+<i>366</i>&nbsp;  public void setAlphaDeviation(float alphaDeviation) {
+<b class="fc"><i>367</i>&nbsp;    this.alphaDeviation = MathUtilities.clamp(alphaDeviation, 0, 1);</b>
+<b class="fc"><i>368</i>&nbsp;  }</b>
+<i>369</i>&nbsp;
+<i>370</i>&nbsp;  public void setColorDeviation(float colorDeviation) {
+<b class="fc"><i>371</i>&nbsp;    this.colorDeviation = MathUtilities.clamp(colorDeviation, 0, 1);</b>
+<b class="fc"><i>372</i>&nbsp;  }</b>
+<i>373</i>&nbsp;
+<i>374</i>&nbsp;  public void setDeltaHeight(final ParticleParameter deltaHeight) {
+<b class="fc"><i>375</i>&nbsp;    this.deltaHeight = deltaHeight;</b>
+<b class="fc"><i>376</i>&nbsp;  }</b>
+<i>377</i>&nbsp;
+<i>378</i>&nbsp;  public void setDeltaWidth(final ParticleParameter deltaWidth) {
+<b class="fc"><i>379</i>&nbsp;    this.deltaWidth = deltaWidth;</b>
+<b class="fc"><i>380</i>&nbsp;  }</b>
+<i>381</i>&nbsp;
+<i>382</i>&nbsp;  public void setDeltaX(final ParticleParameter deltaX) {
+<b class="fc"><i>383</i>&nbsp;    this.deltaX = deltaX;</b>
+<b class="fc"><i>384</i>&nbsp;  }</b>
+<i>385</i>&nbsp;
+<i>386</i>&nbsp;  public void setDeltaY(final ParticleParameter deltaY) {
+<b class="fc"><i>387</i>&nbsp;    this.deltaY = deltaY;</b>
+<b class="fc"><i>388</i>&nbsp;  }</b>
+<i>389</i>&nbsp;
+<i>390</i>&nbsp;  public void setEmitterTTL(final int emitterTTL) {
+<b class="fc"><i>391</i>&nbsp;    this.emitterTTL = emitterTTL;</b>
+<b class="fc"><i>392</i>&nbsp;  }</b>
+<i>393</i>&nbsp;
+<i>394</i>&nbsp;  public void setFade(final boolean fade) {
+<b class="fc"><i>395</i>&nbsp;    this.fade = fade;</b>
+<b class="fc"><i>396</i>&nbsp;  }</b>
+<i>397</i>&nbsp;
+<i>398</i>&nbsp;  public void setGravityX(final ParticleParameter gravityX) {
+<b class="fc"><i>399</i>&nbsp;    this.gravityX = gravityX;</b>
+<b class="fc"><i>400</i>&nbsp;  }</b>
+<i>401</i>&nbsp;
+<i>402</i>&nbsp;  public void setGravityY(final ParticleParameter gravityY) {
+<b class="fc"><i>403</i>&nbsp;    this.gravityY = gravityY;</b>
+<b class="fc"><i>404</i>&nbsp;  }</b>
+<i>405</i>&nbsp;
+<i>406</i>&nbsp;  public void setHeight(final float height) {
+<b class="fc"><i>407</i>&nbsp;    this.height = height;</b>
+<b class="fc"><i>408</i>&nbsp;  }</b>
+<i>409</i>&nbsp;
+<i>410</i>&nbsp;  public void setMaxParticles(final int maxParticles) {
+<b class="fc"><i>411</i>&nbsp;    this.maxParticles = maxParticles;</b>
+<b class="fc"><i>412</i>&nbsp;  }</b>
+<i>413</i>&nbsp;
+<i>414</i>&nbsp;  public void setName(final String name) {
+<b class="nc"><i>415</i>&nbsp;    this.name = name;</b>
+<b class="nc"><i>416</i>&nbsp;  }</b>
+<i>417</i>&nbsp;
+<i>418</i>&nbsp;  public void setOriginAlign(Align align) {
+<b class="fc"><i>419</i>&nbsp;    this.originAlign = align;</b>
+<b class="fc"><i>420</i>&nbsp;  }</b>
+<i>421</i>&nbsp;
+<i>422</i>&nbsp;  public void setOriginValign(Valign valign) {
+<b class="fc"><i>423</i>&nbsp;    this.originValign = valign;</b>
+<b class="fc"><i>424</i>&nbsp;  }</b>
+<i>425</i>&nbsp;
+<i>426</i>&nbsp;  public void setParticleHeight(final ParticleParameter particleHeight) {
+<b class="fc"><i>427</i>&nbsp;    this.particleHeight = particleHeight;</b>
+<b class="fc"><i>428</i>&nbsp;  }</b>
+<i>429</i>&nbsp;
+<i>430</i>&nbsp;  public void setParticleMaxTTL(final int particleMaxTTL) {
+<b class="fc"><i>431</i>&nbsp;    this.particleMaxTTL = particleMaxTTL;</b>
+<b class="fc"><i>432</i>&nbsp;  }</b>
+<i>433</i>&nbsp;
+<i>434</i>&nbsp;  public void setParticleMinTTL(final int particleMinTTL) {
+<b class="fc"><i>435</i>&nbsp;    this.particleMinTTL = particleMinTTL;</b>
+<b class="fc"><i>436</i>&nbsp;  }</b>
+<i>437</i>&nbsp;
+<i>438</i>&nbsp;  public void setParticleText(final String particleText) {
+<b class="fc"><i>439</i>&nbsp;    this.particleText = particleText;</b>
+<b class="fc"><i>440</i>&nbsp;  }</b>
+<i>441</i>&nbsp;
+<i>442</i>&nbsp;  public void setParticleType(final ParticleType particleType) {
+<b class="fc"><i>443</i>&nbsp;    this.particleType = particleType;</b>
+<b class="fc"><i>444</i>&nbsp;  }</b>
+<i>445</i>&nbsp;
+<i>446</i>&nbsp;  public void setParticleWidth(final ParticleParameter particleWidth) {
+<b class="fc"><i>447</i>&nbsp;    this.particleWidth = particleWidth;</b>
+<b class="fc"><i>448</i>&nbsp;  }</b>
+<i>449</i>&nbsp;
+<i>450</i>&nbsp;  public void setCollisionType(CollisionType physics) {
+<b class="fc"><i>451</i>&nbsp;    this.collisionType = physics;</b>
+<b class="fc"><i>452</i>&nbsp;  }</b>
+<i>453</i>&nbsp;
+<i>454</i>&nbsp;  public void setSpawnAmount(final int spawnAmount) {
+<b class="fc"><i>455</i>&nbsp;    this.spawnAmount = spawnAmount;</b>
+<b class="fc"><i>456</i>&nbsp;  }</b>
+<i>457</i>&nbsp;
+<i>458</i>&nbsp;  public void setSpawnRate(final int spawnRate) {
+<b class="fc"><i>459</i>&nbsp;    this.spawnRate = spawnRate;</b>
+<b class="fc"><i>460</i>&nbsp;  }</b>
+<i>461</i>&nbsp;
+<i>462</i>&nbsp;  public void setUpdateRate(final int updateRate) {
+<b class="fc"><i>463</i>&nbsp;    if (updateRate == 0) {</b>
+<b class="fc"><i>464</i>&nbsp;      return;</b>
+<i>465</i>&nbsp;    }
+<i>466</i>&nbsp;
+<b class="nc"><i>467</i>&nbsp;    this.updateRate = updateRate;</b>
+<b class="nc"><i>468</i>&nbsp;  }</b>
+<i>469</i>&nbsp;
+<i>470</i>&nbsp;  public void setWidth(final float width) {
+<b class="fc"><i>471</i>&nbsp;    this.width = width;</b>
+<b class="fc"><i>472</i>&nbsp;  }</b>
+<i>473</i>&nbsp;
+<i>474</i>&nbsp;  public void setParticleX(final ParticleParameter x) {
+<b class="fc"><i>475</i>&nbsp;    this.x = x;</b>
+<b class="fc"><i>476</i>&nbsp;  }</b>
+<i>477</i>&nbsp;
+<i>478</i>&nbsp;  public void setParticleY(final ParticleParameter y) {
+<b class="fc"><i>479</i>&nbsp;    this.y = y;</b>
+<b class="fc"><i>480</i>&nbsp;  }</b>
+<i>481</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

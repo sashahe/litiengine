@@ -1,0 +1,149 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ParticleParameter</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.graphics.emitters.xml</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ParticleParameter (de.gurkenlabs.litiengine.graphics.emitters.xml)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ParticleParameter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    25%
+  </span>
+  <span class="absValue">
+    (2/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    37.5%
+  </span>
+  <span class="absValue">
+    (6/ 16)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.graphics.emitters.xml;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.io.Serializable;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import javax.xml.bind.annotation.XmlAttribute;
+<i>6</i>&nbsp;import javax.xml.bind.annotation.XmlRootElement;
+<i>7</i>&nbsp;import javax.xml.bind.annotation.XmlTransient;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import de.gurkenlabs.litiengine.util.MathUtilities;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;@XmlRootElement(name = &quot;param&quot;)
+<i>12</i>&nbsp;public class ParticleParameter implements Serializable {
+<i>13</i>&nbsp;  public static final int MAX_VALUE_UNDEFINED = -1;
+<i>14</i>&nbsp;  private static final long serialVersionUID = 4893417265998349179L;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;  @XmlAttribute
+<i>17</i>&nbsp;  private float maxValue;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;  @XmlAttribute
+<i>20</i>&nbsp;  private float minValue;
+<i>21</i>&nbsp;
+<b class="fc"><i>22</i>&nbsp;  public ParticleParameter() {</b>
+<b class="fc"><i>23</i>&nbsp;  }</b>
+<i>24</i>&nbsp;
+<b class="fc"><i>25</i>&nbsp;  public ParticleParameter(final float minValue, final float maxValue) {</b>
+<b class="fc"><i>26</i>&nbsp;    this.minValue = minValue;</b>
+<b class="fc"><i>27</i>&nbsp;    this.maxValue = maxValue;</b>
+<b class="fc"><i>28</i>&nbsp;  }</b>
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;  /**
+<i>31</i>&nbsp;   * Gets either the actual value or a random value, depending on the random
+<i>32</i>&nbsp;   * number flag being set.
+<i>33</i>&nbsp;   *
+<i>34</i>&nbsp;   * @return The value of this parameter.
+<i>35</i>&nbsp;   */
+<i>36</i>&nbsp;  public float get() {
+<b class="nc"><i>37</i>&nbsp;    if (maxValue != -1 &amp;&amp; minValue &lt; maxValue) {</b>
+<b class="nc"><i>38</i>&nbsp;      return this.getRandomNumber();</b>
+<i>39</i>&nbsp;    } else {
+<b class="nc"><i>40</i>&nbsp;      return this.getMinValue();</b>
+<i>41</i>&nbsp;    }
+<i>42</i>&nbsp;  }
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;  @XmlTransient
+<i>45</i>&nbsp;  public float getMaxValue() {
+<b class="nc"><i>46</i>&nbsp;    return this.maxValue;</b>
+<i>47</i>&nbsp;  }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;  @XmlTransient
+<i>50</i>&nbsp;  public float getMinValue() {
+<b class="nc"><i>51</i>&nbsp;    return this.minValue;</b>
+<i>52</i>&nbsp;  }
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;  @XmlTransient
+<i>55</i>&nbsp;  public float getRandomNumber() {
+<b class="nc"><i>56</i>&nbsp;    return (float) MathUtilities.randomInRange(this.getMinValue(), this.getMaxValue());</b>
+<i>57</i>&nbsp;  }
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;  public void setMaxValue(final float maxValue) {
+<b class="nc"><i>60</i>&nbsp;    this.maxValue = maxValue;</b>
+<b class="nc"><i>61</i>&nbsp;  }</b>
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;  public void setMinValue(final float minValue) {
+<b class="nc"><i>64</i>&nbsp;    this.minValue = minValue;</b>
+<b class="nc"><i>65</i>&nbsp;  }</b>
+<i>66</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

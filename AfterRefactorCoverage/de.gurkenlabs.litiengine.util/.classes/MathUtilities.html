@@ -1,0 +1,272 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MathUtilities</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.util</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MathUtilities (de.gurkenlabs.litiengine.util)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MathUtilities</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    56.5%
+  </span>
+  <span class="absValue">
+    (13/ 23)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    51.4%
+  </span>
+  <span class="absValue">
+    (37/ 72)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.util;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.math.BigDecimal;
+<i>4</i>&nbsp;import java.math.RoundingMode;
+<i>5</i>&nbsp;import java.util.Random;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;public class MathUtilities {
+<b class="fc"><i>8</i>&nbsp;  private static Random random = new Random();</b>
+<i>9</i>&nbsp;
+<b class="nc"><i>10</i>&nbsp;  private MathUtilities() {</b>
+<b class="nc"><i>11</i>&nbsp;    throw new UnsupportedOperationException();</b>
+<i>12</i>&nbsp;  }
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;  public static boolean equals(double d1, double d2, double epsilon) {
+<b class="nc"><i>15</i>&nbsp;    return Math.abs(d1 - d2) &lt;= epsilon;</b>
+<i>16</i>&nbsp;  }
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;  public static float round(float value, int places) {
+<b class="nc"><i>19</i>&nbsp;    return (float) round((double) value, places);</b>
+<i>20</i>&nbsp;  }
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;  public static double round(double value, int places) {
+<b class="nc"><i>23</i>&nbsp;    if (places &lt; 0) {</b>
+<b class="nc"><i>24</i>&nbsp;      throw new IllegalArgumentException();</b>
+<i>25</i>&nbsp;    }
+<i>26</i>&nbsp;
+<b class="nc"><i>27</i>&nbsp;    BigDecimal bd = BigDecimal.valueOf(value);</b>
+<b class="nc"><i>28</i>&nbsp;    bd = bd.setScale(places, RoundingMode.HALF_UP);</b>
+<b class="nc"><i>29</i>&nbsp;    return bd.doubleValue();</b>
+<i>30</i>&nbsp;  }
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;  public static double clamp(final double value, final double min, final double max) {
+<b class="fc"><i>33</i>&nbsp;    return Math.max(min, Math.min(max, value));</b>
+<i>34</i>&nbsp;  }
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;  public static float clamp(final float value, final float min, final float max) {
+<b class="fc"><i>37</i>&nbsp;    return Math.max(min, Math.min(max, value));</b>
+<i>38</i>&nbsp;  }
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;  public static int clamp(final int value, final int min, final int max) {
+<b class="fc"><i>41</i>&nbsp;    if (value &lt; min) {</b>
+<b class="fc"><i>42</i>&nbsp;      return min;</b>
+<i>43</i>&nbsp;    }
+<i>44</i>&nbsp;
+<b class="fc"><i>45</i>&nbsp;    if (value &gt; max) {</b>
+<b class="fc"><i>46</i>&nbsp;      return max;</b>
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;
+<b class="fc"><i>49</i>&nbsp;    return value;</b>
+<i>50</i>&nbsp;  }
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;  public static long clamp(final long value, final long min, final long max) {
+<b class="fc"><i>53</i>&nbsp;    if (value &lt; min) {</b>
+<b class="fc"><i>54</i>&nbsp;      return min;</b>
+<i>55</i>&nbsp;    }
+<i>56</i>&nbsp;
+<b class="fc"><i>57</i>&nbsp;    if (value &gt; max) {</b>
+<b class="fc"><i>58</i>&nbsp;      return max;</b>
+<i>59</i>&nbsp;    }
+<i>60</i>&nbsp;
+<b class="fc"><i>61</i>&nbsp;    return value;</b>
+<i>62</i>&nbsp;  }
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;  public static double getAverage(final double[] numbers) {
+<b class="fc"><i>65</i>&nbsp;    double sum = 0;</b>
+<b class="fc"><i>66</i>&nbsp;    for (final double number : numbers) {</b>
+<b class="fc"><i>67</i>&nbsp;      if (number != 0) {</b>
+<b class="fc"><i>68</i>&nbsp;        sum += number;</b>
+<i>69</i>&nbsp;      }
+<i>70</i>&nbsp;    }
+<i>71</i>&nbsp;
+<b class="fc"><i>72</i>&nbsp;    return sum / numbers.length;</b>
+<i>73</i>&nbsp;  }
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;  public static float getAverage(final float[] numbers) {
+<b class="fc"><i>76</i>&nbsp;    float sum = 0;</b>
+<b class="fc"><i>77</i>&nbsp;    for (final float number : numbers) {</b>
+<b class="fc"><i>78</i>&nbsp;      if (number != 0) {</b>
+<b class="fc"><i>79</i>&nbsp;        sum += number;</b>
+<i>80</i>&nbsp;      }
+<i>81</i>&nbsp;    }
+<i>82</i>&nbsp;
+<b class="fc"><i>83</i>&nbsp;    return sum / numbers.length;</b>
+<i>84</i>&nbsp;  }
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;  public static int getAverage(final int[] numbers) {
+<b class="fc"><i>87</i>&nbsp;    int sum = 0;</b>
+<b class="fc"><i>88</i>&nbsp;    for (final int number : numbers) {</b>
+<b class="fc"><i>89</i>&nbsp;      if (number != 0) {</b>
+<b class="fc"><i>90</i>&nbsp;        sum += number;</b>
+<i>91</i>&nbsp;      }
+<i>92</i>&nbsp;    }
+<i>93</i>&nbsp;
+<b class="fc"><i>94</i>&nbsp;    return sum / numbers.length;</b>
+<i>95</i>&nbsp;  }
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;  public static int getMax(final int... numbers) {
+<b class="nc"><i>98</i>&nbsp;    int max = Integer.MIN_VALUE;</b>
+<b class="nc"><i>99</i>&nbsp;    for (int i = 0; i &lt; numbers.length; i++) {</b>
+<b class="nc"><i>100</i>&nbsp;      if (numbers[i] &gt; max) {</b>
+<b class="nc"><i>101</i>&nbsp;        max = numbers[i];</b>
+<i>102</i>&nbsp;      }
+<i>103</i>&nbsp;    }
+<b class="nc"><i>104</i>&nbsp;    return max;</b>
+<i>105</i>&nbsp;  }
+<i>106</i>&nbsp;
+<i>107</i>&nbsp;  /**
+<i>108</i>&nbsp;   * The index probabilities must sum up to 1;
+<i>109</i>&nbsp;   *
+<i>110</i>&nbsp;   * @param indexProbabilities
+<i>111</i>&nbsp;   *          The index with the probabilities for the related index.
+<i>112</i>&nbsp;   * @return A random index within the range of the specified array.
+<i>113</i>&nbsp;   */
+<i>114</i>&nbsp;  public static int getRandomIndex(final double[] indexProbabilities) {
+<b class="nc"><i>115</i>&nbsp;    final double rnd = random.nextDouble();</b>
+<b class="nc"><i>116</i>&nbsp;    double probSum = 0;</b>
+<b class="nc"><i>117</i>&nbsp;    for (int i = 0; i &lt; indexProbabilities.length; i++) {</b>
+<b class="nc"><i>118</i>&nbsp;      final double newProbSum = probSum + indexProbabilities[i];</b>
+<b class="nc"><i>119</i>&nbsp;      if (rnd &gt;= probSum &amp;&amp; rnd &lt; newProbSum) {</b>
+<b class="nc"><i>120</i>&nbsp;        return i;</b>
+<i>121</i>&nbsp;      }
+<i>122</i>&nbsp;
+<b class="nc"><i>123</i>&nbsp;      probSum = newProbSum;</b>
+<i>124</i>&nbsp;    }
+<i>125</i>&nbsp;
+<b class="nc"><i>126</i>&nbsp;    return 0;</b>
+<i>127</i>&nbsp;  }
+<i>128</i>&nbsp;
+<i>129</i>&nbsp;  public static boolean isInt(final double value) {
+<b class="fc"><i>130</i>&nbsp;    return value == Math.floor(value) &amp;&amp; !Double.isInfinite(value);</b>
+<i>131</i>&nbsp;  }
+<i>132</i>&nbsp;
+<i>133</i>&nbsp;  public static boolean isOddNumber(int num) {
+<b class="nc"><i>134</i>&nbsp;    return (num &amp; 1) != 0;</b>
+<i>135</i>&nbsp;  }
+<i>136</i>&nbsp;
+<i>137</i>&nbsp;  public static boolean probabilityIsTrue(final double probability) {
+<b class="nc"><i>138</i>&nbsp;    double rnd = random.nextDouble();</b>
+<b class="nc"><i>139</i>&nbsp;    return rnd &lt; probability;</b>
+<i>140</i>&nbsp;  }
+<i>141</i>&nbsp;
+<i>142</i>&nbsp;  public static boolean randomBoolean() {
+<b class="fc"><i>143</i>&nbsp;    return random.nextDouble() &lt; 0.5;</b>
+<i>144</i>&nbsp;  }
+<i>145</i>&nbsp;
+<i>146</i>&nbsp;  public static double randomInRange(final double min, final double max) {
+<b class="fc"><i>147</i>&nbsp;    if (min == max) {</b>
+<b class="nc"><i>148</i>&nbsp;      return min;</b>
+<i>149</i>&nbsp;    }
+<i>150</i>&nbsp;
+<b class="fc"><i>151</i>&nbsp;    if (min &gt; max) {</b>
+<b class="nc"><i>152</i>&nbsp;      throw new IllegalArgumentException(&quot;min value is &gt; than max value&quot;);</b>
+<i>153</i>&nbsp;    }
+<i>154</i>&nbsp;
+<b class="fc"><i>155</i>&nbsp;    return min + random.nextDouble() * (max - min);</b>
+<i>156</i>&nbsp;  }
+<i>157</i>&nbsp;
+<i>158</i>&nbsp;  public static int randomInRange(final int min, final int max) {
+<b class="fc"><i>159</i>&nbsp;    if (min == max) {</b>
+<b class="nc"><i>160</i>&nbsp;      return min;</b>
+<i>161</i>&nbsp;    }
+<i>162</i>&nbsp;
+<b class="fc"><i>163</i>&nbsp;    if (min &gt; max) {</b>
+<b class="nc"><i>164</i>&nbsp;      throw new IllegalArgumentException(&quot;min value is &gt; than max value&quot;);</b>
+<i>165</i>&nbsp;    }
+<i>166</i>&nbsp;
+<b class="fc"><i>167</i>&nbsp;    return random.nextInt(max - min) + min;</b>
+<i>168</i>&nbsp;  }
+<i>169</i>&nbsp;
+<i>170</i>&nbsp;  public static int randomSign() {
+<b class="fc"><i>171</i>&nbsp;    return randomBoolean() ? 1 : -1;</b>
+<i>172</i>&nbsp;  }
+<i>173</i>&nbsp;
+<i>174</i>&nbsp;  public static int getFullPercent(double value, double fraction) {
+<b class="nc"><i>175</i>&nbsp;    if (value == 0) {</b>
+<b class="nc"><i>176</i>&nbsp;      return 0;</b>
+<i>177</i>&nbsp;    }
+<i>178</i>&nbsp;
+<b class="nc"><i>179</i>&nbsp;    return (int) ((fraction * 100.0f) / value);</b>
+<i>180</i>&nbsp;  }
+<i>181</i>&nbsp;
+<i>182</i>&nbsp;  public static double getPercent(double value, double fraction) {
+<b class="nc"><i>183</i>&nbsp;    if (value == 0) {</b>
+<b class="nc"><i>184</i>&nbsp;      return 0;</b>
+<i>185</i>&nbsp;    }
+<i>186</i>&nbsp;
+<b class="nc"><i>187</i>&nbsp;    return (float) fraction * 100 / value;</b>
+<i>188</i>&nbsp;  }
+<i>189</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

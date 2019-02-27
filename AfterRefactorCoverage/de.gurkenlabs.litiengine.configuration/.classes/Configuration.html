@@ -1,0 +1,251 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Configuration</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.configuration</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Configuration (de.gurkenlabs.litiengine.configuration)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Configuration</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    86.7%
+  </span>
+  <span class="absValue">
+    (13/ 15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    82.4%
+  </span>
+  <span class="absValue">
+    (70/ 85)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.configuration;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.io.BufferedInputStream;
+<i>4</i>&nbsp;import java.io.File;
+<i>5</i>&nbsp;import java.io.FileInputStream;
+<i>6</i>&nbsp;import java.io.FileOutputStream;
+<i>7</i>&nbsp;import java.io.IOException;
+<i>8</i>&nbsp;import java.io.InputStream;
+<i>9</i>&nbsp;import java.io.OutputStream;
+<i>10</i>&nbsp;import java.util.ArrayList;
+<i>11</i>&nbsp;import java.util.List;
+<i>12</i>&nbsp;import java.util.Properties;
+<i>13</i>&nbsp;import java.util.logging.Level;
+<i>14</i>&nbsp;import java.util.logging.Logger;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;import de.gurkenlabs.litiengine.Game;
+<i>17</i>&nbsp;import de.gurkenlabs.litiengine.resources.Resources;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;public class Configuration {
+<b class="fc"><i>20</i>&nbsp;  private static final Logger log = Logger.getLogger(Configuration.class.getName());</b>
+<i>21</i>&nbsp;  private static final String DEFAULT_CONFIGURATION_FILE_NAME = &quot;config.properties&quot;;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;  private final List&lt;ConfigurationGroup&gt; configurationGroups;
+<i>24</i>&nbsp;  private final String fileName;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;  public Configuration(final ConfigurationGroup... configurationGroups) {
+<b class="fc"><i>27</i>&nbsp;    this(DEFAULT_CONFIGURATION_FILE_NAME, configurationGroups);</b>
+<b class="fc"><i>28</i>&nbsp;  }</b>
+<i>29</i>&nbsp;
+<b class="fc"><i>30</i>&nbsp;  public Configuration(final String fileName, final ConfigurationGroup... configurationGroups) {</b>
+<b class="fc"><i>31</i>&nbsp;    this.fileName = fileName;</b>
+<b class="fc"><i>32</i>&nbsp;    this.configurationGroups = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>33</i>&nbsp;    if (configurationGroups != null &amp;&amp; configurationGroups.length &gt; 0) {</b>
+<b class="fc"><i>34</i>&nbsp;      for (final ConfigurationGroup group : configurationGroups) {</b>
+<b class="fc"><i>35</i>&nbsp;        this.configurationGroups.add(group);</b>
+<i>36</i>&nbsp;      }
+<i>37</i>&nbsp;    }
+<b class="fc"><i>38</i>&nbsp;  }</b>
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;  public &lt;T extends ConfigurationGroup&gt; T getConfigurationGroup(final Class&lt;T&gt; groupClass) {
+<b class="fc"><i>41</i>&nbsp;    for (final ConfigurationGroup group : this.getConfigurationGroups()) {</b>
+<b class="fc"><i>42</i>&nbsp;      if (group.getClass().equals(groupClass)) {</b>
+<b class="fc"><i>43</i>&nbsp;        return groupClass.cast(group);</b>
+<i>44</i>&nbsp;      }
+<b class="nc"><i>45</i>&nbsp;    }</b>
+<i>46</i>&nbsp;
+<b class="nc"><i>47</i>&nbsp;    return null;</b>
+<i>48</i>&nbsp;  }
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;  public ConfigurationGroup getConfigurationGroup(final String prefix) {
+<b class="fc"><i>51</i>&nbsp;    for (final ConfigurationGroup group : this.getConfigurationGroups()) {</b>
+<i>52</i>&nbsp;
+<b class="fc"><i>53</i>&nbsp;      final ConfigurationGroupInfo info = group.getClass().getAnnotation(ConfigurationGroupInfo.class);</b>
+<b class="fc"><i>54</i>&nbsp;      if (info == null) {</b>
+<b class="nc"><i>55</i>&nbsp;        continue;</b>
+<i>56</i>&nbsp;      }
+<i>57</i>&nbsp;
+<b class="fc"><i>58</i>&nbsp;      if (info.prefix().equals(prefix)) {</b>
+<b class="fc"><i>59</i>&nbsp;        return group;</b>
+<i>60</i>&nbsp;      }
+<b class="nc"><i>61</i>&nbsp;    }</b>
+<i>62</i>&nbsp;
+<b class="nc"><i>63</i>&nbsp;    return null;</b>
+<i>64</i>&nbsp;  }
+<i>65</i>&nbsp;  
+<i>66</i>&nbsp;  public &lt;T extends ConfigurationGroup&gt; T getConfigurationGroup(String prefix, Class&lt;T&gt; groupClass) {
+<b class="nc"><i>67</i>&nbsp;    return groupClass.cast(getConfigurationGroup(prefix));</b>
+<i>68</i>&nbsp;  }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;  public List&lt;ConfigurationGroup&gt; getConfigurationGroups() {
+<b class="fc"><i>71</i>&nbsp;    return this.configurationGroups;</b>
+<i>72</i>&nbsp;  }
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;  public void add(ConfigurationGroup group) {
+<b class="nc"><i>75</i>&nbsp;    this.getConfigurationGroups().add(group);</b>
+<b class="nc"><i>76</i>&nbsp;  }</b>
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;  public String getFileName() {
+<b class="fc"><i>79</i>&nbsp;    return this.fileName;</b>
+<i>80</i>&nbsp;  }
+<i>81</i>&nbsp;
+<i>82</i>&nbsp;  public void load() {
+<b class="fc"><i>83</i>&nbsp;    this.loadFromFile();</b>
+<b class="fc"><i>84</i>&nbsp;  }</b>
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;  public void save() {
+<b class="fc"><i>87</i>&nbsp;    final File settingsFile = new File(this.getFileName());</b>
+<i>88</i>&nbsp;    try {
+<b class="fc"><i>89</i>&nbsp;      final OutputStream out = new FileOutputStream(settingsFile, false);</b>
+<b class="fc"><i>90</i>&nbsp;      for (final ConfigurationGroup group : this.getConfigurationGroups()) {</b>
+<b class="fc"><i>91</i>&nbsp;        if (!Game.isDebug() &amp;&amp; group.isDebug()) {</b>
+<b class="nc"><i>92</i>&nbsp;          continue;</b>
+<i>93</i>&nbsp;        }
+<i>94</i>&nbsp;
+<b class="fc"><i>95</i>&nbsp;        storeConfigurationGroup(out, group);</b>
+<b class="fc"><i>96</i>&nbsp;      }</b>
+<b class="fc"><i>97</i>&nbsp;      out.close();</b>
+<b class="fc"><i>98</i>&nbsp;      log.log(Level.INFO, &quot;Configuration &quot; + this.getFileName() + &quot; saved&quot;);</b>
+<b class="nc"><i>99</i>&nbsp;    } catch (final IOException e) {</b>
+<b class="nc"><i>100</i>&nbsp;      log.log(Level.SEVERE, e.getMessage(), e);</b>
+<b class="fc"><i>101</i>&nbsp;    }</b>
+<b class="fc"><i>102</i>&nbsp;  }</b>
+<i>103</i>&nbsp;
+<i>104</i>&nbsp;  private static void storeConfigurationGroup(final OutputStream out, final ConfigurationGroup group) {
+<i>105</i>&nbsp;    try {
+<b class="fc"><i>106</i>&nbsp;      final Properties groupProperties = new CleanProperties();</b>
+<b class="fc"><i>107</i>&nbsp;      group.storeProperties(groupProperties);</b>
+<b class="fc"><i>108</i>&nbsp;      groupProperties.store(out, group.getPrefix() + &quot;SETTINGS&quot;);</b>
+<b class="fc"><i>109</i>&nbsp;      out.flush();</b>
+<b class="nc"><i>110</i>&nbsp;    } catch (final IOException e) {</b>
+<b class="nc"><i>111</i>&nbsp;      log.log(Level.SEVERE, e.getMessage(), e);</b>
+<b class="fc"><i>112</i>&nbsp;    }</b>
+<b class="fc"><i>113</i>&nbsp;  }</b>
+<i>114</i>&nbsp;
+<i>115</i>&nbsp;  private void createDefaultSettingsFile(final OutputStream out) {
+<b class="fc"><i>116</i>&nbsp;    for (final ConfigurationGroup group : this.getConfigurationGroups()) {</b>
+<b class="fc"><i>117</i>&nbsp;      storeConfigurationGroup(out, group);</b>
+<b class="fc"><i>118</i>&nbsp;    }</b>
+<b class="fc"><i>119</i>&nbsp;  }</b>
+<i>120</i>&nbsp;
+<i>121</i>&nbsp;  private void initializeSettingsByProperties(final Properties properties) {
+<b class="fc"><i>122</i>&nbsp;    for (final String key : properties.stringPropertyNames()) {</b>
+<b class="fc"><i>123</i>&nbsp;      for (final ConfigurationGroup group : this.getConfigurationGroups()) {</b>
+<b class="fc"><i>124</i>&nbsp;        if (key.startsWith(group.getPrefix())) {</b>
+<b class="fc"><i>125</i>&nbsp;          group.initializeByProperty(key, properties.getProperty(key));</b>
+<i>126</i>&nbsp;        }
+<b class="fc"><i>127</i>&nbsp;      }</b>
+<b class="fc"><i>128</i>&nbsp;    }</b>
+<b class="fc"><i>129</i>&nbsp;  }</b>
+<i>130</i>&nbsp;
+<i>131</i>&nbsp;  /**
+<i>132</i>&nbsp;   * Tries to load configuration from file in the application folder. If none
+<i>133</i>&nbsp;   * exists, it tires to load the file from any resource folder. If none exists,
+<i>134</i>&nbsp;   * it creates a new configuration file in the application folder.
+<i>135</i>&nbsp;   */
+<i>136</i>&nbsp;  private void loadFromFile() {
+<b class="fc"><i>137</i>&nbsp;    final File settingsFile = new File(this.getFileName());</b>
+<b class="fc"><i>138</i>&nbsp;    try (InputStream settingsStream = Resources.get(this.getFileName())) {</b>
+<b class="fc"><i>139</i>&nbsp;      if (!settingsFile.exists() &amp;&amp; settingsStream == null || !settingsFile.isFile()) {</b>
+<b class="fc"><i>140</i>&nbsp;        final OutputStream out = new FileOutputStream(settingsFile);</b>
+<b class="fc"><i>141</i>&nbsp;        this.createDefaultSettingsFile(out);</b>
+<b class="fc"><i>142</i>&nbsp;        out.close();</b>
+<i>143</i>&nbsp;
+<b class="fc"><i>144</i>&nbsp;        log.log(Level.INFO, &quot;Default configuration &quot; + this.getFileName() + &quot; created&quot;);</b>
+<b class="fc"><i>145</i>&nbsp;        return;</b>
+<i>146</i>&nbsp;      }
+<b class="fc"><i>147</i>&nbsp;    } catch (final IOException e) {</b>
+<b class="nc"><i>148</i>&nbsp;      log.log(Level.SEVERE, e.getMessage(), e);</b>
+<b class="fc"><i>149</i>&nbsp;    }</b>
+<i>150</i>&nbsp;
+<b class="fc"><i>151</i>&nbsp;    if (settingsFile.exists()) {</b>
+<b class="fc"><i>152</i>&nbsp;      try (InputStream settingsStream = new FileInputStream(settingsFile)) {</b>
+<i>153</i>&nbsp;
+<b class="fc"><i>154</i>&nbsp;        final Properties properties = new Properties();</b>
+<i>155</i>&nbsp;        BufferedInputStream stream;
+<i>156</i>&nbsp;
+<b class="fc"><i>157</i>&nbsp;        stream = new BufferedInputStream(settingsStream);</b>
+<b class="fc"><i>158</i>&nbsp;        properties.load(stream);</b>
+<b class="fc"><i>159</i>&nbsp;        stream.close();</b>
+<i>160</i>&nbsp;
+<b class="fc"><i>161</i>&nbsp;        this.initializeSettingsByProperties(properties);</b>
+<b class="fc"><i>162</i>&nbsp;        log.log(Level.INFO, &quot;Configuration &quot; + this.getFileName() + &quot; loaded&quot;);</b>
+<b class="fc"><i>163</i>&nbsp;      } catch (final IOException e) {</b>
+<b class="nc"><i>164</i>&nbsp;        log.log(Level.SEVERE, e.getMessage(), e);</b>
+<b class="fc"><i>165</i>&nbsp;      }</b>
+<i>166</i>&nbsp;    }
+<b class="fc"><i>167</i>&nbsp;  }</b>
+<i>168</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

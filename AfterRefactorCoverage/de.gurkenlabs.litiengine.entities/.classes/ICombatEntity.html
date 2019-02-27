@@ -1,0 +1,112 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ICombatEntity</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.entities</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ICombatEntity (de.gurkenlabs.litiengine.entities)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">ICombatEntity$MockitoMock$1421953544</td>
+  </tr>
+  <tr>
+    <td class="name">ICombatEntity$MockitoMock$1421953544$auxiliary$9QXiucta</td>
+  </tr>
+  <tr>
+    <td class="name">ICombatEntity$MockitoMock$1421953544$auxiliary$rsV9FvbU</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.entities;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Shape;
+<i>4</i>&nbsp;import java.util.List;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import de.gurkenlabs.litiengine.abilities.Ability;
+<i>7</i>&nbsp;import de.gurkenlabs.litiengine.abilities.effects.Effect;
+<i>8</i>&nbsp;import de.gurkenlabs.litiengine.attributes.RangeAttribute;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;public interface ICombatEntity extends ICollisionEntity {
+<i>11</i>&nbsp;  public void addCombatEntityListener(CombatEntityListener listener);
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;  public void removeCombatEntityListener(CombatEntityListener listener);
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;  public void addHitListener(CombatEntityHitListener listener);
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;  public void removeHitListener(CombatEntityHitListener listener);
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;  public void addDeathListener(CombatEntityDeathListener listener);
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;  public void removeDeathListener(CombatEntityDeathListener listener);
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;  public void die();
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;  public List&lt;Effect&gt; getAppliedEffects();
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;  public RangeAttribute&lt;Integer&gt; getHitPoints();
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;  public Shape getHitBox();
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;  public ICombatEntity getTarget();
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;  public int getTeam();
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;  public boolean hit(int damage);
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;  public boolean hit(int damage, Ability ability);
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;  public boolean isDead();
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;  public boolean isFriendly(final ICombatEntity entity);
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;  public boolean isIndestructible();
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;  public boolean isNeutral();
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;  public void resurrect();
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;  public void setIndestructible(final boolean indestructible);
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;  public void setTarget(final ICombatEntity target);
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;  public void setTeam(int team);
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;  public boolean wasHit(int timeSpan);
+<i>56</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>

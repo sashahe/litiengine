@@ -1,0 +1,218 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ColorLayer</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.graphics</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ColorLayer (de.gurkenlabs.litiengine.graphics)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ColorLayer</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    62.5%
+  </span>
+  <span class="absValue">
+    (5/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    60.3%
+  </span>
+  <span class="absValue">
+    (41/ 68)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.graphics;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Color;
+<i>4</i>&nbsp;import java.awt.Graphics2D;
+<i>5</i>&nbsp;import java.awt.Image;
+<i>6</i>&nbsp;import java.awt.Point;
+<i>7</i>&nbsp;import java.awt.Shape;
+<i>8</i>&nbsp;import java.awt.geom.Point2D;
+<i>9</i>&nbsp;import java.awt.geom.Rectangle2D;
+<i>10</i>&nbsp;import java.awt.image.BufferedImage;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import de.gurkenlabs.litiengine.Game;
+<i>13</i>&nbsp;import de.gurkenlabs.litiengine.environment.Environment;
+<i>14</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.IMap;
+<i>15</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.ITile;
+<i>16</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.ITileOffset;
+<i>17</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.ITileset;
+<i>18</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.MapUtilities;
+<i>19</i>&nbsp;import de.gurkenlabs.litiengine.util.Imaging;
+<i>20</i>&nbsp;import de.gurkenlabs.litiengine.util.MathUtilities;
+<i>21</i>&nbsp;import de.gurkenlabs.litiengine.util.geom.GeometricUtilities;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;public abstract class ColorLayer implements IRenderable {
+<i>24</i>&nbsp;  private final Environment environment;
+<i>25</i>&nbsp;  private final Image[][] tiles;
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;  private Color color;
+<i>28</i>&nbsp;
+<b class="fc"><i>29</i>&nbsp;  protected ColorLayer(Environment env, final Color color) {</b>
+<b class="fc"><i>30</i>&nbsp;    this.environment = env;</b>
+<b class="fc"><i>31</i>&nbsp;    this.color = color;</b>
+<b class="fc"><i>32</i>&nbsp;    this.tiles = new Image[env.getMap().getWidth()][env.getMap().getHeight()];</b>
+<b class="fc"><i>33</i>&nbsp;    this.updateSection(this.environment.getMap().getBounds());</b>
+<b class="fc"><i>34</i>&nbsp;  }</b>
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;  @Override
+<i>37</i>&nbsp;  public void render(Graphics2D g) {
+<b class="nc"><i>38</i>&nbsp;    final Rectangle2D viewport = Game.world().camera().getViewport();</b>
+<i>39</i>&nbsp;
+<b class="nc"><i>40</i>&nbsp;    final IMap map = this.getEnvironment().getMap();</b>
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    // draw the tile on the layer image
+<b class="nc"><i>43</i>&nbsp;    for (int x = 0; x &lt; map.getWidth(); x++) {</b>
+<b class="nc"><i>44</i>&nbsp;      for (int y = 0; y &lt; map.getHeight(); y++) {</b>
+<b class="nc"><i>45</i>&nbsp;        Rectangle2D tileBounds = map.getTileShape(x, y).getBounds2D();</b>
+<b class="nc"><i>46</i>&nbsp;        ITile tile = map.getTileLayers().get(0).getTile(x, y);</b>
+<b class="nc"><i>47</i>&nbsp;        if (!viewport.intersects(tileBounds)) {</b>
+<b class="nc"><i>48</i>&nbsp;          continue;</b>
+<i>49</i>&nbsp;        }
+<b class="nc"><i>50</i>&nbsp;        final double offsetX = -(viewport.getX());</b>
+<b class="nc"><i>51</i>&nbsp;        final double offsetY = -(viewport.getY());</b>
+<i>52</i>&nbsp;
+<b class="nc"><i>53</i>&nbsp;        int tileOffsetX = 0;</b>
+<b class="nc"><i>54</i>&nbsp;        int tileOffsetY = 0;</b>
+<b class="nc"><i>55</i>&nbsp;        ITileset tileset = MapUtilities.findTileSet(map, tile);</b>
+<b class="nc"><i>56</i>&nbsp;        if (tileset != null) {</b>
+<b class="nc"><i>57</i>&nbsp;          final ITileOffset tileOffset = tileset.getTileOffset();</b>
+<b class="nc"><i>58</i>&nbsp;          if (tileOffset != null) {</b>
+<b class="nc"><i>59</i>&nbsp;            tileOffsetX = tileOffset.getX();</b>
+<b class="nc"><i>60</i>&nbsp;            tileOffsetY = tileOffset.getY();</b>
+<i>61</i>&nbsp;          }
+<i>62</i>&nbsp;        }
+<b class="nc"><i>63</i>&nbsp;        ImageRenderer.render(g, tiles[x][y], offsetX + tileBounds.getX() + tileOffsetX, offsetY + tileBounds.getY() + tileOffsetY);</b>
+<i>64</i>&nbsp;      }
+<i>65</i>&nbsp;    }
+<b class="nc"><i>66</i>&nbsp;  }</b>
+<i>67</i>&nbsp;
+<i>68</i>&nbsp;  public Color getColor() {
+<b class="fc"><i>69</i>&nbsp;    return this.color;</b>
+<i>70</i>&nbsp;  }
+<i>71</i>&nbsp;
+<i>72</i>&nbsp;  public void setAlpha(int ambientAlpha) {
+<b class="nc"><i>73</i>&nbsp;    this.setColor(new Color(this.getColor().getRed(), this.getColor().getGreen(), this.getColor().getBlue(), MathUtilities.clamp(ambientAlpha, 0, 255)));</b>
+<b class="nc"><i>74</i>&nbsp;    this.updateSection(this.environment.getMap().getBounds());</b>
+<b class="nc"><i>75</i>&nbsp;  }</b>
+<i>76</i>&nbsp;
+<i>77</i>&nbsp;  public void setColor(final Color color) {
+<b class="nc"><i>78</i>&nbsp;    this.color = color;</b>
+<b class="nc"><i>79</i>&nbsp;    this.updateSection(this.environment.getMap().getBounds());</b>
+<b class="nc"><i>80</i>&nbsp;  }</b>
+<i>81</i>&nbsp;
+<i>82</i>&nbsp;  public void updateSection(Rectangle2D section) {
+<b class="fc"><i>83</i>&nbsp;    if (this.getColor() == null) {</b>
+<b class="fc"><i>84</i>&nbsp;      return;</b>
+<i>85</i>&nbsp;    }
+<i>86</i>&nbsp;
+<b class="fc"><i>87</i>&nbsp;    final IMap map = this.getEnvironment().getMap();</b>
+<i>88</i>&nbsp;
+<b class="fc"><i>89</i>&nbsp;    final Rectangle2D tileSection = MapUtilities.getTileBoundingBox(map, section);</b>
+<b class="fc"><i>90</i>&nbsp;    if (tileSection == null) {</b>
+<b class="nc"><i>91</i>&nbsp;      return;</b>
+<i>92</i>&nbsp;    }
+<b class="fc"><i>93</i>&nbsp;    final BufferedImage img = Imaging.getCompatibleImage((int) tileSection.getWidth(), (int) tileSection.getHeight());</b>
+<b class="fc"><i>94</i>&nbsp;    final Graphics2D g = img.createGraphics();</b>
+<i>95</i>&nbsp;
+<b class="fc"><i>96</i>&nbsp;    this.renderSection(g, tileSection);</b>
+<i>97</i>&nbsp;
+<b class="fc"><i>98</i>&nbsp;    g.dispose();</b>
+<i>99</i>&nbsp;
+<b class="fc"><i>100</i>&nbsp;    this.setTiles(img, tileSection);</b>
+<b class="fc"><i>101</i>&nbsp;  }</b>
+<i>102</i>&nbsp;
+<i>103</i>&nbsp;  private void setTiles(BufferedImage img, Rectangle2D section) {
+<b class="fc"><i>104</i>&nbsp;    final IMap map = this.getEnvironment().getMap();</b>
+<b class="fc"><i>105</i>&nbsp;    final Point startTile = MapUtilities.getTile(map, new Point2D.Double(section.getX(), section.getY()));</b>
+<b class="fc"><i>106</i>&nbsp;    final Point endTile = MapUtilities.getTile(map, new Point2D.Double(section.getMaxX(), section.getMaxY()));</b>
+<b class="fc"><i>107</i>&nbsp;    final int startX = MathUtilities.clamp(startTile.x, 0, Math.min(startTile.x + (endTile.x - startTile.x), tiles.length) - 1);</b>
+<b class="fc"><i>108</i>&nbsp;    final int startY = MathUtilities.clamp(startTile.y, 0, Math.min(startTile.y + (endTile.y - startTile.y), tiles[0].length) - 1);</b>
+<b class="fc"><i>109</i>&nbsp;    final int endX = MathUtilities.clamp(endTile.x, 0, Math.min(startTile.x + (endTile.x - startTile.x), tiles.length) - 1);</b>
+<b class="fc"><i>110</i>&nbsp;    final int endY = MathUtilities.clamp(endTile.y, 0, Math.min(startTile.y + (endTile.y - startTile.y), tiles[0].length) - 1);</b>
+<i>111</i>&nbsp;
+<b class="fc"><i>112</i>&nbsp;    final Shape startTileShape = map.getTileShape(startX, startY);</b>
+<b class="fc"><i>113</i>&nbsp;    for (int x = startX; x &lt;= endX; x++) {</b>
+<b class="fc"><i>114</i>&nbsp;      for (int y = startY; y &lt;= endY; y++) {</b>
+<b class="fc"><i>115</i>&nbsp;        Shape tile = map.getTileShape(x, y);</b>
+<b class="fc"><i>116</i>&nbsp;        Shape translatedTile = GeometricUtilities.translateShape(tile, new Point2D.Double(0, 0));</b>
+<b class="fc"><i>117</i>&nbsp;        int subX = MathUtilities.clamp((int) (tile.getBounds().getX() - startTileShape.getBounds().getX()), 0, img.getWidth() - map.getTileWidth());</b>
+<b class="fc"><i>118</i>&nbsp;        int subY = MathUtilities.clamp((int) (tile.getBounds().getY() - startTileShape.getBounds().getY()), 0, img.getHeight() - map.getTileHeight());</b>
+<b class="fc"><i>119</i>&nbsp;        final BufferedImage smallImage = img.getSubimage(subX, subY, map.getTileWidth(), map.getTileHeight());</b>
+<b class="fc"><i>120</i>&nbsp;        final BufferedImage clippedImage = Imaging.getCompatibleImage(smallImage.getWidth(), smallImage.getHeight());</b>
+<b class="fc"><i>121</i>&nbsp;        Graphics2D g = clippedImage.createGraphics();</b>
+<b class="fc"><i>122</i>&nbsp;        g.clip(translatedTile);</b>
+<b class="fc"><i>123</i>&nbsp;        g.drawImage(smallImage, 0, 0, null);</b>
+<b class="fc"><i>124</i>&nbsp;        g.dispose();</b>
+<b class="fc"><i>125</i>&nbsp;        this.tiles[x][y] = clippedImage;</b>
+<i>126</i>&nbsp;      }
+<i>127</i>&nbsp;    }
+<b class="fc"><i>128</i>&nbsp;  }</b>
+<i>129</i>&nbsp;
+<i>130</i>&nbsp;  protected abstract void renderSection(Graphics2D g, Rectangle2D section);
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;  protected Environment getEnvironment() {
+<b class="fc"><i>133</i>&nbsp;    return this.environment;</b>
+<i>134</i>&nbsp;  }
+<i>135</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:22</div>
+</div>
+</body>
+</html>
