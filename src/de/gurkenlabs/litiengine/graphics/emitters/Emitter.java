@@ -3,6 +3,7 @@ package de.gurkenlabs.litiengine.graphics.emitters;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +22,7 @@ import de.gurkenlabs.litiengine.Valign;
 import de.gurkenlabs.litiengine.annotation.CollisionInfo;
 import de.gurkenlabs.litiengine.annotation.EmitterInfo;
 import de.gurkenlabs.litiengine.configuration.Quality;
-import de.gurkenlabs.litiengine.entities.Entity;
+import de.gurkenlabs.litiengine.entities.CombatEntity;
 import de.gurkenlabs.litiengine.graphics.DebugRenderer;
 import de.gurkenlabs.litiengine.graphics.IRenderable;
 import de.gurkenlabs.litiengine.graphics.RenderType;
@@ -32,7 +33,7 @@ import de.gurkenlabs.litiengine.graphics.emitters.particles.Particle;
  */
 @CollisionInfo(collision = false)
 @EmitterInfo
-public abstract class Emitter extends Entity implements IUpdateable, ITimeToLive, IRenderable {
+public abstract class Emitter extends CombatEntity implements IUpdateable, ITimeToLive, IRenderable {
   public static final Color DEFAULT_PARTICLE_COLOR = new Color(255, 255, 255, 150);
   public static final int DEFAULT_UPDATERATE = 30;
   public static final int DEFAULT_SPAWNAMOUNT = 1;
@@ -119,7 +120,7 @@ public abstract class Emitter extends Entity implements IUpdateable, ITimeToLive
    * Sets all of the data of the specified particle to the new data provided.
    *
    * @param particle
-   *          the particle
+   *                   the particle
    */
   public void addParticle(final Particle particle) {
     if (this.isStopped()) {
@@ -283,6 +284,16 @@ public abstract class Emitter extends Entity implements IUpdateable, ITimeToLive
   }
 
   @Override
+  public boolean isDead() {
+    return false;
+  }
+
+  @Override
+  public Rectangle2D getCollisionBox() {
+    return new Rectangle2D.Double(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+  }
+
+  @Override
   public void render(final Graphics2D g) {
     this.renderParticles(g, RenderType.NONE);
 
@@ -324,7 +335,7 @@ public abstract class Emitter extends Entity implements IUpdateable, ITimeToLive
    * Sets the paused.
    *
    * @param paused
-   *          the new paused
+   *                 the new paused
    */
   public void setPaused(final boolean paused) {
     this.paused = paused;
@@ -459,7 +470,7 @@ public abstract class Emitter extends Entity implements IUpdateable, ITimeToLive
    * Particle can be removed.
    *
    * @param particle
-   *          the particle
+   *                   the particle
    * @return true, if successful
    */
   protected boolean particleCanBeRemoved(final Particle particle) {
@@ -472,9 +483,9 @@ public abstract class Emitter extends Entity implements IUpdateable, ITimeToLive
    * map location. It is always relative to the effect it is assigned to.
    *
    * @param g
-   *          the g
+   *            the g
    * @param p
-   *          the p
+   *            the p
    */
   /**
    * Spawn particle.
