@@ -1,0 +1,318 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: AStarGrid</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.pathfinding.astar</a> ]
+</div>
+
+<h1>Coverage Summary for Class: AStarGrid (de.gurkenlabs.litiengine.pathfinding.astar)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AStarGrid</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    68.2%
+  </span>
+  <span class="absValue">
+    (15/ 22)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    64.2%
+  </span>
+  <span class="absValue">
+    (70/ 109)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.pathfinding.astar;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Color;
+<i>4</i>&nbsp;import java.awt.Dimension;
+<i>5</i>&nbsp;import java.awt.Graphics2D;
+<i>6</i>&nbsp;import java.awt.Rectangle;
+<i>7</i>&nbsp;import java.awt.geom.Point2D;
+<i>8</i>&nbsp;import java.awt.geom.Rectangle2D;
+<i>9</i>&nbsp;import java.util.ArrayList;
+<i>10</i>&nbsp;import java.util.List;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import de.gurkenlabs.litiengine.Game;
+<i>13</i>&nbsp;import de.gurkenlabs.litiengine.entities.Prop;
+<i>14</i>&nbsp;import de.gurkenlabs.litiengine.graphics.IRenderable;
+<i>15</i>&nbsp;import de.gurkenlabs.litiengine.physics.CollisionType;
+<i>16</i>&nbsp;import de.gurkenlabs.litiengine.util.MathUtilities;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;public class AStarGrid implements IRenderable {
+<i>19</i>&nbsp;  public static final double PENALTY_STATIC_PROP = 5;
+<i>20</i>&nbsp;  public static final double PENALTY_NOT_WALKABLE_NEIGHBOR = 4;
+<i>21</i>&nbsp;  private final AStarNode[][] grid;
+<i>22</i>&nbsp;  private final int nodeSize;
+<i>23</i>&nbsp;  private final Dimension size;
+<i>24</i>&nbsp;
+<b class="fc"><i>25</i>&nbsp;  private boolean allowDiagonalMovement = true;</b>
+<i>26</i>&nbsp;  private boolean allowCuttingCorners;
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;  public AStarGrid(int width, int height, final int nodeSize) {
+<b class="fc"><i>29</i>&nbsp;    this(new Dimension(width, height), nodeSize);</b>
+<b class="fc"><i>30</i>&nbsp;  }</b>
+<i>31</i>&nbsp;
+<b class="fc"><i>32</i>&nbsp;  public AStarGrid(final Dimension size, final int nodeSize) {</b>
+<b class="fc"><i>33</i>&nbsp;    this.size = size;</b>
+<b class="fc"><i>34</i>&nbsp;    this.nodeSize = nodeSize;</b>
+<b class="fc"><i>35</i>&nbsp;    final int gridSizeX = this.size.width / nodeSize;</b>
+<b class="fc"><i>36</i>&nbsp;    final int gridSizeY = this.size.height / nodeSize;</b>
+<b class="fc"><i>37</i>&nbsp;    this.grid = new AStarNode[gridSizeX][gridSizeY];</b>
+<b class="fc"><i>38</i>&nbsp;    this.populateGrid(gridSizeX, gridSizeY);</b>
+<b class="fc"><i>39</i>&nbsp;  }</b>
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;  public boolean isDiagonalMovementAllowed() {
+<b class="fc"><i>42</i>&nbsp;    return this.allowDiagonalMovement;</b>
+<i>43</i>&nbsp;  }
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;  public boolean isDiagonalCornerMovementAllowed() {
+<b class="fc"><i>46</i>&nbsp;    return this.allowCuttingCorners;</b>
+<i>47</i>&nbsp;  }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;  public AStarNode[][] getGrid() {
+<b class="fc"><i>50</i>&nbsp;    return this.grid;</b>
+<i>51</i>&nbsp;  }
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;  public List&lt;AStarNode&gt; getIntersectedNodes(final Rectangle2D rectangle) {
+<b class="fc"><i>54</i>&nbsp;    final Point2D start = new Point2D.Double(rectangle.getMinX(), rectangle.getMinY());</b>
+<b class="fc"><i>55</i>&nbsp;    final Point2D end = new Point2D.Double(rectangle.getMaxX(), rectangle.getMaxY());</b>
+<i>56</i>&nbsp;
+<b class="fc"><i>57</i>&nbsp;    final AStarNode startNode = this.getNode(start);</b>
+<b class="fc"><i>58</i>&nbsp;    final AStarNode endNode = this.getNode(end);</b>
+<i>59</i>&nbsp;
+<b class="fc"><i>60</i>&nbsp;    final List&lt;AStarNode&gt; nodes = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>61</i>&nbsp;    if (startNode == null || endNode == null) {</b>
+<b class="nc"><i>62</i>&nbsp;      return nodes;</b>
+<i>63</i>&nbsp;    }
+<i>64</i>&nbsp;
+<b class="fc"><i>65</i>&nbsp;    for (int x = startNode.getGridX(); x &lt;= endNode.getGridX(); x++) {</b>
+<b class="fc"><i>66</i>&nbsp;      for (int y = startNode.getGridY(); y &lt;= endNode.getGridY(); y++) {</b>
+<b class="fc"><i>67</i>&nbsp;        nodes.add(this.getGrid()[x][y]);</b>
+<i>68</i>&nbsp;      }
+<i>69</i>&nbsp;    }
+<i>70</i>&nbsp;
+<b class="fc"><i>71</i>&nbsp;    return nodes;</b>
+<i>72</i>&nbsp;  }
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;  public List&lt;AStarNode&gt; getNeighbors(final AStarNode node) {
+<b class="fc"><i>75</i>&nbsp;    final List&lt;AStarNode&gt; newNeighbors = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>76</i>&nbsp;    final int x = node.getGridX();</b>
+<b class="fc"><i>77</i>&nbsp;    final int y = node.getGridY();</b>
+<i>78</i>&nbsp;
+<b class="fc"><i>79</i>&nbsp;    final AStarNode top = this.getNode(x, y - 1);</b>
+<b class="fc"><i>80</i>&nbsp;    final AStarNode bottom = this.getNode(x, y + 1);</b>
+<b class="fc"><i>81</i>&nbsp;    final AStarNode left = this.getNode(x - 1, y);</b>
+<b class="fc"><i>82</i>&nbsp;    final AStarNode right = this.getNode(x + 1, y);</b>
+<i>83</i>&nbsp;
+<b class="fc"><i>84</i>&nbsp;    addNode(newNeighbors, top);</b>
+<b class="fc"><i>85</i>&nbsp;    addNode(newNeighbors, bottom);</b>
+<b class="fc"><i>86</i>&nbsp;    addNode(newNeighbors, right);</b>
+<b class="fc"><i>87</i>&nbsp;    addNode(newNeighbors, left);</b>
+<i>88</i>&nbsp;
+<b class="fc"><i>89</i>&nbsp;    if (this.isDiagonalMovementAllowed()) {</b>
+<b class="fc"><i>90</i>&nbsp;      final AStarNode topLeft = this.getNode(x - 1, y - 1);</b>
+<b class="fc"><i>91</i>&nbsp;      final AStarNode topRight = this.getNode(x + 1, y - 1);</b>
+<b class="fc"><i>92</i>&nbsp;      final AStarNode bottomLeft = this.getNode(x - 1, y + 1);</b>
+<b class="fc"><i>93</i>&nbsp;      final AStarNode bottomRight = this.getNode(x + 1, y + 1);</b>
+<b class="fc"><i>94</i>&nbsp;      this.addDiagonalNode(newNeighbors, topLeft, top, left);</b>
+<b class="fc"><i>95</i>&nbsp;      this.addDiagonalNode(newNeighbors, topRight, top, right);</b>
+<b class="fc"><i>96</i>&nbsp;      this.addDiagonalNode(newNeighbors, bottomLeft, bottom, left);</b>
+<b class="fc"><i>97</i>&nbsp;      this.addDiagonalNode(newNeighbors, bottomRight, bottom, right);</b>
+<i>98</i>&nbsp;    }
+<i>99</i>&nbsp;
+<b class="fc"><i>100</i>&nbsp;    return newNeighbors;</b>
+<i>101</i>&nbsp;  }
+<i>102</i>&nbsp;
+<i>103</i>&nbsp;  public AStarNode getNode(final Point2D point) {
+<b class="fc"><i>104</i>&nbsp;    return this.getNode(point.getX(), point.getY());</b>
+<i>105</i>&nbsp;  }
+<i>106</i>&nbsp;
+<i>107</i>&nbsp;  public AStarNode getNode(final double x, final double y) {
+<b class="fc"><i>108</i>&nbsp;    int xNode = (int) (x / this.nodeSize);</b>
+<b class="fc"><i>109</i>&nbsp;    int yNode = (int) (y / this.nodeSize);</b>
+<i>110</i>&nbsp;
+<b class="fc"><i>111</i>&nbsp;    if (xNode &gt;= this.getGrid().length || yNode &gt;= this.getGrid()[0].length) {</b>
+<b class="fc"><i>112</i>&nbsp;      return null;</b>
+<i>113</i>&nbsp;    }
+<i>114</i>&nbsp;
+<b class="fc"><i>115</i>&nbsp;    return this.getNode(xNode, yNode);</b>
+<i>116</i>&nbsp;  }
+<i>117</i>&nbsp;
+<i>118</i>&nbsp;  public int getNodeSize() {
+<b class="nc"><i>119</i>&nbsp;    return this.nodeSize;</b>
+<i>120</i>&nbsp;  }
+<i>121</i>&nbsp;
+<i>122</i>&nbsp;  public Dimension getSize() {
+<b class="nc"><i>123</i>&nbsp;    return this.size;</b>
+<i>124</i>&nbsp;  }
+<i>125</i>&nbsp;
+<i>126</i>&nbsp;  @Override
+<i>127</i>&nbsp;  public void render(Graphics2D g) {
+<b class="nc"><i>128</i>&nbsp;    final Rectangle2D viewport = Game.world().camera().getViewport();</b>
+<i>129</i>&nbsp;
+<b class="nc"><i>130</i>&nbsp;    final AStarNode startNode = this.getNode(viewport.getX(), viewport.getY());</b>
+<b class="nc"><i>131</i>&nbsp;    final AStarNode endNode = this.getNode(viewport.getMaxX(), viewport.getMaxY());</b>
+<b class="nc"><i>132</i>&nbsp;    final int startX = startNode == null ? 0 : clampX(startNode.getGridX());</b>
+<b class="nc"><i>133</i>&nbsp;    final int endX = endNode == null ? this.getGrid().length - 1 : clampX(endNode.getGridX());</b>
+<b class="nc"><i>134</i>&nbsp;    final int startY = startNode == null ? 0 : clampY(startNode.getGridY());</b>
+<b class="nc"><i>135</i>&nbsp;    final int endY = endNode == null ? this.getGrid()[0].length - 1 : clampY(endNode.getGridY());</b>
+<i>136</i>&nbsp;
+<b class="nc"><i>137</i>&nbsp;    g.setColor(new Color(255, 0, 255, 100));</b>
+<b class="nc"><i>138</i>&nbsp;    for (int x = startX; x &lt;= endX; x++) {</b>
+<b class="nc"><i>139</i>&nbsp;      for (int y = startY; y &lt;= endY; y++) {</b>
+<b class="nc"><i>140</i>&nbsp;        AStarNode node = this.getGrid()[x][y];</b>
+<b class="nc"><i>141</i>&nbsp;        if (node.isWalkable()) {</b>
+<b class="nc"><i>142</i>&nbsp;          Game.graphics().renderShape(g, new Rectangle2D.Double(node.getLocation().x - 0.25, node.getLocation().y - 0.25, 0.5, 0.5));</b>
+<i>143</i>&nbsp;        } else {
+<b class="nc"><i>144</i>&nbsp;          Game.graphics().renderShape(g, node.getBounds());</b>
+<i>145</i>&nbsp;        }
+<i>146</i>&nbsp;      }
+<i>147</i>&nbsp;    }
+<b class="nc"><i>148</i>&nbsp;  }</b>
+<i>149</i>&nbsp;
+<i>150</i>&nbsp;  private int clampX(int x) {
+<b class="nc"><i>151</i>&nbsp;    return MathUtilities.clamp(x, 0, this.getGrid().length - 1);</b>
+<i>152</i>&nbsp;  }
+<i>153</i>&nbsp;
+<i>154</i>&nbsp;  private int clampY(int y) {
+<b class="nc"><i>155</i>&nbsp;    return MathUtilities.clamp(y, 0, this.getGrid()[0].length - 1);</b>
+<i>156</i>&nbsp;  }
+<i>157</i>&nbsp;
+<i>158</i>&nbsp;  public void setAllowDiagonalMovement(final boolean allowDiagonalMovement) {
+<b class="fc"><i>159</i>&nbsp;    this.allowDiagonalMovement = allowDiagonalMovement;</b>
+<b class="fc"><i>160</i>&nbsp;  }</b>
+<i>161</i>&nbsp;
+<i>162</i>&nbsp;  public void setAllowCuttingCorners(final boolean allowCuttingCorners) {
+<b class="nc"><i>163</i>&nbsp;    this.allowCuttingCorners = allowCuttingCorners;</b>
+<b class="nc"><i>164</i>&nbsp;  }</b>
+<i>165</i>&nbsp;
+<i>166</i>&nbsp;  /**
+<i>167</i>&nbsp;   * Updates the walkable attribute of nodes intersected by the specified
+<i>168</i>&nbsp;   * rectangle.
+<i>169</i>&nbsp;   *
+<i>170</i>&nbsp;   * @param rectangle
+<i>171</i>&nbsp;   *          The rectangle within which the nodes should be updated.
+<i>172</i>&nbsp;   */
+<i>173</i>&nbsp;  public void updateWalkable(final Rectangle2D rectangle) {
+<b class="nc"><i>174</i>&nbsp;    for (final AStarNode node : this.getIntersectedNodes(rectangle)) {</b>
+<b class="nc"><i>175</i>&nbsp;      node.setWalkable(!Game.physics().collides(node.getBounds(), CollisionType.STATIC));</b>
+<b class="nc"><i>176</i>&nbsp;    }</b>
+<b class="nc"><i>177</i>&nbsp;  }</b>
+<i>178</i>&nbsp;
+<i>179</i>&nbsp;  protected void assignPenalty(AStarNode node) {
+<b class="fc"><i>180</i>&nbsp;    if (!Game.physics().collides(node.getLocation(), CollisionType.ENTITY)) {</b>
+<b class="fc"><i>181</i>&nbsp;      return;</b>
+<i>182</i>&nbsp;    }
+<i>183</i>&nbsp;
+<i>184</i>&nbsp;    // by default we calculate a penalty for props that cannot be destroyed
+<b class="nc"><i>185</i>&nbsp;    int penalty = 0;</b>
+<b class="nc"><i>186</i>&nbsp;    for (Prop prop : Game.world().environment().getProps()) {</b>
+<b class="nc"><i>187</i>&nbsp;      if (!prop.hasCollision() || !prop.isIndestructible() || !prop.getBoundingBox().intersects(node.getBounds())) {</b>
+<b class="nc"><i>188</i>&nbsp;        continue;</b>
+<i>189</i>&nbsp;      }
+<i>190</i>&nbsp;
+<b class="nc"><i>191</i>&nbsp;      penalty += PENALTY_STATIC_PROP;</b>
+<b class="nc"><i>192</i>&nbsp;    }</b>
+<i>193</i>&nbsp;
+<i>194</i>&nbsp;    // if neighbors are not walkable, we try to avoid this node
+<b class="nc"><i>195</i>&nbsp;    for (AStarNode neighbor : this.getNeighbors(node)) {</b>
+<b class="nc"><i>196</i>&nbsp;      if (!neighbor.isWalkable()) {</b>
+<b class="nc"><i>197</i>&nbsp;        penalty += PENALTY_NOT_WALKABLE_NEIGHBOR;</b>
+<i>198</i>&nbsp;      }
+<b class="nc"><i>199</i>&nbsp;    }</b>
+<i>200</i>&nbsp;
+<b class="nc"><i>201</i>&nbsp;    node.setPenalty(penalty);</b>
+<b class="nc"><i>202</i>&nbsp;  }</b>
+<i>203</i>&nbsp;
+<i>204</i>&nbsp;  private static void addNode(final List&lt;AStarNode&gt; neighbors, AStarNode node) {
+<b class="fc"><i>205</i>&nbsp;    if (node != null &amp;&amp; node.isWalkable()) {</b>
+<b class="fc"><i>206</i>&nbsp;      neighbors.add(node);</b>
+<i>207</i>&nbsp;    }
+<b class="fc"><i>208</i>&nbsp;  }</b>
+<i>209</i>&nbsp;
+<i>210</i>&nbsp;  private void addDiagonalNode(final List&lt;AStarNode&gt; neighbors, AStarNode node, AStarNode diagonalNeighbor1, AStarNode diagonalNeighbor2) {
+<i>211</i>&nbsp;    // only add diagonal neighbors when they are not on a corner
+<b class="fc"><i>212</i>&nbsp;    if (node != null &amp;&amp; this.isDiagonalCornerMovementAllowed() || node != null &amp;&amp; diagonalNeighbor1 != null &amp;&amp; diagonalNeighbor1.isWalkable() &amp;&amp; diagonalNeighbor2 != null &amp;&amp; diagonalNeighbor2.isWalkable()) {</b>
+<b class="fc"><i>213</i>&nbsp;      neighbors.add(node);</b>
+<i>214</i>&nbsp;    }
+<b class="fc"><i>215</i>&nbsp;  }</b>
+<i>216</i>&nbsp;
+<i>217</i>&nbsp;  private AStarNode getNode(final int x, final int y) {
+<b class="fc"><i>218</i>&nbsp;    if (x &gt;= 0 &amp;&amp; x &lt; this.getGrid().length &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; this.getGrid()[0].length) {</b>
+<b class="fc"><i>219</i>&nbsp;      return this.getGrid()[x][y];</b>
+<i>220</i>&nbsp;    }
+<i>221</i>&nbsp;
+<b class="nc"><i>222</i>&nbsp;    return null;</b>
+<i>223</i>&nbsp;  }
+<i>224</i>&nbsp;
+<i>225</i>&nbsp;  private void populateGrid(final int gridSizeX, final int gridSizeY) {
+<b class="fc"><i>226</i>&nbsp;    for (int x = 0; x &lt; gridSizeX; x++) {</b>
+<b class="fc"><i>227</i>&nbsp;      for (int y = 0; y &lt; gridSizeY; y++) {</b>
+<b class="fc"><i>228</i>&nbsp;        final Rectangle nodeBounds = new Rectangle(x * this.nodeSize, y * this.nodeSize, this.nodeSize, this.nodeSize);</b>
+<b class="fc"><i>229</i>&nbsp;        final AStarNode node = new AStarNode(!Game.physics().collides(nodeBounds, CollisionType.STATIC), nodeBounds, x, y);</b>
+<b class="fc"><i>230</i>&nbsp;        this.assignPenalty(node);</b>
+<b class="fc"><i>231</i>&nbsp;        this.getGrid()[x][y] = node;</b>
+<i>232</i>&nbsp;      }
+<i>233</i>&nbsp;    }
+<b class="fc"><i>234</i>&nbsp;  }</b>
+<i>235</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

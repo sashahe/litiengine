@@ -1,0 +1,225 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: DebugRenderer</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.graphics</a> ]
+</div>
+
+<h1>Coverage Summary for Class: DebugRenderer (de.gurkenlabs.litiengine.graphics)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DebugRenderer</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    22.2%
+  </span>
+  <span class="absValue">
+    (2/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    12.1%
+  </span>
+  <span class="absValue">
+    (8/ 66)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.graphics;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.BasicStroke;
+<i>4</i>&nbsp;import java.awt.Color;
+<i>5</i>&nbsp;import java.awt.Font;
+<i>6</i>&nbsp;import java.awt.FontMetrics;
+<i>7</i>&nbsp;import java.awt.Graphics2D;
+<i>8</i>&nbsp;import java.awt.Point;
+<i>9</i>&nbsp;import java.awt.geom.Point2D;
+<i>10</i>&nbsp;import java.awt.geom.Rectangle2D;
+<i>11</i>&nbsp;import java.text.DecimalFormat;
+<i>12</i>&nbsp;import java.util.List;
+<i>13</i>&nbsp;import java.util.concurrent.CopyOnWriteArrayList;
+<i>14</i>&nbsp;import java.util.function.Consumer;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;import de.gurkenlabs.litiengine.Game;
+<i>17</i>&nbsp;import de.gurkenlabs.litiengine.entities.ICollisionEntity;
+<i>18</i>&nbsp;import de.gurkenlabs.litiengine.entities.ICombatEntity;
+<i>19</i>&nbsp;import de.gurkenlabs.litiengine.entities.IEntity;
+<i>20</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.IMap;
+<i>21</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.ITile;
+<i>22</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.MapUtilities;
+<i>23</i>&nbsp;import de.gurkenlabs.litiengine.input.Input;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;public class DebugRenderer {
+<i>26</i>&nbsp;  private static List&lt;Consumer&lt;MapDebugArgs&gt;&gt; mapDebugConsumer;
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;  private static List&lt;EntityDebugRenderedListener&gt; entityDebugListeners;
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;  static {
+<b class="fc"><i>31</i>&nbsp;    mapDebugConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>32</i>&nbsp;    entityDebugListeners = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>33</i>&nbsp;  }</b>
+<i>34</i>&nbsp;
+<b class="nc"><i>35</i>&nbsp;  private DebugRenderer() {</b>
+<b class="nc"><i>36</i>&nbsp;  }</b>
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;  public static void addEntityDebugListener(EntityDebugRenderedListener listener) {
+<b class="nc"><i>39</i>&nbsp;    entityDebugListeners.add(listener);</b>
+<b class="nc"><i>40</i>&nbsp;  }</b>
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;  public static void removeEntityDebugListener(EntityDebugRenderedListener listener) {
+<b class="nc"><i>43</i>&nbsp;    entityDebugListeners.remove(listener);</b>
+<b class="nc"><i>44</i>&nbsp;  }</b>
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;  public static void onMapDebugRendered(Consumer&lt;MapDebugArgs&gt; cons) {
+<b class="nc"><i>47</i>&nbsp;    mapDebugConsumer.add(cons);</b>
+<b class="nc"><i>48</i>&nbsp;  }</b>
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;  public static void renderEntityDebugInfo(final Graphics2D g, final IEntity entity) {
+<b class="nc"><i>51</i>&nbsp;    if (!Game.config().debug().isDebugEnabled()) {</b>
+<b class="nc"><i>52</i>&nbsp;      return;</b>
+<i>53</i>&nbsp;    }
+<i>54</i>&nbsp;
+<b class="nc"><i>55</i>&nbsp;    if (Game.config().debug().renderEntityNames()) {</b>
+<b class="nc"><i>56</i>&nbsp;      drawMapId(g, entity);</b>
+<i>57</i>&nbsp;    }
+<i>58</i>&nbsp;
+<b class="nc"><i>59</i>&nbsp;    if (Game.config().debug().renderHitBoxes() &amp;&amp; entity instanceof ICombatEntity) {</b>
+<b class="nc"><i>60</i>&nbsp;      g.setColor(Color.RED);</b>
+<b class="nc"><i>61</i>&nbsp;      Game.graphics().renderOutline(g, ((ICombatEntity) entity).getHitBox());</b>
+<i>62</i>&nbsp;    }
+<i>63</i>&nbsp;
+<b class="nc"><i>64</i>&nbsp;    if (Game.config().debug().renderBoundingBoxes()) {</b>
+<b class="nc"><i>65</i>&nbsp;      g.setColor(Color.RED);</b>
+<b class="nc"><i>66</i>&nbsp;      Game.graphics().renderOutline(g, entity.getBoundingBox());</b>
+<i>67</i>&nbsp;    }
+<i>68</i>&nbsp;
+<b class="nc"><i>69</i>&nbsp;    if (Game.config().debug().renderCollisionBoxes() &amp;&amp; entity instanceof ICollisionEntity) {</b>
+<b class="nc"><i>70</i>&nbsp;      final ICollisionEntity collisionEntity = (ICollisionEntity) entity;</b>
+<b class="nc"><i>71</i>&nbsp;      g.setColor(collisionEntity.hasCollision() ? Color.RED : Color.ORANGE);</b>
+<b class="nc"><i>72</i>&nbsp;      Game.graphics().renderOutline(g, collisionEntity.getCollisionBox());</b>
+<i>73</i>&nbsp;    }
+<i>74</i>&nbsp;
+<b class="nc"><i>75</i>&nbsp;    for (EntityDebugRenderedListener listener : entityDebugListeners) {</b>
+<b class="nc"><i>76</i>&nbsp;      listener.entityRendered(g, entity);</b>
+<b class="nc"><i>77</i>&nbsp;    }</b>
+<b class="nc"><i>78</i>&nbsp;  }</b>
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;  public static void renderMapDebugInfo(final Graphics2D g, final IMap map) {
+<i>81</i>&nbsp;    // draw collision boxes from shape layer
+<b class="fc"><i>82</i>&nbsp;    if (Game.config().debug().renderCollisionBoxes()) {</b>
+<b class="nc"><i>83</i>&nbsp;      final BasicStroke shapeStroke = new BasicStroke(1 / Game.world().camera().getRenderScale());</b>
+<b class="nc"><i>84</i>&nbsp;      for (final Rectangle2D shape : Game.physics().getStaticCollisionBoxes()) {</b>
+<b class="nc"><i>85</i>&nbsp;        g.setColor(Color.RED);</b>
+<b class="nc"><i>86</i>&nbsp;        Game.graphics().renderOutline(g, shape, shapeStroke);</b>
+<b class="nc"><i>87</i>&nbsp;      }</b>
+<i>88</i>&nbsp;    }
+<i>89</i>&nbsp;
+<b class="fc"><i>90</i>&nbsp;    if (Game.config().debug().showTilesMetric()) {</b>
+<i>91</i>&nbsp;      // draw mouse tile info
+<b class="nc"><i>92</i>&nbsp;      drawTileBoundingBox(g, map, Input.mouse().getMapLocation());</b>
+<i>93</i>&nbsp;    }
+<i>94</i>&nbsp;
+<b class="fc"><i>95</i>&nbsp;    final MapDebugArgs args = new MapDebugArgs(map, g);</b>
+<b class="fc"><i>96</i>&nbsp;    for (Consumer&lt;MapDebugArgs&gt; cons : mapDebugConsumer) {</b>
+<b class="nc"><i>97</i>&nbsp;      cons.accept(args);</b>
+<b class="nc"><i>98</i>&nbsp;    }</b>
+<b class="fc"><i>99</i>&nbsp;  }</b>
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;  /**
+<i>102</i>&nbsp;   * Draw name.
+<i>103</i>&nbsp;   *
+<i>104</i>&nbsp;   * @param g
+<i>105</i>&nbsp;   *          the g
+<i>106</i>&nbsp;   * @param entity
+<i>107</i>&nbsp;   *          the entity
+<i>108</i>&nbsp;   */
+<i>109</i>&nbsp;  private static void drawMapId(final Graphics2D g, final IEntity entity) {
+<b class="nc"><i>110</i>&nbsp;    g.setColor(Color.RED);</b>
+<b class="nc"><i>111</i>&nbsp;    g.setFont(g.getFont().deriveFont(Font.PLAIN, 4f));</b>
+<b class="nc"><i>112</i>&nbsp;    final int x = (int) Game.world().camera().getViewportDimensionCenter(entity).getX() + 10;</b>
+<b class="nc"><i>113</i>&nbsp;    final int y = (int) Game.world().camera().getViewportDimensionCenter(entity).getY();</b>
+<b class="nc"><i>114</i>&nbsp;    TextRenderer.render(g, Integer.toString(entity.getMapId()), x, y);</b>
+<b class="nc"><i>115</i>&nbsp;    final String locationString = &quot;[x:&quot; + new DecimalFormat(&quot;##.##&quot;).format(entity.getX()) + &quot;;y:&quot; + new DecimalFormat(&quot;##.##&quot;).format(entity.getY()) + &quot;]&quot;;</b>
+<b class="nc"><i>116</i>&nbsp;    TextRenderer.render(g, locationString, x, y + 5.0);</b>
+<b class="nc"><i>117</i>&nbsp;  }</b>
+<i>118</i>&nbsp;
+<i>119</i>&nbsp;  private static void drawTileBoundingBox(final Graphics2D g, final IMap map, final Point2D location) {
+<b class="nc"><i>120</i>&nbsp;    final Rectangle2D playerTile = MapUtilities.getTileBoundingBox(map, location);</b>
+<i>121</i>&nbsp;
+<i>122</i>&nbsp;    // draw rect
+<b class="nc"><i>123</i>&nbsp;    g.setColor(Color.CYAN);</b>
+<b class="nc"><i>124</i>&nbsp;    Game.graphics().renderOutline(g, playerTile);</b>
+<i>125</i>&nbsp;
+<i>126</i>&nbsp;    // draw coords
+<b class="nc"><i>127</i>&nbsp;    final Point tileLocation = MapUtilities.getTile(map, location);</b>
+<b class="nc"><i>128</i>&nbsp;    final String locationText = tileLocation.x + &quot;, &quot; + tileLocation.y;</b>
+<b class="nc"><i>129</i>&nbsp;    g.setFont(g.getFont().deriveFont(3f));</b>
+<b class="nc"><i>130</i>&nbsp;    final FontMetrics fm = g.getFontMetrics();</b>
+<b class="nc"><i>131</i>&nbsp;    final Point2D relative = Game.world().camera().getViewportLocation(playerTile.getX(), playerTile.getY());</b>
+<b class="nc"><i>132</i>&nbsp;    TextRenderer.render(g, locationText, (float) (relative.getX() + playerTile.getWidth() + 3), (float) (relative.getY() + fm.getHeight()));</b>
+<i>133</i>&nbsp;
+<b class="nc"><i>134</i>&nbsp;    final List&lt;ITile&gt; tiles = MapUtilities.getTilesByPixelLocation(map, location);</b>
+<b class="nc"><i>135</i>&nbsp;    final StringBuilder sb = new StringBuilder();</b>
+<b class="nc"><i>136</i>&nbsp;    for (final ITile tile : tiles) {</b>
+<b class="nc"><i>137</i>&nbsp;      sb.append(&quot;[gid: &quot; + tile.getGridId() + &quot;] &quot;);</b>
+<b class="nc"><i>138</i>&nbsp;    }</b>
+<i>139</i>&nbsp;
+<b class="nc"><i>140</i>&nbsp;    TextRenderer.render(g, sb.toString(), (float) (relative.getX() + playerTile.getWidth() + 3), (float) (relative.getY() + fm.getHeight() * 2 + 2));</b>
+<b class="nc"><i>141</i>&nbsp;  }</b>
+<i>142</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

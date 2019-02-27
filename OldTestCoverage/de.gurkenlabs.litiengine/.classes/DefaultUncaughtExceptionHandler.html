@@ -1,0 +1,131 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: DefaultUncaughtExceptionHandler</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine</a> ]
+</div>
+
+<h1>Coverage Summary for Class: DefaultUncaughtExceptionHandler (de.gurkenlabs.litiengine)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DefaultUncaughtExceptionHandler</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    33.3%
+  </span>
+  <span class="absValue">
+    (2/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    19%
+  </span>
+  <span class="absValue">
+    (4/ 21)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.io.FileNotFoundException;
+<i>4</i>&nbsp;import java.io.PrintStream;
+<i>5</i>&nbsp;import java.lang.Thread.UncaughtExceptionHandler;
+<i>6</i>&nbsp;import java.util.logging.Level;
+<i>7</i>&nbsp;import java.util.logging.Logger;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;public class DefaultUncaughtExceptionHandler implements UncaughtExceptionHandler {
+<b class="fc"><i>10</i>&nbsp;  private static final Logger log = Logger.getLogger(DefaultUncaughtExceptionHandler.class.getName());</b>
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;  private boolean exitOnException;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;  public DefaultUncaughtExceptionHandler() {
+<b class="nc"><i>15</i>&nbsp;    this(true);</b>
+<b class="nc"><i>16</i>&nbsp;  }</b>
+<i>17</i>&nbsp;
+<b class="fc"><i>18</i>&nbsp;  public DefaultUncaughtExceptionHandler(boolean exitOnException) {</b>
+<b class="fc"><i>19</i>&nbsp;    this.exitOnException = exitOnException;</b>
+<b class="fc"><i>20</i>&nbsp;  }</b>
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;  @Override
+<i>23</i>&nbsp;  public void uncaughtException(final Thread t, final Throwable e) {
+<b class="nc"><i>24</i>&nbsp;    if (e instanceof ThreadDeath)</b>
+<b class="nc"><i>25</i>&nbsp;      return;</b>
+<i>26</i>&nbsp;
+<b class="nc"><i>27</i>&nbsp;    try (PrintStream stream = new PrintStream(&quot;crash.txt&quot;)) {</b>
+<b class="nc"><i>28</i>&nbsp;      stream.println(t.getName() + &quot; threw an exception:&quot;);</b>
+<b class="nc"><i>29</i>&nbsp;      e.printStackTrace(stream);</b>
+<b class="nc"><i>30</i>&nbsp;    } catch (FileNotFoundException e2) {</b>
+<b class="nc"><i>31</i>&nbsp;      log.log(Level.WARNING, &quot;Could not create crash report file.&quot;, e);</b>
+<b class="nc"><i>32</i>&nbsp;    }</b>
+<i>33</i>&nbsp;
+<b class="nc"><i>34</i>&nbsp;    log.log(Level.SEVERE, &quot;Game crashed! :(&quot;, e);</b>
+<i>35</i>&nbsp;
+<b class="nc"><i>36</i>&nbsp;    if (this.exitOnException()) {</b>
+<b class="nc"><i>37</i>&nbsp;      System.exit(Game.EXIT_GAME_CRASHED);</b>
+<i>38</i>&nbsp;    }
+<b class="nc"><i>39</i>&nbsp;  }</b>
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;  public boolean exitOnException() {
+<b class="nc"><i>42</i>&nbsp;    return this.exitOnException;</b>
+<i>43</i>&nbsp;  }
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;  public void setExitOnException(boolean exit) {
+<b class="nc"><i>46</i>&nbsp;    this.exitOnException = exit;</b>
+<b class="nc"><i>47</i>&nbsp;  }</b>
+<i>48</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

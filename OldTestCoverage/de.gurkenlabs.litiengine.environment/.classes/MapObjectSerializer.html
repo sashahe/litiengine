@@ -1,0 +1,199 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MapObjectSerializer</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MapObjectSerializer (de.gurkenlabs.litiengine.environment)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MapObjectSerializer</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (5/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.1%
+  </span>
+  <span class="absValue">
+    (54/ 65)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.lang.reflect.Field;
+<i>4</i>&nbsp;import java.util.List;
+<i>5</i>&nbsp;import java.util.logging.Level;
+<i>6</i>&nbsp;import java.util.logging.Logger;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import de.gurkenlabs.litiengine.entities.IEntity;
+<i>9</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.IMapObject;
+<i>10</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.TmxProperty;
+<i>11</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.xml.DecimalFloatAdapter;
+<i>12</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.xml.MapObject;
+<i>13</i>&nbsp;import de.gurkenlabs.litiengine.util.ArrayUtilities;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;public final class MapObjectSerializer {
+<b class="fc"><i>16</i>&nbsp;  private static final Logger log = Logger.getLogger(MapObjectSerializer.class.getName());</b>
+<i>17</i>&nbsp;
+<b class="nc"><i>18</i>&nbsp;  private MapObjectSerializer() {</b>
+<b class="nc"><i>19</i>&nbsp;  }</b>
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;  public static MapObject serialize(IEntity entity) {
+<b class="fc"><i>22</i>&nbsp;    MapObject obj = new MapObject();</b>
+<b class="fc"><i>23</i>&nbsp;    obj.setId(entity.getMapId());</b>
+<b class="fc"><i>24</i>&nbsp;    obj.setX((float) entity.getX());</b>
+<b class="fc"><i>25</i>&nbsp;    obj.setY((float) entity.getY());</b>
+<b class="fc"><i>26</i>&nbsp;    obj.setWidth(entity.getWidth());</b>
+<b class="fc"><i>27</i>&nbsp;    obj.setHeight(entity.getHeight());</b>
+<b class="fc"><i>28</i>&nbsp;    obj.setName(entity.getName());</b>
+<i>29</i>&nbsp;
+<b class="fc"><i>30</i>&nbsp;    serialize(entity.getClass(), entity, obj);</b>
+<b class="fc"><i>31</i>&nbsp;    return obj;</b>
+<i>32</i>&nbsp;  }
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;  private static &lt;T extends IEntity&gt; void serialize(Class&lt;?&gt; clz, T entity, MapObject mapObject) {
+<i>35</i>&nbsp;
+<b class="fc"><i>36</i>&nbsp;    for (final Field field : clz.getDeclaredFields()) {</b>
+<b class="fc"><i>37</i>&nbsp;      serialize(field, entity, mapObject);</b>
+<i>38</i>&nbsp;    }
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    // recursively call all parent classes and serialize annotated fields
+<b class="fc"><i>41</i>&nbsp;    Class&lt;?&gt; parentClass = clz.getSuperclass();</b>
+<b class="fc"><i>42</i>&nbsp;    if (parentClass != null) {</b>
+<b class="fc"><i>43</i>&nbsp;      serialize(parentClass, entity, mapObject);</b>
+<i>44</i>&nbsp;    }
+<b class="fc"><i>45</i>&nbsp;  }</b>
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;  private static void serialize(Field field, Object entity, IMapObject mapObject) {
+<b class="fc"><i>48</i>&nbsp;    TmxProperty property = field.getAnnotation(TmxProperty.class);</b>
+<b class="fc"><i>49</i>&nbsp;    if (property == null) {</b>
+<b class="fc"><i>50</i>&nbsp;      return;</b>
+<i>51</i>&nbsp;    }
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    Object value;
+<i>54</i>&nbsp;    try {
+<b class="fc"><i>55</i>&nbsp;      if (!field.isAccessible()) {</b>
+<b class="fc"><i>56</i>&nbsp;        field.setAccessible(true);</b>
+<i>57</i>&nbsp;      }
+<i>58</i>&nbsp;
+<b class="fc"><i>59</i>&nbsp;      value = field.get(entity);</b>
+<b class="fc"><i>60</i>&nbsp;      if (value == null) {</b>
+<b class="nc"><i>61</i>&nbsp;        return;</b>
+<i>62</i>&nbsp;      }
+<i>63</i>&nbsp;
+<b class="fc"><i>64</i>&nbsp;      mapObject.setValue(property.name(), getPropertyValue(field, value));</b>
+<b class="nc"><i>65</i>&nbsp;    } catch (IllegalAccessException e) {</b>
+<b class="nc"><i>66</i>&nbsp;      log.log(Level.SEVERE, e.getMessage(), e);</b>
+<b class="fc"><i>67</i>&nbsp;    }</b>
+<b class="fc"><i>68</i>&nbsp;  }</b>
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;  public static String getPropertyValue(Field field, Object value) {
+<b class="fc"><i>71</i>&nbsp;    if (field.getType().equals(Float.class) || field.getType().equals(Double.class)) {</b>
+<i>72</i>&nbsp;      try {
+<b class="nc"><i>73</i>&nbsp;        return new DecimalFloatAdapter().marshal((Float) value);</b>
+<b class="nc"><i>74</i>&nbsp;      } catch (Exception e) {</b>
+<b class="nc"><i>75</i>&nbsp;        log.log(Level.SEVERE, e.getMessage(), e);</b>
+<b class="nc"><i>76</i>&nbsp;      }</b>
+<b class="fc"><i>77</i>&nbsp;    } else if (field.getType().equals(Integer.class)) {</b>
+<b class="nc"><i>78</i>&nbsp;      return Integer.toString((int) value);</b>
+<b class="fc"><i>79</i>&nbsp;    } else if (field.getType().equals(short.class)) {</b>
+<b class="fc"><i>80</i>&nbsp;      return Short.toString((short) value);</b>
+<b class="fc"><i>81</i>&nbsp;    } else if (field.getType().equals(byte.class)) {</b>
+<b class="fc"><i>82</i>&nbsp;      return Byte.toString((byte) value);</b>
+<b class="fc"><i>83</i>&nbsp;    } else if (field.getType().equals(long.class)) {</b>
+<b class="fc"><i>84</i>&nbsp;      return Long.toString((long) value);</b>
+<i>85</i>&nbsp;    }
+<i>86</i>&nbsp;
+<b class="fc"><i>87</i>&nbsp;    if (value instanceof List&lt;?&gt;) {</b>
+<b class="fc"><i>88</i>&nbsp;      return ArrayUtilities.join((List&lt;?&gt;) value);</b>
+<i>89</i>&nbsp;      // special handling
+<i>90</i>&nbsp;    }
+<i>91</i>&nbsp;
+<b class="fc"><i>92</i>&nbsp;    if (value.getClass().isArray()) {</b>
+<b class="fc"><i>93</i>&nbsp;      if (field.getType().getComponentType() == int.class) {</b>
+<b class="fc"><i>94</i>&nbsp;        return ArrayUtilities.join((int[]) value);</b>
+<b class="fc"><i>95</i>&nbsp;      } else if (field.getType().getComponentType() == double.class) {</b>
+<b class="fc"><i>96</i>&nbsp;        return ArrayUtilities.join((double[]) value);</b>
+<b class="fc"><i>97</i>&nbsp;      } else if (field.getType().getComponentType() == float.class) {</b>
+<b class="fc"><i>98</i>&nbsp;        return ArrayUtilities.join((float[]) value);</b>
+<b class="fc"><i>99</i>&nbsp;      } else if (field.getType().getComponentType() == short.class) {</b>
+<b class="fc"><i>100</i>&nbsp;        return ArrayUtilities.join((short[]) value);</b>
+<b class="fc"><i>101</i>&nbsp;      } else if (field.getType().getComponentType() == byte.class) {</b>
+<b class="fc"><i>102</i>&nbsp;        return ArrayUtilities.join((byte[]) value);</b>
+<b class="fc"><i>103</i>&nbsp;      } else if (field.getType().getComponentType() == long.class) {</b>
+<b class="fc"><i>104</i>&nbsp;        return ArrayUtilities.join((long[]) value);</b>
+<b class="fc"><i>105</i>&nbsp;      } else if (field.getType().getComponentType() == String.class) {</b>
+<b class="fc"><i>106</i>&nbsp;        return ArrayUtilities.join((String[]) value);</b>
+<b class="fc"><i>107</i>&nbsp;      } else if (field.getType().getComponentType() == boolean.class) {</b>
+<b class="fc"><i>108</i>&nbsp;        return ArrayUtilities.join((boolean[]) value);</b>
+<i>109</i>&nbsp;      } else {
+<b class="nc"><i>110</i>&nbsp;        return ArrayUtilities.join((Object[]) value);</b>
+<i>111</i>&nbsp;      }
+<i>112</i>&nbsp;    }
+<i>113</i>&nbsp;
+<b class="fc"><i>114</i>&nbsp;    return value.toString();</b>
+<i>115</i>&nbsp;  }
+<i>116</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

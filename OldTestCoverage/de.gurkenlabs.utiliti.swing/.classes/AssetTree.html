@@ -1,0 +1,211 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: AssetTree</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.utiliti.swing</a> ]
+</div>
+
+<h1>Coverage Summary for Class: AssetTree (de.gurkenlabs.utiliti.swing)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AssetTree</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 64)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.utiliti.swing;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Dimension;
+<i>4</i>&nbsp;import java.util.ArrayList;
+<i>5</i>&nbsp;import java.util.stream.Collectors;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import javax.swing.JTree;
+<i>8</i>&nbsp;import javax.swing.tree.DefaultMutableTreeNode;
+<i>9</i>&nbsp;import javax.swing.tree.DefaultTreeModel;
+<i>10</i>&nbsp;import javax.swing.tree.TreePath;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.ITileset;
+<i>13</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.xml.Map;
+<i>14</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.xml.Tileset;
+<i>15</i>&nbsp;import de.gurkenlabs.litiengine.graphics.animation.PropAnimationController;
+<i>16</i>&nbsp;import de.gurkenlabs.litiengine.resources.ResourceBundle;
+<i>17</i>&nbsp;import de.gurkenlabs.litiengine.resources.Resources;
+<i>18</i>&nbsp;import de.gurkenlabs.utiliti.EditorScreen;
+<i>19</i>&nbsp;import de.gurkenlabs.utiliti.Icons;
+<i>20</i>&nbsp;import de.gurkenlabs.utiliti.Program;
+<i>21</i>&nbsp;import de.gurkenlabs.utiliti.swing.panels.CreaturePanel;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;@SuppressWarnings(&quot;serial&quot;)
+<i>24</i>&nbsp;public class AssetTree extends JTree {
+<i>25</i>&nbsp;  private final DefaultTreeModel entitiesTreeModel;
+<i>26</i>&nbsp;  private final DefaultMutableTreeNode nodeRoot;
+<i>27</i>&nbsp;  private final DefaultMutableTreeNode nodeSpritesheets;
+<i>28</i>&nbsp;  private final DefaultMutableTreeNode nodeSpriteProps;
+<i>29</i>&nbsp;  private final DefaultMutableTreeNode nodeSpriteMisc;
+<i>30</i>&nbsp;  private final DefaultMutableTreeNode nodeTileSets;
+<i>31</i>&nbsp;  private final DefaultMutableTreeNode nodeSounds;
+<i>32</i>&nbsp;  private final DefaultMutableTreeNode nodeEmitters;
+<i>33</i>&nbsp;  private final DefaultMutableTreeNode nodeBlueprints;
+<i>34</i>&nbsp;  private final DefaultMutableTreeNode nodeCreatures;
+<i>35</i>&nbsp;
+<b class="nc"><i>36</i>&nbsp;  public AssetTree() {</b>
+<b class="nc"><i>37</i>&nbsp;    this.setRootVisible(false);</b>
+<i>38</i>&nbsp;    
+<b class="nc"><i>39</i>&nbsp;    this.nodeRoot = new DefaultMutableTreeNode(new IconTreeListItem(Resources.strings().get(&quot;assettree_assets&quot;), Icons.ASSET));</b>
+<b class="nc"><i>40</i>&nbsp;    this.nodeSpritesheets = new DefaultMutableTreeNode(new IconTreeListItem(Resources.strings().get(&quot;assettree_spritesheets&quot;), Icons.SPRITESHEET));</b>
+<b class="nc"><i>41</i>&nbsp;    this.nodeSpriteProps = new DefaultMutableTreeNode(new IconTreeListItem(Resources.strings().get(&quot;assettree_spritesheets_props&quot;), Icons.PROP));</b>
+<b class="nc"><i>42</i>&nbsp;    this.nodeSpriteMisc = new DefaultMutableTreeNode(new IconTreeListItem(Resources.strings().get(&quot;assettree_spritesheets_misc&quot;), Icons.MISC));</b>
+<b class="nc"><i>43</i>&nbsp;    this.nodeTileSets = new DefaultMutableTreeNode(new IconTreeListItem(Resources.strings().get(&quot;assettree_tilesets&quot;), Icons.TILESET));</b>
+<b class="nc"><i>44</i>&nbsp;    this.nodeSounds = new DefaultMutableTreeNode(new IconTreeListItem(Resources.strings().get(&quot;assettree_sounds&quot;), Icons.SOUND));</b>
+<b class="nc"><i>45</i>&nbsp;    this.nodeEmitters = new DefaultMutableTreeNode(new IconTreeListItem(Resources.strings().get(&quot;assettree_emitters&quot;), Icons.EMITTER));</b>
+<b class="nc"><i>46</i>&nbsp;    this.nodeBlueprints = new DefaultMutableTreeNode(new IconTreeListItem(Resources.strings().get(&quot;assettree_blueprints&quot;), Icons.BLUEPRINT));</b>
+<b class="nc"><i>47</i>&nbsp;    this.nodeCreatures = new DefaultMutableTreeNode(new IconTreeListItem(Resources.strings().get(&quot;assettree_creatures&quot;), Icons.CREATURE));</b>
+<i>48</i>&nbsp;    
+<b class="nc"><i>49</i>&nbsp;    this.nodeSpritesheets.add(this.nodeSpriteProps);</b>
+<b class="nc"><i>50</i>&nbsp;    this.nodeSpritesheets.add(this.nodeCreatures);</b>
+<b class="nc"><i>51</i>&nbsp;    this.nodeSpritesheets.add(this.nodeSpriteMisc);</b>
+<i>52</i>&nbsp;
+<b class="nc"><i>53</i>&nbsp;    this.nodeRoot.add(this.nodeSpritesheets);</b>
+<b class="nc"><i>54</i>&nbsp;    this.nodeRoot.add(this.nodeEmitters);</b>
+<b class="nc"><i>55</i>&nbsp;    this.nodeRoot.add(this.nodeBlueprints);</b>
+<b class="nc"><i>56</i>&nbsp;    this.nodeRoot.add(this.nodeTileSets);</b>
+<b class="nc"><i>57</i>&nbsp;    this.nodeRoot.add(this.nodeSounds);</b>
+<i>58</i>&nbsp;
+<b class="nc"><i>59</i>&nbsp;    this.entitiesTreeModel = new DefaultTreeModel(this.nodeRoot);</b>
+<i>60</i>&nbsp;
+<b class="nc"><i>61</i>&nbsp;    this.setModel(this.entitiesTreeModel);</b>
+<b class="nc"><i>62</i>&nbsp;    this.setCellRenderer(new IconTreeListRenderer());</b>
+<b class="nc"><i>63</i>&nbsp;    this.setMaximumSize(new Dimension(0, 250));</b>
+<b class="nc"><i>64</i>&nbsp;    for (int i = 0; i &lt; this.getRowCount(); i++) {</b>
+<b class="nc"><i>65</i>&nbsp;      this.expandRow(i);</b>
+<i>66</i>&nbsp;    }
+<i>67</i>&nbsp;
+<b class="nc"><i>68</i>&nbsp;    this.addTreeSelectionListener(e -&gt; loadAssetsOfCurrentSelection(e.getPath()));</b>
+<i>69</i>&nbsp;  }
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;  public void forceUpdate() {
+<b class="nc"><i>72</i>&nbsp;    loadAssetsOfCurrentSelection(this.getSelectionPath());</b>
+<i>73</i>&nbsp;  }
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;  @Override
+<i>76</i>&nbsp;  protected void setExpandedState(TreePath path, boolean state) {
+<b class="nc"><i>77</i>&nbsp;    if (state) {</b>
+<b class="nc"><i>78</i>&nbsp;      super.setExpandedState(path, state);</b>
+<i>79</i>&nbsp;    }
+<i>80</i>&nbsp;  }
+<i>81</i>&nbsp;
+<i>82</i>&nbsp;  private void loadAssetsOfCurrentSelection(TreePath selectedPath) {
+<b class="nc"><i>83</i>&nbsp;    if (selectedPath == null) {</b>
+<i>84</i>&nbsp;      return;
+<i>85</i>&nbsp;    }
+<i>86</i>&nbsp;
+<b class="nc"><i>87</i>&nbsp;    final TreePath spritePath = new TreePath(this.nodeSpritesheets.getPath());</b>
+<b class="nc"><i>88</i>&nbsp;    final TreePath propPath = new TreePath(this.nodeSpriteProps.getPath());</b>
+<b class="nc"><i>89</i>&nbsp;    final TreePath creaturePath = new TreePath(this.nodeCreatures.getPath());</b>
+<b class="nc"><i>90</i>&nbsp;    final TreePath miscPath = new TreePath(this.nodeSpriteMisc.getPath());</b>
+<b class="nc"><i>91</i>&nbsp;    final TreePath tilesetPath = new TreePath(this.nodeTileSets.getPath());</b>
+<b class="nc"><i>92</i>&nbsp;    final TreePath emitterPath = new TreePath(this.nodeEmitters.getPath());</b>
+<b class="nc"><i>93</i>&nbsp;    final TreePath blueprintPath = new TreePath(this.nodeBlueprints.getPath());</b>
+<b class="nc"><i>94</i>&nbsp;    final TreePath soundPath = new TreePath(this.nodeSounds.getPath());</b>
+<i>95</i>&nbsp;
+<b class="nc"><i>96</i>&nbsp;    final ResourceBundle gameFile = EditorScreen.instance().getGameFile();</b>
+<b class="nc"><i>97</i>&nbsp;    if (selectedPath.equals(spritePath)) {</b>
+<b class="nc"><i>98</i>&nbsp;      Program.getAssetPanel().loadSprites(gameFile.getSpriteSheets().stream().collect(Collectors.toList()));</b>
+<b class="nc"><i>99</i>&nbsp;    } else if (this.getSelectionPath().equals(propPath)) {</b>
+<b class="nc"><i>100</i>&nbsp;      Program.getAssetPanel().loadSprites(gameFile.getSpriteSheets().stream().filter(x -&gt; x.getName() != null &amp;&amp; x.getName().contains(PropAnimationController.PROP_IDENTIFIER)).collect(Collectors.toList()));</b>
+<b class="nc"><i>101</i>&nbsp;    } else if (this.getSelectionPath().equals(creaturePath)) {</b>
+<b class="nc"><i>102</i>&nbsp;      Program.getAssetPanel().loadSprites(gameFile.getSpriteSheets().stream().filter(x -&gt; x.getName() != null &amp;&amp; CreaturePanel.getCreatureSpriteName(x.getName()) != null).collect(Collectors.toList()));</b>
+<b class="nc"><i>103</i>&nbsp;    }else if (selectedPath.equals(miscPath)) {</b>
+<b class="nc"><i>104</i>&nbsp;      Program.getAssetPanel().loadSprites(gameFile.getSpriteSheets().stream().filter(x -&gt; x.getName() != null &amp;&amp; !x.getName().contains(PropAnimationController.PROP_IDENTIFIER) &amp;&amp; CreaturePanel.getCreatureSpriteName(x.getName()) == null).collect(Collectors.toList()));</b>
+<b class="nc"><i>105</i>&nbsp;    } else if (selectedPath.equals(tilesetPath)) {</b>
+<b class="nc"><i>106</i>&nbsp;      ArrayList&lt;Tileset&gt; allTilesets = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>107</i>&nbsp;      allTilesets.addAll(gameFile.getTilesets().stream().filter(x -&gt; x.getName() != null).collect(Collectors.toList()));</b>
+<i>108</i>&nbsp;
+<b class="nc"><i>109</i>&nbsp;      for (Map map : gameFile.getMaps()) {</b>
+<b class="nc"><i>110</i>&nbsp;        for (ITileset tileset : map.getTilesets()) {</b>
+<b class="nc"><i>111</i>&nbsp;          if (allTilesets.stream().anyMatch(x -&gt; x.getName() != null &amp;&amp; x.getName().equals(tileset.getName()))) {</b>
+<b class="nc"><i>112</i>&nbsp;            continue;</b>
+<i>113</i>&nbsp;          }
+<i>114</i>&nbsp;
+<b class="nc"><i>115</i>&nbsp;          allTilesets.add((Tileset) tileset);</b>
+<b class="nc"><i>116</i>&nbsp;        }</b>
+<b class="nc"><i>117</i>&nbsp;      }</b>
+<i>118</i>&nbsp;
+<b class="nc"><i>119</i>&nbsp;      Program.getAssetPanel().loadTilesets(allTilesets);</b>
+<b class="nc"><i>120</i>&nbsp;    } else if (selectedPath.equals(emitterPath)) {</b>
+<b class="nc"><i>121</i>&nbsp;      Program.getAssetPanel().loadEmitters(gameFile.getEmitters());</b>
+<b class="nc"><i>122</i>&nbsp;    } else if (selectedPath.equals(blueprintPath)) {</b>
+<b class="nc"><i>123</i>&nbsp;      Program.getAssetPanel().loadBlueprints(gameFile.getBluePrints());</b>
+<b class="nc"><i>124</i>&nbsp;    } else if (selectedPath.equals(soundPath)) {</b>
+<b class="nc"><i>125</i>&nbsp;      Program.getAssetPanel().loadSounds(gameFile.getSounds());</b>
+<i>126</i>&nbsp;    }
+<i>127</i>&nbsp;  }
+<i>128</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

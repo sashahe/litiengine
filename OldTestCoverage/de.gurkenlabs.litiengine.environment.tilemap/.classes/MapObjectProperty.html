@@ -1,0 +1,297 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MapObjectProperty</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment.tilemap</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MapObjectProperty (de.gurkenlabs.litiengine.environment.tilemap)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MapObjectProperty</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 15)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">MapObjectProperty$Emitter</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">MapObjectProperty$Particle</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 17)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment.tilemap;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.lang.reflect.Field;
+<i>4</i>&nbsp;import java.lang.reflect.Modifier;
+<i>5</i>&nbsp;import java.util.ArrayList;
+<i>6</i>&nbsp;import java.util.List;
+<i>7</i>&nbsp;import java.util.logging.Level;
+<i>8</i>&nbsp;import java.util.logging.Logger;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;public final class MapObjectProperty {
+<b class="nc"><i>11</i>&nbsp;  private static final Logger log = Logger.getLogger(MapObjectProperty.class.getName());</b>
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;  public static final String TAGS = &quot;tags&quot;;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;  // collision entity
+<i>16</i>&nbsp;  public static final String COLLISION = &quot;collision&quot;;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;  public static final String COLLISION_ALIGN = &quot;collisionAlign&quot;;
+<i>19</i>&nbsp;  public static final String COLLISION_VALIGN = &quot;collisionValign&quot;;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;  // collision box
+<i>22</i>&nbsp;  public static final String COLLISIONBOX_HEIGHT = &quot;collisionboxHeightFactor&quot;;
+<i>23</i>&nbsp;  public static final String COLLISIONBOX_WIDTH = &quot;collisionboxWidthFactor&quot;;
+<i>24</i>&nbsp;  public static final String COLLISIONBOX_OBSTRUCTINGLIGHTS = &quot;isObstructingLight&quot;;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;  // general entity stuff
+<i>27</i>&nbsp;  public static final String SPRITESHEETNAME = &quot;spritesheetName&quot;;
+<i>28</i>&nbsp;  public static final String SCALE_SPRITE = &quot;scaling&quot;;
+<i>29</i>&nbsp;  
+<i>30</i>&nbsp;  // creature
+<i>31</i>&nbsp;  public static final String CREATURE_TYPE = &quot;creature-type&quot;;
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;  // mobile entity
+<i>34</i>&nbsp;  public static final String MOVEMENT_ACCELERATION = &quot;acceleration&quot;;
+<i>35</i>&nbsp;  public static final String MOVEMENT_DECELERATION = &quot;deceleration&quot;;
+<i>36</i>&nbsp;  public static final String MOVEMENT_VELOCITY = &quot;velocity&quot;;
+<i>37</i>&nbsp;  public static final String MOVEMENT_TURNONMOVE = &quot;turnOnMove&quot;;
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;  
+<i>40</i>&nbsp;  // combat entity
+<i>41</i>&nbsp;  public static final String COMBAT_HITPOINTS = &quot;hitpoints&quot;;
+<i>42</i>&nbsp;  public static final String COMBAT_INDESTRUCTIBLE = &quot;indestructible&quot;;
+<i>43</i>&nbsp;  public static final String COMBAT_TEAM = &quot;team&quot;;
+<i>44</i>&nbsp;  
+<i>45</i>&nbsp;  // props
+<i>46</i>&nbsp;  public static final String PROP_MATERIAL = &quot;material&quot;;
+<i>47</i>&nbsp;  public static final String PROP_OBSTACLE = &quot;isObstacle&quot;;
+<i>48</i>&nbsp;  public static final String PROP_ADDSHADOW = &quot;addShadow&quot;;
+<i>49</i>&nbsp;  public static final String PROP_ROTATION = &quot;rotationSprite&quot;;
+<i>50</i>&nbsp;  public static final String PROP_FLIPHORIZONTALLY = &quot;flipHorizontally&quot;;
+<i>51</i>&nbsp;  public static final String PROP_FLIPVERTICALLY = &quot;flipVertically&quot;;
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;  // light source
+<i>54</i>&nbsp;  public static final String LIGHT_COLOR = &quot;lightColor&quot;;
+<i>55</i>&nbsp;  public static final String LIGHT_INTENSITY = &quot;lightIntensity&quot;;
+<i>56</i>&nbsp;  public static final String LIGHT_SHAPE = &quot;lightShape&quot;;
+<i>57</i>&nbsp;  public static final String LIGHT_ACTIVE = &quot;lightActive&quot;;
+<i>58</i>&nbsp;  public static final String LIGHT_FOCUSOFFSETX = &quot;lightFocusOffsetX&quot;;
+<i>59</i>&nbsp;  public static final String LIGHT_FOCUSOFFSETY = &quot;lightFocusOffsetY&quot;;
+<i>60</i>&nbsp;  
+<i>61</i>&nbsp;  // static shadow
+<i>62</i>&nbsp;  public static final String SHADOW_TYPE = &quot;shadowType&quot;;
+<i>63</i>&nbsp;  public static final String SHADOW_OFFSET = &quot;shadowOffset&quot;;
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;  // spawnpoint
+<i>66</i>&nbsp;  public static final String SPAWN_TYPE = &quot;spawnType&quot;;
+<i>67</i>&nbsp;  public static final String SPAWN_DIRECTION = &quot;spawnDirection&quot;;
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;  // trigger
+<i>70</i>&nbsp;  public static final String TRIGGER_ACTIVATION = &quot;triggerActivation&quot;;
+<i>71</i>&nbsp;  public static final String TRIGGER_MESSAGE = &quot;triggermessage&quot;;
+<i>72</i>&nbsp;  public static final String TRIGGER_ONETIME = &quot;triggerOneTime&quot;;
+<i>73</i>&nbsp;  public static final String TRIGGER_ACTIVATORS = &quot;triggerActivators&quot;;
+<i>74</i>&nbsp;  public static final String TRIGGER_TARGETS = &quot;triggerTarget&quot;;
+<i>75</i>&nbsp;  public static final String TRIGGER_COOLDOWN = &quot;triggerCooldown&quot;;
+<i>76</i>&nbsp;
+<b class="nc"><i>77</i>&nbsp;  private static List&lt;String&gt; availableProperties = new ArrayList&lt;&gt;();</b>
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;  public static final class Emitter {
+<i>80</i>&nbsp;    public static final String COLORS = &quot;emitterColors&quot;;
+<i>81</i>&nbsp;    public static final String COLORPROBABILITIES = &quot;emitterColorProbabilities&quot;;
+<i>82</i>&nbsp;    public static final String SPAWNRATE = &quot;emitterSpawnRate&quot;;
+<i>83</i>&nbsp;    public static final String SPAWNAMOUNT = &quot;emitterSpawnAmount&quot;;
+<i>84</i>&nbsp;    public static final String UPDATERATE = &quot;emitterUpdateDelay&quot;;
+<i>85</i>&nbsp;    public static final String TIMETOLIVE = &quot;emitterTimeToLive&quot;;
+<i>86</i>&nbsp;    public static final String MAXPARTICLES = &quot;emitterMaxParticles&quot;;
+<i>87</i>&nbsp;    public static final String PARTICLETYPE = &quot;emitterParticleType&quot;;
+<i>88</i>&nbsp;    public static final String COLORDEVIATION = &quot;emitterColorDeviation&quot;;
+<i>89</i>&nbsp;    public static final String ALPHADEVIATION = &quot;emitterAlphaDeviation&quot;;
+<i>90</i>&nbsp;    public static final String ORIGIN_ALIGN = &quot;emitterOriginAlign&quot;;
+<i>91</i>&nbsp;    public static final String ORIGIN_VALIGN = &quot;emitterOriginValign&quot;;
+<i>92</i>&nbsp;
+<b class="nc"><i>93</i>&nbsp;    private Emitter() {</b>
+<i>94</i>&nbsp;    }
+<i>95</i>&nbsp;  }
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;  public static final class Particle {
+<i>98</i>&nbsp;    public static final String MINX = &quot;particleMinX&quot;;
+<i>99</i>&nbsp;    public static final String MAXX = &quot;particleMaxX&quot;;
+<i>100</i>&nbsp;    public static final String X_RANDOM = &quot;particleXRandom&quot;;
+<i>101</i>&nbsp;    public static final String MINY = &quot;particleMinY&quot;;
+<i>102</i>&nbsp;    public static final String MAXY = &quot;particleMaxY&quot;;
+<i>103</i>&nbsp;    public static final String Y_RANDOM = &quot;particleYRandom&quot;;
+<i>104</i>&nbsp;    public static final String MINDELTAX = &quot;particleMinDeltaX&quot;;
+<i>105</i>&nbsp;    public static final String MAXDELTAX = &quot;particleMaxDeltaX&quot;;
+<i>106</i>&nbsp;    public static final String DELTAX_RANDOM = &quot;particleDeltaXRandom&quot;;
+<i>107</i>&nbsp;    public static final String MINDELTAY = &quot;particleMinDeltaY&quot;;
+<i>108</i>&nbsp;    public static final String MAXDELTAY = &quot;particleMaxDeltaY&quot;;
+<i>109</i>&nbsp;    public static final String DELTAY_RANDOM = &quot;particleDeltaYRandom&quot;;
+<i>110</i>&nbsp;    public static final String MINGRAVITYX = &quot;particleMinGravityX&quot;;
+<i>111</i>&nbsp;    public static final String MAXGRAVITYX = &quot;particleMaxGravityX&quot;;
+<i>112</i>&nbsp;    public static final String GRAVITYX_RANDOM = &quot;particleGravityXRandom&quot;;
+<i>113</i>&nbsp;    public static final String MINGRAVITYY = &quot;particleMinGravityY&quot;;
+<i>114</i>&nbsp;    public static final String MAXGRAVITYY = &quot;particleMaxGravityY&quot;;
+<i>115</i>&nbsp;    public static final String GRAVITYY_RANDOM = &quot;particleGravityYRandom&quot;;
+<i>116</i>&nbsp;    public static final String MINSTARTWIDTH = &quot;particleMinStartWidth&quot;;
+<i>117</i>&nbsp;    public static final String MAXSTARTWIDTH = &quot;particleMaxStartWidth&quot;;
+<i>118</i>&nbsp;    public static final String STARTWIDTH_RANDOM = &quot;particleStartWidthRandom&quot;;
+<i>119</i>&nbsp;    public static final String MINSTARTHEIGHT = &quot;particleMinStartHeight&quot;;
+<i>120</i>&nbsp;    public static final String MAXSTARTHEIGHT = &quot;particleMaxStartHeight&quot;;
+<i>121</i>&nbsp;    public static final String STARTHEIGHT_RANDOM = &quot;particleStartHeightRandom&quot;;
+<i>122</i>&nbsp;    public static final String MINDELTAWIDTH = &quot;particleMinDeltaWidth&quot;;
+<i>123</i>&nbsp;    public static final String MAXDELTAWIDTH = &quot;particleMaxDeltaWidth&quot;;
+<i>124</i>&nbsp;    public static final String DELTAWIDTH_RANDOM = &quot;particleDeltaWidthRandom&quot;;
+<i>125</i>&nbsp;    public static final String MINDELTAHEIGHT = &quot;particleMinDeltaHeight&quot;;
+<i>126</i>&nbsp;    public static final String MAXDELTAHEIGHT = &quot;particleMaxDeltaHeight&quot;;
+<i>127</i>&nbsp;    public static final String DELTAHEIGHT_RANDOM = &quot;particleDeltaHeightRandom&quot;;
+<i>128</i>&nbsp;    public static final String SPRITE = &quot;particleSprite&quot;;
+<i>129</i>&nbsp;    public static final String ANIMATESPRITE = &quot;particleAnimateSprite&quot;;
+<i>130</i>&nbsp;    public static final String COLLISIONTYPE = &quot;particlePhysics&quot;;
+<i>131</i>&nbsp;    public static final String TEXT = &quot;particleText&quot;;
+<i>132</i>&nbsp;    public static final String MINTTL = &quot;particleMinTTL&quot;;
+<i>133</i>&nbsp;    public static final String MAXTTL = &quot;particleMaxTTL&quot;;
+<i>134</i>&nbsp;    public static final String TTL_RANDOM = &quot;particleTTLRandom&quot;;
+<i>135</i>&nbsp;    public static final String FADE = &quot;particleFade&quot;;
+<i>136</i>&nbsp;
+<b class="nc"><i>137</i>&nbsp;    private Particle() {</b>
+<i>138</i>&nbsp;    }
+<i>139</i>&nbsp;  }
+<i>140</i>&nbsp;
+<b class="nc"><i>141</i>&nbsp;  private MapObjectProperty() {</b>
+<i>142</i>&nbsp;  }
+<i>143</i>&nbsp;
+<i>144</i>&nbsp;  public static List&lt;String&gt; getAvailableProperties() {
+<b class="nc"><i>145</i>&nbsp;    if (availableProperties.isEmpty()) {</b>
+<b class="nc"><i>146</i>&nbsp;      addAvailableProperties(MapObjectProperty.class);</b>
+<b class="nc"><i>147</i>&nbsp;      addAvailableProperties(MapObjectProperty.Emitter.class);</b>
+<b class="nc"><i>148</i>&nbsp;      addAvailableProperties(MapObjectProperty.Particle.class);</b>
+<i>149</i>&nbsp;    }
+<i>150</i>&nbsp;    
+<b class="nc"><i>151</i>&nbsp;    return availableProperties;</b>
+<i>152</i>&nbsp;  }
+<i>153</i>&nbsp;
+<i>154</i>&nbsp;  public static boolean isCustom(final String name) {
+<b class="nc"><i>155</i>&nbsp;    return getAvailableProperties().stream().noneMatch(x -&gt; x.equalsIgnoreCase(name));</b>
+<i>156</i>&nbsp;  }
+<i>157</i>&nbsp;
+<i>158</i>&nbsp;  private static void addAvailableProperties(Class&lt;?&gt; clz) {
+<b class="nc"><i>159</i>&nbsp;    for (final Field field : clz.getDeclaredFields()) {</b>
+<b class="nc"><i>160</i>&nbsp;      if (field.getType() == String.class &amp;&amp; Modifier.isStatic(field.getModifiers()) &amp;&amp; Modifier.isPublic(field.getModifiers())) {</b>
+<i>161</i>&nbsp;        try {
+<b class="nc"><i>162</i>&nbsp;          availableProperties.add((String) field.get(null));</b>
+<b class="nc"><i>163</i>&nbsp;        } catch (final IllegalArgumentException | IllegalAccessException e) {</b>
+<b class="nc"><i>164</i>&nbsp;          log.log(Level.SEVERE, e.getMessage(), e);</b>
+<b class="nc"><i>165</i>&nbsp;        }</b>
+<i>166</i>&nbsp;      }
+<i>167</i>&nbsp;    }
+<i>168</i>&nbsp;  }
+<i>169</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

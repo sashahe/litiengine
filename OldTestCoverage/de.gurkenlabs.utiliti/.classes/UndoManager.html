@@ -1,0 +1,524 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: UndoManager</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.utiliti</a> ]
+</div>
+
+<h1>Coverage Summary for Class: UndoManager (de.gurkenlabs.utiliti)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UndoManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 30)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 135)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">UndoManager$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">UndoManager$OperationType</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">UndoManager$UndoState</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 17)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 37)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 155)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.utiliti;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.util.HashMap;
+<i>4</i>&nbsp;import java.util.List;
+<i>5</i>&nbsp;import java.util.Map;
+<i>6</i>&nbsp;import java.util.Optional;
+<i>7</i>&nbsp;import java.util.concurrent.CopyOnWriteArrayList;
+<i>8</i>&nbsp;import java.util.function.Consumer;
+<i>9</i>&nbsp;import java.util.logging.Level;
+<i>10</i>&nbsp;import java.util.logging.Logger;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import de.gurkenlabs.litiengine.Game;
+<i>13</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.ICustomProperty;
+<i>14</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.IMap;
+<i>15</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.IMapObject;
+<i>16</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.IMapObjectLayer;
+<i>17</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.MapObjectType;
+<i>18</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.xml.MapObject;
+<i>19</i>&nbsp;import de.gurkenlabs.utiliti.components.MapComponent;
+<i>20</i>&nbsp;
+<b class="nc"><i>21</i>&nbsp;public class UndoManager {</b>
+<b class="nc"><i>22</i>&nbsp;  private static final Logger log = Logger.getLogger(MapComponent.class.getName());</b>
+<i>23</i>&nbsp;  private static final int MAX_STACK_SIZE = 10000;
+<b class="nc"><i>24</i>&nbsp;  private static int nextOperation = 1;</b>
+<i>25</i>&nbsp;  private UndoState[] undoStack;
+<i>26</i>&nbsp;  private List&lt;IMapObject&gt; changing;
+<b class="nc"><i>27</i>&nbsp;  private int currentIndex = -1;</b>
+<i>28</i>&nbsp;  private final String mapName;
+<b class="nc"><i>29</i>&nbsp;  private int operation = 0;</b>
+<b class="nc"><i>30</i>&nbsp;  private boolean saved = true;</b>
+<i>31</i>&nbsp;  private boolean executing;
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;  private static HashMap&lt;String, UndoManager&gt; instance;
+<i>34</i>&nbsp;  private static List&lt;Consumer&lt;UndoManager&gt;&gt; undoStackChangedConsumers;
+<i>35</i>&nbsp;  private static List&lt;Consumer&lt;UndoManager&gt;&gt; mapObjectAdded;
+<i>36</i>&nbsp;  private static List&lt;Consumer&lt;UndoManager&gt;&gt; mapObjectRemoved;
+<i>37</i>&nbsp;
+<b class="nc"><i>38</i>&nbsp;  private UndoManager(String mapName) {</b>
+<b class="nc"><i>39</i>&nbsp;    this.changing = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="nc"><i>40</i>&nbsp;    this.undoStack = new UndoState[MAX_STACK_SIZE];</b>
+<b class="nc"><i>41</i>&nbsp;    this.mapName = mapName;</b>
+<i>42</i>&nbsp;  }
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;  static {
+<b class="nc"><i>45</i>&nbsp;    instance = new HashMap&lt;&gt;();</b>
+<b class="nc"><i>46</i>&nbsp;    undoStackChangedConsumers = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="nc"><i>47</i>&nbsp;    mapObjectAdded = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="nc"><i>48</i>&nbsp;    mapObjectRemoved = new CopyOnWriteArrayList&lt;&gt;();</b>
+<i>49</i>&nbsp;  }
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;  public static UndoManager instance() {
+<b class="nc"><i>52</i>&nbsp;    if (instance.containsKey(Game.world().environment().getMap().getName())) {</b>
+<b class="nc"><i>53</i>&nbsp;      return instance.get(Game.world().environment().getMap().getName());</b>
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;
+<b class="nc"><i>56</i>&nbsp;    UndoManager newUndoManager = new UndoManager(Game.world().environment().getMap().getName());</b>
+<b class="nc"><i>57</i>&nbsp;    instance.put(Game.world().environment().getMap().getName(), newUndoManager);</b>
+<b class="nc"><i>58</i>&nbsp;    return newUndoManager;</b>
+<i>59</i>&nbsp;  }
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;  public static void clearAll() {
+<b class="nc"><i>62</i>&nbsp;    instance.clear();</b>
+<i>63</i>&nbsp;  }
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;  public void beginOperation() {
+<b class="nc"><i>66</i>&nbsp;    this.operation = nextOperation;</b>
+<i>67</i>&nbsp;  }
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;  public void endOperation() {
+<b class="nc"><i>70</i>&nbsp;    ++nextOperation;</b>
+<b class="nc"><i>71</i>&nbsp;    this.operation = 0;</b>
+<i>72</i>&nbsp;  }
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;  public void undo() {
+<b class="nc"><i>75</i>&nbsp;    if (this.executing || this.currentIndex &lt; 0) {</b>
+<i>76</i>&nbsp;      return;
+<i>77</i>&nbsp;    }
+<i>78</i>&nbsp;
+<b class="nc"><i>79</i>&nbsp;    final int currentOperation = this.undoStack[this.currentIndex].getOperation();</b>
+<b class="nc"><i>80</i>&nbsp;    UndoState state = null;</b>
+<i>81</i>&nbsp;
+<b class="nc"><i>82</i>&nbsp;    int stepsUndone = 0;</b>
+<b class="nc"><i>83</i>&nbsp;    this.executing = true;</b>
+<i>84</i>&nbsp;    try {
+<i>85</i>&nbsp;      do {
+<b class="nc"><i>86</i>&nbsp;        stepsUndone++;</b>
+<b class="nc"><i>87</i>&nbsp;        state = this.undoStack[this.currentIndex];</b>
+<b class="nc"><i>88</i>&nbsp;        switch (state.operationType) {</b>
+<i>89</i>&nbsp;        case ADD:
+<b class="nc"><i>90</i>&nbsp;          EditorScreen.instance().getMapComponent().delete(state.target);</b>
+<b class="nc"><i>91</i>&nbsp;          break;</b>
+<i>92</i>&nbsp;        case CHANGE:
+<b class="nc"><i>93</i>&nbsp;          restoreState(state.target, state.oldMapObject);</b>
+<b class="nc"><i>94</i>&nbsp;          break;</b>
+<i>95</i>&nbsp;        case DELETE:
+<b class="nc"><i>96</i>&nbsp;          EditorScreen.instance().getMapComponent().add(state.target, state.layer);</b>
+<i>97</i>&nbsp;          break;
+<i>98</i>&nbsp;        }
+<i>99</i>&nbsp;
+<b class="nc"><i>100</i>&nbsp;        this.currentIndex--;</b>
+<b class="nc"><i>101</i>&nbsp;      } while (currentOperation != 0 &amp;&amp; this.currentIndex &gt;= 0 &amp;&amp; this.undoStack[this.currentIndex].getOperation() == currentOperation);</b>
+<i>102</i>&nbsp;
+<b class="nc"><i>103</i>&nbsp;      log.log(Level.FINE, &quot;{0} steps undone.&quot;, stepsUndone);</b>
+<b class="nc"><i>104</i>&nbsp;      fireUndoStackChangedEvent(this);</b>
+<i>105</i>&nbsp;    } finally {
+<b class="nc"><i>106</i>&nbsp;      this.executing = false;</b>
+<b class="nc"><i>107</i>&nbsp;    }</b>
+<i>108</i>&nbsp;  }
+<i>109</i>&nbsp;
+<i>110</i>&nbsp;  public void redo() {
+<b class="nc"><i>111</i>&nbsp;    if (this.executing || this.undoStack.length - 1 == this.currentIndex || this.undoStack[this.currentIndex + 1] == null) {</b>
+<i>112</i>&nbsp;      return;
+<i>113</i>&nbsp;    }
+<i>114</i>&nbsp;
+<b class="nc"><i>115</i>&nbsp;    if (this.currentIndex &gt;= this.undoStack.length - 1) {</b>
+<b class="nc"><i>116</i>&nbsp;      this.currentIndex = this.undoStack.length - 1;</b>
+<i>117</i>&nbsp;      return;
+<i>118</i>&nbsp;    }
+<i>119</i>&nbsp;
+<b class="nc"><i>120</i>&nbsp;    final int currentOperation = this.undoStack[this.currentIndex + 1].getOperation();</b>
+<b class="nc"><i>121</i>&nbsp;    UndoState state = null;</b>
+<b class="nc"><i>122</i>&nbsp;    int stepsRedone = 0;</b>
+<b class="nc"><i>123</i>&nbsp;    this.executing = true;</b>
+<i>124</i>&nbsp;    try {
+<i>125</i>&nbsp;      do {
+<b class="nc"><i>126</i>&nbsp;        ++stepsRedone;</b>
+<b class="nc"><i>127</i>&nbsp;        ++this.currentIndex;</b>
+<b class="nc"><i>128</i>&nbsp;        state = this.undoStack[this.currentIndex];</b>
+<i>129</i>&nbsp;
+<b class="nc"><i>130</i>&nbsp;        switch (state.operationType) {</b>
+<i>131</i>&nbsp;        case ADD:
+<b class="nc"><i>132</i>&nbsp;          EditorScreen.instance().getMapComponent().add(state.target, state.layer);</b>
+<b class="nc"><i>133</i>&nbsp;          break;</b>
+<i>134</i>&nbsp;        case CHANGE:
+<b class="nc"><i>135</i>&nbsp;          restoreState(state.target, state.newMapObject);</b>
+<b class="nc"><i>136</i>&nbsp;          break;</b>
+<i>137</i>&nbsp;        case DELETE:
+<b class="nc"><i>138</i>&nbsp;          EditorScreen.instance().getMapComponent().delete(state.target);</b>
+<i>139</i>&nbsp;          break;
+<i>140</i>&nbsp;        }
+<b class="nc"><i>141</i>&nbsp;      } while (currentOperation != 0 &amp;&amp; this.currentIndex &lt; MAX_STACK_SIZE &amp;&amp; this.undoStack[this.currentIndex + 1] != null &amp;&amp; this.undoStack[this.currentIndex + 1].getOperation() == currentOperation);</b>
+<i>142</i>&nbsp;
+<b class="nc"><i>143</i>&nbsp;      log.log(Level.FINE, &quot;{0} steps redone.&quot;, stepsRedone);</b>
+<b class="nc"><i>144</i>&nbsp;      fireUndoStackChangedEvent(this);</b>
+<i>145</i>&nbsp;    } finally {
+<b class="nc"><i>146</i>&nbsp;      this.executing = false;</b>
+<b class="nc"><i>147</i>&nbsp;    }</b>
+<i>148</i>&nbsp;  }
+<i>149</i>&nbsp;
+<i>150</i>&nbsp;  public boolean canUndo() {
+<b class="nc"><i>151</i>&nbsp;    return this.currentIndex &gt;= 0;</b>
+<i>152</i>&nbsp;  }
+<i>153</i>&nbsp;
+<i>154</i>&nbsp;  public boolean canRedo() {
+<b class="nc"><i>155</i>&nbsp;    return this.currentIndex &lt; MAX_STACK_SIZE - 1 &amp;&amp; this.undoStack[this.currentIndex + 1] != null;</b>
+<i>156</i>&nbsp;  }
+<i>157</i>&nbsp;
+<i>158</i>&nbsp;  public UndoState[] getUndoStack() {
+<b class="nc"><i>159</i>&nbsp;    return this.undoStack;</b>
+<i>160</i>&nbsp;  }
+<i>161</i>&nbsp;
+<i>162</i>&nbsp;  public void mapObjectChanging(IMapObject mapObject) {
+<b class="nc"><i>163</i>&nbsp;    if (executing || mapObject == null) {</b>
+<i>164</i>&nbsp;      return;
+<i>165</i>&nbsp;    }
+<i>166</i>&nbsp;
+<b class="nc"><i>167</i>&nbsp;    if (this.changing.contains(mapObject)) {</b>
+<i>168</i>&nbsp;      // the old state is already tracked, while multiple changes are carried
+<i>169</i>&nbsp;      // out, we
+<i>170</i>&nbsp;      // don&#39;t want to track the steps in between
+<i>171</i>&nbsp;      return;
+<i>172</i>&nbsp;    }
+<i>173</i>&nbsp;
+<b class="nc"><i>174</i>&nbsp;    this.changing.add(new MapObject((MapObject) mapObject, true));</b>
+<i>175</i>&nbsp;  }
+<i>176</i>&nbsp;
+<i>177</i>&nbsp;  public void mapObjectChanged(IMapObject mapObject) {
+<b class="nc"><i>178</i>&nbsp;    this.mapObjectChanged(mapObject, mapObject.getId());</b>
+<i>179</i>&nbsp;  }
+<i>180</i>&nbsp;  
+<i>181</i>&nbsp;  /**
+<i>182</i>&nbsp;   * This method overload is only used for when the ID of a map object was
+<i>183</i>&nbsp;   * changed.
+<i>184</i>&nbsp;   * 
+<i>185</i>&nbsp;   * @param mapObject
+<i>186</i>&nbsp;   * @param mapId
+<i>187</i>&nbsp;   */
+<i>188</i>&nbsp;  public void mapObjectChanged(IMapObject mapObject, int previousMapId) {
+<b class="nc"><i>189</i>&nbsp;    if (executing || mapObject == null) {</b>
+<i>190</i>&nbsp;      return;
+<i>191</i>&nbsp;    }
+<i>192</i>&nbsp;
+<b class="nc"><i>193</i>&nbsp;    Optional&lt;IMapObject&gt; trackedMapObject = this.changing.stream().filter(x -&gt; x.getId() == previousMapId).findFirst();</b>
+<b class="nc"><i>194</i>&nbsp;    if (!trackedMapObject.isPresent()) {</b>
+<i>195</i>&nbsp;      // didn&#39;t track the changing event and therefore cannot provide an undo
+<i>196</i>&nbsp;      return;
+<i>197</i>&nbsp;    }
+<i>198</i>&nbsp;
+<b class="nc"><i>199</i>&nbsp;    this.ensureStackSize();</b>
+<i>200</i>&nbsp;
+<b class="nc"><i>201</i>&nbsp;    this.currentIndex++;</b>
+<b class="nc"><i>202</i>&nbsp;    this.clearRedoSteps();</b>
+<i>203</i>&nbsp;
+<b class="nc"><i>204</i>&nbsp;    this.undoStack[this.currentIndex] = new UndoState(mapObject, this.changing.remove(this.changing.indexOf(trackedMapObject.get())), new MapObject((MapObject) mapObject, true), OperationType.CHANGE);</b>
+<b class="nc"><i>205</i>&nbsp;    fireUndoStackChangedEvent(this);</b>
+<i>206</i>&nbsp;  }
+<i>207</i>&nbsp;
+<i>208</i>&nbsp;  public void mapObjectDeleted(IMapObject mapObject) {
+<b class="nc"><i>209</i>&nbsp;    if (executing || mapObject == null) {</b>
+<i>210</i>&nbsp;      return;
+<i>211</i>&nbsp;    }
+<i>212</i>&nbsp;
+<b class="nc"><i>213</i>&nbsp;    this.ensureStackSize();</b>
+<b class="nc"><i>214</i>&nbsp;    this.currentIndex++;</b>
+<b class="nc"><i>215</i>&nbsp;    this.clearRedoSteps();</b>
+<i>216</i>&nbsp;
+<b class="nc"><i>217</i>&nbsp;    this.undoStack[this.currentIndex] = new UndoState(mapObject, OperationType.DELETE);</b>
+<b class="nc"><i>218</i>&nbsp;    fireUndoStackChangedEvent(this);</b>
+<b class="nc"><i>219</i>&nbsp;    fireUndoManagerEvent(mapObjectRemoved, this);</b>
+<i>220</i>&nbsp;  }
+<i>221</i>&nbsp;
+<i>222</i>&nbsp;  public void mapObjectAdded(IMapObject mapObject) {
+<b class="nc"><i>223</i>&nbsp;    if (executing || mapObject == null) {</b>
+<i>224</i>&nbsp;      return;
+<i>225</i>&nbsp;    }
+<i>226</i>&nbsp;
+<b class="nc"><i>227</i>&nbsp;    this.ensureStackSize();</b>
+<b class="nc"><i>228</i>&nbsp;    this.currentIndex++;</b>
+<b class="nc"><i>229</i>&nbsp;    this.clearRedoSteps();</b>
+<i>230</i>&nbsp;
+<b class="nc"><i>231</i>&nbsp;    this.undoStack[this.currentIndex] = new UndoState(mapObject, OperationType.ADD);</b>
+<b class="nc"><i>232</i>&nbsp;    fireUndoStackChangedEvent(this);</b>
+<b class="nc"><i>233</i>&nbsp;    fireUndoManagerEvent(mapObjectAdded, this);</b>
+<i>234</i>&nbsp;  }
+<i>235</i>&nbsp;
+<i>236</i>&nbsp;  /**
+<i>237</i>&nbsp;   * This method is used to mark the current map as changed/unsaved which is mainly 
+<i>238</i>&nbsp;   * useful when something other than a &lt;code&gt;MapObject&lt;/code&gt; changed (e.g. a layer).
+<i>239</i>&nbsp;   */
+<i>240</i>&nbsp;  public void recordChanges() {
+<b class="nc"><i>241</i>&nbsp;    fireUndoStackChangedEvent(this);</b>
+<i>242</i>&nbsp;  }
+<i>243</i>&nbsp;  
+<i>244</i>&nbsp;  public static void onUndoStackChanged(Consumer&lt;UndoManager&gt; cons) {
+<b class="nc"><i>245</i>&nbsp;    undoStackChangedConsumers.add(cons);</b>
+<i>246</i>&nbsp;  }
+<i>247</i>&nbsp;
+<i>248</i>&nbsp;  public static void onMapObjectAdded(Consumer&lt;UndoManager&gt; cons) {
+<b class="nc"><i>249</i>&nbsp;    mapObjectAdded.add(cons);</b>
+<i>250</i>&nbsp;  }
+<i>251</i>&nbsp;
+<i>252</i>&nbsp;  public static void onMapObjectRemoved(Consumer&lt;UndoManager&gt; cons) {
+<b class="nc"><i>253</i>&nbsp;    mapObjectRemoved.add(cons);</b>
+<i>254</i>&nbsp;  }
+<i>255</i>&nbsp;
+<i>256</i>&nbsp;  public static boolean hasChanges(IMap map) {
+<b class="nc"><i>257</i>&nbsp;    if (instance.containsKey(map.getName())) {</b>
+<b class="nc"><i>258</i>&nbsp;      return !instance.get(map.getName()).saved;</b>
+<i>259</i>&nbsp;    }
+<i>260</i>&nbsp;
+<b class="nc"><i>261</i>&nbsp;    return false;</b>
+<i>262</i>&nbsp;  }
+<i>263</i>&nbsp;
+<i>264</i>&nbsp;  static void save(IMap map) {
+<b class="nc"><i>265</i>&nbsp;    if (instance.containsKey(map.getName())) {</b>
+<b class="nc"><i>266</i>&nbsp;      instance.get(map.getName()).saved = true;</b>
+<i>267</i>&nbsp;    }
+<i>268</i>&nbsp;  }
+<i>269</i>&nbsp;
+<i>270</i>&nbsp;  private static final void fireUndoStackChangedEvent(UndoManager undoManager) {
+<b class="nc"><i>271</i>&nbsp;    undoManager.saved = false;</b>
+<b class="nc"><i>272</i>&nbsp;    fireUndoManagerEvent(undoStackChangedConsumers, undoManager);</b>
+<i>273</i>&nbsp;  }
+<i>274</i>&nbsp;
+<i>275</i>&nbsp;  private static final void fireUndoManagerEvent(List&lt;Consumer&lt;UndoManager&gt;&gt; consumers, UndoManager undoManager) {
+<b class="nc"><i>276</i>&nbsp;    for (Consumer&lt;UndoManager&gt; cons : consumers) {</b>
+<b class="nc"><i>277</i>&nbsp;      cons.accept(undoManager);</b>
+<b class="nc"><i>278</i>&nbsp;    }</b>
+<i>279</i>&nbsp;  }
+<i>280</i>&nbsp;
+<i>281</i>&nbsp;  private static void restoreState(IMapObject target, IMapObject restore) {
+<b class="nc"><i>282</i>&nbsp;    target.setId(restore.getId());</b>
+<b class="nc"><i>283</i>&nbsp;    target.setName(restore.getName());</b>
+<b class="nc"><i>284</i>&nbsp;    target.setType(restore.getType());</b>
+<b class="nc"><i>285</i>&nbsp;    target.setX(restore.getX());</b>
+<b class="nc"><i>286</i>&nbsp;    target.setY(restore.getY());</b>
+<b class="nc"><i>287</i>&nbsp;    target.setWidth(restore.getWidth());</b>
+<b class="nc"><i>288</i>&nbsp;    target.setHeight(restore.getHeight());</b>
+<b class="nc"><i>289</i>&nbsp;    target.getProperties().clear();</b>
+<b class="nc"><i>290</i>&nbsp;    for (Map.Entry&lt;String, ICustomProperty&gt; prop : restore.getProperties().entrySet()) {</b>
+<b class="nc"><i>291</i>&nbsp;      target.setValue(prop.getKey(), prop.getValue());</b>
+<b class="nc"><i>292</i>&nbsp;    }</b>
+<i>293</i>&nbsp;
+<b class="nc"><i>294</i>&nbsp;    Game.world().environment().reloadFromMap(target.getId());</b>
+<b class="nc"><i>295</i>&nbsp;    if (MapObjectType.get(target.getType()) == MapObjectType.LIGHTSOURCE) {</b>
+<b class="nc"><i>296</i>&nbsp;      Game.world().environment().getAmbientLight().updateSection(MapObject.getBounds2D((MapObject) target, (MapObject) restore));</b>
+<i>297</i>&nbsp;    }
+<i>298</i>&nbsp;
+<b class="nc"><i>299</i>&nbsp;    if (EditorScreen.instance().getMapComponent().getFocusedMapObject() != null &amp;&amp; EditorScreen.instance().getMapComponent().getFocusedMapObject().getId() == target.getId()) {</b>
+<b class="nc"><i>300</i>&nbsp;      EditorScreen.instance().getMapObjectPanel().bind(target);</b>
+<b class="nc"><i>301</i>&nbsp;      EditorScreen.instance().getMapSelectionPanel().focus(target);</b>
+<i>302</i>&nbsp;    }
+<i>303</i>&nbsp;  }
+<i>304</i>&nbsp;
+<i>305</i>&nbsp;  private void ensureStackSize() {
+<i>306</i>&nbsp;    // move undo states by one index
+<b class="nc"><i>307</i>&nbsp;    if (this.currentIndex == MAX_STACK_SIZE - 1) {</b>
+<b class="nc"><i>308</i>&nbsp;      for (int i = 0; i &lt; MAX_STACK_SIZE; i++) {</b>
+<b class="nc"><i>309</i>&nbsp;        if (i == MAX_STACK_SIZE - 1) {</b>
+<b class="nc"><i>310</i>&nbsp;          this.undoStack[i] = null;</b>
+<b class="nc"><i>311</i>&nbsp;          break;</b>
+<i>312</i>&nbsp;        }
+<i>313</i>&nbsp;
+<b class="nc"><i>314</i>&nbsp;        this.undoStack[i] = this.undoStack[i + 1];</b>
+<i>315</i>&nbsp;      }
+<b class="nc"><i>316</i>&nbsp;      this.currentIndex--;</b>
+<i>317</i>&nbsp;    }
+<i>318</i>&nbsp;  }
+<i>319</i>&nbsp;
+<i>320</i>&nbsp;  private void clearRedoSteps() {
+<i>321</i>&nbsp;    // whenever a new UndoState gets added, while we&#39;re in the middle of the
+<i>322</i>&nbsp;    // current
+<i>323</i>&nbsp;    // stack, we need to remove all future redo steps because the new state will
+<i>324</i>&nbsp;    // now
+<i>325</i>&nbsp;    // be the last element
+<b class="nc"><i>326</i>&nbsp;    int index = this.currentIndex + 1;</b>
+<b class="nc"><i>327</i>&nbsp;    while (this.undoStack[index] != null &amp;&amp; index &lt; MAX_STACK_SIZE) {</b>
+<b class="nc"><i>328</i>&nbsp;      this.undoStack[index] = null;</b>
+<b class="nc"><i>329</i>&nbsp;      index++;</b>
+<i>330</i>&nbsp;    }
+<i>331</i>&nbsp;  }
+<i>332</i>&nbsp;
+<i>333</i>&nbsp;  public String getMapName() {
+<b class="nc"><i>334</i>&nbsp;    return mapName;</b>
+<i>335</i>&nbsp;  }
+<i>336</i>&nbsp;
+<b class="nc"><i>337</i>&nbsp;  private enum OperationType {</b>
+<b class="nc"><i>338</i>&nbsp;    CHANGE, ADD, DELETE</b>
+<i>339</i>&nbsp;  }
+<i>340</i>&nbsp;
+<b class="nc"><i>341</i>&nbsp;  public class UndoState {</b>
+<i>342</i>&nbsp;    private final IMapObject target;
+<i>343</i>&nbsp;    private final IMapObject oldMapObject;
+<i>344</i>&nbsp;    private final IMapObject newMapObject;
+<i>345</i>&nbsp;    private final IMapObjectLayer layer;
+<i>346</i>&nbsp;    private final OperationType operationType;
+<i>347</i>&nbsp;    private final int operation;
+<i>348</i>&nbsp;
+<b class="nc"><i>349</i>&nbsp;    public UndoState(IMapObject target, OperationType operationType) {</b>
+<b class="nc"><i>350</i>&nbsp;      this.operation = UndoManager.this.operation;</b>
+<b class="nc"><i>351</i>&nbsp;      this.target = target;</b>
+<b class="nc"><i>352</i>&nbsp;      this.layer = Game.world().environment().getMap().getMapObjectLayer(target);</b>
+<b class="nc"><i>353</i>&nbsp;      this.oldMapObject = null;</b>
+<b class="nc"><i>354</i>&nbsp;      this.newMapObject = null;</b>
+<b class="nc"><i>355</i>&nbsp;      this.operationType = operationType;</b>
+<i>356</i>&nbsp;    }
+<i>357</i>&nbsp;
+<b class="nc"><i>358</i>&nbsp;    public UndoState(IMapObject target, IMapObject oldMapObject, IMapObject newMapObject, OperationType operationType) {</b>
+<b class="nc"><i>359</i>&nbsp;      this.operation = UndoManager.this.operation;</b>
+<b class="nc"><i>360</i>&nbsp;      this.target = target;</b>
+<b class="nc"><i>361</i>&nbsp;      this.oldMapObject = operationType != OperationType.ADD ? oldMapObject : null;</b>
+<b class="nc"><i>362</i>&nbsp;      this.newMapObject = operationType != OperationType.DELETE ? newMapObject : null;</b>
+<b class="nc"><i>363</i>&nbsp;      this.operationType = operationType;</b>
+<i>364</i>&nbsp;
+<b class="nc"><i>365</i>&nbsp;      this.layer = Game.world().environment().getMap().getMapObjectLayer(target);</b>
+<i>366</i>&nbsp;    }
+<i>367</i>&nbsp;
+<i>368</i>&nbsp;    @Override
+<i>369</i>&nbsp;    public String toString() {
+<b class="nc"><i>370</i>&nbsp;      return target.getName() + &quot;(&quot; + target.getId() + &quot;) &quot; + this.operationType.toString();</b>
+<i>371</i>&nbsp;    }
+<i>372</i>&nbsp;
+<i>373</i>&nbsp;    public int getOperation() {
+<b class="nc"><i>374</i>&nbsp;      return this.operation;</b>
+<i>375</i>&nbsp;    }
+<i>376</i>&nbsp;  }
+<i>377</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,137 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: RenderLoop</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine</a> ]
+</div>
+
+<h1>Coverage Summary for Class: RenderLoop (de.gurkenlabs.litiengine)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RenderLoop</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    20%
+  </span>
+  <span class="absValue">
+    (1/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    11.5%
+  </span>
+  <span class="absValue">
+    (3/ 26)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import de.gurkenlabs.litiengine.util.TimeUtilities;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;public class RenderLoop extends UpdateLoop {
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;  private int maxFps;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;  public RenderLoop(String name) {
+<b class="fc"><i>10</i>&nbsp;    super(name);</b>
+<b class="fc"><i>11</i>&nbsp;    this.maxFps = Game.config().client().getMaxFps();</b>
+<b class="fc"><i>12</i>&nbsp;  }</b>
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;  @Override
+<i>15</i>&nbsp;  public void run() {
+<b class="nc"><i>16</i>&nbsp;    while (!interrupted()) {</b>
+<b class="nc"><i>17</i>&nbsp;      final long fpsWait = (long) (1000.0 / this.maxFps);</b>
+<b class="nc"><i>18</i>&nbsp;      final long renderStart = System.nanoTime();</b>
+<b class="nc"><i>19</i>&nbsp;      Game.world().camera().updateFocus();</b>
+<b class="nc"><i>20</i>&nbsp;      this.update();</b>
+<i>21</i>&nbsp;
+<b class="nc"><i>22</i>&nbsp;      Game.window().getRenderComponent().render();</b>
+<i>23</i>&nbsp;
+<b class="nc"><i>24</i>&nbsp;      final double renderTime = TimeUtilities.nanoToMs(System.nanoTime() - renderStart);</b>
+<i>25</i>&nbsp;
+<b class="nc"><i>26</i>&nbsp;      Game.metrics().setEstimatedMaxFramesPerSecond((int) (1000.0 / renderTime));</b>
+<b class="nc"><i>27</i>&nbsp;      if (Game.config().debug().trackRenderTimes()) {</b>
+<b class="nc"><i>28</i>&nbsp;        Game.metrics().trackRenderTime(&quot;total&quot;, renderTime);</b>
+<i>29</i>&nbsp;      }
+<i>30</i>&nbsp;
+<b class="nc"><i>31</i>&nbsp;      long wait = Math.max(0, fpsWait - (long) renderTime);</b>
+<b class="nc"><i>32</i>&nbsp;      if (wait != 0) {</b>
+<i>33</i>&nbsp;        try {
+<b class="nc"><i>34</i>&nbsp;          sleep(wait);</b>
+<b class="nc"><i>35</i>&nbsp;        } catch (InterruptedException e) {</b>
+<b class="nc"><i>36</i>&nbsp;          break;</b>
+<b class="nc"><i>37</i>&nbsp;        }</b>
+<i>38</i>&nbsp;      }
+<b class="nc"><i>39</i>&nbsp;    }</b>
+<b class="nc"><i>40</i>&nbsp;  }</b>
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;  @Override
+<i>43</i>&nbsp;  public void terminate() {
+<b class="nc"><i>44</i>&nbsp;    interrupt();</b>
+<b class="nc"><i>45</i>&nbsp;  }</b>
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;  public int getMaxFps() {
+<b class="nc"><i>48</i>&nbsp;    return maxFps;</b>
+<i>49</i>&nbsp;  }
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;  public void setMaxFps(int maxFps) {
+<b class="nc"><i>52</i>&nbsp;    this.maxFps = maxFps;</b>
+<b class="nc"><i>53</i>&nbsp;  }</b>
+<i>54</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

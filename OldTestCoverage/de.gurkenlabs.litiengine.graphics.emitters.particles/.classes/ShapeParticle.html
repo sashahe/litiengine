@@ -1,0 +1,107 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ShapeParticle</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.graphics.emitters.particles</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ShapeParticle (de.gurkenlabs.litiengine.graphics.emitters.particles)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ShapeParticle</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    40%
+  </span>
+  <span class="absValue">
+    (2/ 5)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.graphics.emitters.particles;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Color;
+<i>4</i>&nbsp;import java.awt.Graphics2D;
+<i>5</i>&nbsp;import java.awt.Shape;
+<i>6</i>&nbsp;import java.awt.geom.Point2D;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import de.gurkenlabs.litiengine.Game;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;public abstract class ShapeParticle extends Particle {
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;  public ShapeParticle(float width, float height, Color color, int ttl) {
+<b class="fc"><i>13</i>&nbsp;    super(width, height, color, ttl);</b>
+<b class="fc"><i>14</i>&nbsp;  }</b>
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;  protected abstract Shape getShape(final Point2D emitterOrigin);
+<i>17</i>&nbsp;  
+<i>18</i>&nbsp;  @Override
+<i>19</i>&nbsp;  public void render(final Graphics2D g, final Point2D emitterOrigin) {
+<b class="nc"><i>20</i>&nbsp;    g.setColor(this.getColor());</b>
+<i>21</i>&nbsp;
+<b class="nc"><i>22</i>&nbsp;    Game.graphics().renderShape(g, this.getShape(emitterOrigin));</b>
+<b class="nc"><i>23</i>&nbsp;  }</b>
+<i>24</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

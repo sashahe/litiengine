@@ -1,0 +1,863 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Map</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment.tilemap.xml</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Map (de.gurkenlabs.litiengine.environment.tilemap.xml)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Map</td>
+<td class="coverageStat">
+  <span class="percent">
+    81.5%
+  </span>
+  <span class="absValue">
+    (53/ 65)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    74%
+  </span>
+  <span class="absValue">
+    (214/ 289)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Map$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    81.8%
+  </span>
+  <span class="absValue">
+    (54/ 66)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    74.1%
+  </span>
+  <span class="absValue">
+    (215/ 290)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;
+<i>2</i>&nbsp;package de.gurkenlabs.litiengine.environment.tilemap.xml;
+<i>3</i>&nbsp;
+<i>4</i>&nbsp;import java.awt.Color;
+<i>5</i>&nbsp;import java.awt.Dimension;
+<i>6</i>&nbsp;import java.awt.Polygon;
+<i>7</i>&nbsp;import java.awt.Rectangle;
+<i>8</i>&nbsp;import java.awt.Shape;
+<i>9</i>&nbsp;import java.awt.geom.Rectangle2D;
+<i>10</i>&nbsp;import java.io.Serializable;
+<i>11</i>&nbsp;import java.util.ArrayList;
+<i>12</i>&nbsp;import java.util.Collection;
+<i>13</i>&nbsp;import java.util.Collections;
+<i>14</i>&nbsp;import java.util.Comparator;
+<i>15</i>&nbsp;import java.util.List;
+<i>16</i>&nbsp;import java.util.Objects;
+<i>17</i>&nbsp;import java.util.Optional;
+<i>18</i>&nbsp;import java.util.logging.Level;
+<i>19</i>&nbsp;import java.util.logging.Logger;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;import javax.xml.bind.Unmarshaller;
+<i>22</i>&nbsp;import javax.xml.bind.annotation.XmlAccessType;
+<i>23</i>&nbsp;import javax.xml.bind.annotation.XmlAccessorType;
+<i>24</i>&nbsp;import javax.xml.bind.annotation.XmlAttribute;
+<i>25</i>&nbsp;import javax.xml.bind.annotation.XmlElement;
+<i>26</i>&nbsp;import javax.xml.bind.annotation.XmlRootElement;
+<i>27</i>&nbsp;import javax.xml.bind.annotation.XmlTransient;
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.IImageLayer;
+<i>30</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.ILayer;
+<i>31</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.IMap;
+<i>32</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.IMapObject;
+<i>33</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.IMapObjectLayer;
+<i>34</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.ITileLayer;
+<i>35</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.ITileset;
+<i>36</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.MapOrientation;
+<i>37</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.MapUtilities;
+<i>38</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.StaggerAxis;
+<i>39</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.StaggerIndex;
+<i>40</i>&nbsp;import de.gurkenlabs.litiengine.util.ArrayUtilities;
+<i>41</i>&nbsp;import de.gurkenlabs.litiengine.util.ColorHelper;
+<i>42</i>&nbsp;import de.gurkenlabs.litiengine.util.geom.GeometricUtilities;
+<i>43</i>&nbsp;import de.gurkenlabs.litiengine.util.io.FileUtilities;
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;@XmlRootElement(name = &quot;map&quot;)
+<i>46</i>&nbsp;@XmlAccessorType(XmlAccessType.FIELD)
+<b class="fc"><i>47</i>&nbsp;public final class Map extends CustomPropertyProvider implements IMap, Serializable, Comparable&lt;Map&gt; {</b>
+<i>48</i>&nbsp;  public static final String FILE_EXTENSION = &quot;tmx&quot;;
+<i>49</i>&nbsp;
+<b class="fc"><i>50</i>&nbsp;  private static final Logger log = Logger.getLogger(Map.class.getName());</b>
+<i>51</i>&nbsp;  private static final long serialVersionUID = 402776584608365440L;
+<b class="fc"><i>52</i>&nbsp;  private static final int[] MAX_SUPPORTED_VERSION = { 1, 2, 1 };</b>
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;  @XmlAttribute
+<i>55</i>&nbsp;  private double version;
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;  @XmlAttribute
+<i>58</i>&nbsp;  private String tiledversion;
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;  @XmlAttribute
+<i>61</i>&nbsp;  private String orientation;
+<i>62</i>&nbsp;
+<b class="fc"><i>63</i>&nbsp;  @XmlTransient</b>
+<i>64</i>&nbsp;  private MapOrientation mapOrientation = MapOrientation.UNDEFINED;
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;  @XmlAttribute
+<i>67</i>&nbsp;  private String renderorder;
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;  @XmlAttribute
+<i>70</i>&nbsp;  private int width;
+<i>71</i>&nbsp;
+<i>72</i>&nbsp;  @XmlAttribute
+<i>73</i>&nbsp;  private int height;
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;  @XmlAttribute
+<i>76</i>&nbsp;  private int tilewidth;
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;  @XmlAttribute
+<i>79</i>&nbsp;  private int tileheight;
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;  @XmlAttribute
+<i>82</i>&nbsp;  private int infinite;
+<i>83</i>&nbsp;
+<i>84</i>&nbsp;  @XmlAttribute
+<i>85</i>&nbsp;  private Integer hexsidelength;
+<i>86</i>&nbsp;
+<b class="fc"><i>87</i>&nbsp;  @XmlTransient</b>
+<i>88</i>&nbsp;  private StaggerAxis staggerAxisEnum = StaggerAxis.UNDEFINED;
+<i>89</i>&nbsp;
+<b class="fc"><i>90</i>&nbsp;  @XmlTransient</b>
+<i>91</i>&nbsp;  private StaggerIndex staggerIndexEnum = StaggerIndex.UNDEFINED;
+<i>92</i>&nbsp;
+<i>93</i>&nbsp;  @XmlAttribute
+<i>94</i>&nbsp;  private String staggeraxis;
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;  @XmlAttribute
+<i>97</i>&nbsp;  private String staggerindex;
+<i>98</i>&nbsp;
+<i>99</i>&nbsp;  @XmlAttribute
+<i>100</i>&nbsp;  private String backgroundcolor;
+<i>101</i>&nbsp;
+<i>102</i>&nbsp;  @XmlAttribute(name = &quot;nextobjectid&quot;)
+<i>103</i>&nbsp;  private int nextObjectId;
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;  @XmlAttribute(name = &quot;nextlayerid&quot;)
+<i>106</i>&nbsp;  private int nextLayerId;
+<i>107</i>&nbsp;
+<i>108</i>&nbsp;  @XmlAttribute(required = false)
+<i>109</i>&nbsp;  private String name;
+<i>110</i>&nbsp;
+<i>111</i>&nbsp;  @XmlElement(name = &quot;tileset&quot;)
+<i>112</i>&nbsp;  private List&lt;Tileset&gt; rawTilesets;
+<i>113</i>&nbsp;
+<i>114</i>&nbsp;  @XmlElement(name = &quot;imagelayer&quot;)
+<i>115</i>&nbsp;  private List&lt;ImageLayer&gt; rawImageLayers;
+<i>116</i>&nbsp;
+<i>117</i>&nbsp;  @XmlElement(name = &quot;layer&quot;)
+<i>118</i>&nbsp;  private List&lt;TileLayer&gt; rawTileLayers;
+<i>119</i>&nbsp;
+<i>120</i>&nbsp;  @XmlElement(name = &quot;objectgroup&quot;)
+<i>121</i>&nbsp;  private List&lt;MapObjectLayer&gt; rawMapObjectLayers;
+<i>122</i>&nbsp;
+<i>123</i>&nbsp;  @XmlTransient
+<i>124</i>&nbsp;  private String path;
+<i>125</i>&nbsp;
+<i>126</i>&nbsp;  private transient List&lt;ITileset&gt; tilesets;
+<i>127</i>&nbsp;  private transient List&lt;ITileLayer&gt; tileLayers;
+<i>128</i>&nbsp;  private transient List&lt;IMapObjectLayer&gt; mapObjectLayers;
+<i>129</i>&nbsp;  private transient List&lt;IImageLayer&gt; imageLayers;
+<i>130</i>&nbsp;  private transient List&lt;ILayer&gt; allRenderLayers;
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;  private transient Color decodedBackgroundColor;
+<i>133</i>&nbsp;
+<i>134</i>&nbsp;  @XmlTransient
+<i>135</i>&nbsp;  private int chunkOffsetX;
+<i>136</i>&nbsp;
+<i>137</i>&nbsp;  @XmlTransient
+<i>138</i>&nbsp;  private int chunkOffsetY;
+<i>139</i>&nbsp;
+<i>140</i>&nbsp;  @Override
+<i>141</i>&nbsp;  public List&lt;IImageLayer&gt; getImageLayers() {
+<b class="fc"><i>142</i>&nbsp;    return this.imageLayers;</b>
+<i>143</i>&nbsp;  }
+<i>144</i>&nbsp;
+<i>145</i>&nbsp;  /**
+<i>146</i>&nbsp;   * Gets the next object id.
+<i>147</i>&nbsp;   *
+<i>148</i>&nbsp;   * @return the next object id
+<i>149</i>&nbsp;   */
+<i>150</i>&nbsp;  @Override
+<i>151</i>&nbsp;  public int getNextObjectId() {
+<b class="fc"><i>152</i>&nbsp;    return this.nextObjectId;</b>
+<i>153</i>&nbsp;  }
+<i>154</i>&nbsp;
+<i>155</i>&nbsp;  @Override
+<i>156</i>&nbsp;  public int getNextLayerId() {
+<b class="nc"><i>157</i>&nbsp;    return this.nextLayerId;</b>
+<i>158</i>&nbsp;  }
+<i>159</i>&nbsp;
+<i>160</i>&nbsp;  @Override
+<i>161</i>&nbsp;  public MapOrientation getOrientation() {
+<b class="fc"><i>162</i>&nbsp;    if (this.mapOrientation == MapOrientation.UNDEFINED) {</b>
+<b class="fc"><i>163</i>&nbsp;      this.mapOrientation = MapOrientation.valueOf(this.orientation.toUpperCase());</b>
+<i>164</i>&nbsp;    }
+<b class="fc"><i>165</i>&nbsp;    return this.mapOrientation;</b>
+<i>166</i>&nbsp;  }
+<i>167</i>&nbsp;
+<i>168</i>&nbsp;  @Override
+<i>169</i>&nbsp;  @XmlTransient
+<i>170</i>&nbsp;  public String getPath() {
+<b class="fc"><i>171</i>&nbsp;    return this.path;</b>
+<i>172</i>&nbsp;  }
+<i>173</i>&nbsp;
+<i>174</i>&nbsp;  @Override
+<i>175</i>&nbsp;  public String getRenderOrder() {
+<b class="fc"><i>176</i>&nbsp;    return this.renderorder;</b>
+<i>177</i>&nbsp;  }
+<i>178</i>&nbsp;
+<i>179</i>&nbsp;  @Override
+<i>180</i>&nbsp;  public List&lt;IMapObjectLayer&gt; getMapObjectLayers() {
+<b class="fc"><i>181</i>&nbsp;    if (this.mapObjectLayers == null) {</b>
+<b class="fc"><i>182</i>&nbsp;      ArrayList&lt;IMapObjectLayer&gt; tmpMapObjectLayers = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>183</i>&nbsp;      if (this.rawMapObjectLayers != null) {</b>
+<b class="fc"><i>184</i>&nbsp;        tmpMapObjectLayers.addAll(this.rawMapObjectLayers);</b>
+<i>185</i>&nbsp;      }
+<i>186</i>&nbsp;
+<b class="fc"><i>187</i>&nbsp;      this.mapObjectLayers = Collections.unmodifiableList(tmpMapObjectLayers);</b>
+<i>188</i>&nbsp;    }
+<i>189</i>&nbsp;
+<b class="fc"><i>190</i>&nbsp;    return this.mapObjectLayers;</b>
+<i>191</i>&nbsp;  }
+<i>192</i>&nbsp;
+<i>193</i>&nbsp;  @Override
+<i>194</i>&nbsp;  public IMapObjectLayer getMapObjectLayer(IMapObject mapObject) {
+<b class="fc"><i>195</i>&nbsp;    for (IMapObjectLayer layer : this.getMapObjectLayers()) {</b>
+<b class="fc"><i>196</i>&nbsp;      Optional&lt;IMapObject&gt; found = layer.getMapObjects().stream().filter(x -&gt; x.getId() == mapObject.getId()).findFirst();</b>
+<b class="fc"><i>197</i>&nbsp;      if (found.isPresent()) {</b>
+<b class="fc"><i>198</i>&nbsp;        return layer;</b>
+<i>199</i>&nbsp;      }
+<b class="nc"><i>200</i>&nbsp;    }</b>
+<i>201</i>&nbsp;
+<b class="nc"><i>202</i>&nbsp;    return null;</b>
+<i>203</i>&nbsp;  }
+<i>204</i>&nbsp;
+<i>205</i>&nbsp;  @Override
+<i>206</i>&nbsp;  public void removeMapObject(int mapId) {
+<b class="fc"><i>207</i>&nbsp;    for (IMapObjectLayer layer : this.getMapObjectLayers()) {</b>
+<b class="fc"><i>208</i>&nbsp;      IMapObject remove = null;</b>
+<b class="fc"><i>209</i>&nbsp;      for (IMapObject obj : layer.getMapObjects()) {</b>
+<b class="fc"><i>210</i>&nbsp;        if (obj.getId() == mapId) {</b>
+<b class="fc"><i>211</i>&nbsp;          remove = obj;</b>
+<b class="fc"><i>212</i>&nbsp;          break;</b>
+<i>213</i>&nbsp;        }
+<b class="nc"><i>214</i>&nbsp;      }</b>
+<i>215</i>&nbsp;
+<b class="fc"><i>216</i>&nbsp;      if (remove != null) {</b>
+<b class="fc"><i>217</i>&nbsp;        layer.removeMapObject(remove);</b>
+<b class="fc"><i>218</i>&nbsp;        break;</b>
+<i>219</i>&nbsp;      }
+<b class="nc"><i>220</i>&nbsp;    }</b>
+<b class="fc"><i>221</i>&nbsp;  }</b>
+<i>222</i>&nbsp;
+<i>223</i>&nbsp;  @Override
+<i>224</i>&nbsp;  public Dimension getSizeInPixels() {
+<b class="fc"><i>225</i>&nbsp;    Dimension mapSizeInPixels = new Dimension(this.width * this.tilewidth, this.height * this.tileheight);</b>
+<b class="fc"><i>226</i>&nbsp;    switch (this.getOrientation()) {</b>
+<i>227</i>&nbsp;    case HEXAGONAL:
+<b class="nc"><i>228</i>&nbsp;      int maxX = (int) Math.max(this.getTileShape(this.getWidth() - 1, 0).getBounds2D().getMaxX(), this.getTileShape(this.getWidth() - 1, 1).getBounds2D().getMaxX());</b>
+<b class="nc"><i>229</i>&nbsp;      int maxY = (int) Math.max(this.getTileShape(0, this.getHeight() - 1).getBounds2D().getMaxY(), this.getTileShape(1, this.getHeight() - 1).getBounds2D().getMaxY());</b>
+<b class="nc"><i>230</i>&nbsp;      mapSizeInPixels.setSize(maxX, maxY);</b>
+<b class="nc"><i>231</i>&nbsp;      break;</b>
+<i>232</i>&nbsp;    case ISOMETRIC:
+<b class="nc"><i>233</i>&nbsp;      break;</b>
+<i>234</i>&nbsp;    case ORTHOGONAL:
+<b class="fc"><i>235</i>&nbsp;      break;</b>
+<i>236</i>&nbsp;    case SHIFTED:
+<b class="nc"><i>237</i>&nbsp;      break;</b>
+<i>238</i>&nbsp;    case STAGGERED:
+<b class="nc"><i>239</i>&nbsp;      break;</b>
+<i>240</i>&nbsp;    case UNDEFINED:
+<i>241</i>&nbsp;      break;
+<i>242</i>&nbsp;    }
+<b class="fc"><i>243</i>&nbsp;    return mapSizeInPixels;</b>
+<i>244</i>&nbsp;  }
+<i>245</i>&nbsp;
+<i>246</i>&nbsp;  @XmlTransient
+<i>247</i>&nbsp;  @Override
+<i>248</i>&nbsp;  public Rectangle2D getBounds() {
+<b class="fc"><i>249</i>&nbsp;    return new Rectangle(this.getSizeInPixels());</b>
+<i>250</i>&nbsp;  }
+<i>251</i>&nbsp;
+<i>252</i>&nbsp;  @Override
+<i>253</i>&nbsp;  public Dimension getSizeInTiles() {
+<b class="fc"><i>254</i>&nbsp;    return new Dimension(this.width, this.height);</b>
+<i>255</i>&nbsp;  }
+<i>256</i>&nbsp;
+<i>257</i>&nbsp;  @Override
+<i>258</i>&nbsp;  public List&lt;ITileLayer&gt; getTileLayers() {
+<b class="fc"><i>259</i>&nbsp;    return this.tileLayers;</b>
+<i>260</i>&nbsp;  }
+<i>261</i>&nbsp;
+<i>262</i>&nbsp;  @Override
+<i>263</i>&nbsp;  public List&lt;ITileset&gt; getTilesets() {
+<b class="fc"><i>264</i>&nbsp;    return this.tilesets;</b>
+<i>265</i>&nbsp;  }
+<i>266</i>&nbsp;
+<i>267</i>&nbsp;  @Override
+<i>268</i>&nbsp;  public Dimension getTileSize() {
+<b class="fc"><i>269</i>&nbsp;    return new Dimension(this.tilewidth, this.tileheight);</b>
+<i>270</i>&nbsp;  }
+<i>271</i>&nbsp;
+<i>272</i>&nbsp;  @Override
+<i>273</i>&nbsp;  public int getTileWidth() {
+<b class="fc"><i>274</i>&nbsp;    return this.tilewidth;</b>
+<i>275</i>&nbsp;  }
+<i>276</i>&nbsp;
+<i>277</i>&nbsp;  @Override
+<i>278</i>&nbsp;  public int getTileHeight() {
+<b class="fc"><i>279</i>&nbsp;    return this.tileheight;</b>
+<i>280</i>&nbsp;  }
+<i>281</i>&nbsp;
+<i>282</i>&nbsp;  public Shape getTileShape(int tileX, int tileY) {
+<b class="fc"><i>283</i>&nbsp;    if (this.getOrientation() == MapOrientation.HEXAGONAL) {</b>
+<b class="nc"><i>284</i>&nbsp;      final StaggerAxis staggerAxis = this.getStaggerAxis();</b>
+<b class="nc"><i>285</i>&nbsp;      final StaggerIndex staggerIndex = this.getStaggerIndex();</b>
+<b class="nc"><i>286</i>&nbsp;      final int s = this.getHexSideLength();</b>
+<b class="nc"><i>287</i>&nbsp;      final int h = staggerAxis == StaggerAxis.X ? this.getTileHeight() : this.getTileWidth();</b>
+<b class="nc"><i>288</i>&nbsp;      final int r = h / 2;</b>
+<b class="nc"><i>289</i>&nbsp;      final int t = staggerAxis == StaggerAxis.X ? (this.getTileWidth() - s) / 2 : (this.getTileHeight() - s) / 2;</b>
+<b class="nc"><i>290</i>&nbsp;      Polygon hex = new Polygon();</b>
+<b class="nc"><i>291</i>&nbsp;      int widthStaggerFactor = 0;</b>
+<b class="nc"><i>292</i>&nbsp;      int heightStaggerFactor = 0;</b>
+<b class="nc"><i>293</i>&nbsp;      if (staggerAxis == StaggerAxis.X) {</b>
+<b class="nc"><i>294</i>&nbsp;        if (MapUtilities.isStaggeredRowOrColumn(staggerIndex, tileX)) {</b>
+<b class="nc"><i>295</i>&nbsp;          heightStaggerFactor = r;</b>
+<i>296</i>&nbsp;        }
+<b class="nc"><i>297</i>&nbsp;        hex = GeometricUtilities.getHex(widthStaggerFactor + tileX * (t + s), heightStaggerFactor + tileY * h, staggerAxis, s, r, t);</b>
+<b class="nc"><i>298</i>&nbsp;      } else if (staggerAxis == StaggerAxis.Y) {</b>
+<b class="nc"><i>299</i>&nbsp;        if (MapUtilities.isStaggeredRowOrColumn(staggerIndex, tileY)) {</b>
+<b class="nc"><i>300</i>&nbsp;          widthStaggerFactor = r;</b>
+<i>301</i>&nbsp;        }
+<b class="nc"><i>302</i>&nbsp;        hex = GeometricUtilities.getHex(widthStaggerFactor + tileX * h, heightStaggerFactor + tileY * (t + s), staggerAxis, s, r, t);</b>
+<i>303</i>&nbsp;      }
+<b class="nc"><i>304</i>&nbsp;      return hex;</b>
+<i>305</i>&nbsp;    } else {
+<b class="fc"><i>306</i>&nbsp;      return new Rectangle(tileX * this.getTileWidth(), tileY * this.getTileHeight(), this.getTileWidth(), this.getTileHeight());</b>
+<i>307</i>&nbsp;    }
+<i>308</i>&nbsp;  }
+<i>309</i>&nbsp;
+<i>310</i>&nbsp;  @Override
+<i>311</i>&nbsp;  public double getVersion() {
+<b class="fc"><i>312</i>&nbsp;    return this.version;</b>
+<i>313</i>&nbsp;  }
+<i>314</i>&nbsp;
+<i>315</i>&nbsp;  @Override
+<i>316</i>&nbsp;  public String getTiledVersion() {
+<b class="fc"><i>317</i>&nbsp;    return this.tiledversion;</b>
+<i>318</i>&nbsp;  }
+<i>319</i>&nbsp;
+<i>320</i>&nbsp;  @Override
+<i>321</i>&nbsp;  public String getName() {
+<b class="fc"><i>322</i>&nbsp;    return this.name;</b>
+<i>323</i>&nbsp;  }
+<i>324</i>&nbsp;
+<i>325</i>&nbsp;  @Override
+<i>326</i>&nbsp;  public void setName(final String name) {
+<b class="fc"><i>327</i>&nbsp;    this.name = name;</b>
+<b class="fc"><i>328</i>&nbsp;  }</b>
+<i>329</i>&nbsp;
+<i>330</i>&nbsp;  @Override
+<i>331</i>&nbsp;  public Collection&lt;IMapObject&gt; getMapObjects(String... types) {
+<b class="fc"><i>332</i>&nbsp;    List&lt;IMapObject&gt; mapObjects = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>333</i>&nbsp;    if (this.getMapObjectLayers() == null || this.getMapObjectLayers().isEmpty() || types.length == 0) {</b>
+<b class="nc"><i>334</i>&nbsp;      return mapObjects;</b>
+<i>335</i>&nbsp;    }
+<i>336</i>&nbsp;
+<b class="fc"><i>337</i>&nbsp;    for (IMapObjectLayer layer : this.getMapObjectLayers()) {</b>
+<b class="fc"><i>338</i>&nbsp;      if (layer == null) {</b>
+<b class="nc"><i>339</i>&nbsp;        continue;</b>
+<i>340</i>&nbsp;      }
+<i>341</i>&nbsp;
+<b class="fc"><i>342</i>&nbsp;      mapObjects.addAll(layer.getMapObjects(types));</b>
+<b class="fc"><i>343</i>&nbsp;    }</b>
+<i>344</i>&nbsp;
+<b class="fc"><i>345</i>&nbsp;    return mapObjects;</b>
+<i>346</i>&nbsp;  }
+<i>347</i>&nbsp;
+<i>348</i>&nbsp;  @Override
+<i>349</i>&nbsp;  public Collection&lt;IMapObject&gt; getMapObjects() {
+<b class="fc"><i>350</i>&nbsp;    List&lt;IMapObject&gt; mapObjects = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>351</i>&nbsp;    if (this.getMapObjectLayers() == null) {</b>
+<b class="nc"><i>352</i>&nbsp;      return mapObjects;</b>
+<i>353</i>&nbsp;    }
+<i>354</i>&nbsp;
+<b class="fc"><i>355</i>&nbsp;    for (IMapObjectLayer layer : this.getMapObjectLayers()) {</b>
+<b class="fc"><i>356</i>&nbsp;      if (layer == null) {</b>
+<b class="nc"><i>357</i>&nbsp;        continue;</b>
+<i>358</i>&nbsp;      }
+<i>359</i>&nbsp;
+<b class="fc"><i>360</i>&nbsp;      for (IMapObject mapObject : layer.getMapObjects()) {</b>
+<b class="fc"><i>361</i>&nbsp;        if (mapObject != null) {</b>
+<b class="fc"><i>362</i>&nbsp;          mapObjects.add(mapObject);</b>
+<i>363</i>&nbsp;        }
+<b class="fc"><i>364</i>&nbsp;      }</b>
+<b class="fc"><i>365</i>&nbsp;    }</b>
+<i>366</i>&nbsp;
+<b class="fc"><i>367</i>&nbsp;    return mapObjects;</b>
+<i>368</i>&nbsp;  }
+<i>369</i>&nbsp;
+<i>370</i>&nbsp;  @Override
+<i>371</i>&nbsp;  public IMapObject getMapObject(int mapId) {
+<b class="fc"><i>372</i>&nbsp;    if (this.getMapObjectLayers() == null) {</b>
+<b class="nc"><i>373</i>&nbsp;      return null;</b>
+<i>374</i>&nbsp;    }
+<i>375</i>&nbsp;
+<b class="fc"><i>376</i>&nbsp;    for (IMapObjectLayer layer : this.getMapObjectLayers()) {</b>
+<b class="fc"><i>377</i>&nbsp;      if (layer == null) {</b>
+<b class="nc"><i>378</i>&nbsp;        continue;</b>
+<i>379</i>&nbsp;      }
+<i>380</i>&nbsp;
+<b class="fc"><i>381</i>&nbsp;      for (IMapObject mapObject : layer.getMapObjects()) {</b>
+<b class="fc"><i>382</i>&nbsp;        if (mapObject != null &amp;&amp; mapObject.getId() == mapId) {</b>
+<b class="fc"><i>383</i>&nbsp;          return mapObject;</b>
+<i>384</i>&nbsp;        }
+<b class="nc"><i>385</i>&nbsp;      }</b>
+<b class="fc"><i>386</i>&nbsp;    }</b>
+<i>387</i>&nbsp;
+<b class="fc"><i>388</i>&nbsp;    return null;</b>
+<i>389</i>&nbsp;  }
+<i>390</i>&nbsp;
+<i>391</i>&nbsp;  @Override
+<i>392</i>&nbsp;  public int getWidth() {
+<b class="fc"><i>393</i>&nbsp;    return this.width;</b>
+<i>394</i>&nbsp;  }
+<i>395</i>&nbsp;
+<i>396</i>&nbsp;  @Override
+<i>397</i>&nbsp;  public int getHeight() {
+<b class="fc"><i>398</i>&nbsp;    return this.height;</b>
+<i>399</i>&nbsp;  }
+<i>400</i>&nbsp;
+<i>401</i>&nbsp;  @Override
+<i>402</i>&nbsp;  public int getHexSideLength() {
+<b class="nc"><i>403</i>&nbsp;    return this.hexsidelength;</b>
+<i>404</i>&nbsp;  }
+<i>405</i>&nbsp;
+<i>406</i>&nbsp;  @Override
+<i>407</i>&nbsp;  public StaggerAxis getStaggerAxis() {
+<b class="nc"><i>408</i>&nbsp;    if (this.staggerAxisEnum == StaggerAxis.UNDEFINED) {</b>
+<b class="nc"><i>409</i>&nbsp;      this.staggerAxisEnum = StaggerAxis.valueOf(this.staggeraxis.toUpperCase());</b>
+<i>410</i>&nbsp;    }
+<b class="nc"><i>411</i>&nbsp;    return this.staggerAxisEnum;</b>
+<i>412</i>&nbsp;  }
+<i>413</i>&nbsp;
+<i>414</i>&nbsp;  @Override
+<i>415</i>&nbsp;  public StaggerIndex getStaggerIndex() {
+<b class="nc"><i>416</i>&nbsp;    if (this.staggerIndexEnum == StaggerIndex.UNDEFINED) {</b>
+<b class="nc"><i>417</i>&nbsp;      this.staggerIndexEnum = StaggerIndex.valueOf(this.staggerindex.toUpperCase());</b>
+<i>418</i>&nbsp;    }
+<b class="nc"><i>419</i>&nbsp;    return this.staggerIndexEnum;</b>
+<i>420</i>&nbsp;  }
+<i>421</i>&nbsp;
+<i>422</i>&nbsp;  public void setPath(final String path) {
+<b class="fc"><i>423</i>&nbsp;    this.path = path;</b>
+<b class="fc"><i>424</i>&nbsp;    if (this.rawImageLayers != null) {</b>
+<b class="fc"><i>425</i>&nbsp;      for (final ImageLayer imgLayer : this.rawImageLayers) {</b>
+<b class="nc"><i>426</i>&nbsp;        if (imgLayer == null) {</b>
+<b class="nc"><i>427</i>&nbsp;          continue;</b>
+<i>428</i>&nbsp;        }
+<i>429</i>&nbsp;
+<b class="nc"><i>430</i>&nbsp;        imgLayer.setMapPath(path);</b>
+<b class="nc"><i>431</i>&nbsp;      }</b>
+<i>432</i>&nbsp;    }
+<i>433</i>&nbsp;
+<b class="fc"><i>434</i>&nbsp;    if (this.rawTilesets != null) {</b>
+<b class="fc"><i>435</i>&nbsp;      for (final Tileset tileSet : this.rawTilesets) {</b>
+<b class="fc"><i>436</i>&nbsp;        if (tileSet == null) {</b>
+<b class="nc"><i>437</i>&nbsp;          continue;</b>
+<i>438</i>&nbsp;        }
+<i>439</i>&nbsp;
+<b class="fc"><i>440</i>&nbsp;        tileSet.setMapPath(FileUtilities.getParentDirPath(path));</b>
+<b class="fc"><i>441</i>&nbsp;      }</b>
+<i>442</i>&nbsp;    }
+<b class="fc"><i>443</i>&nbsp;  }</b>
+<i>444</i>&nbsp;
+<i>445</i>&nbsp;  public void updateTileTerrain() {
+<b class="fc"><i>446</i>&nbsp;    for (Tileset tileset : this.rawTilesets) {</b>
+<b class="fc"><i>447</i>&nbsp;      tileset.updateTileTerrain();</b>
+<b class="fc"><i>448</i>&nbsp;    }</b>
+<b class="fc"><i>449</i>&nbsp;  }</b>
+<i>450</i>&nbsp;
+<i>451</i>&nbsp;  @Override
+<i>452</i>&nbsp;  public void addMapObjectLayer(IMapObjectLayer layer) {
+<b class="fc"><i>453</i>&nbsp;    MapObjectLayer rawLayer = (MapObjectLayer) layer;</b>
+<b class="fc"><i>454</i>&nbsp;    this.getRawMapObjectLayers().add(rawLayer);</b>
+<b class="fc"><i>455</i>&nbsp;    rawLayer.setMap(this);</b>
+<b class="fc"><i>456</i>&nbsp;    this.mapObjectLayers = null;</b>
+<b class="fc"><i>457</i>&nbsp;  }</b>
+<i>458</i>&nbsp;
+<i>459</i>&nbsp;  @Override
+<i>460</i>&nbsp;  public void addMapObjectLayer(int index, IMapObjectLayer layer) {
+<b class="nc"><i>461</i>&nbsp;    MapObjectLayer rawLayer = (MapObjectLayer) layer;</b>
+<b class="nc"><i>462</i>&nbsp;    this.getRawMapObjectLayers().add(index, rawLayer);</b>
+<b class="nc"><i>463</i>&nbsp;    rawLayer.setMap(this);</b>
+<b class="nc"><i>464</i>&nbsp;    this.mapObjectLayers = null;</b>
+<b class="nc"><i>465</i>&nbsp;  }</b>
+<i>466</i>&nbsp;
+<i>467</i>&nbsp;  @Override
+<i>468</i>&nbsp;  public void removeMapObjectLayer(IMapObjectLayer layer) {
+<b class="fc"><i>469</i>&nbsp;    MapObjectLayer rawLayer = (MapObjectLayer) layer;</b>
+<b class="fc"><i>470</i>&nbsp;    rawLayer.setMap(null);</b>
+<b class="fc"><i>471</i>&nbsp;    this.getRawMapObjectLayers().remove(layer);</b>
+<b class="fc"><i>472</i>&nbsp;    this.mapObjectLayers = null;</b>
+<b class="fc"><i>473</i>&nbsp;  }</b>
+<i>474</i>&nbsp;
+<i>475</i>&nbsp;  @Override
+<i>476</i>&nbsp;  public void removeMapObjectLayer(int index) {
+<b class="fc"><i>477</i>&nbsp;    MapObjectLayer removed = this.getRawMapObjectLayers().remove(index);</b>
+<b class="fc"><i>478</i>&nbsp;    if (removed != null) {</b>
+<b class="fc"><i>479</i>&nbsp;      removed.setMap(null);</b>
+<i>480</i>&nbsp;    }
+<i>481</i>&nbsp;
+<b class="fc"><i>482</i>&nbsp;    this.mapObjectLayers = null;</b>
+<b class="fc"><i>483</i>&nbsp;  }</b>
+<i>484</i>&nbsp;
+<i>485</i>&nbsp;  @XmlTransient
+<i>486</i>&nbsp;  public void setHeight(int height) {
+<b class="fc"><i>487</i>&nbsp;    this.height = height;</b>
+<b class="fc"><i>488</i>&nbsp;  }</b>
+<i>489</i>&nbsp;
+<i>490</i>&nbsp;  @XmlTransient
+<i>491</i>&nbsp;  public void setOrientation(MapOrientation orientation) {
+<b class="fc"><i>492</i>&nbsp;    this.mapOrientation = orientation;</b>
+<b class="fc"><i>493</i>&nbsp;    this.orientation = this.mapOrientation.name().toLowerCase();</b>
+<b class="fc"><i>494</i>&nbsp;  }</b>
+<i>495</i>&nbsp;
+<i>496</i>&nbsp;  @XmlTransient
+<i>497</i>&nbsp;  public void setRenderorder(String renderorder) {
+<b class="fc"><i>498</i>&nbsp;    this.renderorder = renderorder;</b>
+<b class="fc"><i>499</i>&nbsp;  }</b>
+<i>500</i>&nbsp;
+<i>501</i>&nbsp;  @XmlTransient
+<i>502</i>&nbsp;  public void setTiledVersion(String tiledversion) {
+<b class="fc"><i>503</i>&nbsp;    this.tiledversion = tiledversion;</b>
+<b class="fc"><i>504</i>&nbsp;  }</b>
+<i>505</i>&nbsp;
+<i>506</i>&nbsp;  @XmlTransient
+<i>507</i>&nbsp;  public void setTileHeight(int tileheight) {
+<b class="fc"><i>508</i>&nbsp;    this.tileheight = tileheight;</b>
+<b class="fc"><i>509</i>&nbsp;  }</b>
+<i>510</i>&nbsp;
+<i>511</i>&nbsp;  @XmlTransient
+<i>512</i>&nbsp;  public void setTileWidth(int tilewidth) {
+<b class="fc"><i>513</i>&nbsp;    this.tilewidth = tilewidth;</b>
+<b class="fc"><i>514</i>&nbsp;  }</b>
+<i>515</i>&nbsp;
+<i>516</i>&nbsp;  @XmlTransient
+<i>517</i>&nbsp;  public void setHexSideLength(int hexSideLength) {
+<b class="nc"><i>518</i>&nbsp;    this.hexsidelength = hexSideLength;</b>
+<b class="nc"><i>519</i>&nbsp;  }</b>
+<i>520</i>&nbsp;
+<i>521</i>&nbsp;  @XmlTransient
+<i>522</i>&nbsp;  public void setStaggerAxis(String staggerAxis) {
+<b class="nc"><i>523</i>&nbsp;    this.staggeraxis = staggerAxis;</b>
+<b class="nc"><i>524</i>&nbsp;  }</b>
+<i>525</i>&nbsp;
+<i>526</i>&nbsp;  @XmlTransient
+<i>527</i>&nbsp;  public void setStaggerIndex(String staggerIndex) {
+<b class="nc"><i>528</i>&nbsp;    this.staggerindex = staggerIndex;</b>
+<b class="nc"><i>529</i>&nbsp;  }</b>
+<i>530</i>&nbsp;
+<i>531</i>&nbsp;  @XmlTransient
+<i>532</i>&nbsp;  public void setVersion(double version) {
+<b class="fc"><i>533</i>&nbsp;    this.version = version;</b>
+<b class="fc"><i>534</i>&nbsp;  }</b>
+<i>535</i>&nbsp;
+<i>536</i>&nbsp;  @XmlTransient
+<i>537</i>&nbsp;  public void setWidth(int width) {
+<b class="fc"><i>538</i>&nbsp;    this.width = width;</b>
+<b class="fc"><i>539</i>&nbsp;  }</b>
+<i>540</i>&nbsp;
+<i>541</i>&nbsp;  @Override
+<i>542</i>&nbsp;  public int compareTo(Map o) {
+<b class="nc"><i>543</i>&nbsp;    if (this.name == null) {</b>
+<b class="nc"><i>544</i>&nbsp;      return o.name == null ? 0 : -1;</b>
+<i>545</i>&nbsp;    }
+<i>546</i>&nbsp;
+<b class="nc"><i>547</i>&nbsp;    if (o.name == null) {</b>
+<b class="nc"><i>548</i>&nbsp;      return 1;</b>
+<i>549</i>&nbsp;    }
+<i>550</i>&nbsp;
+<b class="nc"><i>551</i>&nbsp;    return this.name.compareTo(o.name);</b>
+<i>552</i>&nbsp;  }
+<i>553</i>&nbsp;
+<i>554</i>&nbsp;  @Override
+<i>555</i>&nbsp;  public boolean equals(Object anObject) {
+<b class="fc"><i>556</i>&nbsp;    if (this == anObject) {</b>
+<b class="fc"><i>557</i>&nbsp;      return true;</b>
+<i>558</i>&nbsp;    }
+<b class="fc"><i>559</i>&nbsp;    if (!(anObject instanceof Map)) {</b>
+<b class="nc"><i>560</i>&nbsp;      return false;</b>
+<i>561</i>&nbsp;    }
+<b class="fc"><i>562</i>&nbsp;    return Objects.equals(this.name, ((Map) anObject).name);</b>
+<i>563</i>&nbsp;  }
+<i>564</i>&nbsp;
+<i>565</i>&nbsp;  @Override
+<i>566</i>&nbsp;  public int hashCode() {
+<b class="nc"><i>567</i>&nbsp;    return Objects.hashCode(this.name);</b>
+<i>568</i>&nbsp;  }
+<i>569</i>&nbsp;
+<i>570</i>&nbsp;  @Override
+<i>571</i>&nbsp;  public List&lt;ILayer&gt; getRenderLayers() {
+<b class="fc"><i>572</i>&nbsp;    return this.allRenderLayers;</b>
+<i>573</i>&nbsp;  }
+<i>574</i>&nbsp;
+<i>575</i>&nbsp;  public List&lt;Tileset&gt; getExternalTilesets() {
+<b class="fc"><i>576</i>&nbsp;    List&lt;Tileset&gt; externalTilesets = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>577</i>&nbsp;    for (Tileset set : this.getRawTilesets()) {</b>
+<b class="fc"><i>578</i>&nbsp;      if (set.sourceTileset != null) {</b>
+<b class="fc"><i>579</i>&nbsp;        externalTilesets.add(set.sourceTileset);</b>
+<i>580</i>&nbsp;      }
+<b class="fc"><i>581</i>&nbsp;    }</b>
+<i>582</i>&nbsp;
+<b class="fc"><i>583</i>&nbsp;    return externalTilesets;</b>
+<i>584</i>&nbsp;  }
+<i>585</i>&nbsp;
+<i>586</i>&nbsp;  public List&lt;Tileset&gt; getRawTilesets() {
+<b class="fc"><i>587</i>&nbsp;    if (this.rawTilesets == null) {</b>
+<b class="nc"><i>588</i>&nbsp;      this.rawTilesets = new ArrayList&lt;&gt;();</b>
+<i>589</i>&nbsp;    }
+<i>590</i>&nbsp;
+<b class="fc"><i>591</i>&nbsp;    return this.rawTilesets;</b>
+<i>592</i>&nbsp;  }
+<i>593</i>&nbsp;
+<i>594</i>&nbsp;  @Override
+<i>595</i>&nbsp;  public Color getBackgroundColor() {
+<b class="fc"><i>596</i>&nbsp;    if (this.backgroundcolor == null || this.backgroundcolor.isEmpty()) {</b>
+<b class="nc"><i>597</i>&nbsp;      return null;</b>
+<i>598</i>&nbsp;    }
+<i>599</i>&nbsp;
+<b class="fc"><i>600</i>&nbsp;    if (this.decodedBackgroundColor != null) {</b>
+<b class="fc"><i>601</i>&nbsp;      return this.decodedBackgroundColor;</b>
+<i>602</i>&nbsp;    }
+<i>603</i>&nbsp;
+<b class="fc"><i>604</i>&nbsp;    this.decodedBackgroundColor = ColorHelper.decode(this.backgroundcolor, true);</b>
+<b class="fc"><i>605</i>&nbsp;    return this.decodedBackgroundColor;</b>
+<i>606</i>&nbsp;  }
+<i>607</i>&nbsp;
+<i>608</i>&nbsp;  public List&lt;TileLayer&gt; getRawTileLayers() {
+<b class="fc"><i>609</i>&nbsp;    if (this.rawTileLayers == null) {</b>
+<b class="fc"><i>610</i>&nbsp;      this.rawTileLayers = new ArrayList&lt;&gt;();</b>
+<i>611</i>&nbsp;    }
+<i>612</i>&nbsp;
+<b class="fc"><i>613</i>&nbsp;    return this.rawTileLayers;</b>
+<i>614</i>&nbsp;  }
+<i>615</i>&nbsp;
+<i>616</i>&nbsp;  public boolean isInfinite() {
+<b class="fc"><i>617</i>&nbsp;    return this.infinite == 1;</b>
+<i>618</i>&nbsp;  }
+<i>619</i>&nbsp;
+<i>620</i>&nbsp;  protected List&lt;ImageLayer&gt; getRawImageLayers() {
+<b class="fc"><i>621</i>&nbsp;    if (this.rawImageLayers == null) {</b>
+<b class="fc"><i>622</i>&nbsp;      this.rawImageLayers = new ArrayList&lt;&gt;();</b>
+<i>623</i>&nbsp;    }
+<i>624</i>&nbsp;
+<b class="fc"><i>625</i>&nbsp;    return this.rawImageLayers;</b>
+<i>626</i>&nbsp;  }
+<i>627</i>&nbsp;
+<i>628</i>&nbsp;  protected List&lt;MapObjectLayer&gt; getRawMapObjectLayers() {
+<b class="fc"><i>629</i>&nbsp;    if (this.rawMapObjectLayers == null) {</b>
+<b class="fc"><i>630</i>&nbsp;      this.rawMapObjectLayers = new ArrayList&lt;&gt;();</b>
+<i>631</i>&nbsp;    }
+<i>632</i>&nbsp;
+<b class="fc"><i>633</i>&nbsp;    return this.rawMapObjectLayers;</b>
+<i>634</i>&nbsp;  }
+<i>635</i>&nbsp;
+<i>636</i>&nbsp;  protected int getChunkOffsetX() {
+<b class="nc"><i>637</i>&nbsp;    return this.chunkOffsetX;</b>
+<i>638</i>&nbsp;  }
+<i>639</i>&nbsp;
+<i>640</i>&nbsp;  protected int getChunkOffsetY() {
+<b class="nc"><i>641</i>&nbsp;    return this.chunkOffsetY;</b>
+<i>642</i>&nbsp;  }
+<i>643</i>&nbsp;
+<i>644</i>&nbsp;  void afterUnmarshal(Unmarshaller u, Object parent) {
+<b class="fc"><i>645</i>&nbsp;    this.checkVersion();</b>
+<i>646</i>&nbsp;
+<b class="fc"><i>647</i>&nbsp;    ArrayList&lt;ITileset&gt; tmpSets = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>648</i>&nbsp;    if (this.rawTilesets != null) {</b>
+<b class="fc"><i>649</i>&nbsp;      tmpSets.addAll(this.rawTilesets);</b>
+<i>650</i>&nbsp;    }
+<i>651</i>&nbsp;
+<b class="fc"><i>652</i>&nbsp;    ArrayList&lt;ITileLayer&gt; tmpTileLayers = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>653</i>&nbsp;    if (this.rawTileLayers != null) {</b>
+<b class="fc"><i>654</i>&nbsp;      tmpTileLayers.addAll(this.rawTileLayers);</b>
+<i>655</i>&nbsp;    }
+<i>656</i>&nbsp;
+<b class="fc"><i>657</i>&nbsp;    ArrayList&lt;IMapObjectLayer&gt; tmpMapObjectLayers = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>658</i>&nbsp;    if (this.rawMapObjectLayers != null) {</b>
+<b class="fc"><i>659</i>&nbsp;      tmpMapObjectLayers.addAll(this.rawMapObjectLayers);</b>
+<i>660</i>&nbsp;    }
+<i>661</i>&nbsp;
+<b class="fc"><i>662</i>&nbsp;    ArrayList&lt;IImageLayer&gt; tmpImageLayers = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>663</i>&nbsp;    if (this.rawImageLayers != null) {</b>
+<b class="fc"><i>664</i>&nbsp;      tmpImageLayers.addAll(this.rawImageLayers);</b>
+<i>665</i>&nbsp;    }
+<i>666</i>&nbsp;
+<b class="fc"><i>667</i>&nbsp;    ArrayList&lt;ILayer&gt; tmprenderLayers = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>668</i>&nbsp;    tmprenderLayers.addAll(tmpTileLayers);</b>
+<b class="fc"><i>669</i>&nbsp;    tmprenderLayers.addAll(tmpImageLayers);</b>
+<b class="fc"><i>670</i>&nbsp;    tmprenderLayers.sort(Comparator.comparing(ILayer::getOrder));</b>
+<i>671</i>&nbsp;
+<b class="fc"><i>672</i>&nbsp;    this.tilesets = Collections.unmodifiableList(tmpSets);</b>
+<b class="fc"><i>673</i>&nbsp;    this.tileLayers = Collections.unmodifiableList(tmpTileLayers);</b>
+<b class="fc"><i>674</i>&nbsp;    this.mapObjectLayers = Collections.unmodifiableList(tmpMapObjectLayers);</b>
+<b class="fc"><i>675</i>&nbsp;    this.imageLayers = Collections.unmodifiableList(tmpImageLayers);</b>
+<b class="fc"><i>676</i>&nbsp;    this.allRenderLayers = Collections.unmodifiableList(tmprenderLayers);</b>
+<i>677</i>&nbsp;
+<b class="fc"><i>678</i>&nbsp;    if (this.isInfinite()) {</b>
+<b class="fc"><i>679</i>&nbsp;      this.updateDimensionsByTileLayers();</b>
+<i>680</i>&nbsp;    }
+<i>681</i>&nbsp;
+<b class="fc"><i>682</i>&nbsp;    if (this.getOrientation() != MapOrientation.HEXAGONAL) {</b>
+<b class="fc"><i>683</i>&nbsp;      this.hexsidelength = null;</b>
+<i>684</i>&nbsp;    }
+<b class="fc"><i>685</i>&nbsp;  }</b>
+<i>686</i>&nbsp;
+<i>687</i>&nbsp;  private void checkVersion() {
+<b class="fc"><i>688</i>&nbsp;    String supportedVersionString = ArrayUtilities.join(MAX_SUPPORTED_VERSION, &quot;.&quot;);</b>
+<b class="fc"><i>689</i>&nbsp;    String[] ver = this.tiledversion.split(&quot;\\.&quot;);</b>
+<b class="fc"><i>690</i>&nbsp;    int[] vNumbers = new int[ver.length];</b>
+<i>691</i>&nbsp;    try {
+<b class="fc"><i>692</i>&nbsp;      for (int i = 0; i &lt; ver.length; i++) {</b>
+<b class="fc"><i>693</i>&nbsp;        vNumbers[i] = Integer.parseInt(ver[i]);</b>
+<i>694</i>&nbsp;      }
+<b class="nc"><i>695</i>&nbsp;    } catch (NumberFormatException e) {</b>
+<b class="nc"><i>696</i>&nbsp;      log.log(Level.WARNING, &quot;Unsupported Tiled version: {0} (Max. supported version is {1})&quot;, new Object[] { this.tiledversion, supportedVersionString });</b>
+<b class="fc"><i>697</i>&nbsp;    }</b>
+<i>698</i>&nbsp;
+<b class="fc"><i>699</i>&nbsp;    for (int i = 0; i &lt; Math.min(vNumbers.length, MAX_SUPPORTED_VERSION.length); i++) {</b>
+<b class="fc"><i>700</i>&nbsp;      if (vNumbers[i] &gt; MAX_SUPPORTED_VERSION[i]) {</b>
+<b class="nc"><i>701</i>&nbsp;        log.log(Level.WARNING, &quot;Unsupported Tiled version: {0} (Max. supported version is {1})&quot;, new Object[] { this.tiledversion, supportedVersionString });</b>
+<b class="nc"><i>702</i>&nbsp;        break;</b>
+<b class="fc"><i>703</i>&nbsp;      } else if (vNumbers[i] &lt; MAX_SUPPORTED_VERSION[i]) {</b>
+<b class="fc"><i>704</i>&nbsp;        break;</b>
+<i>705</i>&nbsp;      }
+<i>706</i>&nbsp;    }
+<b class="fc"><i>707</i>&nbsp;  }</b>
+<i>708</i>&nbsp;
+<i>709</i>&nbsp;  /**
+<i>710</i>&nbsp;   * Update width and height by the max width and height of the tile layers in the infinite map.
+<i>711</i>&nbsp;   */
+<i>712</i>&nbsp;  private void updateDimensionsByTileLayers() {
+<i>713</i>&nbsp;
+<b class="fc"><i>714</i>&nbsp;    int minChunkOffsetX = 0;</b>
+<b class="fc"><i>715</i>&nbsp;    int minChunkOffsetY = 0;</b>
+<i>716</i>&nbsp;
+<b class="fc"><i>717</i>&nbsp;    for (TileLayer tileLayer : this.rawTileLayers) {</b>
+<b class="fc"><i>718</i>&nbsp;      if (tileLayer.getRawTileData() != null &amp;&amp; tileLayer.getRawTileData().getOffsetX() &lt; minChunkOffsetX) {</b>
+<b class="fc"><i>719</i>&nbsp;        minChunkOffsetX = tileLayer.getRawTileData().getOffsetX();</b>
+<i>720</i>&nbsp;      }
+<i>721</i>&nbsp;
+<b class="fc"><i>722</i>&nbsp;      if (tileLayer.getRawTileData() != null &amp;&amp; tileLayer.getRawTileData().getOffsetY() &lt; minChunkOffsetY) {</b>
+<b class="fc"><i>723</i>&nbsp;        minChunkOffsetY = tileLayer.getRawTileData().getOffsetY();</b>
+<i>724</i>&nbsp;      }
+<b class="fc"><i>725</i>&nbsp;    }</b>
+<i>726</i>&nbsp;
+<i>727</i>&nbsp;    // update all tile layer data with the information about the layer based on which they&#39;ll position themselves in the grid
+<i>728</i>&nbsp;    // they need this information because they have to create an appropriately sized grid before locating their chunks in it
+<b class="fc"><i>729</i>&nbsp;    for (TileLayer tileLayer : this.rawTileLayers) {</b>
+<b class="fc"><i>730</i>&nbsp;      if (tileLayer.getRawTileData() != null) {</b>
+<b class="fc"><i>731</i>&nbsp;        tileLayer.getRawTileData().setMinChunkOffsets(minChunkOffsetX, minChunkOffsetY);</b>
+<i>732</i>&nbsp;      }
+<b class="fc"><i>733</i>&nbsp;    }</b>
+<i>734</i>&nbsp;
+<b class="fc"><i>735</i>&nbsp;    this.chunkOffsetX = minChunkOffsetX;</b>
+<b class="fc"><i>736</i>&nbsp;    this.chunkOffsetY = minChunkOffsetY;</b>
+<i>737</i>&nbsp;
+<b class="fc"><i>738</i>&nbsp;    int w = 0;</b>
+<b class="fc"><i>739</i>&nbsp;    int h = 0;</b>
+<i>740</i>&nbsp;
+<b class="fc"><i>741</i>&nbsp;    for (TileLayer tileLayer : this.rawTileLayers) {</b>
+<b class="fc"><i>742</i>&nbsp;      if (tileLayer.getWidth() &gt; w) {</b>
+<b class="fc"><i>743</i>&nbsp;        w = tileLayer.getWidth();</b>
+<i>744</i>&nbsp;      }
+<i>745</i>&nbsp;
+<b class="fc"><i>746</i>&nbsp;      if (tileLayer.getHeight() &gt; h) {</b>
+<b class="fc"><i>747</i>&nbsp;        h = tileLayer.getHeight();</b>
+<i>748</i>&nbsp;      }
+<b class="fc"><i>749</i>&nbsp;    }</b>
+<i>750</i>&nbsp;
+<b class="fc"><i>751</i>&nbsp;    this.width = w;</b>
+<b class="fc"><i>752</i>&nbsp;    this.height = h;</b>
+<b class="fc"><i>753</i>&nbsp;  }</b>
+<i>754</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

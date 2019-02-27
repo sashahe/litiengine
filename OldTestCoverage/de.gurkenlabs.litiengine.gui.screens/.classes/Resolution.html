@@ -1,0 +1,245 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Resolution</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.gui.screens</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Resolution (de.gurkenlabs.litiengine.gui.screens)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Resolution</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 11)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Resolution$Ratio16x10</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">Resolution$Ratio16x9</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 8)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">Resolution$Ratio4x3</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">Resolution$Ratio5x4</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 28)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.gui.screens;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Dimension;
+<i>4</i>&nbsp;
+<b class="nc"><i>5</i>&nbsp;public class Resolution {</b>
+<i>6</i>&nbsp;  public static final String R_4X3 = &quot;4x3&quot;;
+<i>7</i>&nbsp;  public static final String R_5X4 = &quot;5x4&quot;;
+<i>8</i>&nbsp;  public static final String R_16X9 = &quot;16x9&quot;;
+<i>9</i>&nbsp;  public static final String R_16X10 = &quot;16x10&quot;;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;  private final int width;
+<i>12</i>&nbsp;  private final int height;
+<i>13</i>&nbsp;  private final Dimension dimension;
+<i>14</i>&nbsp;  private final String ratio;
+<i>15</i>&nbsp;
+<b class="nc"><i>16</i>&nbsp;  private Resolution(int width, int height, String ratio) {</b>
+<b class="nc"><i>17</i>&nbsp;    this.width = width;</b>
+<b class="nc"><i>18</i>&nbsp;    this.height = height;</b>
+<b class="nc"><i>19</i>&nbsp;    this.dimension = new Dimension(this.getWidth(), this.getHeight());</b>
+<b class="nc"><i>20</i>&nbsp;    this.ratio = ratio;</b>
+<i>21</i>&nbsp;  }
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;  public static Resolution custom(int width, int height, String resolutionName) {
+<b class="nc"><i>24</i>&nbsp;    return new Resolution(width, height, resolutionName);</b>
+<i>25</i>&nbsp;  }
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;  public int getHeight() {
+<b class="nc"><i>28</i>&nbsp;    return this.height;</b>
+<i>29</i>&nbsp;  }
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;  public int getWidth() {
+<b class="nc"><i>32</i>&nbsp;    return this.width;</b>
+<i>33</i>&nbsp;  }
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;  public Dimension getDimension() {
+<b class="nc"><i>36</i>&nbsp;    return this.dimension;</b>
+<i>37</i>&nbsp;  }
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;  public String getRatio() {
+<b class="nc"><i>40</i>&nbsp;    return this.ratio;</b>
+<i>41</i>&nbsp;  }
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;  public static class Ratio4x3 {
+<b class="nc"><i>44</i>&nbsp;    public static final Resolution RES_1024x768 = new Resolution(1024, 768, R_4X3);</b>
+<i>45</i>&nbsp;
+<b class="nc"><i>46</i>&nbsp;    private Ratio4x3() {</b>
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;  }
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;  public static class Ratio5x4 {
+<b class="nc"><i>51</i>&nbsp;    public static final Resolution RES_1280x1024 = new Resolution(1280, 1024, R_5X4);</b>
+<i>52</i>&nbsp;
+<b class="nc"><i>53</i>&nbsp;    private Ratio5x4() {</b>
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;  }
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;  public static class Ratio16x9 {
+<b class="nc"><i>58</i>&nbsp;    public static final Resolution RES_1280x720 = new Resolution(1280, 720, R_16X9);</b>
+<b class="nc"><i>59</i>&nbsp;    public static final Resolution RES_1360x768 = new Resolution(1360, 768, R_16X9);</b>
+<b class="nc"><i>60</i>&nbsp;    public static final Resolution RES_1366x768 = new Resolution(1366, 768, R_16X9);</b>
+<b class="nc"><i>61</i>&nbsp;    public static final Resolution RES_1536x864 = new Resolution(1536, 864, R_16X9);</b>
+<b class="nc"><i>62</i>&nbsp;    public static final Resolution RES_1600x900 = new Resolution(1600, 900, R_16X9);</b>
+<b class="nc"><i>63</i>&nbsp;    public static final Resolution RES_1920x1080 = new Resolution(1920, 1080, R_16X9);</b>
+<b class="nc"><i>64</i>&nbsp;    public static final Resolution RES_2560x1440 = new Resolution(2560, 1440, R_16X9);</b>
+<i>65</i>&nbsp;
+<b class="nc"><i>66</i>&nbsp;    private Ratio16x9() {</b>
+<i>67</i>&nbsp;    }
+<i>68</i>&nbsp;  }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;  public static class Ratio16x10 {
+<b class="nc"><i>71</i>&nbsp;    public static final Resolution RES_1280x800 = new Resolution(1280, 800, R_16X10);</b>
+<b class="nc"><i>72</i>&nbsp;    public static final Resolution RES_1440x900 = new Resolution(1440, 900, R_16X10);</b>
+<b class="nc"><i>73</i>&nbsp;    public static final Resolution RES_1680x1050 = new Resolution(1680, 1050, R_16X10);</b>
+<b class="nc"><i>74</i>&nbsp;    public static final Resolution RES_1920x1200 = new Resolution(1920, 1200, R_16X10);</b>
+<i>75</i>&nbsp;
+<b class="nc"><i>76</i>&nbsp;    private Ratio16x10() {</b>
+<i>77</i>&nbsp;    }
+<i>78</i>&nbsp;  }
+<i>79</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

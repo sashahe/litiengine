@@ -1,0 +1,78 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GameListener</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GameListener (de.gurkenlabs.litiengine)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">GameListener</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;/**
+<i>4</i>&nbsp; * This listener provides callbacks for when the &lt;code&gt;Game&lt;/code&gt; gets started or terminated.
+<i>5</i>&nbsp; */
+<i>6</i>&nbsp;public interface GameListener extends GameTerminatedListener {
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;  /**
+<i>9</i>&nbsp;   * This method gets called after the &lt;code&gt;Game.start&lt;/code&gt; method was executed.
+<i>10</i>&nbsp;   * 
+<i>11</i>&nbsp;   * @see Game#start()
+<i>12</i>&nbsp;   */
+<i>13</i>&nbsp;  public void started();
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;  /**
+<i>16</i>&nbsp;   * This method gets called after the &lt;code&gt;Game.init(String...)&lt;/code&gt; method was executed.
+<i>17</i>&nbsp;   * 
+<i>18</i>&nbsp;   * @param args
+<i>19</i>&nbsp;   *          The arguments that were passed to the application.
+<i>20</i>&nbsp;   * @see Game#init(String...)
+<i>21</i>&nbsp;   */
+<i>22</i>&nbsp;  public void initialized(String... args);
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;  /**
+<i>25</i>&nbsp;   * This method gets called before the &lt;code&gt;Game&lt;/code&gt; is about to be terminated.
+<i>26</i>&nbsp;   * Returning false prevents the terminate event to continue.
+<i>27</i>&nbsp;   *
+<i>28</i>&nbsp;   * @return Return false to interrupt the termination process.
+<i>29</i>&nbsp;   */
+<i>30</i>&nbsp;  public boolean terminating();
+<i>31</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

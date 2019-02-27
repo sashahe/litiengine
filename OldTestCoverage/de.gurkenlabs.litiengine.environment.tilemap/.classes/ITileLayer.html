@@ -1,0 +1,75 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ITileLayer</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment.tilemap</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ITileLayer (de.gurkenlabs.litiengine.environment.tilemap)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ITileLayer</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment.tilemap;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.geom.Point2D;
+<i>4</i>&nbsp;import java.util.List;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;/**
+<i>7</i>&nbsp; * The Interface ITileLayer.
+<i>8</i>&nbsp; */
+<i>9</i>&nbsp;public interface ITileLayer extends ILayer {
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;  /**
+<i>12</i>&nbsp;   * Gets the tile by location.
+<i>13</i>&nbsp;   *
+<i>14</i>&nbsp;   * @param location
+<i>15</i>&nbsp;   *          the location
+<i>16</i>&nbsp;   * @return the tile by location
+<i>17</i>&nbsp;   */
+<i>18</i>&nbsp;  ITile getTileByLocation(Point2D location);
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;  ITile getTile(int x, int y);
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;  /**
+<i>23</i>&nbsp;   * Gets the tiles.
+<i>24</i>&nbsp;   *
+<i>25</i>&nbsp;   * @return the tiles
+<i>26</i>&nbsp;   */
+<i>27</i>&nbsp;  List&lt;ITile&gt; getTiles();
+<i>28</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

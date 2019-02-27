@@ -1,0 +1,205 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: NumberAdjuster</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.gui</a> ]
+</div>
+
+<h1>Coverage Summary for Class: NumberAdjuster (de.gurkenlabs.litiengine.gui)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">NumberAdjuster</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 48)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.gui;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.math.BigDecimal;
+<i>4</i>&nbsp;import java.util.List;
+<i>5</i>&nbsp;import java.util.concurrent.CopyOnWriteArrayList;
+<i>6</i>&nbsp;import java.util.function.Consumer;
+<i>7</i>&nbsp;import java.util.logging.Level;
+<i>8</i>&nbsp;import java.util.logging.Logger;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import de.gurkenlabs.litiengine.graphics.Spritesheet;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;public class NumberAdjuster extends TextFieldComponent {
+<b class="nc"><i>13</i>&nbsp;  public static final FontIcon ARROW_DOWN = new FontIcon(ICON_FONT, &quot;\uE84A&quot;);</b>
+<b class="nc"><i>14</i>&nbsp;  public static final FontIcon ARROW_UP = new FontIcon(ICON_FONT, &quot;\uE84B&quot;);</b>
+<b class="nc"><i>15</i>&nbsp;  private static final Logger log = Logger.getLogger(NumberAdjuster.class.getName());</b>
+<i>16</i>&nbsp;  private BigDecimal step;
+<i>17</i>&nbsp;  private BigDecimal lowerBound;
+<i>18</i>&nbsp;  private BigDecimal upperBound;
+<i>19</i>&nbsp;  private BigDecimal currentValue;
+<i>20</i>&nbsp;  private Spritesheet buttonSprite;
+<i>21</i>&nbsp;  private final List&lt;Consumer&lt;BigDecimal&gt;&gt; valueChangeConsumers;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;  public NumberAdjuster(final double x, final double y, final double width, final double height, final Spritesheet textBackground, final Spritesheet buttonBackground, final double lowerBound, final double upperBound, final double startValue, final double stepSize) {
+<b class="nc"><i>24</i>&nbsp;    super(x, y, width, height, textBackground, Double.toString(startValue));</b>
+<b class="nc"><i>25</i>&nbsp;    this.buttonSprite = buttonBackground;</b>
+<b class="nc"><i>26</i>&nbsp;    this.valueChangeConsumers = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="nc"><i>27</i>&nbsp;    this.lowerBound = BigDecimal.valueOf(lowerBound);</b>
+<b class="nc"><i>28</i>&nbsp;    this.upperBound = BigDecimal.valueOf(upperBound);</b>
+<b class="nc"><i>29</i>&nbsp;    this.setCurrentValue(BigDecimal.valueOf(startValue));</b>
+<b class="nc"><i>30</i>&nbsp;    this.step = BigDecimal.valueOf(stepSize);</b>
+<b class="nc"><i>31</i>&nbsp;    this.setFormat(DOUBLE_FORMAT);</b>
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;  }
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;  public void decrement() {
+<b class="nc"><i>36</i>&nbsp;    this.setCurrentValue(this.getCurrentValue().subtract(this.getStepSize()));</b>
+<i>37</i>&nbsp;  }
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;  public Spritesheet getButtonSprite() {
+<b class="nc"><i>40</i>&nbsp;    return this.buttonSprite;</b>
+<i>41</i>&nbsp;  }
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;  public BigDecimal getCurrentValue() {
+<b class="nc"><i>44</i>&nbsp;    return this.currentValue;</b>
+<i>45</i>&nbsp;  }
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;  public BigDecimal getLowerBound() {
+<b class="nc"><i>48</i>&nbsp;    return this.lowerBound;</b>
+<i>49</i>&nbsp;  }
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;  public BigDecimal getStepSize() {
+<b class="nc"><i>52</i>&nbsp;    return this.step;</b>
+<i>53</i>&nbsp;  }
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;  public BigDecimal getUpperBound() {
+<b class="nc"><i>56</i>&nbsp;    return this.upperBound;</b>
+<i>57</i>&nbsp;  }
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;  public void increment() {
+<b class="nc"><i>60</i>&nbsp;    this.setCurrentValue(this.getCurrentValue().add(this.getStepSize()));</b>
+<i>61</i>&nbsp;  }
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;  public void onValueChange(final Consumer&lt;BigDecimal&gt; cons) {
+<b class="nc"><i>64</i>&nbsp;    this.valueChangeConsumers.add(cons);</b>
+<i>65</i>&nbsp;  }
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;  @Override
+<i>68</i>&nbsp;  public void prepare() {
+<b class="nc"><i>69</i>&nbsp;    ImageComponent buttonUp = new ImageComponent(this.getX() + this.getWidth(), this.getY(), this.getHeight() / 2, this.getHeight() / 2, this.getButtonSprite(), ARROW_UP.getText(), null);</b>
+<b class="nc"><i>70</i>&nbsp;    ImageComponent buttonDown = new ImageComponent(this.getX() + this.getWidth(), this.getY() + this.getHeight() / 2, this.getHeight() / 2, this.getHeight() / 2, this.getButtonSprite(), ARROW_DOWN.getText(), null);</b>
+<b class="nc"><i>71</i>&nbsp;    buttonUp.setFont(ARROW_UP.getFont());</b>
+<b class="nc"><i>72</i>&nbsp;    buttonDown.setFont(ARROW_UP.getFont());</b>
+<i>73</i>&nbsp;
+<b class="nc"><i>74</i>&nbsp;    this.getComponents().add(buttonUp);</b>
+<b class="nc"><i>75</i>&nbsp;    this.getComponents().add(buttonDown);</b>
+<b class="nc"><i>76</i>&nbsp;    super.prepare();</b>
+<b class="nc"><i>77</i>&nbsp;    buttonUp.onClicked(c -&gt; this.increment());</b>
+<b class="nc"><i>78</i>&nbsp;    buttonDown.onClicked(c -&gt; this.decrement());</b>
+<b class="nc"><i>79</i>&nbsp;    this.onChangeConfirmed(e -&gt; {</b>
+<i>80</i>&nbsp;      try {
+<b class="nc"><i>81</i>&nbsp;        this.setCurrentValue(BigDecimal.valueOf(Double.parseDouble(this.getText())));</b>
+<b class="nc"><i>82</i>&nbsp;      } catch (final Exception ex) {</b>
+<b class="nc"><i>83</i>&nbsp;        log.log(Level.SEVERE, ex.getMessage(), ex);</b>
+<b class="nc"><i>84</i>&nbsp;      }</b>
+<i>85</i>&nbsp;    });
+<i>86</i>&nbsp;  }
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;  public void setButtonSprite(final Spritesheet buttonSprite) {
+<b class="nc"><i>89</i>&nbsp;    this.buttonSprite = buttonSprite;</b>
+<i>90</i>&nbsp;  }
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;  public void setCurrentValue(final BigDecimal newValue) {
+<b class="nc"><i>93</i>&nbsp;    if (newValue.compareTo(this.getUpperBound()) &gt; 0) {</b>
+<b class="nc"><i>94</i>&nbsp;      this.currentValue = this.getUpperBound();</b>
+<b class="nc"><i>95</i>&nbsp;    } else if (newValue.compareTo(this.getLowerBound()) &lt; 0) {</b>
+<b class="nc"><i>96</i>&nbsp;      this.currentValue = this.getLowerBound();</b>
+<i>97</i>&nbsp;    } else {
+<b class="nc"><i>98</i>&nbsp;      this.currentValue = newValue;</b>
+<i>99</i>&nbsp;    }
+<b class="nc"><i>100</i>&nbsp;    this.setText(this.getCurrentValue() + &quot;&quot;);</b>
+<b class="nc"><i>101</i>&nbsp;    this.valueChangeConsumers.forEach(c -&gt; c.accept(this.getCurrentValue()));</b>
+<i>102</i>&nbsp;
+<i>103</i>&nbsp;  }
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;  public void setLowerBound(final BigDecimal lowerBound) {
+<b class="nc"><i>106</i>&nbsp;    this.lowerBound = lowerBound;</b>
+<b class="nc"><i>107</i>&nbsp;    if (this.getCurrentValue().compareTo(this.getLowerBound()) &lt; 0) {</b>
+<b class="nc"><i>108</i>&nbsp;      this.setCurrentValue(this.getLowerBound());</b>
+<i>109</i>&nbsp;    }
+<i>110</i>&nbsp;  }
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;  public void setStepSize(final BigDecimal stepSize) {
+<b class="nc"><i>113</i>&nbsp;    this.step = stepSize;</b>
+<i>114</i>&nbsp;  }
+<i>115</i>&nbsp;
+<i>116</i>&nbsp;  public void setUpperBound(final BigDecimal upperBound) {
+<b class="nc"><i>117</i>&nbsp;    this.upperBound = upperBound;</b>
+<b class="nc"><i>118</i>&nbsp;    if (this.getCurrentValue().compareTo(this.getUpperBound()) &gt; 0) {</b>
+<b class="nc"><i>119</i>&nbsp;      this.setCurrentValue(this.getUpperBound());</b>
+<i>120</i>&nbsp;    }
+<i>121</i>&nbsp;  }
+<i>122</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>

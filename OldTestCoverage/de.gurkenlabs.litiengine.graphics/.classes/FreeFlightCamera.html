@@ -1,0 +1,168 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: FreeFlightCamera</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.graphics</a> ]
+</div>
+
+<h1>Coverage Summary for Class: FreeFlightCamera (de.gurkenlabs.litiengine.graphics)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FreeFlightCamera</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 31)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.graphics;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.geom.Point2D;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import de.gurkenlabs.litiengine.Game;
+<i>6</i>&nbsp;import de.gurkenlabs.litiengine.IUpdateable;
+<i>7</i>&nbsp;import de.gurkenlabs.litiengine.input.Input;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;public class FreeFlightCamera extends Camera implements IUpdateable {
+<i>10</i>&nbsp;  private static final double DEFAULT_SCROLL_PIXELS_PER_SECOND = 400;
+<i>11</i>&nbsp;  private static final double DEFAULT_SCROLL_PADDING = 20;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;  private double velocity;
+<i>14</i>&nbsp;  private double scrollPadding;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;  public FreeFlightCamera() {
+<b class="nc"><i>17</i>&nbsp;    this(0, 0);</b>
+<i>18</i>&nbsp;  }
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;  public FreeFlightCamera(double x, double y) {
+<b class="nc"><i>21</i>&nbsp;    this(new Point2D.Double(x, y));</b>
+<i>22</i>&nbsp;  }
+<i>23</i>&nbsp;
+<b class="nc"><i>24</i>&nbsp;  public FreeFlightCamera(final Point2D focus) {</b>
+<b class="nc"><i>25</i>&nbsp;    this.setFocus(focus);</b>
+<b class="nc"><i>26</i>&nbsp;    this.velocity = DEFAULT_SCROLL_PIXELS_PER_SECOND;</b>
+<b class="nc"><i>27</i>&nbsp;    this.scrollPadding = DEFAULT_SCROLL_PADDING;</b>
+<b class="nc"><i>28</i>&nbsp;    this.setClampToMap(true);</b>
+<i>29</i>&nbsp;
+<b class="nc"><i>30</i>&nbsp;    Game.loop().attach(this);</b>
+<i>31</i>&nbsp;  }
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;  public double getVelocity() {
+<b class="nc"><i>34</i>&nbsp;    return this.velocity;</b>
+<i>35</i>&nbsp;  }
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;  public double getScrollPadding() {
+<b class="nc"><i>38</i>&nbsp;    return this.scrollPadding;</b>
+<i>39</i>&nbsp;  }
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;  public void setVelocity(double velocity) {
+<b class="nc"><i>42</i>&nbsp;    this.velocity = velocity;</b>
+<i>43</i>&nbsp;  }
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;  public void setScrollPadding(double scrollPadding) {
+<b class="nc"><i>46</i>&nbsp;    this.scrollPadding = scrollPadding;</b>
+<i>47</i>&nbsp;  }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;  @Override
+<i>50</i>&nbsp;  public void update() {
+<b class="nc"><i>51</i>&nbsp;    this.handleFreeFlightCamera();</b>
+<i>52</i>&nbsp;  }
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;  private void handleFreeFlightCamera() {
+<b class="nc"><i>55</i>&nbsp;    if (Game.world().environment() == null || Game.world().environment().getMap() == null) {</b>
+<i>56</i>&nbsp;      return;
+<i>57</i>&nbsp;    }
+<i>58</i>&nbsp;
+<b class="nc"><i>59</i>&nbsp;    final Point2D mouseLocation = Input.mouse().getLocation();</b>
+<i>60</i>&nbsp;
+<b class="nc"><i>61</i>&nbsp;    final double scrollSpeed = this.getVelocity() / (double) Game.loop().getUpdateRate() * Game.config().input().getMouseSensitivity();</b>
+<i>62</i>&nbsp;
+<b class="nc"><i>63</i>&nbsp;    double x = this.getFocus().getX();</b>
+<b class="nc"><i>64</i>&nbsp;    double y = this.getFocus().getY();</b>
+<i>65</i>&nbsp;
+<b class="nc"><i>66</i>&nbsp;    double deltaX = 0;</b>
+<b class="nc"><i>67</i>&nbsp;    if (mouseLocation.getX() &lt; this.getScrollPadding()) {</b>
+<b class="nc"><i>68</i>&nbsp;      deltaX -= scrollSpeed;</b>
+<b class="nc"><i>69</i>&nbsp;    } else if (Game.window().getResolution().getWidth() - mouseLocation.getX() &lt; this.getScrollPadding()) {</b>
+<b class="nc"><i>70</i>&nbsp;      deltaX += scrollSpeed;</b>
+<i>71</i>&nbsp;    }
+<i>72</i>&nbsp;
+<b class="nc"><i>73</i>&nbsp;    double deltaY = 0;</b>
+<b class="nc"><i>74</i>&nbsp;    if (mouseLocation.getY() &lt; this.getScrollPadding()) {</b>
+<b class="nc"><i>75</i>&nbsp;      deltaY -= scrollSpeed;</b>
+<b class="nc"><i>76</i>&nbsp;    } else if (Game.window().getResolution().getHeight() - mouseLocation.getY() &lt; this.getScrollPadding()) {</b>
+<b class="nc"><i>77</i>&nbsp;      deltaY += scrollSpeed;</b>
+<i>78</i>&nbsp;    }
+<i>79</i>&nbsp;
+<b class="nc"><i>80</i>&nbsp;    x += deltaX;</b>
+<b class="nc"><i>81</i>&nbsp;    y += deltaY;</b>
+<i>82</i>&nbsp;
+<b class="nc"><i>83</i>&nbsp;    this.setFocus(new Point2D.Double(x, y));</b>
+<i>84</i>&nbsp;  }
+<i>85</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-20 23:34</div>
+</div>
+</body>
+</html>
