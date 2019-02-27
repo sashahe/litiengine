@@ -84,8 +84,6 @@ The refactoring itself is documented by the git log.
 
 For each team member, how much time was spent with the issue(s) can be seen in this [Google Excel Sheet](https://docs.google.com/spreadsheets/d/18gE_6OkY4YIi1d2UZoZI371ZuFIf79GRooNjCFZExkg/edit?usp=sharing). 
 
-## Overall experience (Not Done)
+## Overall experience
 
-What are your main take-aways from this project? What did you learn?
-
-Is there something special you want to mention here?
+Working with this project gave us an insight on how it is to work with open source projects. It was also interesting to see how different people had different insigts and thoughts regarding refactoring, how they structured their code as well as learn about new Java frameworks. In addition, we were able to learn new tools such as, ObjectAid for Eclipse for UML diagram generation, that we can integrate in future projects. This also allowed us to learn more about refactoring which deepened our knowledge on software development.
