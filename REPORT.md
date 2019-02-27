@@ -67,6 +67,7 @@ An ability is initialized with an executor. In the current state this executor m
 </table>
 
 ## Existing test cases relating to refactored code
+There are two test cases that test initialization of an ability and the effect of an ability on a different entity. The actual requirements that are tested are not documented. 
 
 ## The refactoring carried out (Not Done: Add description of UML diagram)
 Description of the [UML diagram](https://github.com/sashahe/litiengine/blob/issue/115/AbilitiesUML.png).
