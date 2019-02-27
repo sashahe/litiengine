@@ -71,7 +71,9 @@ There are two test cases that test initialization of an ability and the effect o
 
 ## The refactoring carried out (Not Done: Add description of UML diagram)
 The reactoring effort can be seen by checking out issue/115
+
 `git checkout issue/115`
+
 Description of the [UML diagram](https://github.com/sashahe/litiengine/blob/issue/115/AbilitiesUML.png).
 
 ## Test logs (Not Done: Add old/new coverage report over test cases)
