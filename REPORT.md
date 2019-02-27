@@ -10,10 +10,10 @@ The LITIEngine is an open source game engine for developing 2D games in Java.
 
 ## Selected issue(s)
 
-Title: Generalize Ability system #115 
+Title: Generalize Ability system #115
 
 URL: https://github.com/gurkenlabs/litiengine/issues/115
-    
+
 Description: Make the ability class more general, as it is now it requires a creature. This could be more general by not requiring this.
 
 
@@ -23,7 +23,7 @@ Description: Make the ability class more general, as it is now it requires a cre
 There are no clear guidelines regarding specifically how to build the project, however, there is a file describing how to contribute to the project. Since there is a gradle directory in the project, it can be assumed that gradle is used. Thus, building the project is in fact easy. Aside from downloading Gradle, no additional tools are need to build the software and no additional components were installed when building. The build included compilation as well as testing and no errors occurred during the build of the project, thus the tests are successful. The build was run with the command `gradle build`.
 
 ## Refactoring plan
-The ability class shall extend a CombatEntity, and the constructior of Ablility will take a CombatEntity instead of a creature. Thus the ability class becomes more general and can be applied to anything that is a CombatEntity. The Emitter class will then extend CombatEntity and thus Emitters will have abilities.
+The Ability class shall be made parametrized, the constructor of Ablility will take any object whose class is a subclass of CombatEntity. Before the refactoring the constructor would only take objects of class Creature. Thus the Ability class becomes more general and can be applied to anything that is a CombatEntity. The Emitter class will then extend CombatEntity and thus Emitters will have abilities.
 
 ## Requirements affected by functionality being refactored
 An ability is initialized with an executor. In the current state this executor must be a creature. The methods within the ability class that involve the executor are:
@@ -67,14 +67,18 @@ An ability is initialized with an executor. In the current state this executor m
 </table>
 
 ## Existing test cases relating to refactored code
-There are two test cases that test initialization of an ability and the effect of an ability on a different entity. The actual requirements that are tested are not documented. 
+There are two test cases that test initialization of an ability and the effect of an ability on a different entity. The actual requirements that are tested are not documented.
 
-## The refactoring carried out (Not Done: Add description of UML diagram)
+## The refactoring carried out
 The reactoring effort can be seen by checking out issue/115
 
 `git checkout issue/115`
 
-Description of the [UML diagram](https://github.com/sashahe/litiengine/blob/issue/115/AbilitiesUML.png).
+Before the refactoring Ability would only accept objects of class Creature. Creature was a subclass of CombatEntity and CollisionEntity, which in turn are subclasses of Entity. Another subclass of Entity was the Emitter class. Since the Ability class only worked with Creatures it was not possible for Emitters to have abilities. Below is a UML diagram describing the relationship between the classes before the refactoring:
+![UML before refactoring](https://github.com/sashahe/litiengine/blob/presentation/BeforeUML.png).
+
+During refactoring the Ability class was made more general by allowing it to work with all subclasses of CombatEntity. Emitters were then made to be a subclass of CombatEntity instead of a direct subclass to Entity. The Creature class specific methods used in the Ability class were moved to the CombatEntity class and then overridden appropriately for the Emitter class. The end result is a more general Ability class which allows for all types of CombatEntites to use abilities. The resulting UML diagram is shown here:
+![UML after refactoring](https://github.com/sashahe/litiengine/blob/presentation/AfterUML.png)
 
 ## Test logs (Not Done: Add old/new coverage report over test cases)
 
@@ -86,7 +90,7 @@ The refactoring itself is documented by the git log.
 
 ## Effort spent
 
-For each team member, how much time was spent with the issue(s) can be seen in this [Google Excel Sheet](https://docs.google.com/spreadsheets/d/18gE_6OkY4YIi1d2UZoZI371ZuFIf79GRooNjCFZExkg/edit?usp=sharing). 
+For each team member, how much time was spent with the issue(s) can be seen in this [Google Excel Sheet](https://docs.google.com/spreadsheets/d/18gE_6OkY4YIi1d2UZoZI371ZuFIf79GRooNjCFZExkg/edit?usp=sharing).
 
 ## Overall experience
 
