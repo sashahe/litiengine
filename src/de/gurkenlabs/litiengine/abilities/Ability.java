@@ -17,32 +17,32 @@ import de.gurkenlabs.litiengine.IGameLoop;
 import de.gurkenlabs.litiengine.abilities.effects.Effect;
 import de.gurkenlabs.litiengine.abilities.effects.EffectArgument;
 import de.gurkenlabs.litiengine.annotation.AbilityInfo;
-import de.gurkenlabs.litiengine.entities.Creature;
+import de.gurkenlabs.litiengine.entities.CombatEntity;
 import de.gurkenlabs.litiengine.graphics.IRenderable;
 import de.gurkenlabs.litiengine.util.geom.GeometricUtilities;
 
 @AbilityInfo
-public abstract class Ability implements IRenderable {
-  private final List<Consumer<AbilityExecution>> abilityCastConsumer;
+public abstract class Ability<T extends CombatEntity> implements IRenderable {
+  private final List<Consumer<AbilityExecution<T>>> abilityCastConsumer;
   private final AbilityAttributes attributes;
   private final CastType castType;
   private final String description;
   private final List<Effect> effects;
-  private final Creature executor;
+  private final T executor;
   private final boolean multiTarget;
   private final String name;
   private final AbilityOrigin originType;
 
-  private AbilityExecution currentExecution;
+  private AbilityExecution<T> currentExecution;
   private Point2D origin;
 
   /**
    * Instantiates a new ability.
    *
    * @param executor
-   *          the executing entity
+   *                   the executing entity
    */
-  protected Ability(final Creature executor) {
+  protected Ability(final T executor) {
     this.abilityCastConsumer = new CopyOnWriteArrayList<>();
     this.effects = new CopyOnWriteArrayList<>();
 
@@ -72,7 +72,6 @@ public abstract class Ability implements IRenderable {
     return new Ellipse2D.Double(arcX, arcY, range, range);
   }
 
-
   public boolean canCast() {
     return !this.getExecutor().isDead() && (this.isCurrentlyExecuting() || this.isColdownLeft());
   }
@@ -90,16 +89,16 @@ public abstract class Ability implements IRenderable {
    * the spatial circumstances of the specified environment. An ability execution
    * will be taken out that start applying all the effects of this ability.
    * 
-   * @return An {@link AbilityExecution} object that wraps all information about
+   * @return An {@link AbilityExecution<T>} object that wraps all information about
    *         this execution of the ability.
    */
-  public AbilityExecution cast() {
+  public AbilityExecution<T> cast() {
     if (!this.canCast()) {
       return null;
     }
-    this.currentExecution = new AbilityExecution(this);
+    this.currentExecution = new AbilityExecution<T>(this);
 
-    for (final Consumer<AbilityExecution> castConsumer : this.abilityCastConsumer) {
+    for (final Consumer<AbilityExecution<T>> castConsumer : this.abilityCastConsumer) {
       castConsumer.accept(this.currentExecution);
     }
 
@@ -118,11 +117,11 @@ public abstract class Ability implements IRenderable {
     return (float) (this.getAttributes().getCooldown().getCurrentValue() * 0.001);
   }
 
-  public AbilityExecution getCurrentExecution() {
+  public AbilityExecution<T> getCurrentExecution() {
     return this.currentExecution;
   }
 
-  public void setCurrentExecution(AbilityExecution ae) {
+  public void setCurrentExecution(AbilityExecution<T> ae) {
     this.currentExecution = ae;
   }
 
@@ -130,7 +129,7 @@ public abstract class Ability implements IRenderable {
     return this.description;
   }
 
-  public Creature getExecutor() {
+  public T getExecutor() {
     return this.executor;
   }
 
@@ -174,7 +173,7 @@ public abstract class Ability implements IRenderable {
     return this.multiTarget;
   }
 
-  public void onCast(final Consumer<AbilityExecution> castConsumer) {
+  public void onCast(final Consumer<AbilityExecution<T>> castConsumer) {
     if (!this.abilityCastConsumer.contains(castConsumer)) {
       this.abilityCastConsumer.add(castConsumer);
     }
@@ -210,8 +209,8 @@ public abstract class Ability implements IRenderable {
    * ability.
    * 
    * @param origin
-   *          The origin that defines the execution offset for this
-   *          {@link Ability}.
+   *                 The origin that defines the execution offset for this
+   *                 {@link Ability}.
    */
   public void setOrigin(final Point2D origin) {
     this.origin = origin;
