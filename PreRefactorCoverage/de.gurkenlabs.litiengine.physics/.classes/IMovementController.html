@@ -1,0 +1,125 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IMovementController</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.physics</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IMovementController (de.gurkenlabs.litiengine.physics)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">IMovementController</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.physics;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.geom.Point2D;
+<i>4</i>&nbsp;import java.util.List;
+<i>5</i>&nbsp;import java.util.function.Consumer;
+<i>6</i>&nbsp;import java.util.function.Predicate;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import de.gurkenlabs.litiengine.entities.IEntityController;
+<i>9</i>&nbsp;import de.gurkenlabs.litiengine.entities.IMobileEntity;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;/**
+<i>12</i>&nbsp; * The Interface IMovementController is used for moving entities by applying forces to them.
+<i>13</i>&nbsp; */
+<i>14</i>&nbsp;public interface IMovementController extends IEntityController {
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;  /**
+<i>17</i>&nbsp;   * Gets the delta x for each horizontal movement.
+<i>18</i>&nbsp;   *
+<i>19</i>&nbsp;   * @return the dx
+<i>20</i>&nbsp;   */
+<i>21</i>&nbsp;  public float getDx();
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;  /**
+<i>24</i>&nbsp;   * Gets the delta x for each horizontal movement.
+<i>25</i>&nbsp;   *
+<i>26</i>&nbsp;   * @param dx
+<i>27</i>&nbsp;   *          the new dx
+<i>28</i>&nbsp;   */
+<i>29</i>&nbsp;  public void setDx(float dx);
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;  /**
+<i>32</i>&nbsp;   * Sets the delta y for each vertical movement.
+<i>33</i>&nbsp;   *
+<i>34</i>&nbsp;   * @return the dy
+<i>35</i>&nbsp;   */
+<i>36</i>&nbsp;  public float getDy();
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;  /**
+<i>39</i>&nbsp;   * Sets the delta y for each vertical movement.
+<i>40</i>&nbsp;   *
+<i>41</i>&nbsp;   * @param dy
+<i>42</i>&nbsp;   *          the new dy
+<i>43</i>&nbsp;   */
+<i>44</i>&nbsp;  public void setDy(float dy);
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;  /**
+<i>47</i>&nbsp;   * Apply the force to the entity.
+<i>48</i>&nbsp;   *
+<i>49</i>&nbsp;   * @param force
+<i>50</i>&nbsp;   *          the force being applied to the entity
+<i>51</i>&nbsp;   */
+<i>52</i>&nbsp;  public void apply(Force force);
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;  /**
+<i>55</i>&nbsp;   * Gets the active forces.
+<i>56</i>&nbsp;   *
+<i>57</i>&nbsp;   * @return the active forces
+<i>58</i>&nbsp;   */
+<i>59</i>&nbsp;  public List&lt;Force&gt; getActiveForces();
+<i>60</i>&nbsp;  
+<i>61</i>&nbsp;  public Force getForce(String identifier);
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;  /**
+<i>64</i>&nbsp;   * Checks given conditions before moving.
+<i>65</i>&nbsp;   *
+<i>66</i>&nbsp;   * @param predicate
+<i>67</i>&nbsp;   *          the conditions that need to apply before moving. If they don&#39;t apply, the entity won&#39;t be moved.
+<i>68</i>&nbsp;   */
+<i>69</i>&nbsp;  public void onMovementCheck(Predicate&lt;IMobileEntity&gt; predicate);
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;  /**
+<i>72</i>&nbsp;   * Calls given logic after the entity has been moved.
+<i>73</i>&nbsp;   *
+<i>74</i>&nbsp;   * @param cons
+<i>75</i>&nbsp;   *          the logic that will be called after the entity has been moved.
+<i>76</i>&nbsp;   */
+<i>77</i>&nbsp;  public void onMoved(Consumer&lt;Point2D&gt; cons);
+<i>78</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:15</div>
+</div>
+</body>
+</html>

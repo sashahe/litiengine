@@ -1,0 +1,201 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Force</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.physics</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Force (de.gurkenlabs.litiengine.physics)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Force</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 33)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.physics;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.geom.Ellipse2D;
+<i>4</i>&nbsp;import java.awt.geom.Point2D;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import de.gurkenlabs.litiengine.entities.ICollisionEntity;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;public class Force {
+<i>9</i>&nbsp;  private boolean cancelOnCollision;
+<i>10</i>&nbsp;  private boolean cancelOnReached;
+<i>11</i>&nbsp;  private boolean hasEnded;
+<i>12</i>&nbsp;  private Point2D location;
+<i>13</i>&nbsp;  private final float size;
+<i>14</i>&nbsp;  private float strength;
+<i>15</i>&nbsp;  private String identifier;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;  /**
+<i>18</i>&nbsp;   * Instantiates a new force.
+<i>19</i>&nbsp;   * 
+<i>20</i>&nbsp;   * @param location
+<i>21</i>&nbsp;   *          The location where the force is originating from
+<i>22</i>&nbsp;   * @param strength
+<i>23</i>&nbsp;   *          The strength/intensity of this force instance
+<i>24</i>&nbsp;   * @param size
+<i>25</i>&nbsp;   *          The size of this force (used to determine if/when an entity has
+<i>26</i>&nbsp;   *          reached the force)
+<i>27</i>&nbsp;   */
+<b class="nc"><i>28</i>&nbsp;  public Force(final Point2D location, final float strength, final float size) {</b>
+<b class="nc"><i>29</i>&nbsp;    this.location = location;</b>
+<b class="nc"><i>30</i>&nbsp;    this.strength = strength;</b>
+<b class="nc"><i>31</i>&nbsp;    this.size = size;</b>
+<b class="nc"><i>32</i>&nbsp;    this.cancelOnCollision = true;</b>
+<b class="nc"><i>33</i>&nbsp;    this.cancelOnReached = true;</b>
+<b class="nc"><i>34</i>&nbsp;  }</b>
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;  /**
+<i>37</i>&nbsp;   * Cancel on collision.
+<i>38</i>&nbsp;   *
+<i>39</i>&nbsp;   * @return true, if successful
+<i>40</i>&nbsp;   */
+<i>41</i>&nbsp;  public boolean cancelOnCollision() {
+<b class="nc"><i>42</i>&nbsp;    return this.cancelOnCollision;</b>
+<i>43</i>&nbsp;  }
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;  public boolean cancelOnReached() {
+<b class="nc"><i>46</i>&nbsp;    return this.cancelOnReached;</b>
+<i>47</i>&nbsp;  }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;  public void end() {
+<b class="nc"><i>50</i>&nbsp;    this.hasEnded = true;</b>
+<b class="nc"><i>51</i>&nbsp;  }</b>
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;  /**
+<i>54</i>&nbsp;   * Gets the location.
+<i>55</i>&nbsp;   *
+<i>56</i>&nbsp;   * @return the location
+<i>57</i>&nbsp;   */
+<i>58</i>&nbsp;  public Point2D getLocation() {
+<b class="nc"><i>59</i>&nbsp;    return this.location;</b>
+<i>60</i>&nbsp;  }
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;  /**
+<i>63</i>&nbsp;   * Gets the strength in pixels per second.
+<i>64</i>&nbsp;   *
+<i>65</i>&nbsp;   * @return the strength in pixels per seconds
+<i>66</i>&nbsp;   */
+<i>67</i>&nbsp;  public float getStrength() {
+<b class="nc"><i>68</i>&nbsp;    return this.strength;</b>
+<i>69</i>&nbsp;  }
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;  public String getIdentifier() {
+<b class="nc"><i>72</i>&nbsp;    return this.identifier;</b>
+<i>73</i>&nbsp;  }
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;  /**
+<i>76</i>&nbsp;   * Checks for ended.
+<i>77</i>&nbsp;   *
+<i>78</i>&nbsp;   * @return true, if successful
+<i>79</i>&nbsp;   */
+<i>80</i>&nbsp;  public boolean hasEnded() {
+<b class="nc"><i>81</i>&nbsp;    return this.hasEnded;</b>
+<i>82</i>&nbsp;  }
+<i>83</i>&nbsp;
+<i>84</i>&nbsp;  public boolean hasReached(final ICollisionEntity entity) {
+<b class="nc"><i>85</i>&nbsp;    return new Ellipse2D.Double(this.getLocation().getX() - this.size * 0.5, this.getLocation().getY() - this.size * 0.5, this.size, this.size).intersects(entity.getCollisionBox());</b>
+<i>86</i>&nbsp;  }
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;  public void setCancelOnCollision(final boolean cancelOnCollision) {
+<b class="nc"><i>89</i>&nbsp;    this.cancelOnCollision = cancelOnCollision;</b>
+<b class="nc"><i>90</i>&nbsp;  }</b>
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;  public void setCancelOnReached(final boolean cancelOnReached) {
+<b class="nc"><i>93</i>&nbsp;    this.cancelOnReached = cancelOnReached;</b>
+<b class="nc"><i>94</i>&nbsp;  }</b>
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;  public void setLocation(final Point2D location) {
+<b class="nc"><i>97</i>&nbsp;    this.location = location;</b>
+<b class="nc"><i>98</i>&nbsp;  }</b>
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;  public void setStrength(float strength) {
+<b class="nc"><i>101</i>&nbsp;    this.strength = strength;</b>
+<b class="nc"><i>102</i>&nbsp;  }</b>
+<i>103</i>&nbsp;
+<i>104</i>&nbsp;  public void setIdentifier(String identifier) {
+<b class="nc"><i>105</i>&nbsp;    this.identifier = identifier;</b>
+<b class="nc"><i>106</i>&nbsp;  }</b>
+<i>107</i>&nbsp;
+<i>108</i>&nbsp;  @Override
+<i>109</i>&nbsp;  public String toString() {
+<b class="nc"><i>110</i>&nbsp;    StringBuilder sb = new StringBuilder();</b>
+<b class="nc"><i>111</i>&nbsp;    sb.append(this.identifier != null &amp;&amp; !this.identifier.isEmpty() ? this.identifier : &quot;Force&quot;);</b>
+<b class="nc"><i>112</i>&nbsp;    sb.append(&quot;: &quot;);</b>
+<b class="nc"><i>113</i>&nbsp;    sb.append(this.getStrength());</b>
+<b class="nc"><i>114</i>&nbsp;    sb.append(&quot;px/sec; &quot;);</b>
+<b class="nc"><i>115</i>&nbsp;    sb.append(this.getLocation());</b>
+<b class="nc"><i>116</i>&nbsp;    return sb.toString();</b>
+<i>117</i>&nbsp;  }
+<i>118</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:15</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,127 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ILayer</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment.tilemap</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ILayer (de.gurkenlabs.litiengine.environment.tilemap)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ILayer</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment.tilemap;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Dimension;
+<i>4</i>&nbsp;import java.awt.Point;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import de.gurkenlabs.litiengine.graphics.RenderType;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;/**
+<i>9</i>&nbsp; * The Interface ILayer.
+<i>10</i>&nbsp; */
+<i>11</i>&nbsp;public interface ILayer extends ICustomPropertyProvider {
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;  public int getId();
+<i>14</i>&nbsp;  /**
+<i>15</i>&nbsp;   * Gets the name.
+<i>16</i>&nbsp;   *
+<i>17</i>&nbsp;   * @return the name
+<i>18</i>&nbsp;   */
+<i>19</i>&nbsp;  public String getName();
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;  /**
+<i>22</i>&nbsp;   * Gets the opacity.
+<i>23</i>&nbsp;   *
+<i>24</i>&nbsp;   * @return the opacity
+<i>25</i>&nbsp;   */
+<i>26</i>&nbsp;  public float getOpacity();
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;  /**
+<i>29</i>&nbsp;   * Gets both the X and the Y offset of the layer.
+<i>30</i>&nbsp;   *
+<i>31</i>&nbsp;   * @return a {@link Point} representing the offset
+<i>32</i>&nbsp;   */
+<i>33</i>&nbsp;  public Point getOffset();
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;  /**
+<i>36</i>&nbsp;   * Gets the horizontal offset of the layer.
+<i>37</i>&nbsp;   *
+<i>38</i>&nbsp;   * @return the x offset
+<i>39</i>&nbsp;   */
+<i>40</i>&nbsp;  public int getOffsetX();
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;  /**
+<i>43</i>&nbsp;   * Gets the vertical offset of the layer.
+<i>44</i>&nbsp;   *
+<i>45</i>&nbsp;   * @return the y offset
+<i>46</i>&nbsp;   */
+<i>47</i>&nbsp;  public int getOffsetY();
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;  /**
+<i>50</i>&nbsp;   * Gets the size in tiles.
+<i>51</i>&nbsp;   *
+<i>52</i>&nbsp;   * @return the size in tiles
+<i>53</i>&nbsp;   */
+<i>54</i>&nbsp;  public Dimension getSizeInTiles();
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;  public int getOrder();
+<i>57</i>&nbsp;  
+<i>58</i>&nbsp;  public IMap getMap();
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;  /**
+<i>61</i>&nbsp;   * Checks if is visible.
+<i>62</i>&nbsp;   *
+<i>63</i>&nbsp;   * @return true, if is visible
+<i>64</i>&nbsp;   */
+<i>65</i>&nbsp;  public boolean isVisible();
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;  public void setVisible(boolean visible);
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;  public void setName(String name);
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;  public RenderType getRenderType();
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;  public int getWidth();
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;  public int getHeight();
+<i>76</i>&nbsp;
+<i>77</i>&nbsp;  public void setWidth(int newWidth);
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;  public void setHeight(int newWidth);
+<i>80</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:15</div>
+</div>
+</body>
+</html>

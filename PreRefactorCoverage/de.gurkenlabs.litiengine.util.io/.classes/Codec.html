@@ -1,0 +1,235 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Codec</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.util.io</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Codec (de.gurkenlabs.litiengine.util.io)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Codec</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    23.1%
+  </span>
+  <span class="absValue">
+    (3/ 13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    10.4%
+  </span>
+  <span class="absValue">
+    (5/ 48)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.util.io;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.image.BufferedImage;
+<i>4</i>&nbsp;import java.io.ByteArrayInputStream;
+<i>5</i>&nbsp;import java.io.ByteArrayOutputStream;
+<i>6</i>&nbsp;import java.io.IOException;
+<i>7</i>&nbsp;import java.util.Base64;
+<i>8</i>&nbsp;import java.util.logging.Level;
+<i>9</i>&nbsp;import java.util.logging.Logger;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import javax.imageio.ImageIO;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;import de.gurkenlabs.litiengine.graphics.ImageFormat;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;public final class Codec {
+<b class="fc"><i>16</i>&nbsp;  private static final Logger log = Logger.getLogger(Codec.class.getName());</b>
+<i>17</i>&nbsp;
+<b class="nc"><i>18</i>&nbsp;  private Codec() {</b>
+<b class="nc"><i>19</i>&nbsp;    throw new UnsupportedOperationException();</b>
+<i>20</i>&nbsp;  }
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;  /**
+<i>23</i>&nbsp;   * Decodes a previously encoded angle.
+<i>24</i>&nbsp;   *
+<i>25</i>&nbsp;   * @param encodedAngle
+<i>26</i>&nbsp;   *          The encoded angle.
+<i>27</i>&nbsp;   * @return The decoded angle.
+<i>28</i>&nbsp;   */
+<i>29</i>&nbsp;  public static float decodeAngle(final byte encodedAngle) {
+<b class="nc"><i>30</i>&nbsp;    float angle = encodedAngle;</b>
+<b class="nc"><i>31</i>&nbsp;    angle += 127;</b>
+<b class="nc"><i>32</i>&nbsp;    angle /= 256 / 360.0f;</b>
+<b class="nc"><i>33</i>&nbsp;    angle += 360;</b>
+<b class="nc"><i>34</i>&nbsp;    return angle % 360;</b>
+<i>35</i>&nbsp;  }
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;  public static float decodeAngleFromShort(final short encodedAngle) {
+<b class="nc"><i>38</i>&nbsp;    return decodeSmallFloatingPointNumber(encodedAngle, 2);</b>
+<i>39</i>&nbsp;  }
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;  /**
+<i>42</i>&nbsp;   * Decodes a small floating point number, previously encoded with
+<i>43</i>&nbsp;   * {@link #encodeSmallFloatingPointNumber(float, int)
+<i>44</i>&nbsp;   * encodeSmallFloatingPointNumber}.
+<i>45</i>&nbsp;   *
+<i>46</i>&nbsp;   * @param encodedNumber
+<i>47</i>&nbsp;   *          The encoded number
+<i>48</i>&nbsp;   * @param precision
+<i>49</i>&nbsp;   *          The precision of the encoded number. The same precision, used for
+<i>50</i>&nbsp;   *          encoding.
+<i>51</i>&nbsp;   * @return The decoded small floating point number.
+<i>52</i>&nbsp;   */
+<i>53</i>&nbsp;  public static float decodeSmallFloatingPointNumber(final short encodedNumber, final int precision) {
+<b class="fc"><i>54</i>&nbsp;    return (float) ((encodedNumber + Short.MAX_VALUE) / Math.pow(10, precision));</b>
+<i>55</i>&nbsp;  }
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;  /**
+<i>58</i>&nbsp;   * Encodes an angle, loosing some precision. The encoded / decoded values can
+<i>59</i>&nbsp;   * differ at max. around 1.43 degrees from the original one.
+<i>60</i>&nbsp;   *
+<i>61</i>&nbsp;   * @param angle
+<i>62</i>&nbsp;   *          The angle
+<i>63</i>&nbsp;   * @return The encoded angle.
+<i>64</i>&nbsp;   */
+<i>65</i>&nbsp;  public static byte encodeAngle(final float angle) {
+<b class="nc"><i>66</i>&nbsp;    float encodedAngle = angle % 360;</b>
+<b class="nc"><i>67</i>&nbsp;    encodedAngle *= 256 / 360.0f;</b>
+<b class="nc"><i>68</i>&nbsp;    encodedAngle -= 127;</b>
+<i>69</i>&nbsp;
+<b class="nc"><i>70</i>&nbsp;    return (byte) encodedAngle;</b>
+<i>71</i>&nbsp;  }
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;  public static short encodeAngleToShort(final float angle) {
+<b class="nc"><i>74</i>&nbsp;    float encodedAngle = angle;</b>
+<b class="nc"><i>75</i>&nbsp;    if (encodedAngle &lt; 0) {</b>
+<b class="nc"><i>76</i>&nbsp;      encodedAngle += 360;</b>
+<i>77</i>&nbsp;    }
+<i>78</i>&nbsp;
+<b class="nc"><i>79</i>&nbsp;    encodedAngle %= 360;</b>
+<i>80</i>&nbsp;
+<b class="nc"><i>81</i>&nbsp;    return encodeSmallFloatingPointNumber(encodedAngle, 2);</b>
+<i>82</i>&nbsp;  }
+<i>83</i>&nbsp;
+<i>84</i>&nbsp;  /**
+<i>85</i>&nbsp;   * Encodes positive numbers less than Short.MAX_VALUE * 2 / precision (6553.4
+<i>86</i>&nbsp;   * for precision = 1).
+<i>87</i>&nbsp;   *
+<i>88</i>&nbsp;   * @param smallNumber
+<i>89</i>&nbsp;   *          The small number to encode
+<i>90</i>&nbsp;   * @param precision
+<i>91</i>&nbsp;   *          The comma precision for the encoding process.
+<i>92</i>&nbsp;   * @return The encoded number.
+<i>93</i>&nbsp;   */
+<i>94</i>&nbsp;  public static short encodeSmallFloatingPointNumber(final float smallNumber, final int precision) {
+<b class="fc"><i>95</i>&nbsp;    if (smallNumber &lt; 0 || (int) (smallNumber * Math.pow(10, precision)) &gt; Short.MAX_VALUE * 2) {</b>
+<b class="fc"><i>96</i>&nbsp;      throw new IllegalArgumentException(&quot;The specified number is not within the range to encode.&quot;);</b>
+<i>97</i>&nbsp;    }
+<i>98</i>&nbsp;
+<b class="fc"><i>99</i>&nbsp;    return (short) (smallNumber * Math.pow(10, precision) - Short.MAX_VALUE);</b>
+<i>100</i>&nbsp;  }
+<i>101</i>&nbsp;
+<i>102</i>&nbsp;  public static BufferedImage decodeImage(final String imageString) {
+<b class="nc"><i>103</i>&nbsp;    if (imageString == null) {</b>
+<b class="nc"><i>104</i>&nbsp;      return null;</b>
+<i>105</i>&nbsp;    }
+<i>106</i>&nbsp;
+<b class="nc"><i>107</i>&nbsp;    BufferedImage image = null;</b>
+<i>108</i>&nbsp;    byte[] imageByte;
+<i>109</i>&nbsp;    try {
+<b class="nc"><i>110</i>&nbsp;      imageByte = decode(imageString);</b>
+<b class="nc"><i>111</i>&nbsp;      final ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);</b>
+<b class="nc"><i>112</i>&nbsp;      image = ImageIO.read(bis);</b>
+<b class="nc"><i>113</i>&nbsp;      bis.close();</b>
+<b class="nc"><i>114</i>&nbsp;    } catch (final Exception e) {</b>
+<b class="nc"><i>115</i>&nbsp;      log.log(Level.SEVERE, e.getMessage(), e);</b>
+<b class="nc"><i>116</i>&nbsp;    }</b>
+<b class="nc"><i>117</i>&nbsp;    return image;</b>
+<i>118</i>&nbsp;  }
+<i>119</i>&nbsp;
+<i>120</i>&nbsp;  public static String encode(final BufferedImage image) {
+<b class="nc"><i>121</i>&nbsp;    return encode(image, ImageFormat.PNG);</b>
+<i>122</i>&nbsp;  }
+<i>123</i>&nbsp;
+<i>124</i>&nbsp;  public static String encode(final BufferedImage image, ImageFormat imageFormat) {
+<b class="nc"><i>125</i>&nbsp;    if (image == null) {</b>
+<b class="nc"><i>126</i>&nbsp;      return null;</b>
+<i>127</i>&nbsp;    }
+<i>128</i>&nbsp;
+<b class="nc"><i>129</i>&nbsp;    String imageString = null;</b>
+<b class="nc"><i>130</i>&nbsp;    final ByteArrayOutputStream bos = new ByteArrayOutputStream();</b>
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;    try {
+<b class="nc"><i>133</i>&nbsp;      ImageIO.write(image, imageFormat != ImageFormat.UNDEFINED ? imageFormat.toString() : ImageFormat.PNG.toString(), bos);</b>
+<b class="nc"><i>134</i>&nbsp;      final byte[] imageBytes = bos.toByteArray();</b>
+<i>135</i>&nbsp;
+<b class="nc"><i>136</i>&nbsp;      imageString = encode(imageBytes);</b>
+<i>137</i>&nbsp;
+<b class="nc"><i>138</i>&nbsp;      bos.close();</b>
+<b class="nc"><i>139</i>&nbsp;    } catch (final IOException e) {</b>
+<b class="nc"><i>140</i>&nbsp;      log.log(Level.SEVERE, e.getMessage(), e);</b>
+<b class="nc"><i>141</i>&nbsp;    }</b>
+<b class="nc"><i>142</i>&nbsp;    return imageString;</b>
+<i>143</i>&nbsp;  }
+<i>144</i>&nbsp;
+<i>145</i>&nbsp;  public static String encode(byte[] data) {
+<b class="nc"><i>146</i>&nbsp;    return Base64.getEncoder().encodeToString(data);</b>
+<i>147</i>&nbsp;  }
+<i>148</i>&nbsp;
+<i>149</i>&nbsp;  public static byte[] decode(String base64) {
+<b class="nc"><i>150</i>&nbsp;    return Base64.getDecoder().decode(base64);</b>
+<i>151</i>&nbsp;  }
+<i>152</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:15</div>
+</div>
+</body>
+</html>

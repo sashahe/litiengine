@@ -1,0 +1,152 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IMapObject</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment.tilemap</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IMapObject (de.gurkenlabs.litiengine.environment.tilemap)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">IMapObject$MockitoMock$1215941738</td>
+  </tr>
+  <tr>
+    <td class="name">IMapObject$MockitoMock$1215941738$auxiliary$6BaxPtsY</td>
+  </tr>
+  <tr>
+    <td class="name">IMapObject$MockitoMock$1215941738$auxiliary$cWjsD9gR</td>
+  </tr>
+  <tr>
+    <td class="name">IMapObject$MockitoMock$1215941738$auxiliary$oWWqagiY</td>
+  </tr>
+  <tr>
+    <td class="name">IMapObject$MockitoMock$1215941738$auxiliary$PUYSUiPY</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment.tilemap;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.geom.Ellipse2D;
+<i>4</i>&nbsp;import java.awt.geom.Point2D;
+<i>5</i>&nbsp;import java.awt.geom.Rectangle2D;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import de.gurkenlabs.litiengine.environment.IPolygon;
+<i>8</i>&nbsp;import de.gurkenlabs.litiengine.resources.Resource;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;/**
+<i>11</i>&nbsp; * This interface represents an instance on a map that can define various things
+<i>12</i>&nbsp; * for an engine. e.g. it can be used to define static collision boxes or other
+<i>13</i>&nbsp; * special regions on the map.
+<i>14</i>&nbsp; */
+<i>15</i>&nbsp;public interface IMapObject extends ICustomPropertyProvider, Resource {
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;  /**
+<i>18</i>&nbsp;   * Gets the grid id.
+<i>19</i>&nbsp;   *
+<i>20</i>&nbsp;   * @return the grid id
+<i>21</i>&nbsp;   */
+<i>22</i>&nbsp;  public int getGridId();
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;  /**
+<i>25</i>&nbsp;   * Gets the hit box.
+<i>26</i>&nbsp;   *
+<i>27</i>&nbsp;   * @return the hit box
+<i>28</i>&nbsp;   */
+<i>29</i>&nbsp;  public Rectangle2D getBoundingBox();
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;  /**
+<i>32</i>&nbsp;   * Gets the id.
+<i>33</i>&nbsp;   *
+<i>34</i>&nbsp;   * @return the id
+<i>35</i>&nbsp;   */
+<i>36</i>&nbsp;  public int getId();
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;  /**
+<i>39</i>&nbsp;   * Gets the location.
+<i>40</i>&nbsp;   *
+<i>41</i>&nbsp;   * @return the location
+<i>42</i>&nbsp;   */
+<i>43</i>&nbsp;  public Point2D getLocation();
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;  public String getType();
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;  public IPolyline getPolyline();
+<i>48</i>&nbsp;  
+<i>49</i>&nbsp;  public IPolygon getPolygon();
+<i>50</i>&nbsp;  
+<i>51</i>&nbsp;  public Ellipse2D getEllipse();
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;  public IMapObjectLayer getLayer();
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;  public void setGridId(int gid);
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;  public void setId(int id);
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;  public void setName(String name);
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;  public void setType(String type);
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;  public void setX(float x);
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;  public void setY(float y);
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;  public void setLocation(Point2D location);
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;  public void setLocation(float x, float y);
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;  public void setWidth(float width);
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;  public void setHeight(float height);
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;  public float getX();
+<i>76</i>&nbsp;
+<i>77</i>&nbsp;  public float getY();
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;  public float getWidth();
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;  public float getHeight();
+<i>82</i>&nbsp;  
+<i>83</i>&nbsp;  public boolean isPolyline();
+<i>84</i>&nbsp;  
+<i>85</i>&nbsp;  public boolean isPolygon();
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;  public boolean isPoint();
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;  public boolean isEllipse();
+<i>90</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:15</div>
+</div>
+</body>
+</html>

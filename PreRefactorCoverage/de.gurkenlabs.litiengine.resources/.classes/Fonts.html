@@ -1,0 +1,153 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Fonts</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.resources</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Fonts (de.gurkenlabs.litiengine.resources)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Fonts</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (3/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    30.4%
+  </span>
+  <span class="absValue">
+    (7/ 23)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.resources;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Font;
+<i>4</i>&nbsp;import java.awt.FontFormatException;
+<i>5</i>&nbsp;import java.io.IOException;
+<i>6</i>&nbsp;import java.io.InputStream;
+<i>7</i>&nbsp;import java.util.logging.Level;
+<i>8</i>&nbsp;import java.util.logging.Logger;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;public final class Fonts extends ResourcesContainer&lt;Font&gt; {
+<b class="fc"><i>11</i>&nbsp;  private static final Logger log = Logger.getLogger(Fonts.class.getName());</b>
+<i>12</i>&nbsp;
+<b class="fc"><i>13</i>&nbsp;  Fonts() {</b>
+<b class="fc"><i>14</i>&nbsp;  }</b>
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;  public Font get(String name, float size) {
+<b class="nc"><i>17</i>&nbsp;    Font font = this.get(name);</b>
+<b class="nc"><i>18</i>&nbsp;    if (font == null) {</b>
+<b class="nc"><i>19</i>&nbsp;      return null;</b>
+<i>20</i>&nbsp;    }
+<i>21</i>&nbsp;
+<b class="nc"><i>22</i>&nbsp;    return font.deriveFont(size);</b>
+<i>23</i>&nbsp;  }
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;  public Font get(String name, int style) {
+<b class="nc"><i>26</i>&nbsp;    Font font = this.get(name);</b>
+<b class="nc"><i>27</i>&nbsp;    if (font == null) {</b>
+<b class="nc"><i>28</i>&nbsp;      return null;</b>
+<i>29</i>&nbsp;    }
+<i>30</i>&nbsp;
+<b class="nc"><i>31</i>&nbsp;    return font.deriveFont(style);</b>
+<i>32</i>&nbsp;  }
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;  public Font get(String name, int style, float size) {
+<b class="nc"><i>35</i>&nbsp;    Font font = this.get(name);</b>
+<b class="nc"><i>36</i>&nbsp;    if (font == null) {</b>
+<b class="nc"><i>37</i>&nbsp;      return null;</b>
+<i>38</i>&nbsp;    }
+<i>39</i>&nbsp;
+<b class="nc"><i>40</i>&nbsp;    return font.deriveFont(style, size);</b>
+<i>41</i>&nbsp;  }
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;  /***
+<i>44</i>&nbsp;   * Loads a custom font with the specified name from game&#39;s resources.
+<i>45</i>&nbsp;   * As a fallback, when no font could be found by the specified &lt;code&gt;fontName&lt;/code&gt;, it tries to get the font from the environment by calling.
+<i>46</i>&nbsp;   *
+<i>47</i>&nbsp;   * @param resourceName
+<i>48</i>&nbsp;   *          The name of the font
+<i>49</i>&nbsp;   * @return The loaded font.
+<i>50</i>&nbsp;   * 
+<i>51</i>&nbsp;   * @see Font#createFont(int, java.io.File)
+<i>52</i>&nbsp;   * @see Font#getFont(String)
+<i>53</i>&nbsp;   */
+<i>54</i>&nbsp;  @Override
+<i>55</i>&nbsp;  protected Font load(String resourceName) {
+<i>56</i>&nbsp;    try {
+<b class="fc"><i>57</i>&nbsp;      final InputStream fontStream = Resources.get(resourceName);</b>
+<b class="fc"><i>58</i>&nbsp;      if (fontStream == null) {</b>
+<b class="fc"><i>59</i>&nbsp;        log.log(Level.SEVERE, &quot;font {0} could not be loaded&quot;, resourceName);</b>
+<b class="fc"><i>60</i>&nbsp;        return null;</b>
+<i>61</i>&nbsp;      }
+<i>62</i>&nbsp;
+<b class="nc"><i>63</i>&nbsp;      return Font.createFont(Font.TRUETYPE_FONT, fontStream);</b>
+<b class="nc"><i>64</i>&nbsp;    } catch (final FontFormatException | IOException e) {</b>
+<b class="nc"><i>65</i>&nbsp;      log.log(Level.SEVERE, e.getMessage(), e);</b>
+<i>66</i>&nbsp;    }
+<i>67</i>&nbsp;
+<b class="nc"><i>68</i>&nbsp;    return Font.getFont(resourceName);</b>
+<i>69</i>&nbsp;  }
+<i>70</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:15</div>
+</div>
+</body>
+</html>

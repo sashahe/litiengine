@@ -1,0 +1,248 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: EmitterMapObjectLoader</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment</a> ]
+</div>
+
+<h1>Coverage Summary for Class: EmitterMapObjectLoader (de.gurkenlabs.litiengine.environment)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EmitterMapObjectLoader</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (5/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    48%
+  </span>
+  <span class="absValue">
+    (47/ 98)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.util.ArrayList;
+<i>4</i>&nbsp;import java.util.Collection;
+<i>5</i>&nbsp;import java.util.List;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import de.gurkenlabs.litiengine.Align;
+<i>8</i>&nbsp;import de.gurkenlabs.litiengine.Valign;
+<i>9</i>&nbsp;import de.gurkenlabs.litiengine.entities.IEntity;
+<i>10</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.IMapObject;
+<i>11</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.MapObjectProperty;
+<i>12</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.MapObjectType;
+<i>13</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.xml.MapObject;
+<i>14</i>&nbsp;import de.gurkenlabs.litiengine.graphics.emitters.Emitter;
+<i>15</i>&nbsp;import de.gurkenlabs.litiengine.graphics.emitters.particles.ParticleType;
+<i>16</i>&nbsp;import de.gurkenlabs.litiengine.graphics.emitters.xml.CustomEmitter;
+<i>17</i>&nbsp;import de.gurkenlabs.litiengine.graphics.emitters.xml.EmitterData;
+<i>18</i>&nbsp;import de.gurkenlabs.litiengine.graphics.emitters.xml.ParticleColor;
+<i>19</i>&nbsp;import de.gurkenlabs.litiengine.graphics.emitters.xml.ParticleParameter;
+<i>20</i>&nbsp;import de.gurkenlabs.litiengine.physics.CollisionType;
+<i>21</i>&nbsp;import de.gurkenlabs.litiengine.util.ArrayUtilities;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;public class EmitterMapObjectLoader extends MapObjectLoader {
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;  protected EmitterMapObjectLoader() {
+<b class="fc"><i>26</i>&nbsp;    super(MapObjectType.EMITTER);</b>
+<b class="fc"><i>27</i>&nbsp;  }</b>
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;  public static List&lt;ParticleColor&gt; getColors(IMapObject emitter) {
+<b class="fc"><i>30</i>&nbsp;    List&lt;ParticleColor&gt; particleColors = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>31</i>&nbsp;    String colorsString = emitter.getStringValue(MapObjectProperty.Emitter.COLORS, &quot;&quot;);</b>
+<b class="fc"><i>32</i>&nbsp;    if (colorsString != null &amp;&amp; !colorsString.isEmpty()) {</b>
+<b class="nc"><i>33</i>&nbsp;      String[] colors = colorsString.split(&quot;,&quot;);</b>
+<b class="nc"><i>34</i>&nbsp;      for (String color : colors) {</b>
+<b class="nc"><i>35</i>&nbsp;        ParticleColor particleColor = ParticleColor.decode(color);</b>
+<b class="nc"><i>36</i>&nbsp;        if (particleColor != null) {</b>
+<b class="nc"><i>37</i>&nbsp;          particleColors.add(particleColor);</b>
+<i>38</i>&nbsp;        }
+<i>39</i>&nbsp;      }
+<i>40</i>&nbsp;    }
+<i>41</i>&nbsp;
+<b class="fc"><i>42</i>&nbsp;    return particleColors;</b>
+<i>43</i>&nbsp;  }
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;  @Override
+<i>46</i>&nbsp;  public Collection&lt;IEntity&gt; load(Environment environment, IMapObject mapObject) {
+<b class="fc"><i>47</i>&nbsp;    if (MapObjectType.get(mapObject.getType()) != MapObjectType.EMITTER) {</b>
+<b class="nc"><i>48</i>&nbsp;      throw new IllegalArgumentException(&quot;Cannot load a mapobject of the type &quot; + mapObject.getType() + &quot; with a loader of the type &quot; + EmitterMapObjectLoader.class);</b>
+<i>49</i>&nbsp;    }
+<i>50</i>&nbsp;
+<b class="fc"><i>51</i>&nbsp;    EmitterData data = createEmitterData(mapObject);</b>
+<i>52</i>&nbsp;
+<b class="fc"><i>53</i>&nbsp;    CustomEmitter emitter = this.createCustomEmitter(data);</b>
+<b class="fc"><i>54</i>&nbsp;    loadDefaultProperties(emitter, mapObject);</b>
+<i>55</i>&nbsp;
+<b class="fc"><i>56</i>&nbsp;    Collection&lt;IEntity&gt; entities = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>57</i>&nbsp;    entities.add(emitter);</b>
+<i>58</i>&nbsp;
+<b class="fc"><i>59</i>&nbsp;    return entities;</b>
+<i>60</i>&nbsp;  }
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;  protected CustomEmitter createCustomEmitter(EmitterData data) {
+<b class="fc"><i>63</i>&nbsp;    return new CustomEmitter(data);</b>
+<i>64</i>&nbsp;  }
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;  public static EmitterData createEmitterData(IMapObject mapObject) {
+<b class="fc"><i>67</i>&nbsp;    EmitterData data = new EmitterData();</b>
+<i>68</i>&nbsp;    // emitter
+<b class="fc"><i>69</i>&nbsp;    data.setWidth(mapObject.getWidth());</b>
+<b class="fc"><i>70</i>&nbsp;    data.setHeight(mapObject.getHeight());</b>
+<b class="fc"><i>71</i>&nbsp;    data.setSpawnRate(mapObject.getIntValue(MapObjectProperty.Emitter.SPAWNRATE));</b>
+<b class="fc"><i>72</i>&nbsp;    data.setSpawnAmount(mapObject.getIntValue(MapObjectProperty.Emitter.SPAWNAMOUNT));</b>
+<b class="fc"><i>73</i>&nbsp;    data.setUpdateRate(mapObject.getIntValue(MapObjectProperty.Emitter.UPDATERATE, Emitter.DEFAULT_UPDATERATE));</b>
+<b class="fc"><i>74</i>&nbsp;    data.setEmitterTTL(mapObject.getIntValue(MapObjectProperty.Emitter.TIMETOLIVE));</b>
+<b class="fc"><i>75</i>&nbsp;    data.setMaxParticles(mapObject.getIntValue(MapObjectProperty.Emitter.MAXPARTICLES));</b>
+<b class="fc"><i>76</i>&nbsp;    data.setParticleType(mapObject.getEnumValue(MapObjectProperty.Emitter.PARTICLETYPE, ParticleType.class, ParticleType.RECTANGLE));</b>
+<b class="fc"><i>77</i>&nbsp;    data.setColorDeviation(mapObject.getFloatValue(MapObjectProperty.Emitter.COLORDEVIATION));</b>
+<b class="fc"><i>78</i>&nbsp;    data.setAlphaDeviation(mapObject.getFloatValue(MapObjectProperty.Emitter.ALPHADEVIATION));</b>
+<b class="fc"><i>79</i>&nbsp;    data.setOriginAlign(mapObject.getEnumValue(MapObjectProperty.Emitter.ORIGIN_ALIGN, Align.class, Align.LEFT));</b>
+<b class="fc"><i>80</i>&nbsp;    data.setOriginValign(mapObject.getEnumValue(MapObjectProperty.Emitter.ORIGIN_VALIGN, Valign.class, Valign.TOP));</b>
+<i>81</i>&nbsp;
+<b class="fc"><i>82</i>&nbsp;    data.setColors(getColors(mapObject));</b>
+<i>83</i>&nbsp;
+<b class="fc"><i>84</i>&nbsp;    data.setColorProbabilities(mapObject.getStringValue(MapObjectProperty.Emitter.COLORPROBABILITIES, &quot;&quot;));</b>
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;    // particle
+<b class="fc"><i>87</i>&nbsp;    data.setParticleX(new ParticleParameter(mapObject.getFloatValue(MapObjectProperty.Particle.MINX), mapObject.getFloatValue(MapObjectProperty.Particle.MAXX, ParticleParameter.MAX_VALUE_UNDEFINED)));</b>
+<b class="fc"><i>88</i>&nbsp;    data.setParticleY(new ParticleParameter(mapObject.getFloatValue(MapObjectProperty.Particle.MINY), mapObject.getFloatValue(MapObjectProperty.Particle.MAXY, ParticleParameter.MAX_VALUE_UNDEFINED)));</b>
+<b class="fc"><i>89</i>&nbsp;    data.setParticleWidth(new ParticleParameter(mapObject.getFloatValue(MapObjectProperty.Particle.MINSTARTWIDTH), mapObject.getFloatValue(MapObjectProperty.Particle.MAXSTARTWIDTH, ParticleParameter.MAX_VALUE_UNDEFINED)));</b>
+<b class="fc"><i>90</i>&nbsp;    data.setParticleHeight(new ParticleParameter(mapObject.getFloatValue(MapObjectProperty.Particle.MINSTARTHEIGHT), mapObject.getFloatValue(MapObjectProperty.Particle.MAXSTARTHEIGHT, ParticleParameter.MAX_VALUE_UNDEFINED)));</b>
+<b class="fc"><i>91</i>&nbsp;    data.setDeltaX(new ParticleParameter(mapObject.getFloatValue(MapObjectProperty.Particle.MINDELTAX), mapObject.getFloatValue(MapObjectProperty.Particle.MAXDELTAX, ParticleParameter.MAX_VALUE_UNDEFINED)));</b>
+<b class="fc"><i>92</i>&nbsp;    data.setDeltaY(new ParticleParameter(mapObject.getFloatValue(MapObjectProperty.Particle.MINDELTAY), mapObject.getFloatValue(MapObjectProperty.Particle.MAXDELTAY, ParticleParameter.MAX_VALUE_UNDEFINED)));</b>
+<b class="fc"><i>93</i>&nbsp;    data.setGravityX(new ParticleParameter(mapObject.getFloatValue(MapObjectProperty.Particle.MINGRAVITYX), mapObject.getFloatValue(MapObjectProperty.Particle.MAXGRAVITYX, ParticleParameter.MAX_VALUE_UNDEFINED)));</b>
+<b class="fc"><i>94</i>&nbsp;    data.setGravityY(new ParticleParameter(mapObject.getFloatValue(MapObjectProperty.Particle.MINGRAVITYY), mapObject.getFloatValue(MapObjectProperty.Particle.MAXGRAVITYY, ParticleParameter.MAX_VALUE_UNDEFINED)));</b>
+<b class="fc"><i>95</i>&nbsp;    data.setDeltaWidth(new ParticleParameter(mapObject.getFloatValue(MapObjectProperty.Particle.MINDELTAWIDTH), mapObject.getFloatValue(MapObjectProperty.Particle.MAXDELTAWIDTH, ParticleParameter.MAX_VALUE_UNDEFINED)));</b>
+<b class="fc"><i>96</i>&nbsp;    data.setDeltaHeight(new ParticleParameter(mapObject.getFloatValue(MapObjectProperty.Particle.MINDELTAHEIGHT), mapObject.getFloatValue(MapObjectProperty.Particle.MAXDELTAHEIGHT, ParticleParameter.MAX_VALUE_UNDEFINED)));</b>
+<i>97</i>&nbsp;
+<b class="fc"><i>98</i>&nbsp;    data.setParticleMinTTL(mapObject.getIntValue(MapObjectProperty.Particle.MINTTL));</b>
+<b class="fc"><i>99</i>&nbsp;    data.setParticleMaxTTL(mapObject.getIntValue(MapObjectProperty.Particle.MAXTTL));</b>
+<b class="fc"><i>100</i>&nbsp;    data.setCollisionType(mapObject.getEnumValue(MapObjectProperty.Particle.COLLISIONTYPE, CollisionType.class, CollisionType.NONE));</b>
+<i>101</i>&nbsp;
+<b class="fc"><i>102</i>&nbsp;    data.setParticleText(mapObject.getStringValue(MapObjectProperty.Particle.TEXT));</b>
+<b class="fc"><i>103</i>&nbsp;    data.setSpritesheet(mapObject.getStringValue(MapObjectProperty.Particle.SPRITE));</b>
+<b class="fc"><i>104</i>&nbsp;    data.setAnimateSprite(mapObject.getBoolValue(MapObjectProperty.Particle.ANIMATESPRITE));</b>
+<b class="fc"><i>105</i>&nbsp;    data.setFade(mapObject.getBoolValue(MapObjectProperty.Particle.FADE));</b>
+<b class="fc"><i>106</i>&nbsp;    return data;</b>
+<i>107</i>&nbsp;  }
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;  public static IMapObject createMapObject(EmitterData emitterData) {
+<b class="nc"><i>110</i>&nbsp;    MapObject newMapObject = new MapObject();</b>
+<b class="nc"><i>111</i>&nbsp;    newMapObject.setType(MapObjectType.EMITTER.toString());</b>
+<i>112</i>&nbsp;
+<i>113</i>&nbsp;    // emitter
+<b class="nc"><i>114</i>&nbsp;    newMapObject.setWidth(emitterData.getWidth());</b>
+<b class="nc"><i>115</i>&nbsp;    newMapObject.setHeight(emitterData.getHeight());</b>
+<b class="nc"><i>116</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Emitter.SPAWNRATE, emitterData.getSpawnRate());</b>
+<b class="nc"><i>117</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Emitter.SPAWNAMOUNT, emitterData.getSpawnAmount());</b>
+<b class="nc"><i>118</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Emitter.UPDATERATE, emitterData.getUpdateRate());</b>
+<b class="nc"><i>119</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Emitter.TIMETOLIVE, emitterData.getEmitterTTL());</b>
+<b class="nc"><i>120</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Emitter.MAXPARTICLES, emitterData.getMaxParticles());</b>
+<b class="nc"><i>121</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Emitter.PARTICLETYPE, emitterData.getParticleType());</b>
+<b class="nc"><i>122</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Emitter.COLORDEVIATION, emitterData.getColorDeviation());</b>
+<b class="nc"><i>123</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Emitter.ALPHADEVIATION, emitterData.getAlphaDeviation());</b>
+<b class="nc"><i>124</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Emitter.ORIGIN_ALIGN, emitterData.getOriginAlign());</b>
+<b class="nc"><i>125</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Emitter.ORIGIN_VALIGN, emitterData.getOriginValign());</b>
+<i>126</i>&nbsp;
+<b class="nc"><i>127</i>&nbsp;    String commaSeperatedColors = ArrayUtilities.join(emitterData.getColors());</b>
+<b class="nc"><i>128</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Emitter.COLORS, commaSeperatedColors);</b>
+<i>129</i>&nbsp;
+<b class="nc"><i>130</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Emitter.PARTICLETYPE, ArrayUtilities.join(emitterData.getColorProbabilities()));</b>
+<i>131</i>&nbsp;
+<b class="nc"><i>132</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MINX, emitterData.getParticleX().getMinValue());</b>
+<b class="nc"><i>133</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MINY, emitterData.getParticleY().getMinValue());</b>
+<b class="nc"><i>134</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MINSTARTWIDTH, emitterData.getParticleWidth().getMinValue());</b>
+<b class="nc"><i>135</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MINSTARTHEIGHT, emitterData.getParticleHeight().getMinValue());</b>
+<b class="nc"><i>136</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MINDELTAX, emitterData.getDeltaX().getMinValue());</b>
+<b class="nc"><i>137</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MINDELTAY, emitterData.getDeltaY().getMinValue());</b>
+<b class="nc"><i>138</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MINGRAVITYX, emitterData.getGravityX().getMinValue());</b>
+<b class="nc"><i>139</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MINGRAVITYY, emitterData.getGravityY().getMinValue());</b>
+<b class="nc"><i>140</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MINDELTAWIDTH, emitterData.getDeltaWidth().getMinValue());</b>
+<b class="nc"><i>141</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MINDELTAHEIGHT, emitterData.getDeltaHeight().getMinValue());</b>
+<i>142</i>&nbsp;
+<b class="nc"><i>143</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MAXX, emitterData.getParticleX().getMaxValue());</b>
+<b class="nc"><i>144</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MAXY, emitterData.getParticleY().getMaxValue());</b>
+<b class="nc"><i>145</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MAXSTARTWIDTH, emitterData.getParticleWidth().getMaxValue());</b>
+<b class="nc"><i>146</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MAXSTARTHEIGHT, emitterData.getParticleHeight().getMaxValue());</b>
+<b class="nc"><i>147</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MAXDELTAX, emitterData.getDeltaX().getMaxValue());</b>
+<b class="nc"><i>148</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MAXDELTAY, emitterData.getDeltaY().getMaxValue());</b>
+<b class="nc"><i>149</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MAXGRAVITYX, emitterData.getGravityX().getMaxValue());</b>
+<b class="nc"><i>150</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MAXGRAVITYY, emitterData.getGravityY().getMaxValue());</b>
+<b class="nc"><i>151</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MAXDELTAWIDTH, emitterData.getDeltaWidth().getMaxValue());</b>
+<b class="nc"><i>152</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MAXDELTAHEIGHT, emitterData.getDeltaHeight().getMaxValue());</b>
+<i>153</i>&nbsp;
+<i>154</i>&nbsp;    // particle
+<b class="nc"><i>155</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MINTTL, emitterData.getParticleMinTTL());</b>
+<b class="nc"><i>156</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.MAXTTL, emitterData.getParticleMaxTTL());</b>
+<b class="nc"><i>157</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.COLLISIONTYPE, emitterData.getCollisionType());</b>
+<i>158</i>&nbsp;
+<b class="nc"><i>159</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.TEXT, emitterData.getParticleText());</b>
+<b class="nc"><i>160</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.SPRITE, emitterData.getSpritesheet());</b>
+<b class="nc"><i>161</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.ANIMATESPRITE, emitterData.isAnimateSprite());</b>
+<b class="nc"><i>162</i>&nbsp;    newMapObject.setValue(MapObjectProperty.Particle.FADE, emitterData.isFading());</b>
+<b class="nc"><i>163</i>&nbsp;    return newMapObject;</b>
+<i>164</i>&nbsp;  }
+<i>165</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:15</div>
+</div>
+</body>
+</html>
