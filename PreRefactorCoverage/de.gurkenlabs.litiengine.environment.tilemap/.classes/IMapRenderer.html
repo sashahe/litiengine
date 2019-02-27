@@ -1,0 +1,138 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IMapRenderer</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment.tilemap</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IMapRenderer (de.gurkenlabs.litiengine.environment.tilemap)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">IMapRenderer</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment.tilemap;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Graphics2D;
+<i>4</i>&nbsp;import java.awt.geom.Rectangle2D;
+<i>5</i>&nbsp;import java.awt.image.BufferedImage;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import de.gurkenlabs.litiengine.graphics.RenderType;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;public interface IMapRenderer {
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;  /**
+<i>12</i>&nbsp;   * Gets a bufferedImage of the current map containing all tile layers.
+<i>13</i>&nbsp;   * 
+<i>14</i>&nbsp;   * @param map
+<i>15</i>&nbsp;   *          the map
+<i>16</i>&nbsp;   * @param renderTypes
+<i>17</i>&nbsp;   *          the renderTypes we want to be displayed in our image
+<i>18</i>&nbsp;   * @return an image containing all the map&#39;s tile layers with the specified {@link RenderType}s
+<i>19</i>&nbsp;   */
+<i>20</i>&nbsp;  public BufferedImage getImage(IMap map, RenderType... renderTypes);
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;  /**
+<i>23</i>&nbsp;   * Gets a bufferedImage of the current map containing all tile layers.
+<i>24</i>&nbsp;   * 
+<i>25</i>&nbsp;   * @param map
+<i>26</i>&nbsp;   *          the map
+<i>27</i>&nbsp;   * @return an image containing all the map&#39;s tile layers
+<i>28</i>&nbsp;   */
+<i>29</i>&nbsp;  public BufferedImage getImage(IMap map);
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;  /**
+<i>32</i>&nbsp;   * Gets the supported orientation.
+<i>33</i>&nbsp;   *
+<i>34</i>&nbsp;   * @return the supported orientation
+<i>35</i>&nbsp;   */
+<i>36</i>&nbsp;  public MapOrientation getSupportedOrientation();
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;  /**
+<i>39</i>&nbsp;   * Renders all layers of the specified &lt;code&gt;Map&lt;/code&gt; onto the graphics object that meet the specified render types.
+<i>40</i>&nbsp;   *
+<i>41</i>&nbsp;   * @param g
+<i>42</i>&nbsp;   *          the graphics object
+<i>43</i>&nbsp;   * @param map
+<i>44</i>&nbsp;   *          the map
+<i>45</i>&nbsp;   * @param renderTypes
+<i>46</i>&nbsp;   *          All layers that have one of the specified render types will be rendered.
+<i>47</i>&nbsp;   *          If nothing is specified, layers will be rendered independently of their render type.
+<i>48</i>&nbsp;   * 
+<i>49</i>&nbsp;   * @see ILayer#getRenderType()
+<i>50</i>&nbsp;   * 
+<i>51</i>&nbsp;   */
+<i>52</i>&nbsp;  public void render(Graphics2D g, IMap map, RenderType... renderTypes);
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;  /**
+<i>55</i>&nbsp;   * Renders all layers of the specified &lt;code&gt;Map&lt;/code&gt; onto the graphics object that meet the specified render types.
+<i>56</i>&nbsp;   *
+<i>57</i>&nbsp;   * @param g
+<i>58</i>&nbsp;   *          the graphics object
+<i>59</i>&nbsp;   * @param map
+<i>60</i>&nbsp;   *          the map
+<i>61</i>&nbsp;   * @param offsetX
+<i>62</i>&nbsp;   *          The horizontal offset in pixels for the map image that is applied
+<i>63</i>&nbsp;   *          when rendering on the graphics object.
+<i>64</i>&nbsp;   * @param offsetY
+<i>65</i>&nbsp;   *          The vertical offset in pixels for the map image that is applied
+<i>66</i>&nbsp;   *          when rendering on the graphics object.
+<i>67</i>&nbsp;   * @param renderTypes
+<i>68</i>&nbsp;   *          All layers that have one of the specified render types will be rendered.
+<i>69</i>&nbsp;   *          If nothing is specified, layers will be rendered independently of their render type.
+<i>70</i>&nbsp;   * 
+<i>71</i>&nbsp;   * @see ILayer#getRenderType()
+<i>72</i>&nbsp;   */
+<i>73</i>&nbsp;  public void render(Graphics2D g, IMap map, double offsetX, double offsetY, RenderType... renderTypes);
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;  /**
+<i>76</i>&nbsp;   * Renders all layers of the specified &lt;code&gt;Map&lt;/code&gt; onto the graphics object that meet the specified render types.
+<i>77</i>&nbsp;   * 
+<i>78</i>&nbsp;   * @param g
+<i>79</i>&nbsp;   *          the graphics object
+<i>80</i>&nbsp;   * @param map
+<i>81</i>&nbsp;   *          the map
+<i>82</i>&nbsp;   * @param viewport
+<i>83</i>&nbsp;   *          The viewport that defines the bound for the tiles to be rendered.
+<i>84</i>&nbsp;   * @param renderTypes
+<i>85</i>&nbsp;   *          All layers that have one of the specified render types will be rendered.
+<i>86</i>&nbsp;   *          If nothing is specified, layers will be rendered independently of their render type.
+<i>87</i>&nbsp;   * 
+<i>88</i>&nbsp;   * @see ILayer#getRenderType()
+<i>89</i>&nbsp;   */
+<i>90</i>&nbsp;  public void render(Graphics2D g, IMap map, Rectangle2D viewport, RenderType... renderTypes);
+<i>91</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:15</div>
+</div>
+</body>
+</html>

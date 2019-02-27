@@ -1,0 +1,355 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Ability</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.abilities</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Ability (de.gurkenlabs.litiengine.abilities)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Ability</td>
+<td class="coverageStat">
+  <span class="percent">
+    62.1%
+  </span>
+  <span class="absValue">
+    (18/ 29)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    54.4%
+  </span>
+  <span class="absValue">
+    (49/ 90)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Ability$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    63.3%
+  </span>
+  <span class="absValue">
+    (19/ 30)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    54.9%
+  </span>
+  <span class="absValue">
+    (50/ 91)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.abilities;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.BasicStroke;
+<i>4</i>&nbsp;import java.awt.Color;
+<i>5</i>&nbsp;import java.awt.Graphics2D;
+<i>6</i>&nbsp;import java.awt.Shape;
+<i>7</i>&nbsp;import java.awt.Stroke;
+<i>8</i>&nbsp;import java.awt.geom.Arc2D;
+<i>9</i>&nbsp;import java.awt.geom.Ellipse2D;
+<i>10</i>&nbsp;import java.awt.geom.Point2D;
+<i>11</i>&nbsp;import java.util.List;
+<i>12</i>&nbsp;import java.util.concurrent.CopyOnWriteArrayList;
+<i>13</i>&nbsp;import java.util.function.Consumer;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;import de.gurkenlabs.litiengine.Game;
+<i>16</i>&nbsp;import de.gurkenlabs.litiengine.IGameLoop;
+<i>17</i>&nbsp;import de.gurkenlabs.litiengine.abilities.effects.Effect;
+<i>18</i>&nbsp;import de.gurkenlabs.litiengine.abilities.effects.EffectArgument;
+<i>19</i>&nbsp;import de.gurkenlabs.litiengine.annotation.AbilityInfo;
+<i>20</i>&nbsp;import de.gurkenlabs.litiengine.entities.Creature;
+<i>21</i>&nbsp;import de.gurkenlabs.litiengine.graphics.IRenderable;
+<i>22</i>&nbsp;import de.gurkenlabs.litiengine.util.geom.GeometricUtilities;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;@AbilityInfo
+<i>25</i>&nbsp;public abstract class Ability implements IRenderable {
+<i>26</i>&nbsp;  private final List&lt;Consumer&lt;AbilityExecution&gt;&gt; abilityCastConsumer;
+<i>27</i>&nbsp;  private final AbilityAttributes attributes;
+<i>28</i>&nbsp;  private final CastType castType;
+<i>29</i>&nbsp;  private final String description;
+<i>30</i>&nbsp;  private final List&lt;Effect&gt; effects;
+<i>31</i>&nbsp;  private final Creature executor;
+<i>32</i>&nbsp;  private final boolean multiTarget;
+<i>33</i>&nbsp;  private final String name;
+<i>34</i>&nbsp;  private final AbilityOrigin originType;
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;  private AbilityExecution currentExecution;
+<i>37</i>&nbsp;  private Point2D origin;
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;  /**
+<i>40</i>&nbsp;   * Instantiates a new ability.
+<i>41</i>&nbsp;   *
+<i>42</i>&nbsp;   * @param executor
+<i>43</i>&nbsp;   *          the executing entity
+<i>44</i>&nbsp;   */
+<b class="fc"><i>45</i>&nbsp;  protected Ability(final Creature executor) {</b>
+<b class="fc"><i>46</i>&nbsp;    this.abilityCastConsumer = new CopyOnWriteArrayList&lt;&gt;();</b>
+<b class="fc"><i>47</i>&nbsp;    this.effects = new CopyOnWriteArrayList&lt;&gt;();</b>
+<i>48</i>&nbsp;
+<b class="fc"><i>49</i>&nbsp;    final AbilityInfo info = this.getClass().getAnnotation(AbilityInfo.class);</b>
+<b class="fc"><i>50</i>&nbsp;    this.attributes = new AbilityAttributes(info);</b>
+<b class="fc"><i>51</i>&nbsp;    this.executor = executor;</b>
+<b class="fc"><i>52</i>&nbsp;    this.name = info.name();</b>
+<b class="fc"><i>53</i>&nbsp;    this.multiTarget = info.multiTarget();</b>
+<b class="fc"><i>54</i>&nbsp;    this.description = info.description();</b>
+<b class="fc"><i>55</i>&nbsp;    this.castType = info.castType();</b>
+<b class="fc"><i>56</i>&nbsp;    this.originType = info.origin();</b>
+<b class="fc"><i>57</i>&nbsp;  }</b>
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;  public void addEffect(final Effect effect) {
+<b class="nc"><i>60</i>&nbsp;    this.getEffects().add(effect);</b>
+<b class="nc"><i>61</i>&nbsp;  }</b>
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;  public Shape calculateImpactArea() {
+<b class="fc"><i>64</i>&nbsp;    return this.internalCalculateImpactArea(this.getExecutor().getAngle());</b>
+<i>65</i>&nbsp;  }
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;  public Ellipse2D calculatePotentialImpactArea() {
+<b class="fc"><i>68</i>&nbsp;    final int range = this.getAttributes().getImpact().getCurrentValue();</b>
+<b class="fc"><i>69</i>&nbsp;    final double arcX = this.getExecutor().getCollisionBox().getCenterX() - range * 0.5;</b>
+<b class="fc"><i>70</i>&nbsp;    final double arcY = this.getExecutor().getCollisionBox().getCenterY() - range * 0.5;</b>
+<i>71</i>&nbsp;
+<b class="fc"><i>72</i>&nbsp;    return new Ellipse2D.Double(arcX, arcY, range, range);</b>
+<i>73</i>&nbsp;  }
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;  public boolean canCast() {
+<b class="fc"><i>76</i>&nbsp;    return !this.getExecutor().isDead() &amp;&amp; (this.getCurrentExecution() == null || this.getCurrentExecution().getExecutionTicks() == 0 || Game.loop().getDeltaTime(this.getCurrentExecution().getExecutionTicks()) &gt;= this.getAttributes().getCooldown().getCurrentValue());</b>
+<i>77</i>&nbsp;  }
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;  /**
+<b class="fc"><i>80</i>&nbsp;   * Casts the ability by the temporal conditions of the specified game loop and</b>
+<i>81</i>&nbsp;   * the spatial circumstances of the specified environment. An ability execution
+<i>82</i>&nbsp;   * will be taken out that start applying all the effects of this ability.
+<i>83</i>&nbsp;   * 
+<b class="nc"><i>84</i>&nbsp;   * @return An {@link AbilityExecution} object that wraps all information about</b>
+<i>85</i>&nbsp;   *         this execution of the ability.
+<i>86</i>&nbsp;   */
+<i>87</i>&nbsp;  public AbilityExecution cast() {
+<i>88</i>&nbsp;    if (!this.canCast()) {
+<i>89</i>&nbsp;      return null;
+<i>90</i>&nbsp;    }
+<i>91</i>&nbsp;    this.currentExecution = new AbilityExecution(this);
+<i>92</i>&nbsp;
+<i>93</i>&nbsp;    for (final Consumer&lt;AbilityExecution&gt; castConsumer : this.abilityCastConsumer) {
+<i>94</i>&nbsp;      castConsumer.accept(this.currentExecution);
+<i>95</i>&nbsp;    }
+<b class="fc"><i>96</i>&nbsp;</b>
+<b class="fc"><i>97</i>&nbsp;    return this.getCurrentExecution();</b>
+<i>98</i>&nbsp;  }
+<b class="nc"><i>99</i>&nbsp;</b>
+<i>100</i>&nbsp;  public AbilityAttributes getAttributes() {
+<b class="nc"><i>101</i>&nbsp;    return this.attributes;</b>
+<b class="nc"><i>102</i>&nbsp;  }</b>
+<b class="nc"><i>103</i>&nbsp;</b>
+<i>104</i>&nbsp;  public CastType getCastType() {
+<b class="nc"><i>105</i>&nbsp;    return this.castType;</b>
+<i>106</i>&nbsp;  }
+<i>107</i>&nbsp;
+<i>108</i>&nbsp;  public float getCooldownInSeconds() {
+<b class="fc"><i>109</i>&nbsp;    return (float) (this.getAttributes().getCooldown().getCurrentValue() * 0.001);</b>
+<i>110</i>&nbsp;  }
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;  public AbilityExecution getCurrentExecution() {
+<b class="fc"><i>113</i>&nbsp;    return this.currentExecution;</b>
+<i>114</i>&nbsp;  }
+<i>115</i>&nbsp;
+<i>116</i>&nbsp;  public void setCurrentExecution(AbilityExecution ae) {
+<b class="nc"><i>117</i>&nbsp;    this.currentExecution = ae;</b>
+<i>118</i>&nbsp;  }
+<i>119</i>&nbsp;
+<i>120</i>&nbsp;  public String getDescription() {
+<b class="fc"><i>121</i>&nbsp;    return this.description;</b>
+<i>122</i>&nbsp;  }
+<i>123</i>&nbsp;
+<i>124</i>&nbsp;  public Creature getExecutor() {
+<b class="fc"><i>125</i>&nbsp;    return this.executor;</b>
+<b class="fc"><i>126</i>&nbsp;  }</b>
+<i>127</i>&nbsp;
+<i>128</i>&nbsp;  public String getName() {
+<b class="fc"><i>129</i>&nbsp;    return this.name;</b>
+<i>130</i>&nbsp;  }
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;  public Point2D getOrigin() {
+<b class="fc"><i>133</i>&nbsp;    switch (this.originType) {</b>
+<i>134</i>&nbsp;    case COLLISIONBOX_CENTER:
+<i>135</i>&nbsp;      return new Point2D.Double(this.executor.getCollisionBox().getCenterX(), this.executor.getCollisionBox().getCenterY());
+<i>136</i>&nbsp;    case DIMENSION_CENTER:
+<b class="fc"><i>137</i>&nbsp;      return this.executor.getCenter();</b>
+<i>138</i>&nbsp;    case CUSTOM:
+<i>139</i>&nbsp;      if (this.origin != null) {
+<i>140</i>&nbsp;        return new Point2D.Double(this.executor.getX() + this.origin.getX(), this.executor.getY() + this.origin.getY());
+<b class="fc"><i>141</i>&nbsp;      }</b>
+<i>142</i>&nbsp;      break;
+<b class="fc"><i>143</i>&nbsp;    case LOCATION:</b>
+<i>144</i>&nbsp;    default:
+<b class="fc"><i>145</i>&nbsp;      break;</b>
+<i>146</i>&nbsp;    }
+<b class="fc"><i>147</i>&nbsp;</b>
+<b class="fc"><i>148</i>&nbsp;    return this.executor.getLocation();</b>
+<i>149</i>&nbsp;  }
+<i>150</i>&nbsp;
+<i>151</i>&nbsp;  public float getRemainingCooldownInSeconds(final IGameLoop loop) {
+<i>152</i>&nbsp;    if (this.getCurrentExecution() == null || this.getExecutor() == null || this.getExecutor().isDead()) {
+<i>153</i>&nbsp;      return 0;
+<i>154</i>&nbsp;    }
+<i>155</i>&nbsp;
+<b class="fc"><i>156</i>&nbsp;    // calculate cooldown in seconds</b>
+<i>157</i>&nbsp;    return (float) (!this.canCast() ? (this.getAttributes().getCooldown().getCurrentValue() - loop.getDeltaTime(this.getCurrentExecution().getExecutionTicks())) * 0.001 : 0);
+<i>158</i>&nbsp;  }
+<i>159</i>&nbsp;
+<b class="fc"><i>160</i>&nbsp;  public boolean isActive() {</b>
+<b class="fc"><i>161</i>&nbsp;    return this.getCurrentExecution() != null &amp;&amp; Game.loop().getDeltaTime(this.getCurrentExecution().getExecutionTicks()) &lt; this.getAttributes().getDuration().getCurrentValue();</b>
+<i>162</i>&nbsp;  }
+<i>163</i>&nbsp;
+<i>164</i>&nbsp;  public boolean isMultiTarget() {
+<b class="nc"><i>165</i>&nbsp;    return this.multiTarget;</b>
+<i>166</i>&nbsp;  }
+<i>167</i>&nbsp;
+<i>168</i>&nbsp;  public void onCast(final Consumer&lt;AbilityExecution&gt; castConsumer) {
+<b class="nc"><i>169</i>&nbsp;    if (!this.abilityCastConsumer.contains(castConsumer)) {</b>
+<i>170</i>&nbsp;      this.abilityCastConsumer.add(castConsumer);
+<i>171</i>&nbsp;    }
+<i>172</i>&nbsp;  }
+<b class="fc"><i>173</i>&nbsp;</b>
+<i>174</i>&nbsp;  public void onEffectApplied(final Consumer&lt;EffectArgument&gt; consumer) {
+<i>175</i>&nbsp;    for (final Effect effect : this.getEffects()) {
+<i>176</i>&nbsp;      // registers to all effects and their follow up effects recursively
+<b class="nc"><i>177</i>&nbsp;      this.onEffectApplied(effect, consumer);</b>
+<b class="nc"><i>178</i>&nbsp;    }</b>
+<i>179</i>&nbsp;  }
+<b class="nc"><i>180</i>&nbsp;</b>
+<i>181</i>&nbsp;  public void onEffectCeased(final Consumer&lt;EffectArgument&gt; consumer) {
+<i>182</i>&nbsp;    for (final Effect effect : this.getEffects()) {
+<b class="nc"><i>183</i>&nbsp;      // registers to all effects and their follow up effects recursively</b>
+<i>184</i>&nbsp;      this.onEffectCeased(effect, consumer);
+<b class="nc"><i>185</i>&nbsp;    }</b>
+<b class="nc"><i>186</i>&nbsp;  }</b>
+<b class="nc"><i>187</i>&nbsp;</b>
+<i>188</i>&nbsp;  @Override
+<i>189</i>&nbsp;  public void render(final Graphics2D g) {
+<b class="nc"><i>190</i>&nbsp;    g.setColor(new Color(255, 255, 0, 100));</b>
+<i>191</i>&nbsp;    Game.graphics().renderShape(g, this.calculateImpactArea());
+<b class="nc"><i>192</i>&nbsp;    final Stroke oldStroke = g.getStroke();</b>
+<b class="nc"><i>193</i>&nbsp;    g.setStroke(new BasicStroke(2f));</b>
+<b class="nc"><i>194</i>&nbsp;    g.setColor(new Color(255, 255, 0, 200));</b>
+<i>195</i>&nbsp;    Game.graphics().renderOutline(g, this.calculateImpactArea());
+<i>196</i>&nbsp;    g.setStroke(oldStroke);
+<i>197</i>&nbsp;  }
+<b class="nc"><i>198</i>&nbsp;</b>
+<b class="nc"><i>199</i>&nbsp;  /**</b>
+<b class="nc"><i>200</i>&nbsp;   * Sets a custom offset from the executors map location as origin of this</b>
+<b class="nc"><i>201</i>&nbsp;   * ability.</b>
+<b class="nc"><i>202</i>&nbsp;   * </b>
+<b class="nc"><i>203</i>&nbsp;   * @param origin</b>
+<b class="nc"><i>204</i>&nbsp;   *          The origin that defines the execution offset for this</b>
+<b class="nc"><i>205</i>&nbsp;   *          {@link Ability}.</b>
+<i>206</i>&nbsp;   */
+<i>207</i>&nbsp;  public void setOrigin(final Point2D origin) {
+<i>208</i>&nbsp;    this.origin = origin;
+<i>209</i>&nbsp;  }
+<i>210</i>&nbsp;
+<i>211</i>&nbsp;  protected List&lt;Effect&gt; getEffects() {
+<i>212</i>&nbsp;    return this.effects;
+<i>213</i>&nbsp;  }
+<i>214</i>&nbsp;
+<i>215</i>&nbsp;  protected Shape internalCalculateImpactArea(final float angle) {
+<b class="fc"><i>216</i>&nbsp;    final int impact = this.getAttributes().getImpact().getCurrentValue();</b>
+<b class="fc"><i>217</i>&nbsp;    final int impactAngle = this.getAttributes().getImpactAngle().getCurrentValue();</b>
+<i>218</i>&nbsp;    final double arcX = this.getOrigin().getX() - impact * 0.5;
+<i>219</i>&nbsp;    final double arcY = this.getOrigin().getY() - impact * 0.5;
+<b class="nc"><i>220</i>&nbsp;</b>
+<i>221</i>&nbsp;    // project
+<i>222</i>&nbsp;    final Point2D appliedRange = GeometricUtilities.project(new Point2D.Double(arcX, arcY), angle, this.getAttributes().getRange().getCurrentValue() * 0.5);
+<i>223</i>&nbsp;    final double start = angle - 90;
+<b class="fc"><i>224</i>&nbsp;    if (impactAngle % 360 == 0) {</b>
+<b class="fc"><i>225</i>&nbsp;      return new Ellipse2D.Double(appliedRange.getX(), appliedRange.getY(), impact, impact);</b>
+<b class="fc"><i>226</i>&nbsp;    }</b>
+<b class="fc"><i>227</i>&nbsp;</b>
+<i>228</i>&nbsp;    return new Arc2D.Double(appliedRange.getX(), appliedRange.getY(), impact, impact, start, impactAngle, Arc2D.PIE);
+<i>229</i>&nbsp;  }
+<b class="fc"><i>230</i>&nbsp;</b>
+<b class="fc"><i>231</i>&nbsp;  private void onEffectApplied(final Effect effect, final Consumer&lt;EffectArgument&gt; consumer) {</b>
+<b class="fc"><i>232</i>&nbsp;    effect.onEffectApplied(consumer);</b>
+<b class="fc"><i>233</i>&nbsp;</b>
+<i>234</i>&nbsp;    for (final Effect followUp : effect.getFollowUpEffects()) {
+<i>235</i>&nbsp;      this.onEffectApplied(followUp, consumer);
+<b class="fc"><i>236</i>&nbsp;    }</b>
+<i>237</i>&nbsp;  }
+<i>238</i>&nbsp;
+<i>239</i>&nbsp;  private void onEffectCeased(final Effect effect, final Consumer&lt;EffectArgument&gt; consumer) {
+<b class="nc"><i>240</i>&nbsp;    effect.onEffectCeased(consumer);</b>
+<i>241</i>&nbsp;
+<b class="nc"><i>242</i>&nbsp;    for (final Effect followUp : effect.getFollowUpEffects()) {</b>
+<b class="nc"><i>243</i>&nbsp;      this.onEffectCeased(followUp, consumer);</b>
+<b class="nc"><i>244</i>&nbsp;    }</b>
+<b class="nc"><i>245</i>&nbsp;  }</b>
+<i>246</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:15</div>
+</div>
+</body>
+</html>

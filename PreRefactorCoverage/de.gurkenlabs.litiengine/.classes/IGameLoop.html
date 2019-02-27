@@ -1,0 +1,84 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IGameLoop</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IGameLoop (de.gurkenlabs.litiengine)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">IGameLoop</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;public interface IGameLoop extends ILoop {
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;  public long convertToMs(final long ticks);
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;  public long convertToTicks(final int ms);
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;  public int execute(int delay, Runnable action);
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;  public void updateExecutionTime(int index, long ticks);
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;  /**
+<i>14</i>&nbsp;   * Gets the time that passed since the last tick in ms.
+<i>15</i>&nbsp;   *
+<i>16</i>&nbsp;   * @return The delta time in ms.
+<i>17</i>&nbsp;   */
+<i>18</i>&nbsp;  public long getDeltaTime();
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;  /**
+<i>21</i>&nbsp;   * Calculates the deltatime between the current game time and the specified
+<i>22</i>&nbsp;   * ticks in ms.
+<i>23</i>&nbsp;   *
+<i>24</i>&nbsp;   * @param ticks
+<i>25</i>&nbsp;   *          The ticks for which to calculate the delta time.
+<i>26</i>&nbsp;   * @return The delta time in ms.
+<i>27</i>&nbsp;   */
+<i>28</i>&nbsp;  public long getDeltaTime(final long ticks);
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;  public long getTicks();
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;  public float getTimeScale();
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;  public int getUpdateRate();
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;  public void setTimeScale(float timeScale);
+<i>37</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:15</div>
+</div>
+</body>
+</html>

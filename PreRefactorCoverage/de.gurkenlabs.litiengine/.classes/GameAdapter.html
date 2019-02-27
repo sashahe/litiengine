@@ -1,0 +1,110 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GameAdapter</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GameAdapter (de.gurkenlabs.litiengine)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameAdapter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    60%
+  </span>
+  <span class="absValue">
+    (3/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    60%
+  </span>
+  <span class="absValue">
+    (3/ 5)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;/**
+<i>4</i>&nbsp; * An abstract implementation of a &lt;code&gt;GameListener&lt;/code&gt; that allows to only overwrite
+<i>5</i>&nbsp; * individual callbacks in anonymous implementations.
+<i>6</i>&nbsp; * 
+<i>7</i>&nbsp; * @see GameListener
+<i>8</i>&nbsp; */
+<b class="fc"><i>9</i>&nbsp;public abstract class GameAdapter implements GameListener {</b>
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;  @Override
+<i>12</i>&nbsp;  public void started() {
+<b class="nc"><i>13</i>&nbsp;  }</b>
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;  @Override
+<i>16</i>&nbsp;  public boolean terminating() {
+<b class="fc"><i>17</i>&nbsp;    return true;</b>
+<i>18</i>&nbsp;  }
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;  @Override
+<i>21</i>&nbsp;  public void terminated() {
+<b class="fc"><i>22</i>&nbsp;  }</b>
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;  @Override
+<i>25</i>&nbsp;  public void initialized(String... args) {
+<b class="nc"><i>26</i>&nbsp;  }</b>
+<i>27</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:15</div>
+</div>
+</body>
+</html>

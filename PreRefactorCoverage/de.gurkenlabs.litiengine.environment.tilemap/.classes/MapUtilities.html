@@ -1,0 +1,463 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MapUtilities</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment.tilemap</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MapUtilities (de.gurkenlabs.litiengine.environment.tilemap)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MapUtilities</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14.3%
+  </span>
+  <span class="absValue">
+    (4/ 28)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    10.7%
+  </span>
+  <span class="absValue">
+    (19/ 177)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment.tilemap;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.awt.Point;
+<i>4</i>&nbsp;import java.awt.Polygon;
+<i>5</i>&nbsp;import java.awt.geom.Path2D;
+<i>6</i>&nbsp;import java.awt.geom.Point2D;
+<i>7</i>&nbsp;import java.awt.geom.Rectangle2D;
+<i>8</i>&nbsp;import java.util.ArrayList;
+<i>9</i>&nbsp;import java.util.List;
+<i>10</i>&nbsp;import java.util.Map;
+<i>11</i>&nbsp;import java.util.concurrent.ConcurrentHashMap;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;import de.gurkenlabs.litiengine.Game;
+<i>14</i>&nbsp;import de.gurkenlabs.litiengine.util.MathUtilities;
+<i>15</i>&nbsp;import de.gurkenlabs.litiengine.util.geom.GeometricUtilities;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;public final class MapUtilities {
+<i>18</i>&nbsp;  private static final Map&lt;String, ITileAnimation&gt; animations;
+<i>19</i>&nbsp;  private static final Map&lt;String, Boolean&gt; hasAnimation;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;  static {
+<b class="fc"><i>22</i>&nbsp;    animations = new ConcurrentHashMap&lt;&gt;();</b>
+<b class="fc"><i>23</i>&nbsp;    hasAnimation = new ConcurrentHashMap&lt;&gt;();</b>
+<b class="fc"><i>24</i>&nbsp;  }</b>
+<i>25</i>&nbsp;
+<b class="nc"><i>26</i>&nbsp;  private MapUtilities() {</b>
+<b class="nc"><i>27</i>&nbsp;    throw new UnsupportedOperationException();</b>
+<i>28</i>&nbsp;  }
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;  public static int getMaxMapId(final IMap map) {
+<b class="nc"><i>31</i>&nbsp;    int maxId = 0;</b>
+<b class="nc"><i>32</i>&nbsp;    if (map == null || map.getMapObjectLayers() == null) {</b>
+<b class="nc"><i>33</i>&nbsp;      return maxId;</b>
+<i>34</i>&nbsp;    }
+<i>35</i>&nbsp;
+<b class="nc"><i>36</i>&nbsp;    for (IMapObjectLayer objectLayer : map.getMapObjectLayers()) {</b>
+<b class="nc"><i>37</i>&nbsp;      if (objectLayer == null || objectLayer.getMapObjects() == null) {</b>
+<b class="nc"><i>38</i>&nbsp;        continue;</b>
+<i>39</i>&nbsp;      }
+<i>40</i>&nbsp;
+<b class="nc"><i>41</i>&nbsp;      for (IMapObject mapObject : objectLayer.getMapObjects()) {</b>
+<b class="nc"><i>42</i>&nbsp;        if (mapObject == null) {</b>
+<b class="nc"><i>43</i>&nbsp;          continue;</b>
+<i>44</i>&nbsp;        }
+<i>45</i>&nbsp;
+<b class="nc"><i>46</i>&nbsp;        if (mapObject.getId() &gt; maxId) {</b>
+<b class="nc"><i>47</i>&nbsp;          maxId = mapObject.getId();</b>
+<i>48</i>&nbsp;        }
+<b class="nc"><i>49</i>&nbsp;      }</b>
+<b class="nc"><i>50</i>&nbsp;    }</b>
+<i>51</i>&nbsp;
+<b class="nc"><i>52</i>&nbsp;    return maxId;</b>
+<i>53</i>&nbsp;  }
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;  public static Point2D getCenterMapLocation() {
+<b class="nc"><i>56</i>&nbsp;    if (Game.world().environment() == null || Game.world().environment().getMap() == null) {</b>
+<b class="nc"><i>57</i>&nbsp;      return new Point2D.Double();</b>
+<i>58</i>&nbsp;    }
+<i>59</i>&nbsp;
+<b class="nc"><i>60</i>&nbsp;    return getCenterMapLocation(Game.world().environment().getMap());</b>
+<i>61</i>&nbsp;  }
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;  public static Point2D getCenterMapLocation(IMap map) {
+<b class="nc"><i>64</i>&nbsp;    return new Point2D.Double(map.getSizeInPixels().width / 2.0, map.getSizeInPixels().height / 2.0);</b>
+<i>65</i>&nbsp;  }
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;  public static Rectangle2D getTileBoundingBox(final Point2D mapLocation) {
+<b class="nc"><i>68</i>&nbsp;    if (Game.world().environment() == null || Game.world().environment().getMap() == null) {</b>
+<b class="nc"><i>69</i>&nbsp;      return new Rectangle2D.Double();</b>
+<i>70</i>&nbsp;    }
+<i>71</i>&nbsp;
+<b class="nc"><i>72</i>&nbsp;    return getTileBoundingBox(Game.world().environment().getMap(), mapLocation);</b>
+<i>73</i>&nbsp;  }
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;  public static Rectangle2D getTileBoundingBox(final IMap map, final Point2D mapLocation) {
+<b class="nc"><i>76</i>&nbsp;    Point location = getTile(map, mapLocation);</b>
+<b class="nc"><i>77</i>&nbsp;    return new Rectangle2D.Double(location.x * map.getTileSize().getWidth(), location.y * map.getTileSize().getHeight(), map.getTileSize().getWidth(), map.getTileSize().getHeight());</b>
+<i>78</i>&nbsp;  }
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;  public static Rectangle2D getTileBoundingBox(final int x, final int y) {
+<b class="nc"><i>81</i>&nbsp;    return getTileBoundingBox(new Point(x, y));</b>
+<i>82</i>&nbsp;  }
+<i>83</i>&nbsp;
+<i>84</i>&nbsp;  public static Rectangle2D getTileBoundingBox(final Point tile) {
+<b class="nc"><i>85</i>&nbsp;    if (Game.world().environment() == null || Game.world().environment().getMap() == null) {</b>
+<b class="nc"><i>86</i>&nbsp;      return new Rectangle2D.Double();</b>
+<i>87</i>&nbsp;    }
+<b class="nc"><i>88</i>&nbsp;    return getTileBoundingBox(Game.world().environment().getMap(), tile);</b>
+<i>89</i>&nbsp;  }
+<i>90</i>&nbsp;
+<i>91</i>&nbsp;  public static Rectangle2D getTileBoundingBox(final IMap map, final Point tile) {
+<b class="nc"><i>92</i>&nbsp;    if (map == null || tile == null) {</b>
+<b class="nc"><i>93</i>&nbsp;      return null;</b>
+<i>94</i>&nbsp;    }
+<b class="nc"><i>95</i>&nbsp;    return map.getTileShape(tile.x, tile.y).getBounds2D();</b>
+<i>96</i>&nbsp;  }
+<i>97</i>&nbsp;
+<i>98</i>&nbsp;  public static Rectangle2D getTileBoundingBox(final IMap map, final Rectangle2D box) {
+<b class="fc"><i>99</i>&nbsp;    final int minX = (int) MathUtilities.clamp(box.getX(), 0, map.getSizeInPixels().width - 1);</b>
+<b class="fc"><i>100</i>&nbsp;    final int minY = (int) MathUtilities.clamp(box.getY(), 0, map.getSizeInPixels().height - 1);</b>
+<b class="fc"><i>101</i>&nbsp;    final int maxX = (int) MathUtilities.clamp(box.getMaxX(), 0, map.getSizeInPixels().width - 1);</b>
+<b class="fc"><i>102</i>&nbsp;    final int maxY = (int) MathUtilities.clamp(box.getMaxY(), 0, map.getSizeInPixels().height - 1);</b>
+<b class="fc"><i>103</i>&nbsp;    final Point minTilePoint = getTile(map, minX, minY);</b>
+<b class="fc"><i>104</i>&nbsp;    final Point maxTilePoint = getTile(map, maxX, maxY);</b>
+<b class="fc"><i>105</i>&nbsp;    final Rectangle2D minTileBounds = map.getTileShape(MathUtilities.clamp(minTilePoint.x, 0, map.getWidth() - 1), MathUtilities.clamp(minTilePoint.y, 0, map.getHeight() - 1)).getBounds2D();</b>
+<b class="fc"><i>106</i>&nbsp;    final Rectangle2D maxTileBounds = map.getTileShape(MathUtilities.clamp(maxTilePoint.x, 0, map.getWidth() - 1), MathUtilities.clamp(maxTilePoint.y, 0, map.getHeight() - 1)).getBounds2D();</b>
+<i>107</i>&nbsp;
+<b class="fc"><i>108</i>&nbsp;    return new Rectangle2D.Double(minTileBounds.getX(), minTileBounds.getY(), maxTileBounds.getMaxX() - minTileBounds.getX(), maxTileBounds.getMaxY() - minTileBounds.getY());</b>
+<i>109</i>&nbsp;  }
+<i>110</i>&nbsp;
+<i>111</i>&nbsp;  public static Point getTile(final Point2D mapLocation) {
+<b class="nc"><i>112</i>&nbsp;    if (Game.world().environment() == null) {</b>
+<b class="nc"><i>113</i>&nbsp;      return new Point(-1, -1);</b>
+<i>114</i>&nbsp;    }
+<b class="nc"><i>115</i>&nbsp;    return getTile(Game.world().environment().getMap(), mapLocation);</b>
+<i>116</i>&nbsp;  }
+<i>117</i>&nbsp;
+<i>118</i>&nbsp;  public static Point getTile(final IMap map, final Point2D mapLocation) {
+<b class="fc"><i>119</i>&nbsp;    return getTile(map, mapLocation.getX(), mapLocation.getY());</b>
+<i>120</i>&nbsp;  }
+<i>121</i>&nbsp;
+<i>122</i>&nbsp;  public static Point getTile(final IMap map, final double x, final double y) {
+<i>123</i>&nbsp;    //standard behaviour for rectangular Tiles: search on a grid with the tile dimensions
+<b class="fc"><i>124</i>&nbsp;    int jumpWidth = map.getTileWidth();</b>
+<b class="fc"><i>125</i>&nbsp;    int jumpHeight = map.getTileHeight();</b>
+<i>126</i>&nbsp;    //if we&#39;re less than 1 tile left or up the map, get -1 instead of 0 as tile coordinate.
+<b class="fc"><i>127</i>&nbsp;    int xCoord = x &lt; 0 &amp;&amp; -x &lt; jumpWidth ? -1 : (int) (x / jumpWidth);</b>
+<b class="fc"><i>128</i>&nbsp;    int yCoord = y &lt; 0 &amp;&amp; -y &lt; jumpHeight ? -1 : (int) (y / jumpHeight);</b>
+<i>129</i>&nbsp;
+<b class="fc"><i>130</i>&nbsp;    if (map.getOrientation() != MapOrientation.HEXAGONAL) {</b>
+<b class="fc"><i>131</i>&nbsp;      return new Point(xCoord, yCoord);</b>
+<i>132</i>&nbsp;    }
+<i>133</i>&nbsp;    //for hex maps, we must adjust our jump size for cropping the subImages since tiles are not aligned orthogonally.
+<i>134</i>&nbsp;
+<b class="nc"><i>135</i>&nbsp;    StaggerAxis staggerAxis = map.getStaggerAxis();</b>
+<b class="nc"><i>136</i>&nbsp;    StaggerIndex staggerIndex = map.getStaggerIndex();</b>
+<i>137</i>&nbsp;    //the t parameter describes the distance between one end of the flat hex side to the bounding box.
+<b class="nc"><i>138</i>&nbsp;    int s = map.getHexSideLength();</b>
+<b class="nc"><i>139</i>&nbsp;    int t = staggerAxis == StaggerAxis.X ? (map.getTileWidth() - s) / 2 : (map.getTileHeight() - s) / 2;</b>
+<b class="nc"><i>140</i>&nbsp;    int r = staggerAxis == StaggerAxis.X ? map.getTileHeight() / 2 : map.getTileWidth() / 2;</b>
+<i>141</i>&nbsp;    //Since we require to get Tiles outside of the map as well, we need to construct an infinite hex grid on which we can determine
+<i>142</i>&nbsp;    //tile indices. This follows the hex grid click detection from http://www.quarkphysics.ca/scripsi/hexgrid/ 
+<i>143</i>&nbsp;
+<b class="nc"><i>144</i>&nbsp;    jumpWidth = staggerAxis == StaggerAxis.X ? t + s : map.getTileWidth();</b>
+<b class="nc"><i>145</i>&nbsp;    jumpHeight = staggerAxis == StaggerAxis.X ? map.getTileHeight() : t + s;</b>
+<b class="nc"><i>146</i>&nbsp;    xCoord = x &lt; 0 ? (int) (x / jumpWidth) - 1 : (int) (x / jumpWidth);</b>
+<b class="nc"><i>147</i>&nbsp;    yCoord = y &lt; 0 ? (int) (y / jumpHeight) - 1 : (int) (y / jumpHeight);</b>
+<b class="nc"><i>148</i>&nbsp;    if (staggerAxis == StaggerAxis.X &amp;&amp; isStaggeredRowOrColumn(staggerIndex, xCoord)) {</b>
+<b class="nc"><i>149</i>&nbsp;      yCoord = (int) ((y - jumpHeight / 2.0) / jumpHeight);</b>
+<b class="nc"><i>150</i>&nbsp;      yCoord = y &lt; jumpHeight / 2 ? yCoord - 1 : yCoord;</b>
+<b class="nc"><i>151</i>&nbsp;    } else if (staggerAxis == StaggerAxis.Y &amp;&amp; isStaggeredRowOrColumn(staggerIndex, yCoord)) {</b>
+<b class="nc"><i>152</i>&nbsp;      xCoord = (int) ((x - jumpWidth / 2.0) / jumpWidth);</b>
+<b class="nc"><i>153</i>&nbsp;      xCoord = x &lt; jumpWidth / 2 ? xCoord - 1 : xCoord;</b>
+<i>154</i>&nbsp;    }
+<b class="nc"><i>155</i>&nbsp;    return assessHexStaggering(staggerAxis, staggerIndex, new Point(xCoord, yCoord), s, t, r, jumpWidth, jumpHeight, x, y);</b>
+<i>156</i>&nbsp;  }
+<i>157</i>&nbsp;
+<i>158</i>&nbsp;  /**
+<i>159</i>&nbsp;   * Check if the row or column with the given index is staggered.
+<i>160</i>&nbsp;   * 
+<i>161</i>&nbsp;   * @param staggerIndex
+<i>162</i>&nbsp;   *          the staggerIndex property of the map. Every second row (or column, depending on the {@link StaggerAxis} of the map is staggered half a
+<i>163</i>&nbsp;   *          tile.
+<i>164</i>&nbsp;   * @param index
+<i>165</i>&nbsp;   *          the index of the current row or column for which we want to determine if it&#39;s staggered or not.
+<i>166</i>&nbsp;   * @return a boolean representing if the row or column with the given index is staggered.
+<i>167</i>&nbsp;   */
+<i>168</i>&nbsp;  public static boolean isStaggeredRowOrColumn(StaggerIndex staggerIndex, int index) {
+<b class="nc"><i>169</i>&nbsp;    return (staggerIndex == StaggerIndex.ODD &amp;&amp; MathUtilities.isOddNumber(index)) || (staggerIndex == StaggerIndex.EVEN &amp;&amp; !MathUtilities.isOddNumber(index));</b>
+<i>170</i>&nbsp;  }
+<i>171</i>&nbsp;
+<i>172</i>&nbsp;  private static Point assessHexStaggering(StaggerAxis staggerAxis, StaggerIndex staggerIndex, Point tileLocation, int s, int t, int r, int jumpWidth, int jumpHeight, double mouseX, double mouseY) {
+<b class="nc"><i>173</i>&nbsp;    int xIndex = tileLocation.x;</b>
+<b class="nc"><i>174</i>&nbsp;    int yIndex = tileLocation.y;</b>
+<b class="nc"><i>175</i>&nbsp;    int x = isStaggeredRowOrColumn(staggerIndex, yIndex) &amp;&amp; staggerAxis == StaggerAxis.Y ? xIndex * jumpWidth + r : xIndex * jumpWidth;</b>
+<b class="nc"><i>176</i>&nbsp;    int y = isStaggeredRowOrColumn(staggerIndex, xIndex) &amp;&amp; staggerAxis == StaggerAxis.X ? yIndex * jumpHeight + r : yIndex * jumpHeight;</b>
+<b class="nc"><i>177</i>&nbsp;    Polygon hex = GeometricUtilities.getHex(x, y, staggerAxis, s, r, t);</b>
+<i>178</i>&nbsp;    //we don&#39;t need any further computation if the mouse is already inside the hex
+<b class="nc"><i>179</i>&nbsp;    if (hex.contains(mouseX, mouseY)) {</b>
+<b class="nc"><i>180</i>&nbsp;      return new Point(xIndex, yIndex);</b>
+<b class="nc"><i>181</i>&nbsp;    } else if (mouseY &lt; hex.getBounds2D().getY() + hex.getBounds2D().getHeight() / 2) { //is the mouse in the upper left triangle outside the hex -&gt; switch to the hex left and above the current hex</b>
+<b class="nc"><i>182</i>&nbsp;      if (staggerAxis == StaggerAxis.X) {</b>
+<b class="nc"><i>183</i>&nbsp;        yIndex = isStaggeredRowOrColumn(staggerIndex, xIndex) ? yIndex : yIndex - 1;</b>
+<b class="nc"><i>184</i>&nbsp;        xIndex -= 1;</b>
+<i>185</i>&nbsp;      }
+<b class="nc"><i>186</i>&nbsp;      if (staggerAxis == StaggerAxis.Y) {</b>
+<b class="nc"><i>187</i>&nbsp;        xIndex = isStaggeredRowOrColumn(staggerIndex, yIndex) ? xIndex : xIndex - 1;</b>
+<b class="nc"><i>188</i>&nbsp;        yIndex -= 1;</b>
+<i>189</i>&nbsp;      }
+<b class="nc"><i>190</i>&nbsp;    } else if (mouseY &gt;= hex.getBounds2D().getY() + hex.getBounds2D().getHeight() / 2) { //is the mouse in the lower left triangle outside the hex-&gt; switch to the hex left and below the current hex</b>
+<b class="nc"><i>191</i>&nbsp;      if (staggerAxis == StaggerAxis.X) {</b>
+<b class="nc"><i>192</i>&nbsp;        yIndex = isStaggeredRowOrColumn(staggerIndex, xIndex) ? yIndex + 1 : yIndex;</b>
+<b class="nc"><i>193</i>&nbsp;        xIndex -= 1;</b>
+<i>194</i>&nbsp;      }
+<b class="nc"><i>195</i>&nbsp;      if (staggerAxis == StaggerAxis.Y) {</b>
+<b class="nc"><i>196</i>&nbsp;        xIndex = isStaggeredRowOrColumn(staggerIndex, yIndex) ? xIndex + 1 : xIndex;</b>
+<b class="nc"><i>197</i>&nbsp;        yIndex -= 1;</b>
+<i>198</i>&nbsp;      }
+<i>199</i>&nbsp;    }
+<b class="nc"><i>200</i>&nbsp;    return new Point(xIndex, yIndex);</b>
+<i>201</i>&nbsp;  }
+<i>202</i>&nbsp;
+<i>203</i>&nbsp;  public static Point2D getMapLocation(final IMap map, final Point tileLocation) {
+<b class="nc"><i>204</i>&nbsp;    return new Point2D.Double(tileLocation.x * map.getTileSize().getWidth(), tileLocation.y * map.getTileSize().getHeight());</b>
+<i>205</i>&nbsp;  }
+<i>206</i>&nbsp;
+<i>207</i>&nbsp;  public static List&lt;ITile&gt; getTilesByPixelLocation(final IMap map, final Point2D location) {
+<b class="nc"><i>208</i>&nbsp;    final List&lt;ITile&gt; tilesAtLocation = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>209</i>&nbsp;    if (map.getTileLayers() == null || map.getTileLayers().isEmpty()) {</b>
+<b class="nc"><i>210</i>&nbsp;      return tilesAtLocation;</b>
+<i>211</i>&nbsp;    }
+<i>212</i>&nbsp;
+<b class="nc"><i>213</i>&nbsp;    final Point tileLocation = getTile(map, location);</b>
+<b class="nc"><i>214</i>&nbsp;    for (final ITileLayer layer : map.getTileLayers()) {</b>
+<b class="nc"><i>215</i>&nbsp;      final ITile tile = layer.getTile(tileLocation.x, tileLocation.y);</b>
+<b class="nc"><i>216</i>&nbsp;      if (tile != null) {</b>
+<b class="nc"><i>217</i>&nbsp;        tilesAtLocation.add(tile);</b>
+<i>218</i>&nbsp;      }
+<b class="nc"><i>219</i>&nbsp;    }</b>
+<i>220</i>&nbsp;
+<b class="nc"><i>221</i>&nbsp;    return tilesAtLocation;</b>
+<i>222</i>&nbsp;  }
+<i>223</i>&nbsp;
+<i>224</i>&nbsp;  public static ITile getTopMostTile(final Point2D location) {
+<b class="nc"><i>225</i>&nbsp;    if (Game.world().environment() == null || Game.world().environment().getMap() == null) {</b>
+<b class="nc"><i>226</i>&nbsp;      return null;</b>
+<i>227</i>&nbsp;    }
+<i>228</i>&nbsp;
+<b class="nc"><i>229</i>&nbsp;    return getTopMostTile(Game.world().environment().getMap(), location);</b>
+<i>230</i>&nbsp;  }
+<i>231</i>&nbsp;
+<i>232</i>&nbsp;  public static ITile getTopMostTile(final IMap map, final Point2D location) {
+<b class="nc"><i>233</i>&nbsp;    if (map.getTileLayers() == null || map.getTileLayers().isEmpty()) {</b>
+<b class="nc"><i>234</i>&nbsp;      return null;</b>
+<i>235</i>&nbsp;    }
+<i>236</i>&nbsp;
+<b class="nc"><i>237</i>&nbsp;    return getTopMostTile(getTile(map, location));</b>
+<i>238</i>&nbsp;  }
+<i>239</i>&nbsp;
+<i>240</i>&nbsp;  public static ITile getTopMostTile(final Point point) {
+<b class="nc"><i>241</i>&nbsp;    if (Game.world().environment() == null || Game.world().environment().getMap() == null) {</b>
+<b class="nc"><i>242</i>&nbsp;      return null;</b>
+<i>243</i>&nbsp;    }
+<i>244</i>&nbsp;
+<b class="nc"><i>245</i>&nbsp;    return getTopMostTile(Game.world().environment().getMap(), point);</b>
+<i>246</i>&nbsp;  }
+<i>247</i>&nbsp;
+<i>248</i>&nbsp;  public static ITile getTopMostTile(final IMap map, final Point point) {
+<b class="nc"><i>249</i>&nbsp;    final Point tileLocation = point;</b>
+<i>250</i>&nbsp;
+<b class="nc"><i>251</i>&nbsp;    ITile tile = null;</b>
+<b class="nc"><i>252</i>&nbsp;    for (final ITileLayer layer : map.getTileLayers()) {</b>
+<b class="nc"><i>253</i>&nbsp;      ITile tileOfLayer = layer.getTile(tileLocation.x, tileLocation.y);</b>
+<b class="nc"><i>254</i>&nbsp;      if (tileOfLayer != null &amp;&amp; tileOfLayer.getGridId() != 0) {</b>
+<b class="nc"><i>255</i>&nbsp;        tile = tileOfLayer;</b>
+<i>256</i>&nbsp;      }
+<b class="nc"><i>257</i>&nbsp;    }</b>
+<i>258</i>&nbsp;
+<b class="nc"><i>259</i>&nbsp;    return tile;</b>
+<i>260</i>&nbsp;  }
+<i>261</i>&nbsp;
+<i>262</i>&nbsp;  public static boolean hasAnimation(final IMap map, final ITile tile) {
+<i>263</i>&nbsp;
+<b class="nc"><i>264</i>&nbsp;    final ITileset tileset = MapUtilities.findTileSet(map, tile);</b>
+<b class="nc"><i>265</i>&nbsp;    if (tileset == null || tileset.getFirstGridId() &gt; tile.getGridId()) {</b>
+<b class="nc"><i>266</i>&nbsp;      return false;</b>
+<i>267</i>&nbsp;    }
+<i>268</i>&nbsp;
+<i>269</i>&nbsp;    // get the grid id relative to the sprite sheet since we use a 0 based
+<i>270</i>&nbsp;    // approach to calculate the position
+<b class="nc"><i>271</i>&nbsp;    int index = tile.getGridId() - tileset.getFirstGridId();</b>
+<i>272</i>&nbsp;
+<b class="nc"><i>273</i>&nbsp;    final ITileAnimation animation = MapUtilities.getAnimation(map, index);</b>
+<b class="nc"><i>274</i>&nbsp;    return animation != null &amp;&amp; !animation.getFrames().isEmpty();</b>
+<i>275</i>&nbsp;  }
+<i>276</i>&nbsp;
+<i>277</i>&nbsp;  public static ITileAnimation getAnimation(final IMap map, final int gId) {
+<i>278</i>&nbsp;
+<b class="nc"><i>279</i>&nbsp;    String cacheKey = map.getName() + &quot;[&quot; + gId + &quot;]&quot;;</b>
+<b class="nc"><i>280</i>&nbsp;    if (hasAnimation.containsKey(cacheKey) &amp;&amp; !hasAnimation.get(cacheKey)) {</b>
+<b class="nc"><i>281</i>&nbsp;      return null;</b>
+<i>282</i>&nbsp;    }
+<i>283</i>&nbsp;
+<b class="nc"><i>284</i>&nbsp;    if (animations.containsKey(cacheKey)) {</b>
+<b class="nc"><i>285</i>&nbsp;      return animations.get(cacheKey);</b>
+<i>286</i>&nbsp;    }
+<i>287</i>&nbsp;
+<b class="nc"><i>288</i>&nbsp;    for (final ITileset tileset : map.getTilesets()) {</b>
+<b class="nc"><i>289</i>&nbsp;      if (tileset.containsTile(gId)) {</b>
+<b class="nc"><i>290</i>&nbsp;        ITileAnimation anim = tileset.getAnimation(gId);</b>
+<b class="nc"><i>291</i>&nbsp;        boolean animation = false;</b>
+<b class="nc"><i>292</i>&nbsp;        if (anim != null) {</b>
+<b class="nc"><i>293</i>&nbsp;          animations.put(cacheKey, anim);</b>
+<b class="nc"><i>294</i>&nbsp;          animation = true;</b>
+<i>295</i>&nbsp;        }
+<i>296</i>&nbsp;
+<b class="nc"><i>297</i>&nbsp;        hasAnimation.put(cacheKey, animation);</b>
+<i>298</i>&nbsp;
+<b class="nc"><i>299</i>&nbsp;        return anim;</b>
+<i>300</i>&nbsp;      }
+<b class="nc"><i>301</i>&nbsp;    }</b>
+<i>302</i>&nbsp;
+<b class="nc"><i>303</i>&nbsp;    return null;</b>
+<i>304</i>&nbsp;  }
+<i>305</i>&nbsp;
+<i>306</i>&nbsp;  /**
+<i>307</i>&nbsp;   * Searches for the tile set that contains the specified tile, identified by
+<i>308</i>&nbsp;   * the grid id.
+<i>309</i>&nbsp;   *
+<i>310</i>&nbsp;   * @param map
+<i>311</i>&nbsp;   *          the map
+<i>312</i>&nbsp;   * @param tile
+<i>313</i>&nbsp;   *          the tile
+<i>314</i>&nbsp;   * @return the tileset
+<i>315</i>&nbsp;   */
+<i>316</i>&nbsp;  public static ITileset findTileSet(final IMap map, final ITile tile) {
+<b class="nc"><i>317</i>&nbsp;    if (map == null || tile == null) {</b>
+<b class="nc"><i>318</i>&nbsp;      return null;</b>
+<i>319</i>&nbsp;    }
+<i>320</i>&nbsp;
+<b class="nc"><i>321</i>&nbsp;    ITileset match = null;</b>
+<i>322</i>&nbsp;
+<b class="nc"><i>323</i>&nbsp;    for (final ITileset tileset : map.getTilesets()) {</b>
+<b class="nc"><i>324</i>&nbsp;      if (tileset.containsTile(tile)) {</b>
+<b class="nc"><i>325</i>&nbsp;        match = tileset;</b>
+<b class="nc"><i>326</i>&nbsp;        break;</b>
+<i>327</i>&nbsp;      }
+<b class="nc"><i>328</i>&nbsp;    }</b>
+<i>329</i>&nbsp;
+<b class="nc"><i>330</i>&nbsp;    return match;</b>
+<i>331</i>&nbsp;  }
+<i>332</i>&nbsp;
+<i>333</i>&nbsp;  public static Path2D convertPolyshapeToPath(final IMapObject mapObject) {
+<b class="nc"><i>334</i>&nbsp;    if (mapObject == null || (!mapObject.isPolygon() &amp;&amp; !mapObject.isPolyline())) {</b>
+<b class="nc"><i>335</i>&nbsp;      return null;</b>
+<i>336</i>&nbsp;    }
+<i>337</i>&nbsp;
+<b class="nc"><i>338</i>&nbsp;    List&lt;Point2D&gt; points = mapObject.getPolyline() != null ? mapObject.getPolyline().getPoints() : mapObject.getPolygon().getPoints();</b>
+<b class="nc"><i>339</i>&nbsp;    if (points.isEmpty()) {</b>
+<b class="nc"><i>340</i>&nbsp;      return null;</b>
+<i>341</i>&nbsp;    }
+<i>342</i>&nbsp;
+<b class="nc"><i>343</i>&nbsp;    Path2D path = new Path2D.Float();</b>
+<b class="nc"><i>344</i>&nbsp;    path.moveTo(mapObject.getLocation().getX(), mapObject.getLocation().getY());</b>
+<b class="nc"><i>345</i>&nbsp;    for (int i = 1; i &lt; points.size(); i++) {</b>
+<b class="nc"><i>346</i>&nbsp;      Point2D point = points.get(i);</b>
+<b class="nc"><i>347</i>&nbsp;      path.lineTo(mapObject.getLocation().getX() + point.getX(), mapObject.getLocation().getY() + point.getY());</b>
+<i>348</i>&nbsp;    }
+<i>349</i>&nbsp;
+<b class="nc"><i>350</i>&nbsp;    if (mapObject.isPolygon()) {</b>
+<b class="nc"><i>351</i>&nbsp;      path.closePath();</b>
+<i>352</i>&nbsp;    }
+<i>353</i>&nbsp;
+<b class="nc"><i>354</i>&nbsp;    return path;</b>
+<i>355</i>&nbsp;  }
+<i>356</i>&nbsp;
+<i>357</i>&nbsp;  public static List&lt;Point2D&gt; getAbsolutePolyshapePoints(final IMapObject mapObject) {
+<b class="nc"><i>358</i>&nbsp;    if (mapObject.isPolygon()) {</b>
+<b class="nc"><i>359</i>&nbsp;      return mapObject.getPolygon().getAbsolutePoints(mapObject.getLocation());</b>
+<i>360</i>&nbsp;    }
+<i>361</i>&nbsp;
+<b class="nc"><i>362</i>&nbsp;    if (mapObject.isPolyline()) {</b>
+<b class="nc"><i>363</i>&nbsp;      return mapObject.getPolyline().getAbsolutePoints(mapObject.getLocation());</b>
+<i>364</i>&nbsp;    }
+<i>365</i>&nbsp;
+<b class="nc"><i>366</i>&nbsp;    return new ArrayList&lt;&gt;();</b>
+<i>367</i>&nbsp;  }
+<i>368</i>&nbsp;
+<i>369</i>&nbsp;  public static IMapObject findMapObject(final IMap map, final int id) {
+<b class="nc"><i>370</i>&nbsp;    for (IMapObjectLayer layer : map.getMapObjectLayers()) {</b>
+<b class="nc"><i>371</i>&nbsp;      for (IMapObject obj : layer.getMapObjects()) {</b>
+<b class="nc"><i>372</i>&nbsp;        if (obj.getId() == id) {</b>
+<b class="nc"><i>373</i>&nbsp;          return obj;</b>
+<i>374</i>&nbsp;        }
+<b class="nc"><i>375</i>&nbsp;      }</b>
+<b class="nc"><i>376</i>&nbsp;    }</b>
+<i>377</i>&nbsp;
+<b class="nc"><i>378</i>&nbsp;    return null;</b>
+<i>379</i>&nbsp;  }
+<i>380</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:15</div>
+</div>
+</body>
+</html>

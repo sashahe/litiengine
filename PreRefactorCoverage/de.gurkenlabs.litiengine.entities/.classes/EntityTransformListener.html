@@ -1,0 +1,81 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: EntityTransformListener</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.entities</a> ]
+</div>
+
+<h1>Coverage Summary for Class: EntityTransformListener (de.gurkenlabs.litiengine.entities)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">EntityTransformListener</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.entities;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.util.EventListener;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * This listener provides callbacks for when an &lt;code&gt;Entity&lt;/code&gt; was moved or changed its size.
+<i>7</i>&nbsp; */
+<i>8</i>&nbsp;public interface EntityTransformListener extends EventListener {
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;  /**
+<i>11</i>&nbsp;   * This method is called whenever the location of an &lt;code&gt;IEntity&lt;/code&gt; was changed.
+<i>12</i>&nbsp;   * 
+<i>13</i>&nbsp;   * @param entity
+<i>14</i>&nbsp;   *          The entity that changed its location.
+<i>15</i>&nbsp;   * 
+<i>16</i>&nbsp;   * @see IEntity#setLocation(java.awt.geom.Point2D)
+<i>17</i>&nbsp;   * @see IEntity#setLocation(double, double)
+<i>18</i>&nbsp;   * @see IEntity#setX(double)
+<i>19</i>&nbsp;   * @see IEntity#setY(double)
+<i>20</i>&nbsp;   */
+<i>21</i>&nbsp;  public void locationChanged(IEntity entity);
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;  /**
+<i>24</i>&nbsp;   * This method is called whenever the size of an &lt;code&gt;IEntity&lt;/code&gt; was changed.
+<i>25</i>&nbsp;   * 
+<i>26</i>&nbsp;   * @param entity
+<i>27</i>&nbsp;   *          The entity that changed its size.
+<i>28</i>&nbsp;   *          
+<i>29</i>&nbsp;   * @see IEntity#setSize(float, float)
+<i>30</i>&nbsp;   * @see IEntity#setHeight(float)
+<i>31</i>&nbsp;   * @see IEntity#setWidth(float)
+<i>32</i>&nbsp;   */
+<i>33</i>&nbsp;  public void sizeChanged(IEntity entity);
+<i>34</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:15</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IMapObjectLoader</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">de.gurkenlabs.litiengine.environment</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IMapObjectLoader (de.gurkenlabs.litiengine.environment)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">IMapObjectLoader</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package de.gurkenlabs.litiengine.environment;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.util.Collection;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import de.gurkenlabs.litiengine.entities.IEntity;
+<i>6</i>&nbsp;import de.gurkenlabs.litiengine.environment.tilemap.IMapObject;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;/**
+<i>9</i>&nbsp; * This interface provides methods that are required for loading an &lt;code&gt;IEntity&lt;/code&gt; from an &lt;code&gt;IMapObject&lt;/code&gt;.
+<i>10</i>&nbsp; * It separates the actual entity implementation from the loading process and provide a place to implement all the logic
+<i>11</i>&nbsp; * to load attributes and initialize logic based on static information from the &lt;code&gt;IMap&lt;/code&gt;.
+<i>12</i>&nbsp; * &lt;br&gt;
+<i>13</i>&nbsp; * &lt;br&gt;
+<i>14</i>&nbsp; * The engine provides default implementations for all predefined &lt;code&gt;Entity&lt;/code&gt; types (e.g. &lt;code&gt;Prop or Creature&lt;/code&gt;).
+<i>15</i>&nbsp; * You can inherit/call the abstract &lt;code&gt;MapObjectLoader&lt;/code&gt; implementation to make use of predefined loading logic.
+<i>16</i>&nbsp; * 
+<i>17</i>&nbsp; * @see Environment#registerMapObjectLoader(IMapObjectLoader)
+<i>18</i>&nbsp; * @see MapObjectLoader#loadDefaultProperties(IEntity, IMapObject)
+<i>19</i>&nbsp; */
+<i>20</i>&nbsp;public interface IMapObjectLoader {
+<i>21</i>&nbsp;  String getMapObjectType();
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;  Collection&lt;IEntity&gt; load(Environment environment, IMapObject mapObject) throws MapObjectException;
+<i>24</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-02-27 12:15</div>
+</div>
+</body>
+</html>
