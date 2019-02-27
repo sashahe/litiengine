@@ -8,9 +8,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import de.gurkenlabs.litiengine.Game;
 import de.gurkenlabs.litiengine.IUpdateable;
 import de.gurkenlabs.litiengine.abilities.effects.Effect;
+import de.gurkenlabs.litiengine.entities.CombatEntity;
 
-public class AbilityExecution implements IUpdateable {
-  private final Ability ability;
+public class AbilityExecution<T extends CombatEntity> implements IUpdateable {
+  private final Ability<T> ability;
   private final List<Effect> appliedEffects;
   private final Point2D castLocation;
   private final long executionTicks;
@@ -20,9 +21,9 @@ public class AbilityExecution implements IUpdateable {
    * Instantiates a new ability execution.
    *
    * @param ability
-   *          the ability
+   *                  the ability
    */
-  public AbilityExecution(final Ability ability) {
+  public AbilityExecution(final Ability<T> ability) {
     this.appliedEffects = new CopyOnWriteArrayList<>();
     this.ability = ability;
     this.executionTicks = Game.loop().getTicks();
@@ -31,7 +32,7 @@ public class AbilityExecution implements IUpdateable {
     Game.loop().attach(this);
   }
 
-  public Ability getAbility() {
+  public Ability<T> getAbility() {
     return this.ability;
   }
 
@@ -52,8 +53,8 @@ public class AbilityExecution implements IUpdateable {
   }
 
   /**
-   * 1. Apply all ability effects after their delay. 
-   * 2. Unregister this instance after all effects were applied. 
+   * 1. Apply all ability effects after their delay.
+   * 2. Unregister this instance after all effects were applied.
    * 3. Effects will apply their follow up effects on their own.
    */
   @Override
