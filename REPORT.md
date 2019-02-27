@@ -16,6 +16,11 @@ URL: https://github.com/gurkenlabs/litiengine/issues/115
     
 Description: Make the ability class more general, as it is now it requires a creature. This could be more general by not requiring this.
 
+Title: Add Appearance properties for borders #224
+
+URL: https://github.com/gurkenlabs/litiengine/issues/224
+
+Description: Add Appearance properties for borders.
 
 ## Onboarding experience
 
@@ -69,20 +74,20 @@ An ability is initialized with an executor. In the current state this executor m
 ## Existing test cases relating to refactored code
 There are two test cases that test initialization of an ability and the effect of an ability on a different entity. The actual requirements that are tested are not documented. 
 
-## The refactoring carried out (Not Done: Add description of UML diagram)
-The reactoring effort can be seen by checking out issue/115
+## The refactoring carried out
+The refactoring effort can be seen by checking out issue/115
 
 `git checkout issue/115`
 
+The refactoring itself is documented by the git log.
+
 Description of the [UML diagram](https://github.com/sashahe/litiengine/blob/issue/115/AbilitiesUML.png).
 
-## Test logs (Not Done: Add old/new coverage report over test cases)
+## Test logs
 
-Load the index.html file for the [Old Coverage Report](https://github.com/sashahe/litiengine/blob/issue/115/OldTestCoverage) in a browser.
+Load the index.html file for the [Pre-refactor logs](https://github.com/sashahe/litiengine/blob/presentation/PreRefactorCoverage) in a browser.
 
-Load the index.html file for the [New Coverage Report](https://github.com/sashahe/litiengine/blob/issue/115/NewTestCoverage) in a browser.
-
-The refactoring itself is documented by the git log.
+Load the index.html file for the [After-refactor logs](https://github.com/sashahe/litiengine/blob/presentation/AfterRefactorCoverage) in a browser.
 
 ## Effort spent
 
