@@ -28,7 +28,7 @@ Description: Add Appearance properties for borders.
 There are no clear guidelines regarding specifically how to build the project, however, there is a file describing how to contribute to the project. Since there is a gradle directory in the project, it can be assumed that gradle is used. Thus, building the project is in fact easy. Aside from downloading Gradle, no additional tools are need to build the software and no additional components were installed when building. The build included compilation as well as testing and no errors occurred during the build of the project, thus the tests are successful. The build was run with the command `gradle build`.
 
 ## Refactoring plan
-The ability class shall extend a CombatEntity, and the constructior of Ablility will take a CombatEntity instead of a creature. Thus the ability class becomes more general and can be applied to anything that is a CombatEntity. The Emitter class will then extend CombatEntity and thus Emitters will have abilities.
+The ability class shall extend a CombatEntity, and the constructor of Ablility will take a CombatEntity instead of a creature. Thus the ability class becomes more general and can be applied to anything that is a CombatEntity. The Emitter class will then extend CombatEntity and thus Emitters will have abilities.
 
 ## Requirements affected by functionality being refactored
 An ability is initialized with an executor. In the current state this executor must be a creature. The methods within the ability class that involve the executor are:
@@ -81,7 +81,9 @@ The refactoring effort can be seen by checking out issue/115
 
 The refactoring itself is documented by the git log.
 
-Description of the [UML diagram](https://github.com/sashahe/litiengine/blob/issue/115/AbilitiesUML.png).
+The UML diagram of the Ability class *before* refactoring can be seen [here](https://github.com/sashahe/litiengine/blob/presentation/BeforeUML.png). It shows the hiearchy between the classes `Entity`,  `CombatEntity`,  `Emitter`,  `CollisionEntity`, `Ability` and `Creature` as well as their respective functions and local variables.
+
+The UML diagram of the Ability class *after* refactoring can be seen [here](https://github.com/sashahe/litiengine/blob/presentation/AfterUML.png). The UML diagram shows how the hiearchy between the classes has been modified (after the refactoring) as an attempt to provide generalization. More specifically, the `Ability `class has been modified to take in a `Generic` type and not only `Creature`. In addition, the `Ability` class now extends `CombatEntity` and the `Emitter` class now extends to `CombatEntity`.
 
 ## Test logs
 
