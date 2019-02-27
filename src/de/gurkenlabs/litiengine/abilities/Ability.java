@@ -72,16 +72,17 @@ public abstract class Ability implements IRenderable {
     return new Ellipse2D.Double(arcX, arcY, range, range);
   }
 
+
   public boolean canCast() {
-    return !this.getExecutor().isDead() && !this.isCurrentlyExecuting() && !this.isColdownLeft();
+    return !this.getExecutor().isDead() && (this.isCurrentlyExecuting() || this.isColdownLeft());
   }
 
   private boolean isCurrentlyExecuting() {
-    return this.getCurrentExecution() != null && this.getCurrentExecution().getExecutionTicks() != 0;
+    return this.getCurrentExecution() == null || this.getCurrentExecution().getExecutionTicks() == 0;
   }
 
   private boolean isColdownLeft() {
-    return Game.loop().getDeltaTime(this.getCurrentExecution().getExecutionTicks()) < this.getAttributes().getCooldown().getCurrentValue();
+    return Game.loop().getDeltaTime(this.getCurrentExecution().getExecutionTicks()) >= this.getAttributes().getCooldown().getCurrentValue();
   }
 
   /**
